@@ -1,0 +1,47 @@
+name: taxi
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/2x/
+    - assets/images/3x/
+    - assets/fonts/
+    - assets/fonts/Inters/
+    - assets/fonts/Poppins/
+    - assets/fonts/ABeeZees/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inters/Inter-ExtraLight.ttf
+        - asset: assets/fonts/Inters/Inter-Regular.ttf
+          style: italic
+          weight: 500
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Italic.ttf
+        - asset: assets/fonts/Poppins/Poppins-Light.ttf
+          style: italic
+          weight: 500
+    - family: AbeeZees
+      fonts:
+        - asset: assets/fonts/AbeeZees/ABeeZee-Italic.ttf
+        - asset: assets/fonts/AbeeZees/ABeeZee-Regular.ttf
+          style: italic
+          weight: 700
