@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taxi/Settings/settings.fonts.dart';
 import '../../Settings/settings.images.dart';
-import '../../Widget/Button/button.widget.dart';
+import '../../Widget/Button/widget.button.dart';
 import '../Accounts/Logins/pages.logins.sign_in.dart';
 
 class AcceptLocationPage extends StatelessWidget {
@@ -12,14 +12,16 @@ class AcceptLocationPage extends StatelessWidget {
     Size screenCurrentSize = MediaQuery.of(context).size;
     return Scaffold(
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding:
+              EdgeInsets.symmetric(horizontal: screenCurrentSize.width * 0.2),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(ImageDefault.listviewFinish3x),
+              Image.asset(ImageDefault.listviewFinish2x),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32.0),
+                padding: EdgeInsets.symmetric(
+                    vertical: screenCurrentSize.height * 0.06),
                 child: Text(
                   "Don't worry your data is private",
                   style: FontsDefault.h5,

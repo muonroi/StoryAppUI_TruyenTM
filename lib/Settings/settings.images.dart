@@ -36,4 +36,12 @@ class ImageDefault {
   static const String paypalLogo3x = '${imagePath3x}paypal_logo.png';
   static const String visaLogo2x = '${imagePath2x}visa_logo.png';
   static const String visaLogo3x = '${imagePath3x}visa_logo.png';
+  static const String gridFour2x = '${imagePath2x}GridFour.png';
+  static const String gridFour3x = '${imagePath3x}GridFour.png';
+  static const String translate2x = '${imagePath2x}Translate.png';
+  static const String translate3x = '${imagePath3x}Translate.png';
+  static const String bookOpenText2x = '${imagePath2x}BookOpenText.png';
+  static const String bookOpenText3x = '${imagePath3x}BookOpenText.png';
+  static const String vector2x = '${imagePath2x}Vector.png';
+  static const String vector3x = '${imagePath3x}Vector.png';
 }

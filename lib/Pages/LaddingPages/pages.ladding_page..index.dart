@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taxi/Pages/LaddingPages/pages.ladding_page.preview.dart';
 
 import '../../Settings/settings.images.dart';
+import '../Accounts/Logins/pages.logins.sign_in.dart';
 
 class IndexPage extends StatelessWidget {
   const IndexPage({super.key});
@@ -9,8 +10,8 @@ class IndexPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const PreviewPage()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const SignInPage()));
     });
     return Scaffold(
       body: Padding(

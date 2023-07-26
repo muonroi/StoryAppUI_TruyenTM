@@ -5,7 +5,7 @@ import 'package:taxi/Settings/settings.colors.dart';
 import 'package:taxi/Settings/settings.fonts.dart';
 import 'package:taxi/Settings/settings.images.dart';
 
-import '../../../Widget/Button/button.widget.dart';
+import '../../../Widget/Button/widget.button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -99,7 +99,7 @@ class _SignInPageState extends State<SignInPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignUpPage()));
+                                  builder: (context) => const SignUpPage()));
                         })
                 ]),
             textAlign: TextAlign.center,
