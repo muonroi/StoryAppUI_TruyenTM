@@ -4,7 +4,7 @@ import 'package:taxi/Settings/settings.fonts.dart';
 import '../../Models/PreviewDto/models.account.previewdto.preview_ladding.dart';
 import '../../Settings/settings.colors.dart';
 import '../../Settings/settings.images.dart';
-import '../../Widget/Button/button.widget.dart';
+import '../../Widget/Button/widget.button.dart';
 
 class PreviewPage extends StatefulWidget {
   const PreviewPage({super.key});

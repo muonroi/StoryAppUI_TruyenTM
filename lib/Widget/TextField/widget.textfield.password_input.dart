@@ -5,15 +5,18 @@ import '../../Settings/settings.colors.dart';
 
 class RoundedPasswordField extends StatelessWidget {
   final String hintText;
+  final ValueChanged<String> onChanged;
   const RoundedPasswordField({
     super.key,
     required this.hintText,
+    required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextField(
+        onChanged: onChanged,
         obscureText: true,
         decoration: InputDecoration(
           hintText: hintText,
