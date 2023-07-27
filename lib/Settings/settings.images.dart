@@ -44,4 +44,10 @@ class ImageDefault {
   static const String bookOpenText3x = '${imagePath3x}BookOpenText.png';
   static const String vector2x = '${imagePath2x}Vector.png';
   static const String vector3x = '${imagePath3x}Vector.png';
+  static const String bookBookmark2x = '${imagePath2x}BookBookmark.png';
+  static const String bookBookmark3x = '${imagePath3x}BookBookmark.png';
+  static const String userInfo2x = '${imagePath2x}UserInfo.png';
+  static const String freeBook2x = '${imagePath2x}free_book.png';
+  static const String userInfo3x = '${imagePath3x}UserInfo.png';
+  static const String freeBook3x = '${imagePath3x}free_book.png';
 }

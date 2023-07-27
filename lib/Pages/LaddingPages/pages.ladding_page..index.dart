@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:taxi/Pages/LaddingPages/pages.ladding_page.preview.dart';
-
 import '../../Settings/settings.images.dart';
 import '../Accounts/Logins/pages.logins.sign_in.dart';
 
