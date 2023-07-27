@@ -59,6 +59,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   String enteredOTP = otpControllers
                       .map((controller) => controller.text)
                       .join();
+                  print(enteredOTP);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
