@@ -4,19 +4,20 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
-            "name": "taxi",
+            "name": "muonroi",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "taxi (profile mode)",
+            "name": "muonroi (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "taxi (release mode)",
+            "name": "muonroi (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

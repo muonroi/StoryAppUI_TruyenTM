@@ -137,8 +137,8 @@ class GroupCategory extends StatelessWidget {
 
 // #endregion
 // #region Title new chapter
-class NewChapterTitle extends StatelessWidget {
-  const NewChapterTitle({super.key});
+class OnlyTitle extends StatelessWidget {
+  const OnlyTitle({super.key});
 
   @override
   Widget build(BuildContext context) {

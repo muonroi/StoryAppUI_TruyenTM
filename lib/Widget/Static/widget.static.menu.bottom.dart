@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taxi/Pages/MainPages/main_pages.home.dart';
 
 import '../../Settings/settings.colors.dart';
 import '../../Settings/settings.images.dart';
@@ -45,6 +46,10 @@ class _DockerCenterBottomAppBarState extends State<DockerCenterBottomAppBar> {
                   IconButton(
                       tooltip: L(ViCode.homePageTextInfo.toString()),
                       onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()));
                         setState(() {
                           _currentIndex = 1;
                         });
@@ -81,7 +86,10 @@ class _DockerCenterBottomAppBarState extends State<DockerCenterBottomAppBar> {
                                 ? ColorDefaults.mainColor
                                 : ColorDefaults.borderButtonPreviewPage,
                             BlendMode.srcIn),
-                        child: Image.asset(ImageDefault.freeBook2x)),
+                        child: Image.asset(
+                          ImageDefault.freeBook2x,
+                          fit: BoxFit.cover,
+                        )),
                   ),
                   IconButton(
                       tooltip: L(ViCode.userInfoTextInfo.toString()),
@@ -96,7 +104,8 @@ class _DockerCenterBottomAppBarState extends State<DockerCenterBottomAppBar> {
                                   ? ColorDefaults.mainColor
                                   : ColorDefaults.borderButtonPreviewPage,
                               BlendMode.srcIn),
-                          child: Image.asset(ImageDefault.userInfo2x))),
+                          child: Image.asset(ImageDefault.userInfo2x,
+                              fit: BoxFit.cover))),
                 ],
               ))),
     );
