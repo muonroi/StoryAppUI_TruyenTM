@@ -81,7 +81,10 @@ class _DockerCenterBottomAppBarState extends State<DockerCenterBottomAppBar> {
                                 ? ColorDefaults.mainColor
                                 : ColorDefaults.borderButtonPreviewPage,
                             BlendMode.srcIn),
-                        child: Image.asset(ImageDefault.freeBook2x)),
+                        child: Image.asset(
+                          ImageDefault.freeBook2x,
+                          fit: BoxFit.cover,
+                        )),
                   ),
                   IconButton(
                       tooltip: L(ViCode.userInfoTextInfo.toString()),
@@ -96,7 +99,8 @@ class _DockerCenterBottomAppBarState extends State<DockerCenterBottomAppBar> {
                                   ? ColorDefaults.mainColor
                                   : ColorDefaults.borderButtonPreviewPage,
                               BlendMode.srcIn),
-                          child: Image.asset(ImageDefault.userInfo2x))),
+                          child: Image.asset(ImageDefault.userInfo2x,
+                              fit: BoxFit.cover))),
                 ],
               ))),
     );
