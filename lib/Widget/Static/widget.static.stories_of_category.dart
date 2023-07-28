@@ -6,28 +6,23 @@ import '../../Settings/settings.main.dart';
 class StoriesNewUpdated extends StatefulWidget {
   const StoriesNewUpdated({
     super.key,
-    required this.storiesAtLastRows,
-    required this.storiesAtFirstRows,
+    required this.storiesFillRow,
   });
 
-  final List<Widget> storiesAtLastRows;
-  final List<Widget> storiesAtFirstRows;
+  final List<Widget> storiesFillRow;
   @override
   State<StoriesNewUpdated> createState() => _StoriesNewUpdatedState();
 }
 
 class _StoriesNewUpdatedState extends State<StoriesNewUpdated> {
-  List<double> _storiesTheLastScales = [];
-  List<double> _storiesTheFirstScales = [];
   @override
   void initState() {
     super.initState();
-    _storiesTheFirstScales =
-        List<double>.filled(widget.storiesAtFirstRows.length, 1.0);
-    _storiesTheLastScales =
-        List<double>.filled(widget.storiesAtLastRows.length, 1.0);
+    _storiesFillRowScales =
+        List<double>.filled(widget.storiesFillRow.length, 1.0);
   }
 
+  List<double> _storiesFillRowScales = [];
   void _onTapDown(int index, List<double> doubleContainSizeStories) {
     setState(() {
       doubleContainSizeStories[index] = 0.9;
@@ -43,77 +38,45 @@ class _StoriesNewUpdatedState extends State<StoriesNewUpdated> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: MainSetting.getPercentageOfDevice(context, expectHeight: 300)
+        height: MainSetting.getPercentageOfDevice(context, expectHeight: 140)
             .height,
         child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.horizontal,
-          itemCount: widget.storiesAtFirstRows.length,
+          itemCount: widget.storiesFillRow.length,
           itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Column(
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // Vertically center the column
-                crossAxisAlignment:
-                    CrossAxisAlignment.center, // Horizontally center the column
-                children: [
-                  GestureDetector(
-                    onTapDown: (_) => _onTapDown(index, _storiesTheFirstScales),
-                    onTapUp: (_) => _onTapUp(index, _storiesTheFirstScales),
-                    onTapCancel: () => _onTapUp(index, _storiesTheFirstScales),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                            transform: Matrix4.diagonal3Values(
-                              _storiesTheFirstScales[index],
-                              _storiesTheFirstScales[index],
-                              1.0,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: widget.storiesAtFirstRows[index],
-                            ),
+            return Column(
+              mainAxisAlignment:
+                  MainAxisAlignment.start, // Vertically center the column
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // Horizontally center the column
+              children: [
+                GestureDetector(
+                  onTapDown: (_) => _onTapDown(index, _storiesFillRowScales),
+                  onTapUp: (_) => _onTapUp(index, _storiesFillRowScales),
+                  onTapCancel: () => _onTapUp(index, _storiesFillRowScales),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                          transform: Matrix4.diagonal3Values(
+                            _storiesFillRowScales[index],
+                            _storiesFillRowScales[index],
+                            1.0,
                           ),
-                        )
-                      ],
-                    ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: widget.storiesFillRow[index],
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  GestureDetector(
-                    onTapDown: (_) => _onTapDown(index, _storiesTheLastScales),
-                    onTapUp: (_) => _onTapUp(index, _storiesTheLastScales),
-                    onTapCancel: () => _onTapUp(index, _storiesTheLastScales),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceEvenly, // Center the elements horizontally
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                            transform: Matrix4.diagonal3Values(
-                              _storiesTheLastScales[index],
-                              _storiesTheLastScales[index],
-                              1.0,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: widget.storiesAtLastRows[index],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                ),
+              ],
             );
           },
         ));

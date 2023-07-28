@@ -13,7 +13,7 @@ class FilterStoriesByCommon extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: SizedBox(
         height:
-            MainSetting.getPercentageOfDevice(context, expectHeight: 60).height,
+            MainSetting.getPercentageOfDevice(context, expectHeight: 40).height,
         child: PageView.builder(
             itemCount: 1,
             itemBuilder: (context, index) {

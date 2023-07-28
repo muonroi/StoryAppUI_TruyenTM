@@ -80,32 +80,28 @@ class _HomebodyState extends State<Homebody> {
   // #region Define variables
   double _itemHeight = 0.0;
   int _currentIndex = 0;
+  bool _isShowClearText = false;
   late TextEditingController _searchController;
   late PageController _pageEditorController;
   late PageController _pageNewStoriesController;
   late PageController _pageCompleteStoriesController;
   late ScrollController _scrollLayoutController;
-  bool _isShowClearText = false;
   final List<int> items = [];
   late List<Widget> storiesTheFirst = [
     SizedBox(
-        width: 63.04,
-        height: 120.71,
-        child: Image.asset('assets/images/2x/image_3.png', fit: BoxFit.cover)),
-    SizedBox(
-        width: 63.04,
+        width: 101.2,
         height: 120.71,
         child: Image.asset('assets/images/2x/image_4.png', fit: BoxFit.cover)),
     SizedBox(
-        width: 63.04,
+        width: 101.2,
         height: 120.71,
         child: Image.asset('assets/images/2x/image_5.png', fit: BoxFit.cover)),
     SizedBox(
-        width: 63.04,
+        width: 101.2,
         height: 120.71,
         child: Image.asset('assets/images/2x/image_3.png', fit: BoxFit.cover)),
     SizedBox(
-        width: 63.04,
+        width: 101.2,
         height: 120.71,
         child: Image.asset('assets/images/2x/image_4.png', fit: BoxFit.cover))
   ];
@@ -163,10 +159,8 @@ class _HomebodyState extends State<Homebody> {
     GroupCategory(
         titleText: L(ViCode.newUpdatedStoriesTextInfo.toString()),
         nextRoute: const HomePage()),
-    StoriesNewUpdated(
-      storiesAtLastRows: storiesTheFirst,
-      storiesAtFirstRows: storiesTheFirst,
-    ),
+    StoriesNewUpdated(storiesFillRow: storiesTheFirst),
+    StoriesNewUpdated(storiesFillRow: storiesTheFirst),
     GroupCategory(
         titleText: L(ViCode.commonOfStoriesTextInfo.toString()),
         nextRoute: const HomePage()),
