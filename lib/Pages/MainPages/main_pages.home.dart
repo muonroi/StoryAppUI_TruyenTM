@@ -177,8 +177,9 @@ class _HomebodyState extends State<Homebody> {
         pageEditorController: _pageCompleteStoriesController,
         imageList: imageList),
     // #endregion
+
     // #region Footer
-    const NewChapterTitle(),
+    const OnlyTitle(),
     const ListNewChapter(
         chapterTitle: 'Thần Cấp Đại Ma Hầu', minuteUpdated: '1'),
     // #endregion
