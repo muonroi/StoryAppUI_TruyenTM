@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taxi/Pages/MainPages/main_pages.home.dart';
 
 import '../../Settings/settings.colors.dart';
 import '../../Settings/settings.images.dart';
@@ -45,6 +46,10 @@ class _DockerCenterBottomAppBarState extends State<DockerCenterBottomAppBar> {
                   IconButton(
                       tooltip: L(ViCode.homePageTextInfo.toString()),
                       onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()));
                         setState(() {
                           _currentIndex = 1;
                         });

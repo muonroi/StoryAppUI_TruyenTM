@@ -48,36 +48,45 @@ class _HomebodyState extends State<Homebody> {
     _pageEditorController = PageController(viewportFraction: 0.9);
     _pageCompleteStoriesController = PageController(viewportFraction: 0.9);
     _pageNewStoriesController = PageController(viewportFraction: 0.9);
-    _scrollController.addListener(_handleScroll);
-    super.initState();
-  }
+    _scrollLayoutController = ScrollController();
+    _scrollLayoutController.addListener(_scrollListener);
 
-  void _handleScroll() {
-    setState(() {
-      _scrollOffset = _scrollController.offset;
-      print(_scrollOffset);
-    });
+    super.initState();
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_handleScroll);
     _pageEditorController.dispose();
     _pageCompleteStoriesController.dispose();
     _pageNewStoriesController.dispose();
     _searchController.dispose();
-    _scrollController.dispose();
+    _scrollLayoutController.removeListener(_scrollListener);
+    _scrollLayoutController.dispose();
     super.dispose();
   }
 
+  // #region Define methods
+  void _scrollListener() {
+    int firstVisibleIndex = _scrollLayoutController.hasClients
+        ? (_scrollLayoutController.offset / _itemHeight).floor()
+        : 0;
+
+    setState(() {
+      _currentIndex = firstVisibleIndex;
+    });
+  }
+  // #endregion
+
+  // #region Define variables
+  double _itemHeight = 0.0;
+  int _currentIndex = 0;
   late TextEditingController _searchController;
   late PageController _pageEditorController;
   late PageController _pageNewStoriesController;
   late PageController _pageCompleteStoriesController;
-  final ScrollController _scrollController = ScrollController();
-  double _scrollOffset = 0.0;
+  late ScrollController _scrollLayoutController;
   bool _isShowClearText = false;
-
+  final List<int> items = [];
   late List<Widget> storiesTheFirst = [
     SizedBox(
         width: 63.04,
@@ -135,12 +144,15 @@ class _HomebodyState extends State<Homebody> {
     imageList[3]
   ];
   late List<Widget> components = [
+    // #region Header
     SearchContainer(
         searchController: _searchController,
         onChanged: _onChangedSearch,
         isShowClearText: _isShowClearText),
     const BannerHomePage(),
+
     // #endregion
+
     // #region Body
     const CategoriesStr(),
     GroupCategory(
@@ -184,11 +196,15 @@ class _HomebodyState extends State<Homebody> {
         chapterTitle: 'Thần Cấp Đại Ma Hầu', minuteUpdated: '1'),
     // #endregion
   ];
+  // #endregion
+
+  // #region Define method
   void _onChangedSearch(String textInput) {
     setState(() {
       _isShowClearText = textInput.isNotEmpty;
     });
   }
+  // #endregion
 
   @override
   Widget build(BuildContext context) {
@@ -200,6 +216,15 @@ class _HomebodyState extends State<Homebody> {
           backgroundColor: ColorDefaults.lightAppColor,
           elevation: 0,
           actions: [
+            _currentIndex > 0
+                ? IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.search,
+                        color: ColorDefaults.thirdMainColor))
+                : IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.search,
+                        color: Color.fromARGB(255, 255, 255, 255))),
             IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.chat_outlined,
@@ -210,17 +235,19 @@ class _HomebodyState extends State<Homebody> {
                     color: ColorDefaults.thirdMainColor)),
           ],
         ),
-        body: ListView.builder(
-          controller: _scrollController,
-          itemCount: components.length,
-          itemBuilder: ((con0text, index) {
-            return Column(
-              children: [
-                components[index]
-                // #region Header
-              ],
-            );
-          }),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            _itemHeight = constraints.maxHeight / components.length;
+            return ListView.builder(
+                scrollDirection: Axis.vertical,
+                controller: _scrollLayoutController,
+                itemCount: components.length,
+                itemBuilder: ((context, index) {
+                  return Column(children: [
+                    components[index],
+                  ]);
+                }));
+          },
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
