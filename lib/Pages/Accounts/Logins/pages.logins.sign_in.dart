@@ -46,10 +46,6 @@ class _SignInPageState extends State<SignInPage> {
                       Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 16),
-                          child: Text('Login', style: FontsDefault.h3)),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 16),
                           child: Text(
                             'Login with your phone number',
                             style: FontsDefault.h5,

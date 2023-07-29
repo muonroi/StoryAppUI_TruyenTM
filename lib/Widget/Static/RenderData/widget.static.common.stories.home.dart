@@ -55,44 +55,45 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                 duration: const Duration(milliseconds: 300),
                 color: _stateOfWidget[index] ? Colors.grey[200] : null,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        SizedBox(
-                          width: MainSetting.getPercentageOfDevice(context,
-                                  expectWidth: 150)
-                              .width,
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text((index + 1).toString(),
+                                  style: FontsDefault.h3.copyWith(
+                                      color: ColorDefaults.mainColor)),
+                              widget.storiesCommonInfo[index].image,
+                            ],
+                          ),
+                        ),
+                        Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               SizedBox(
                                 width: MainSetting.getPercentageOfDevice(
                                         context,
-                                        expectWidth: 20)
+                                        expectWidth: 155)
                                     .width,
-                                child: Text((index + 1).toString(),
-                                    style: FontsDefault.h3.copyWith(
-                                        color: ColorDefaults.mainColor)),
-                              ),
-                              widget.storiesCommonInfo[index].image,
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: MainSetting.getPercentageOfDevice(context,
-                                  expectWidth: 180)
-                              .width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(widget.storiesCommonInfo[index].name,
-                                      style: FontsDefault.h5),
-                                  Text(widget.storiesCommonInfo[index].category,
-                                      style: FontsDefault.h6),
-                                ],
+                                child: Column(
+                                  children: [
+                                    Text(widget.storiesCommonInfo[index].name,
+                                        style: FontsDefault.h5,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1),
+                                    Text(
+                                        widget
+                                            .storiesCommonInfo[index].category,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: FontsDefault.h6),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -112,9 +113,12 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
-                                    formatValueNumber(widget
-                                        .storiesCommonInfo[index].totalView),
-                                    style: FontsDefault.h6),
+                                  formatValueNumber(widget
+                                      .storiesCommonInfo[index].totalView),
+                                  style: FontsDefault.h6,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
                               )
                             ],
                           ),

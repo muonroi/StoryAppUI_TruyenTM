@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
   ];
   late List<StoryTopCommon> storiesTopCommon = [
     StoryTopCommon(
-        name: "Vũ luyện đỉnh phong",
+        name: "Vũ luyện đỉnh phongggggggg",
         image: publicData[0],
         category: "Huyền huyễn",
         totalView: 1250),

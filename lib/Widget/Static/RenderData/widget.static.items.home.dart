@@ -77,6 +77,7 @@ class HomePageItems {
           pageEditorController: pageStoriesCompleteController,
           imageList: listStoriesComplete),
       // #endregion
+
       // #region Footer
       const OnlyTitleTextInfo(),
       ListNewChapter(chapterInfos: listChapter),
