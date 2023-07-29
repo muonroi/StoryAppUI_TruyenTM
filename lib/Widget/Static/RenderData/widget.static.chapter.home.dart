@@ -20,6 +20,9 @@ class ListNewChapter extends StatelessWidget {
           height: MainSetting.getPercentageOfDevice(context, expectHeight: 376)
               .height,
           child: ListView.builder(
+              primary: false,
+              physics: const NeverScrollableScrollPhysics(),
+              itemExtent: 60,
               itemCount: chapterInfos.length,
               itemBuilder: (context, index) {
                 return Column(

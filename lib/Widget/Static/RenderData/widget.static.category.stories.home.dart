@@ -42,6 +42,7 @@ class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: widget.storiesData.length,
+          itemExtent: 118,
           itemBuilder: (context, index) {
             return Column(
               mainAxisAlignment:
@@ -129,6 +130,7 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
           itemCount: 5,
           scrollDirection: Axis.horizontal,
           controller: widget._pageEditorController,
+          itemExtent: 118,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTapDown: (_) => _onTapDown(index),

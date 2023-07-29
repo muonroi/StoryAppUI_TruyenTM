@@ -5,6 +5,7 @@ class RenderHomePage extends StatelessWidget {
       {super.key,
       required this.scrollLayoutController,
       required this.componentOfHomePage});
+
   final ScrollController scrollLayoutController;
   final List<Widget> componentOfHomePage;
   @override

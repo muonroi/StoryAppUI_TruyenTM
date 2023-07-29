@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
 import 'package:muonroi/Pages/MainPages/book_page.user.dart';
@@ -10,9 +12,45 @@ import '../../Widget/Static/Buttons/widget.static.menu.bottom.shared.dart';
 import '../../Widget/Static/RenderData/widget.static.items.home.dart';
 import 'home_page.dart';
 
+class Debouncer {
+  final Duration delay;
+  Timer? _timer;
+
+  Debouncer(this.delay);
+
+  void call(VoidCallback action) {
+    _timer?.cancel();
+    _timer = Timer(delay, action);
+  }
+
+  void cancel() {
+    _timer?.cancel();
+  }
+}
+
+class Throttle {
+  final Duration delay;
+  Timer? _timer;
+  bool _canCall = true;
+
+  Throttle(this.delay);
+
+  void call(VoidCallback action) {
+    if (_canCall) {
+      _canCall = false;
+      action();
+      _timer = Timer(delay, () => _canCall = true);
+    }
+  }
+
+  void cancel() {
+    _timer?.cancel();
+    _canCall = true;
+  }
+}
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
-
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -61,6 +99,8 @@ class _HomePageState extends State<HomePage> {
     _pageStoriesCompleteController.dispose();
     _pageNewStoriesController.dispose();
     _pageBannerController.dispose();
+    _debouncer.cancel();
+    _throttle.cancel();
     super.dispose();
   }
 
@@ -83,7 +123,6 @@ class _HomePageState extends State<HomePage> {
         height: 120.71,
         child: Image.asset('assets/images/2x/image_4.png', fit: BoxFit.cover))
   ];
-
   final List<Widget> publicData = [
     SizedBox(
         width: 101.2,
@@ -117,7 +156,6 @@ class _HomePageState extends State<HomePage> {
     Image.asset('assets/images/2x/Banner_2.png'),
     Image.asset('assets/images/2x/Banner_3.png')
   ];
-
   final List<ChapterInfo> chapterList = [
     ChapterInfo(
         chapterTitle: "Thần cấp đại ma đầu",
@@ -137,16 +175,10 @@ class _HomePageState extends State<HomePage> {
         chapterNumber: 102),
     ChapterInfo(
         chapterTitle: "Thần cấp hệ thống", minuteUpdated: 4, chapterNumber: 99),
-    ChapterInfo(
-        chapterTitle: "Thần cấp đại ma đầu",
-        minuteUpdated: 3,
-        chapterNumber: 102),
-    ChapterInfo(
-        chapterTitle: "Thần cấp hệ thống", minuteUpdated: 4, chapterNumber: 99)
   ];
   late List<StoryTopCommon> storiesTopCommon = [
     StoryTopCommon(
-        name: "Vũ luyện đỉnh phongggggggg",
+        name: "Vũ luyện đỉnh phong",
         image: publicData[0],
         category: "Huyền huyễn",
         totalView: 1250),
@@ -182,7 +214,8 @@ class _HomePageState extends State<HomePage> {
   var _currentIndex = 0;
   var _isShowClearText = false;
   var components = HomePageItems();
-
+  final _debouncer = Debouncer(const Duration(milliseconds: 100));
+  final _throttle = Throttle(const Duration(milliseconds: 100));
   // #endregion
 
 // #region Define methods
@@ -193,18 +226,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _scrollListener() {
-    int firstVisibleIndex = _scrollLayoutController.hasClients
-        ? (_scrollLayoutController.offset / _itemHeight).floor()
-        : 0;
+    _debouncer(() {
+      int firstVisibleIndex = _scrollLayoutController.hasClients
+          ? (_scrollLayoutController.offset / _itemHeight).floor()
+          : 0;
 
-    setState(() {
-      _currentIndex = firstVisibleIndex;
+      setState(() {
+        _currentIndex = firstVisibleIndex;
+      });
     });
   }
 
   // #endregion
 // #endregion
-
   @override
   Widget build(BuildContext context) {
     // #region get components

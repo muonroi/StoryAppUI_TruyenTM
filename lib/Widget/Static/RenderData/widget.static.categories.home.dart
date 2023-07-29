@@ -8,13 +8,8 @@ import '../../../Settings/settings.language_code.vi..dart';
 import '../../../Settings/settings.main.dart';
 
 // #region Main categories
-class MainCategories extends StatefulWidget {
+class MainCategories extends StatelessWidget {
   const MainCategories({super.key});
-  @override
-  State<MainCategories> createState() => _MainCategoriesState();
-}
-
-class _MainCategoriesState extends State<MainCategories> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -98,6 +93,7 @@ class _MainCategoriesState extends State<MainCategories> {
     );
   }
 }
+
 // #endregion
 
 // #region Category name included view all

@@ -44,6 +44,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListView.builder(
         itemCount: 4,
+        itemExtent: 170,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTapDown: (_) => _toggleItemState(index),
