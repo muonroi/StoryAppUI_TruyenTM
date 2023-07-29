@@ -41,8 +41,11 @@ enum ViCode {
   freeStoriesTextInfo,
 //User info
   userInfoTextInfo,
+//Number minute has passed
+  passedNumberMinuteTextInfo,
+//Number chapter
+  chapterNumberTextInfo,
 //Error when search return null or empty
   notfoundTextInfo,
-
 // #endregion
 }

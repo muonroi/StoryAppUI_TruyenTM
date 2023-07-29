@@ -7,7 +7,7 @@ class IndexPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const SignInPage()));
     });
@@ -17,8 +17,7 @@ class IndexPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(flex: 2, child: Image.asset(ImageDefault.mainLogo2x)),
-            Expanded(flex: 1, child: Image.asset(ImageDefault.laddingLogo2x)),
+            Expanded(flex: 2, child: Image.asset(ImageDefault.laddingLogo))
           ],
         ),
       ),

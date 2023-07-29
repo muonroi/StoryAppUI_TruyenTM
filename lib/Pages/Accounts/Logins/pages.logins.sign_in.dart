@@ -1,11 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:taxi/Pages/Accounts/Logins/pages.loggins.sign_up.dart';
-import 'package:taxi/Settings/settings.colors.dart';
-import 'package:taxi/Settings/settings.fonts.dart';
-import 'package:taxi/Settings/settings.images.dart';
+import 'package:muonroi/Pages/Accounts/Logins/pages.loggins.sign_up.dart';
+import 'package:muonroi/Pages/MainPages/main_pages.home.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.fonts.dart';
+import 'package:muonroi/Settings/settings.images.dart';
 
-import '../../../Widget/Button/widget.button.dart';
+import '../../../Widget/Static/Buttons/widget.button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -31,7 +32,7 @@ class _SignInPageState extends State<SignInPage> {
                     height: totalSize.height *
                         (((109 / totalSize.height) * 100) / 100),
                     child: Image.asset(
-                      ImageDefault.mainLogo2x,
+                      ImageDefault.mainLogo,
                       width: 220,
                       height: 60,
                     ),
@@ -42,10 +43,6 @@ class _SignInPageState extends State<SignInPage> {
                       (((150 / totalSize.height) * 100) / 100),
                   child: Column(
                     children: [
-                      Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 16),
-                          child: Text('Login', style: FontsDefault.h3)),
                       Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 16),
@@ -77,7 +74,7 @@ class _SignInPageState extends State<SignInPage> {
                       (((50 / totalSize.height) * 100) / 100),
                   width: totalSize.width,
                   child: ButtonWidget.buttonNavigatorNextPreviewLanding(
-                      context, const SignInPage(),
+                      context, const MainPage(),
                       textDisplay: 'Send Code'),
                 ),
               ]),

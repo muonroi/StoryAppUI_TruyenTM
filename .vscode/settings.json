@@ -3,6 +3,7 @@
         "Abee",
         "ARGB",
         "cupertino",
+        "debouncer",
         "endregion",
         "Ladding",
         "listview",
@@ -11,6 +12,7 @@
         "ontap",
         "pickdatetime",
         "signup",
-        "timkiem"
+        "timkiem",
+        "vsync"
     ]
 }

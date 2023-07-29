@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taxi/Pages/MainPages/main_pages.home.dart';
+import 'package:muonroi/Pages/MainPages/main_pages.home.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});
@@ -63,7 +63,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                          builder: (context) => const MainPage()));
                 },
                 child: const Text('Verify'),
               ),
