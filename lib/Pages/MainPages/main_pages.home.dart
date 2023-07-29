@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
 import 'package:muonroi/Pages/MainPages/book_page.user.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.images.dart';
-import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import '../../Models/Stories/TopCommon/models.stories.topcommon.story.dart';
 import '../../Settings/settings.main.dart';
-import '../../Widget/Button/widget.button.search.dart';
-import '../../Widget/Static/widget.static.banner.dart';
-import '../../Widget/Static/widget.static.categories.dart';
-import '../../Widget/Static/widget.static.chapter.home_page.dart';
-import '../../Widget/Static/widget.static.common.stories.dart';
-import '../../Widget/Static/widget.static.filter.dart';
-import '../../Widget/Static/widget.static.menu.bottom.dart';
-import '../../Widget/Static/widget.static.stories_of_category.dart';
+import '../../Widget/Static/Buttons/widget.static.menu.bottom.shared.dart';
+import '../../Widget/Static/RenderData/widget.static.items.home.dart';
+import 'home_page.dart';
+
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          brightness: Brightness.light,
+          primaryColor: ColorDefaults.mainColor,
+          fontFamily: FontsDefault.inter),
+      home: const HomePage(),
+    );
+  }
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,73 +39,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: ColorDefaults.mainColor,
-          fontFamily: FontsDefault.inter),
-      home: const Homebody(),
-    );
-  }
-}
-
-class Homebody extends StatefulWidget {
-  const Homebody({super.key});
-
-  @override
-  State<Homebody> createState() => _HomebodyState();
-}
-
-class _HomebodyState extends State<Homebody> {
+// #region Setting shared
   @override
   void initState() {
-    _searchController = TextEditingController();
-    _pageEditorController = PageController(viewportFraction: 0.9);
-    _pageCompleteStoriesController = PageController(viewportFraction: 0.9);
-    _pageNewStoriesController = PageController(viewportFraction: 0.9);
+    _textSearchController = TextEditingController();
     _scrollLayoutController = ScrollController();
     _scrollLayoutController.addListener(_scrollListener);
-
+    _pageEditorChoiceController = PageController(viewportFraction: 0.9);
+    _pageStoriesCompleteController = PageController(viewportFraction: 0.9);
+    _pageNewStoriesController = PageController(viewportFraction: 0.9);
+    _pageBannerController = PageController(initialPage: 0);
     super.initState();
   }
 
   @override
   void dispose() {
-    _pageEditorController.dispose();
-    _pageCompleteStoriesController.dispose();
-    _pageNewStoriesController.dispose();
-    _searchController.dispose();
+    _textSearchController.dispose();
     _scrollLayoutController.removeListener(_scrollListener);
     _scrollLayoutController.dispose();
+    _pageEditorChoiceController.dispose();
+    _pageStoriesCompleteController.dispose();
+    _pageNewStoriesController.dispose();
+    _pageBannerController.dispose();
     super.dispose();
   }
 
-  // #region Define methods
-  void _scrollListener() {
-    int firstVisibleIndex = _scrollLayoutController.hasClients
-        ? (_scrollLayoutController.offset / _itemHeight).floor()
-        : 0;
-
-    setState(() {
-      _currentIndex = firstVisibleIndex;
-    });
-  }
-  // #endregion
-
-  // #region Define variables
-  double _itemHeight = 0.0;
-  int _currentIndex = 0;
-  bool _isShowClearText = false;
-  late TextEditingController _searchController;
-  late PageController _pageEditorController;
-  late PageController _pageNewStoriesController;
-  late PageController _pageCompleteStoriesController;
-  late ScrollController _scrollLayoutController;
-  final List<int> items = [];
-  late List<Widget> storiesTheFirst = [
+// #region Define data test
+  final List<Widget> publicStoriesTwoRows = [
     SizedBox(
         width: 101.2,
         height: 120.71,
@@ -106,7 +83,8 @@ class _HomebodyState extends State<Homebody> {
         height: 120.71,
         child: Image.asset('assets/images/2x/image_4.png', fit: BoxFit.cover))
   ];
-  late List<Widget> imageList = [
+
+  final List<Widget> publicData = [
     SizedBox(
         width: 101.2,
         height: 150.71,
@@ -134,75 +112,120 @@ class _HomebodyState extends State<Homebody> {
         height: 150.71,
         child: Image.asset('assets/images/2x/image_5.png', fit: BoxFit.cover)),
   ];
-  late List<Widget> commonStories = [
-    imageList[0],
-    imageList[1],
-    imageList[2],
-    imageList[3]
+  final List<Widget> imageBanners = [
+    Image.asset('assets/images/2x/Banner_1.1.png'),
+    Image.asset('assets/images/2x/Banner_2.png'),
+    Image.asset('assets/images/2x/Banner_3.png')
   ];
-  late List<Widget> components = [
-    // #region Header
-    SearchContainer(
-        searchController: _searchController,
-        onChanged: _onChangedSearch,
-        isShowClearText: _isShowClearText),
-    const BannerHomePage(),
 
-    // #endregion
-
-    // #region Body
-    const CategoriesStr(),
-    GroupCategory(
-        titleText: L(ViCode.editorChoiceTextInfo.toString()),
-        nextRoute: const HomePage()),
-    StoriesCategories(
-        pageEditorController: _pageEditorController, imageList: imageList),
-    GroupCategory(
-        titleText: L(ViCode.newUpdatedStoriesTextInfo.toString()),
-        nextRoute: const HomePage()),
-    StoriesNewUpdated(storiesFillRow: storiesTheFirst),
-    StoriesNewUpdated(storiesFillRow: storiesTheFirst),
-    GroupCategory(
-        titleText: L(ViCode.commonOfStoriesTextInfo.toString()),
-        nextRoute: const HomePage()),
-    const FilterStoriesByCommon(),
-    CommonStories(
-      imageWidget: commonStories,
-      nameOfStory: 'Nơi nào hạ mát?',
-      categoryOfStory: 'Ngôn tình',
-      totalViewOfStory: '1,000',
-    ),
-    GroupCategory(
-        titleText: L(ViCode.newStoriesTextInfo.toString()),
-        nextRoute: const HomePage()),
-    StoriesCategories(
-        pageEditorController: _pageNewStoriesController, imageList: imageList),
-    GroupCategory(
-        titleText: L(ViCode.completeStoriesTextInfo.toString()),
-        nextRoute: const HomePage()),
-    StoriesCategories(
-        pageEditorController: _pageCompleteStoriesController,
-        imageList: imageList),
-    // #endregion
-
-    // #region Footer
-    const OnlyTitle(),
-    const ListNewChapter(
-        chapterTitle: 'Thần Cấp Đại Ma Hầu', minuteUpdated: '1'),
-    // #endregion
+  final List<ChapterInfo> chapterList = [
+    ChapterInfo(
+        chapterTitle: "Thần cấp đại ma đầu",
+        minuteUpdated: 3,
+        chapterNumber: 102),
+    ChapterInfo(
+        chapterTitle: "Thần cấp hệ thống", minuteUpdated: 4, chapterNumber: 99),
+    ChapterInfo(
+        chapterTitle: "Thần cấp đại ma đầu",
+        minuteUpdated: 3,
+        chapterNumber: 102),
+    ChapterInfo(
+        chapterTitle: "Thần cấp hệ thống", minuteUpdated: 4, chapterNumber: 99),
+    ChapterInfo(
+        chapterTitle: "Thần cấp đại ma đầu",
+        minuteUpdated: 3,
+        chapterNumber: 102),
+    ChapterInfo(
+        chapterTitle: "Thần cấp hệ thống", minuteUpdated: 4, chapterNumber: 99),
+    ChapterInfo(
+        chapterTitle: "Thần cấp đại ma đầu",
+        minuteUpdated: 3,
+        chapterNumber: 102),
+    ChapterInfo(
+        chapterTitle: "Thần cấp hệ thống", minuteUpdated: 4, chapterNumber: 99)
+  ];
+  late List<StoryTopCommon> storiesTopCommon = [
+    StoryTopCommon(
+        name: "Vũ luyện đỉnh phong",
+        image: publicData[0],
+        category: "Huyền huyễn",
+        totalView: 1250),
+    StoryTopCommon(
+        name: "Đế tôn",
+        image: publicData[1],
+        category: "Huyền huyễn",
+        totalView: 1345),
+    StoryTopCommon(
+        name: "Tiên nghịch",
+        image: publicData[2],
+        category: "Huyền huyễn",
+        totalView: 1467),
+    StoryTopCommon(
+        name: "Cầu ma",
+        image: publicData[3],
+        category: "Huyền huyễn",
+        totalView: 99)
   ];
   // #endregion
 
-  // #region Define method
+// #region Define controller
+  late TextEditingController _textSearchController;
+  late ScrollController _scrollLayoutController;
+  late PageController _pageEditorChoiceController;
+  late PageController _pageNewStoriesController;
+  late PageController _pageStoriesCompleteController;
+  late PageController _pageBannerController;
+  // #endregion
+
+// #region Define variables
+  var _itemHeight = 0.0;
+  var _currentIndex = 0;
+  var _isShowClearText = false;
+  var components = HomePageItems();
+
+  // #endregion
+
+// #region Define methods
   void _onChangedSearch(String textInput) {
     setState(() {
       _isShowClearText = textInput.isNotEmpty;
     });
   }
+
+  void _scrollListener() {
+    int firstVisibleIndex = _scrollLayoutController.hasClients
+        ? (_scrollLayoutController.offset / _itemHeight).floor()
+        : 0;
+
+    setState(() {
+      _currentIndex = firstVisibleIndex;
+    });
+  }
+
   // #endregion
+// #endregion
 
   @override
   Widget build(BuildContext context) {
+    // #region get components
+    var componentOfHome = components.getHomePageItems(
+        _pageEditorChoiceController,
+        publicData,
+        publicStoriesTwoRows,
+        publicStoriesTwoRows,
+        _pageNewStoriesController,
+        publicData,
+        _pageStoriesCompleteController,
+        publicData,
+        _textSearchController,
+        _onChangedSearch,
+        _isShowClearText,
+        _pageBannerController,
+        imageBanners,
+        chapterList,
+        storiesTopCommon,
+        numberOfBanner: 3);
+    // #endregion
     return DefaultTabController(
       length: 5,
       child: Scaffold(
@@ -233,21 +256,18 @@ class _HomebodyState extends State<Homebody> {
             ],
           ),
           body: TabBarView(children: [
+            // #region HomePage
             LayoutBuilder(
               builder: (context, constraints) {
-                _itemHeight = constraints.maxHeight / components.length;
-                return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    controller: _scrollLayoutController,
-                    itemCount: components.length,
-                    itemBuilder: ((context, index) {
-                      return Column(children: [
-                        components[index],
-                      ]);
-                    }));
+                _itemHeight = constraints.maxHeight / componentOfHome.length;
+                return RenderHomePage(
+                    scrollLayoutController: _scrollLayoutController,
+                    componentOfHomePage: componentOfHome);
               },
             ),
-            const BookOfUser(),
+            // #endregion
+
+            const RenderBookOfUser(),
             Container(
               color: Colors.red,
             ),

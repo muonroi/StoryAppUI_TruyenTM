@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../Settings/settings.buttons.dart';
-import '../../Settings/settings.colors.dart';
+import '../../../Settings/settings.buttons.dart';
+import '../../../Settings/settings.colors.dart';
 
 class ButtonWidget {
   static Widget buttonNavigatorNextPreviewLanding(

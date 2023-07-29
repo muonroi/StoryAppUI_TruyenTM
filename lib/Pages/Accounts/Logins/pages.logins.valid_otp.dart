@@ -63,7 +63,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                          builder: (context) => const MainPage()));
                 },
                 child: const Text('Verify'),
               ),

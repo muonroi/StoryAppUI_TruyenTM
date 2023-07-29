@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../Settings/settings.colors.dart';
-import '../../Settings/settings.images.dart';
-import '../../Settings/settings.main.dart';
+
+import '../../../Settings/settings.colors.dart';
+import '../../../Settings/settings.images.dart';
+import '../../../Settings/settings.main.dart';
 
 class TabBarCustom extends StatefulWidget {
   final BuildContext context;

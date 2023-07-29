@@ -3,14 +3,26 @@ import 'package:flutter/material.dart';
 import '../../Settings/settings.colors.dart';
 import '../../Settings/settings.fonts.dart';
 
-class BookOfUser extends StatefulWidget {
-  const BookOfUser({super.key});
+class RenderBookOfUser extends StatefulWidget {
+  const RenderBookOfUser({super.key});
 
   @override
-  State<BookOfUser> createState() => _BookOfUserState();
+  State<RenderBookOfUser> createState() => _RenderBookOfUserState();
 }
 
-class _BookOfUserState extends State<BookOfUser> {
+class _RenderBookOfUserState extends State<RenderBookOfUser> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,7 +50,10 @@ class _BookOfUserBodyState extends State<BookOfUserBody> {
       appBar: AppBar(
         leading: TextButton(
           onPressed: () {},
-          child: Text('< Trở về'),
+          child: Text(
+            '< Trở về',
+            style: FontsDefault.h1,
+          ),
         ),
       ),
     );

@@ -1,25 +1,24 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../Settings/settings.main.dart';
+import '../../../Settings/settings.main.dart';
 
 // #region new stories widget
-class StoriesNewUpdated extends StatefulWidget {
-  const StoriesNewUpdated({
+class StoriesNewUpdatedData extends StatefulWidget {
+  const StoriesNewUpdatedData({
     super.key,
-    required this.storiesFillRow,
+    required this.storiesData,
   });
 
-  final List<Widget> storiesFillRow;
+  final List<Widget> storiesData;
   @override
-  State<StoriesNewUpdated> createState() => _StoriesNewUpdatedState();
+  State<StoriesNewUpdatedData> createState() => _StoriesNewUpdatedDataState();
 }
 
-class _StoriesNewUpdatedState extends State<StoriesNewUpdated> {
+class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
   @override
   void initState() {
     super.initState();
-    _storiesFillRowScales =
-        List<double>.filled(widget.storiesFillRow.length, 1.0);
+    _storiesFillRowScales = List<double>.filled(widget.storiesData.length, 1.0);
   }
 
   List<double> _storiesFillRowScales = [];
@@ -42,7 +41,7 @@ class _StoriesNewUpdatedState extends State<StoriesNewUpdated> {
             .height,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: widget.storiesFillRow.length,
+          itemCount: widget.storiesData.length,
           itemBuilder: (context, index) {
             return Column(
               mainAxisAlignment:
@@ -69,7 +68,7 @@ class _StoriesNewUpdatedState extends State<StoriesNewUpdated> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: widget.storiesFillRow[index],
+                            child: widget.storiesData[index],
                           ),
                         ),
                       )
@@ -86,9 +85,8 @@ class _StoriesNewUpdatedState extends State<StoriesNewUpdated> {
 // #endregion
 
 // #region stories was choice by editors
-
-class StoriesCategories extends StatefulWidget {
-  const StoriesCategories({
+class StoriesOfCategoriesData extends StatefulWidget {
+  const StoriesOfCategoriesData({
     super.key,
     required PageController pageEditorController,
     required this.imageList,
@@ -98,10 +96,11 @@ class StoriesCategories extends StatefulWidget {
   final List<Widget> imageList;
 
   @override
-  State<StoriesCategories> createState() => _StoriesCategoriesState();
+  State<StoriesOfCategoriesData> createState() =>
+      _StoriesOfCategoriesDataState();
 }
 
-class _StoriesCategoriesState extends State<StoriesCategories> {
+class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
   List<double> _imageScales = [];
   @override
   void initState() {

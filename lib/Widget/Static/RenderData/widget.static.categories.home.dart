@@ -1,19 +1,20 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../../Settings/settings.colors.dart';
-import '../../Settings/settings.fonts.dart';
-import '../../Settings/settings.images.dart';
-import '../../Settings/settings.language_code.vi..dart';
-import '../../Settings/settings.main.dart';
-// #region Common categories
 
-class CategoriesStr extends StatefulWidget {
-  const CategoriesStr({super.key});
+import '../../../Settings/settings.colors.dart';
+import '../../../Settings/settings.fonts.dart';
+import '../../../Settings/settings.images.dart';
+import '../../../Settings/settings.language_code.vi..dart';
+import '../../../Settings/settings.main.dart';
+
+// #region Main categories
+class MainCategories extends StatefulWidget {
+  const MainCategories({super.key});
   @override
-  State<CategoriesStr> createState() => _CategoriesStrState();
+  State<MainCategories> createState() => _MainCategoriesState();
 }
 
-class _CategoriesStrState extends State<CategoriesStr> {
+class _MainCategoriesState extends State<MainCategories> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -98,12 +99,12 @@ class _CategoriesStrState extends State<CategoriesStr> {
   }
 }
 // #endregion
-// #region Category name
 
-class GroupCategory extends StatelessWidget {
+// #region Category name included view all
+class GroupCategoryTextInfo extends StatelessWidget {
   final String titleText;
   final Widget nextRoute;
-  const GroupCategory(
+  const GroupCategoryTextInfo(
       {super.key, required this.titleText, required this.nextRoute});
 
   @override
@@ -136,9 +137,10 @@ class GroupCategory extends StatelessWidget {
 }
 
 // #endregion
-// #region Title new chapter
-class OnlyTitle extends StatelessWidget {
-  const OnlyTitle({super.key});
+
+// #region Category name not included view all
+class OnlyTitleTextInfo extends StatelessWidget {
+  const OnlyTitleTextInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
