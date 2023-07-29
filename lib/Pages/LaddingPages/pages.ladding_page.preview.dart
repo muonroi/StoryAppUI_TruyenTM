@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:taxi/Pages/LaddingPages/pages.ladding_page.accept_location.dart';
-import 'package:taxi/Settings/settings.fonts.dart';
+import 'package:muonroi/Pages/LaddingPages/pages.ladding_page.accept_location.dart';
+import 'package:muonroi/Settings/settings.fonts.dart';
 import '../../Models/PreviewDto/models.account.previewdto.preview_ladding.dart';
 import '../../Settings/settings.colors.dart';
 import '../../Settings/settings.images.dart';

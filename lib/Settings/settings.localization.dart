@@ -1,5 +1,5 @@
-import 'package:taxi/Settings/settings.language_code.vi..dart';
-import 'package:taxi/Settings/settings.languages.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.languages.dart';
 
 class LocalizationLib {
   static final Map<String, Map<String, String>> _localizedValues = {

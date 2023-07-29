@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:taxi/Pages/Accounts/Logins/pages.loggins.sign_up.dart';
-import 'package:taxi/Settings/settings.colors.dart';
-import 'package:taxi/Settings/settings.fonts.dart';
-import 'package:taxi/Settings/settings.images.dart';
+import 'package:muonroi/Pages/Accounts/Logins/pages.loggins.sign_up.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.fonts.dart';
+import 'package:muonroi/Settings/settings.images.dart';
 
 import '../../../Widget/Button/widget.button.dart';
 

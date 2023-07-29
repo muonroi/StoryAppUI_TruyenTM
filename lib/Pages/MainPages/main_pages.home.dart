@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:taxi/Settings/settings.colors.dart';
-import 'package:taxi/Settings/settings.fonts.dart';
-import 'package:taxi/Settings/settings.images.dart';
-import 'package:taxi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Pages/MainPages/book_page.user.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.fonts.dart';
+import 'package:muonroi/Settings/settings.images.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import '../../Settings/settings.main.dart';
 import '../../Widget/Button/widget.button.search.dart';
 import '../../Widget/Static/widget.static.banner.dart';
@@ -202,58 +203,73 @@ class _HomebodyState extends State<Homebody> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: ColorDefaults.lightAppColor,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: Image.asset(ImageDefault.mainLogo),
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
           backgroundColor: ColorDefaults.lightAppColor,
-          elevation: 0,
-          actions: [
-            _currentIndex > 0
-                ? IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.search,
-                        color: ColorDefaults.thirdMainColor))
-                : IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.search,
-                        color: Color.fromARGB(255, 255, 255, 255))),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.chat_outlined,
-                    color: ColorDefaults.thirdMainColor)),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notifications_none,
-                    color: ColorDefaults.thirdMainColor)),
-          ],
-        ),
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            _itemHeight = constraints.maxHeight / components.length;
-            return ListView.builder(
-                scrollDirection: Axis.vertical,
-                controller: _scrollLayoutController,
-                itemCount: components.length,
-                itemBuilder: ((context, index) {
-                  return Column(children: [
-                    components[index],
-                  ]);
-                }));
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: ColorDefaults.mainColor,
-          child: Icon(
-            Icons.arrow_right,
-            size: MainSetting.getPercentageOfDevice(context, expectWidth: 50)
-                .width,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            leading: Image.asset(ImageDefault.mainLogo),
+            backgroundColor: ColorDefaults.lightAppColor,
+            elevation: 0,
+            actions: [
+              _currentIndex > 0
+                  ? IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.search,
+                          color: ColorDefaults.thirdMainColor))
+                  : IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.search,
+                          color: Color.fromARGB(255, 255, 255, 255))),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.chat_outlined,
+                      color: ColorDefaults.thirdMainColor)),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.notifications_none,
+                      color: ColorDefaults.thirdMainColor)),
+            ],
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: const DockerCenterBottomAppBar(
-            fabLocation: FloatingActionButtonLocation.centerDocked));
+          body: TabBarView(children: [
+            LayoutBuilder(
+              builder: (context, constraints) {
+                _itemHeight = constraints.maxHeight / components.length;
+                return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    controller: _scrollLayoutController,
+                    itemCount: components.length,
+                    itemBuilder: ((context, index) {
+                      return Column(children: [
+                        components[index],
+                      ]);
+                    }));
+              },
+            ),
+            const BookOfUser(),
+            Container(
+              color: Colors.red,
+            ),
+            Container(
+              color: Colors.green,
+            ),
+            Container(
+              color: Colors.pink,
+            ),
+          ]),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            backgroundColor: ColorDefaults.mainColor,
+            child: Icon(
+              Icons.arrow_right,
+              size: MainSetting.getPercentageOfDevice(context, expectWidth: 50)
+                  .width,
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: TabBarCustom(context: context)),
+    );
   }
 }

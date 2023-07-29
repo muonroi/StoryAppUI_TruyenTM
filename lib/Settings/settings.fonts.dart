@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taxi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
 
 class FontsDefault {
   //Fonts setting

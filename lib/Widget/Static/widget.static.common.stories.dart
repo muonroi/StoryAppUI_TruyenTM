@@ -1,7 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:taxi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
 import '../../Settings/settings.fonts.dart';
 import '../../Settings/settings.main.dart';
 
@@ -30,19 +28,15 @@ class _CommonStoriesState extends State<CommonStories> {
     _stateOfWidget = List<bool>.filled(widget.imageWidget.length, false);
   }
 
-  void _onTapDown(int index) {
-    Timer.run(() {
-      setState(() {
-        _stateOfWidget[index] = true;
-      });
+  void _toggleItemState(int index) {
+    setState(() {
+      _stateOfWidget[index] = true;
     });
   }
 
-  void _onTapUp(int index) {
-    Timer.run(() {
-      setState(() {
-        _stateOfWidget[index] = false;
-      });
+  void _setDefaultItemState(int index) {
+    setState(() {
+      _stateOfWidget[index] = false;
     });
   }
 
@@ -60,14 +54,15 @@ class _CommonStoriesState extends State<CommonStories> {
       child: ListView.builder(
         itemCount: 4,
         itemBuilder: (context, index) {
-          return Container(
-            color: _stateOfWidget[index] ? Colors.grey[200] : null,
+          return GestureDetector(
+            onTapDown: (_) => _toggleItemState(index),
+            onTapUp: (_) => _setDefaultItemState(index),
+            onTapCancel: () => _setDefaultItemState(index),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTapDown: (_) => _onTapDown(index),
-                onTapUp: (_) => _onTapUp(index),
-                onPanCancel: () => _onTapUp(index),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                color: _stateOfWidget[index] ? Colors.grey[200] : null,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,

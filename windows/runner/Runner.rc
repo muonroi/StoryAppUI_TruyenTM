@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "taxi" "\0"
+            VALUE "FileDescription", "muonroi" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "taxi" "\0"
+            VALUE "InternalName", "muonroi" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "taxi.exe" "\0"
-            VALUE "ProductName", "taxi" "\0"
+            VALUE "OriginalFilename", "muonroi.exe" "\0"
+            VALUE "ProductName", "muonroi" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

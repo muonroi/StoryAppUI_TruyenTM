@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:taxi/Settings/settings.languages.dart';
-import 'package:taxi/Settings/settings.localization.dart';
+import 'package:muonroi/Settings/settings.languages.dart';
+import 'package:muonroi/Settings/settings.localization.dart';
 
 String L(String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);

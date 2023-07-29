@@ -11,6 +11,7 @@
         "ontap",
         "pickdatetime",
         "signup",
-        "timkiem"
+        "timkiem",
+        "vsync"
     ]
 }
