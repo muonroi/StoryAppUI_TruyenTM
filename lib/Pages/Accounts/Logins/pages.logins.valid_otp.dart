@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/Pages/MainPages/main_pages.home.dart';
+import 'package:muonroi/Controller/controller.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});

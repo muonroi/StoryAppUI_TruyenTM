@@ -7,8 +7,8 @@ import 'package:muonroi/Pages/Accounts/Logins/pages.logins.sign_in.dart';
 import 'package:muonroi/Pages/Accounts/Logins/pages.logins.valid_otp.dart';
 import '../../../Settings/settings.colors.dart';
 import '../../../Settings/settings.fonts.dart';
-import '../../../Widget/Static/TextField/widget.textfield.password_input.dart';
-import '../../../Widget/Static/TextField/widget.textfield.text_input.dart';
+import '../../../Items/Static/TextField/widget.static.textfield.password_input.dart';
+import '../../../Items/Static/TextField/widget.static.textfield.text_input.dart';
 
 enum Gender { male, female }
 

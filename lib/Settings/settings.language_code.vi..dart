@@ -45,6 +45,8 @@ enum ViCode {
   passedNumberMinuteTextInfo,
 //Number chapter
   chapterNumberTextInfo,
+//Rank of story
+  rankTextInfo,
 //Error when search return null or empty
   notfoundTextInfo,
 // #endregion

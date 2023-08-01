@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
-import '../../../Models/Stories/TopCommon/models.stories.topcommon.story.dart';
+import '../../../Models/Stories/models.stories.story.dart';
 import '../../../Settings/settings.fonts.dart';
 import '../../../Settings/settings.main.dart';
 
 class CommonTopStoriesData extends StatefulWidget {
-  final List<StoryTopCommon> storiesCommonInfo;
+  final List<StoryModel> storiesCommonInfo;
 
   const CommonTopStoriesData({
     super.key,
@@ -68,7 +68,18 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                               Text((index + 1).toString(),
                                   style: FontsDefault.h3.copyWith(
                                       color: ColorDefaults.mainColor)),
-                              widget.storiesCommonInfo[index].image,
+                              SizedBox(
+                                  width: MainSetting.getPercentageOfDevice(
+                                          context,
+                                          expectWidth: 101.2)
+                                      .width,
+                                  height: MainSetting.getPercentageOfDevice(
+                                          context,
+                                          expectHeight: 145)
+                                      .height,
+                                  child: Image.asset(
+                                      widget.storiesCommonInfo[index].image,
+                                      fit: BoxFit.cover)),
                             ],
                           ),
                         ),
@@ -79,7 +90,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                               SizedBox(
                                 width: MainSetting.getPercentageOfDevice(
                                         context,
-                                        expectWidth: 155)
+                                        expectWidth: 140)
                                     .width,
                                 child: Column(
                                   children: [
@@ -89,7 +100,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                         maxLines: 1),
                                     Text(
                                         widget
-                                            .storiesCommonInfo[index].category,
+                                            .storiesCommonInfo[index].category!,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: FontsDefault.h6),
@@ -101,7 +112,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                         ),
                         SizedBox(
                           width: MainSetting.getPercentageOfDevice(context,
-                                  expectWidth: 65)
+                                  expectWidth: 70)
                               .width,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -115,7 +126,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
                                   formatValueNumber(widget
-                                      .storiesCommonInfo[index].totalView),
+                                      .storiesCommonInfo[index].totalView!),
                                   style: FontsDefault.h6,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,

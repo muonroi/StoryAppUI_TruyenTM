@@ -26,8 +26,9 @@ class LocalizationLib {
       ViCode.bookCaseTextInfo.toString(): 'Tủ sách',
       ViCode.freeStoriesTextInfo.toString(): 'Truyện miễn phí',
       ViCode.userInfoTextInfo.toString(): 'Cá nhân',
-      ViCode.passedNumberMinuteTextInfo.toString(): 'Phút trước',
-      ViCode.chapterNumberTextInfo.toString(): 'Chương',
+      ViCode.passedNumberMinuteTextInfo.toString(): 'phút trước',
+      ViCode.chapterNumberTextInfo.toString(): 'chương',
+      ViCode.rankTextInfo.toString(): 'Top',
     }
   };
   static String L(String key, {String locale = 'vi'}) {
