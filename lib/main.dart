@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Pages/LaddingPages/pages.ladding_page..index.dart';
+import 'Pages/LaddingPages/pages.ladding.index.dart';
 import 'Settings/settings.colors.dart';
 
 void main() {

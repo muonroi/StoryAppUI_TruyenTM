@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../Settings/settings.main.dart';
 
@@ -6,10 +7,10 @@ import '../../../Settings/settings.main.dart';
 class StoriesNewUpdatedData extends StatefulWidget {
   const StoriesNewUpdatedData({
     super.key,
-    required this.storiesData,
+    required this.data,
   });
 
-  final List<Widget> storiesData;
+  final List<Widget> data;
   @override
   State<StoriesNewUpdatedData> createState() => _StoriesNewUpdatedDataState();
 }
@@ -18,7 +19,7 @@ class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
   @override
   void initState() {
     super.initState();
-    _storiesFillRowScales = List<double>.filled(widget.storiesData.length, 1.0);
+    _storiesFillRowScales = List<double>.filled(widget.data.length, 1.0);
   }
 
   List<double> _storiesFillRowScales = [];
@@ -37,49 +38,56 @@ class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: MainSetting.getPercentageOfDevice(context, expectHeight: 140)
-            .height,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: widget.storiesData.length,
-          itemExtent: 118,
-          itemBuilder: (context, index) {
-            return Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.start, // Vertically center the column
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // Horizontally center the column
-              children: [
-                GestureDetector(
-                  onTapDown: (_) => _onTapDown(index, _storiesFillRowScales),
-                  onTapUp: (_) => _onTapUp(index, _storiesFillRowScales),
-                  onTapCancel: () => _onTapUp(index, _storiesFillRowScales),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                          transform: Matrix4.diagonal3Values(
-                            _storiesFillRowScales[index],
-                            _storiesFillRowScales[index],
-                            1.0,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: widget.storiesData[index],
-                          ),
+      height:
+          MainSetting.getPercentageOfDevice(context, expectHeight: 400).height,
+      child: GridView.count(
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisCount: 3,
+        childAspectRatio: 0.7,
+        children: List.generate(6, (index) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTapDown: (_) => _onTapDown(index, _storiesFillRowScales),
+                onTapUp: (_) => _onTapUp(index, _storiesFillRowScales),
+                onTapCancel: () => _onTapUp(index, _storiesFillRowScales),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        transform: Matrix4.diagonal3Values(
+                          _storiesFillRowScales[index],
+                          _storiesFillRowScales[index],
+                          1.0,
                         ),
-                      )
-                    ],
-                  ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: SizedBox(
+                              width: MainSetting.getPercentageOfDevice(context,
+                                      expectWidth: 115)
+                                  .width,
+                              height: MainSetting.getPercentageOfDevice(context,
+                                      expectHeight: 170)
+                                  .height,
+                              child: widget.data[index]),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ],
-            );
-          },
-        ));
+              ),
+            ],
+          );
+        }),
+      ),
+    );
   }
 }
 
@@ -90,12 +98,13 @@ class StoriesOfCategoriesData extends StatefulWidget {
   const StoriesOfCategoriesData({
     super.key,
     required PageController pageEditorController,
-    required this.imageList,
+    required this.data,
+    required this.isShowText,
   }) : _pageEditorController = pageEditorController;
 
   final PageController _pageEditorController;
-  final List<Widget> imageList;
-
+  final List<Widget> data;
+  final bool isShowText;
   @override
   State<StoriesOfCategoriesData> createState() =>
       _StoriesOfCategoriesDataState();
@@ -106,7 +115,7 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
   @override
   void initState() {
     super.initState();
-    _imageScales = List<double>.filled(widget.imageList.length, 1.0);
+    _imageScales = List<double>.filled(widget.data.length, 1.0);
   }
 
   void _onTapDown(int index) {
@@ -124,10 +133,11 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height:
-          MainSetting.getPercentageOfDevice(context, expectHeight: 150).height,
+      height: MainSetting.getPercentageOfDevice(context,
+              expectHeight: widget.isShowText ? 220 : 150)
+          .height,
       child: ListView.builder(
-          itemCount: 5,
+          itemCount: widget.data.length,
           scrollDirection: Axis.horizontal,
           controller: widget._pageEditorController,
           itemExtent: 118,
@@ -152,7 +162,7 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: widget.imageList[index],
+                        child: widget.data[index],
                       ),
                     ),
                   )

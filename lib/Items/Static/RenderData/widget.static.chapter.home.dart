@@ -31,7 +31,7 @@ class ListNewChapter extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SizedBox(
                               width: MainSetting.getPercentageOfDevice(context,
@@ -44,8 +44,8 @@ class ListNewChapter extends StatelessWidget {
                                   fit: BoxFit.cover),
                             ),
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 TextButton(
                                     onPressed: () {},
@@ -65,12 +65,23 @@ class ListNewChapter extends StatelessWidget {
                             )
                           ],
                         ),
-                        TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              '${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfos[index].chapterNumber} >',
-                              style: FontsDefault.h5,
-                            ))
+                        SizedBox(
+                          width: 120,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      '${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfos[index].chapterNumber}',
+                                      style: FontsDefault.h5,
+                                      textAlign: TextAlign.left,
+                                    )),
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ],

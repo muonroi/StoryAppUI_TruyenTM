@@ -1,53 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
-import 'package:muonroi/Pages/MainPages/book_page.user.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.images.dart';
-import '../../Models/Stories/TopCommon/models.stories.topcommon.story.dart';
-import '../../Settings/settings.main.dart';
-import '../../Widget/Static/Buttons/widget.static.menu.bottom.shared.dart';
-import '../../Widget/Static/RenderData/widget.static.items.home.dart';
-import 'home_page.dart';
-
-class Debouncer {
-  final Duration delay;
-  Timer? _timer;
-
-  Debouncer(this.delay);
-
-  void call(VoidCallback action) {
-    _timer?.cancel();
-    _timer = Timer(delay, action);
-  }
-
-  void cancel() {
-    _timer?.cancel();
-  }
-}
-
-class Throttle {
-  final Duration delay;
-  Timer? _timer;
-  bool _canCall = true;
-
-  Throttle(this.delay);
-
-  void call(VoidCallback action) {
-    if (_canCall) {
-      _canCall = false;
-      action();
-      _timer = Timer(delay, () => _canCall = true);
-    }
-  }
-
-  void cancel() {
-    _timer?.cancel();
-    _canCall = true;
-  }
-}
+import '../Models/Stories/models.stories.story.dart';
+import '../Settings/settings.main.dart';
+import '../Items/Static/Buttons/widget.static.menu.bottom.shared.dart';
+import '../Routes/routes.items.home.dart';
+import '../Pages/PrimaryPages/pages.home.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -107,20 +67,16 @@ class _HomePageState extends State<HomePage> {
 // #region Define data test
   final List<Widget> publicStoriesTwoRows = [
     SizedBox(
-        width: 101.2,
-        height: 120.71,
         child: Image.asset('assets/images/2x/image_4.png', fit: BoxFit.cover)),
     SizedBox(
-        width: 101.2,
-        height: 120.71,
         child: Image.asset('assets/images/2x/image_5.png', fit: BoxFit.cover)),
     SizedBox(
-        width: 101.2,
-        height: 120.71,
         child: Image.asset('assets/images/2x/image_3.png', fit: BoxFit.cover)),
     SizedBox(
-        width: 101.2,
-        height: 120.71,
+        child: Image.asset('assets/images/2x/image_4.png', fit: BoxFit.cover)),
+    SizedBox(
+        child: Image.asset('assets/images/2x/image_3.png', fit: BoxFit.cover)),
+    SizedBox(
         child: Image.asset('assets/images/2x/image_4.png', fit: BoxFit.cover))
   ];
   final List<Widget> publicData = [
@@ -176,25 +132,25 @@ class _HomePageState extends State<HomePage> {
     ChapterInfo(
         chapterTitle: "Thần cấp hệ thống", minuteUpdated: 4, chapterNumber: 99),
   ];
-  late List<StoryTopCommon> storiesTopCommon = [
-    StoryTopCommon(
+  late List<StoryModel> storiesTopCommon = [
+    StoryModel(
         name: "Vũ luyện đỉnh phong",
-        image: publicData[0],
+        image: 'assets/images/2x/image_1.png',
         category: "Huyền huyễn",
         totalView: 1250),
-    StoryTopCommon(
+    StoryModel(
         name: "Đế tôn",
-        image: publicData[1],
+        image: 'assets/images/2x/image_4.png',
         category: "Huyền huyễn",
         totalView: 1345),
-    StoryTopCommon(
+    StoryModel(
         name: "Tiên nghịch",
-        image: publicData[2],
+        image: 'assets/images/2x/image_5.png',
         category: "Huyền huyễn",
         totalView: 1467),
-    StoryTopCommon(
+    StoryModel(
         name: "Cầu ma",
-        image: publicData[3],
+        image: 'assets/images/2x/image_3.png',
         category: "Huyền huyễn",
         totalView: 99)
   ];
@@ -213,7 +169,7 @@ class _HomePageState extends State<HomePage> {
   var _itemHeight = 0.0;
   var _currentIndex = 0;
   var _isShowClearText = false;
-  var components = HomePageItems();
+  final _homePageItem = HomePageItems();
   final _debouncer = Debouncer(const Duration(milliseconds: 100));
   final _throttle = Throttle(const Duration(milliseconds: 100));
   // #endregion
@@ -242,7 +198,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // #region get components
-    var componentOfHome = components.getHomePageItems(
+    var itemsOfHome = _homePageItem.getHomePageItems(
         _pageEditorChoiceController,
         publicData,
         publicStoriesTwoRows,
@@ -293,15 +249,16 @@ class _HomePageState extends State<HomePage> {
             // #region HomePage
             LayoutBuilder(
               builder: (context, constraints) {
-                _itemHeight = constraints.maxHeight / componentOfHome.length;
+                _itemHeight = constraints.maxHeight / itemsOfHome.length;
                 return RenderHomePage(
                     scrollLayoutController: _scrollLayoutController,
-                    componentOfHomePage: componentOfHome);
+                    componentOfHomePage: itemsOfHome);
               },
             ),
             // #endregion
-
-            const RenderBookOfUser(),
+            Container(
+              color: Colors.black,
+            ),
             Container(
               color: Colors.red,
             ),

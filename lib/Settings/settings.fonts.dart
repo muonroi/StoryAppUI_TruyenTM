@@ -10,17 +10,15 @@ class FontsDefault {
   static TextStyle h1 = const TextStyle(
       fontFamily: abeeZees, fontSize: 109.66, color: ColorDefaults.titleColor);
   static TextStyle h2 = const TextStyle(
-      fontFamily: abeeZees, fontSize: 67.77, color: ColorDefaults.titleColor);
+      fontFamily: inter, fontSize: 67.77, color: ColorDefaults.titleColor);
   static TextStyle h3 = const TextStyle(
-      fontFamily: abeeZees, fontSize: 41.89, color: ColorDefaults.titleColor);
+      fontFamily: inter, fontSize: 41.89, color: ColorDefaults.titleColor);
   static TextStyle h4 = const TextStyle(
-      fontFamily: poppins,
+      fontFamily: inter,
       fontSize: 25.89,
       color: ColorDefaults.defaultTextColor);
   static TextStyle h5 = const TextStyle(
-      fontFamily: poppins, fontSize: 16, color: ColorDefaults.defaultTextColor);
+      fontFamily: inter, fontSize: 16, color: ColorDefaults.defaultTextColor);
   static TextStyle h6 = const TextStyle(
-      fontFamily: poppins,
-      fontSize: 9.89,
-      color: ColorDefaults.defaultTextColor);
+      fontFamily: inter, fontSize: 9.89, color: ColorDefaults.defaultTextColor);
 }

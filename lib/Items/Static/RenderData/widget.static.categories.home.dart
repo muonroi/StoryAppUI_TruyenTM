@@ -136,7 +136,8 @@ class GroupCategoryTextInfo extends StatelessWidget {
 
 // #region Category name not included view all
 class OnlyTitleTextInfo extends StatelessWidget {
-  const OnlyTitleTextInfo({super.key});
+  final String textInfo;
+  const OnlyTitleTextInfo({super.key, required this.textInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +149,7 @@ class OnlyTitleTextInfo extends StatelessWidget {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
-              L(ViCode.newChapterUpdatedTextInfo.toString()),
+              textInfo,
               style: FontsDefault.h5.copyWith(fontWeight: FontWeight.w700),
             )
           ])),
