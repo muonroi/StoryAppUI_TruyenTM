@@ -47,6 +47,12 @@ enum ViCode {
   chapterNumberTextInfo,
 //Rank of story
   rankTextInfo,
+//Stories bought
+  storiesBoughtTextInfo,
+//Stories saved
+  storiesSavedTextInfo,
+//Continue reading
+  storiesContinueChapter,
 //Error when search return null or empty
   notfoundTextInfo,
 // #endregion

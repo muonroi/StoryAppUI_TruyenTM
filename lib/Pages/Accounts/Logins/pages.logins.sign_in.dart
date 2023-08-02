@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Pages/Accounts/Logins/pages.logins.sign_up.dart';
-import 'package:muonroi/Controller/controller.dart';
+import 'package:muonroi/Controller/controller.main.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.images.dart';

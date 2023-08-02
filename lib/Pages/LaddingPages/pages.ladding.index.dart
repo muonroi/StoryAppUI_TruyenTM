@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/Controller/controller.main.dart';
 import '../../Settings/settings.images.dart';
-import '../Accounts/Logins/pages.logins.sign_in.dart';
 
 class IndexPage extends StatelessWidget {
   const IndexPage({super.key});
@@ -9,7 +9,7 @@ class IndexPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const SignInPage()));
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
     });
     return Scaffold(
       body: Padding(

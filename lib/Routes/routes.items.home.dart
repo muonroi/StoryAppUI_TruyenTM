@@ -108,8 +108,8 @@ class HomePageItems {
       StoriesOfCategoriesData(
         pageEditorController: pageEditorChoiceController,
         data: listStoriesChoiceOfEditor,
-        isShowText: false,
       ),
+
       GroupCategoryTextInfo(
           titleText: L(ViCode.newUpdatedStoriesTextInfo.toString()),
           nextRoute: StoriesVerticalData(
@@ -158,6 +158,7 @@ class HomePageItems {
             ],
           )),
       StoriesNewUpdatedData(data: listStoriesNewUpdatedFirstRow),
+
       GroupCategoryTextInfo(
           titleText: L(ViCode.commonOfStoriesTextInfo.toString()),
           nextRoute: StoriesVerticalData(
@@ -213,6 +214,7 @@ class HomePageItems {
       CommonTopStoriesData(
         storiesCommonInfo: listStoriesTopCommon,
       ),
+
       GroupCategoryTextInfo(
           titleText: L(ViCode.newStoriesTextInfo.toString()),
           nextRoute: StoriesVerticalData(
@@ -267,8 +269,8 @@ class HomePageItems {
       StoriesOfCategoriesData(
         pageEditorController: pageNewStoriesController,
         data: listNewStories,
-        isShowText: false,
       ),
+
       GroupCategoryTextInfo(
           titleText: L(ViCode.completeStoriesTextInfo.toString()),
           nextRoute: StoriesVerticalData(
@@ -323,7 +325,6 @@ class HomePageItems {
       StoriesOfCategoriesData(
         pageEditorController: pageStoriesCompleteController,
         data: listStoriesComplete,
-        isShowText: false,
       ),
       // #endregion
 

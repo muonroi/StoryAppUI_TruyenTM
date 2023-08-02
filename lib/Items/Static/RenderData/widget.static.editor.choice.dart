@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/widget.static.categories.home.dart';
+import 'package:muonroi/Items/Static/RenderData/widgets.static.model.less.stories.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import '../../../Models/Stories/models.stories.story.dart';

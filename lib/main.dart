@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Muonroi drive book app',
+      title: 'muonroi app',
       theme: ThemeData(
         primaryColor: ColorDefaults.mainColor,
       ),
