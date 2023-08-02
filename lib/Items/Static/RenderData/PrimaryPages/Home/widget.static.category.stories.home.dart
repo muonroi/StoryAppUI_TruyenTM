@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Settings/settings.main.dart';
+import '../../../../../Settings/settings.main.dart';
 
 // #region new stories widget
 class StoriesNewUpdatedData extends StatefulWidget {

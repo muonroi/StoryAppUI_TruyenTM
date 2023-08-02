@@ -5,6 +5,7 @@ import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.images.dart';
 import '../Models/Stories/models.stories.story.dart';
 import '../Pages/PrimaryPages/pages.book.case.dart';
+import '../Pages/PrimaryPages/pages.stories.free.dart';
 import '../Settings/settings.main.dart';
 import '../Items/Static/Buttons/widget.static.menu.bottom.shared.dart';
 import '../Routes/routes.items.home.dart';
@@ -305,11 +306,15 @@ class _HomePageState extends State<HomePage> {
                 BookCase(
                   storiesData: storiesIncludeAuthor,
                 ),
-                Container(
-                  color: Colors.red,
+                StoriesFree(
+                  storiesData: storiesIncludeAuthor,
+                  isShowLabel: false,
+                  isShowBack: false,
                 ),
-                Container(
-                  color: Colors.green,
+                StoriesFree(
+                  storiesData: storiesIncludeAuthor,
+                  isShowLabel: false,
+                  isShowBack: false,
                 ),
                 Container(
                   color: Colors.pink,

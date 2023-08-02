@@ -1,17 +1,20 @@
 import 'package:flutter/cupertino.dart';
-import '../Items/Static/RenderData/widget.static.editor.choice.dart';
-import '../Items/Static/RenderData/widget.static.stories.vertical.dart';
-import '../Models/Chapters/models.chapters.chapter.dart';
-import '../Models/Stories/models.stories.story.dart';
-import '../Items/Static/Buttons/widget.static.button.search.dart';
-import '../Settings/settings.language_code.vi..dart';
-import '../Settings/settings.main.dart';
-import '../Items/Static/Buttons/widget.static.filter.home.dart';
-import '../Items/Static/RenderData/widget.static.banner.home.dart';
-import '../Items/Static/RenderData/widget.static.categories.home.dart';
-import '../Items/Static/RenderData/widget.static.chapter.home.dart';
-import '../Items/Static/RenderData/widget.static.common.stories.home.dart';
-import '../Items/Static/RenderData/widget.static.category.stories.home.dart';
+import 'package:muonroi/Items/Static/Buttons/widget.static.button.search.dart';
+import 'package:muonroi/Items/Static/Buttons/widget.static.filter.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/Common_Stories/widget.static.stories.common.items.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/Complete_Stories/widget.static.stories.complete.items.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/New_Stories/widget.static.stories.new.items.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/New_Update_Stories/widget.static.stories.new.update.items.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/Stories_Editors_Choose/widget.static.editor.choose.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.banner.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.categories.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.category.stories.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.chapter.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.common.stories.home.dart';
+import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
+import 'package:muonroi/Models/Stories/models.stories.story.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.main.dart';
 
 class HomePageItems {
   List<Widget> getHomePageItems(
@@ -112,8 +115,9 @@ class HomePageItems {
 
       GroupCategoryTextInfo(
           titleText: L(ViCode.newUpdatedStoriesTextInfo.toString()),
-          nextRoute: StoriesVerticalData(
+          nextRoute: StoriesNewUpdate(
             isShowLabel: false,
+            isShowBack: false,
             storiesData: [
               StoryModel(
                   image:
@@ -161,8 +165,9 @@ class HomePageItems {
 
       GroupCategoryTextInfo(
           titleText: L(ViCode.commonOfStoriesTextInfo.toString()),
-          nextRoute: StoriesVerticalData(
+          nextRoute: StoriesCommon(
             isShowLabel: true,
+            isShowBack: false,
             storiesData: [
               StoryModel(
                   image:
@@ -217,8 +222,9 @@ class HomePageItems {
 
       GroupCategoryTextInfo(
           titleText: L(ViCode.newStoriesTextInfo.toString()),
-          nextRoute: StoriesVerticalData(
+          nextRoute: StoriesNew(
             isShowLabel: false,
+            isShowBack: false,
             storiesData: [
               StoryModel(
                   image:
@@ -273,8 +279,9 @@ class HomePageItems {
 
       GroupCategoryTextInfo(
           titleText: L(ViCode.completeStoriesTextInfo.toString()),
-          nextRoute: StoriesVerticalData(
+          nextRoute: StoriesComplete(
             isShowLabel: false,
+            isShowBack: false,
             storiesData: [
               StoryModel(
                   image:

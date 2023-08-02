@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Settings/settings.colors.dart';
-import '../../../Settings/settings.fonts.dart';
-import '../../../Settings/settings.images.dart';
-import '../../../Settings/settings.language_code.vi..dart';
-import '../../../Settings/settings.main.dart';
+import '../../../../../Settings/settings.colors.dart';
+import '../../../../../Settings/settings.fonts.dart';
+import '../../../../../Settings/settings.images.dart';
+import '../../../../../Settings/settings.language_code.vi..dart';
+import '../../../../../Settings/settings.main.dart';
 
 // #region Main categories
 class MainCategories extends StatelessWidget {

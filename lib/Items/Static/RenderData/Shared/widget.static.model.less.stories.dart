@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Settings/settings.fonts.dart';
-import '../../../Settings/settings.main.dart';
+import '../../../../../Settings/settings.fonts.dart';
+import '../../../../../Settings/settings.main.dart';
 
 class StoryLessModelWidget extends StatefulWidget {
   final String networkImageUrl;

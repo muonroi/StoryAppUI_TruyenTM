@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../Models/Stories/models.stories.story.dart';
-import '../../../Settings/settings.colors.dart';
-import '../../../Settings/settings.main.dart';
-import '../Buttons/widget.static.button.search.dart';
+import '../../../../../Models/Stories/models.stories.story.dart';
+import '../../../../../Settings/settings.colors.dart';
+import '../../../../../Settings/settings.main.dart';
+import '../../../Buttons/widget.static.button.search.dart';
 
 class StoriesItems extends StatefulWidget {
   final List<StoryModel> storiesData;

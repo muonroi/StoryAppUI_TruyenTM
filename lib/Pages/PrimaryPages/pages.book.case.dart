@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
-import '../../Items/Static/RenderData/widget.static.book.case.stories.item.dart';
-import '../../Items/Static/RenderData/widget.static.model.book.case.stories.dart';
+import '../../Items/Static/RenderData/PrimaryPages/Book_Case/widget.static.book.case.stories.items.dart';
+import '../../Items/Static/RenderData/PrimaryPages/Book_Case/widget.static.model.book.case.stories.dart';
 import '../../Settings/settings.language_code.vi..dart';
 import '../../Settings/settings.main.dart';
 

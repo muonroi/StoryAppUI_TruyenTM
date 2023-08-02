@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Settings/settings.colors.dart';
-import '../../../Settings/settings.fonts.dart';
-import '../../../Settings/settings.language_code.vi..dart';
-import '../../../Settings/settings.main.dart';
+import '../../../../../Settings/settings.colors.dart';
+import '../../../../../Settings/settings.fonts.dart';
+import '../../../../../Settings/settings.language_code.vi..dart';
+import '../../../../../Settings/settings.main.dart';
 
 class StoriesFullModelWidget extends StatefulWidget {
   final String nameStory;

@@ -2,10 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/Buttons/widget.static.button.dart';
 import 'package:muonroi/Pages/PrimaryPages/pages.book.case.dart';
-import 'package:muonroi/Settings/settings.colors.dart';
-import '../../../Settings/settings.fonts.dart';
-import '../../../Settings/settings.language_code.vi..dart';
-import '../../../Settings/settings.main.dart';
+
+import '../../../../../Settings/settings.colors.dart';
+import '../../../../../Settings/settings.fonts.dart';
+import '../../../../../Settings/settings.language_code.vi..dart';
+import '../../../../../Settings/settings.main.dart';
 
 class StoriesBookCaseModelWidget extends StatefulWidget {
   final String nameStory;
