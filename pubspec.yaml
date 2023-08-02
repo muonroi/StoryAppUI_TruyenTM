@@ -52,6 +52,5 @@ flutter:
     - family: AbeeZees
       fonts:
         - asset: assets/fonts/AbeeZees/ABeeZee-Italic.ttf
-        - asset: assets/fonts/AbeeZees/ABeeZee-Regular.ttf
           style: italic
           weight: 700

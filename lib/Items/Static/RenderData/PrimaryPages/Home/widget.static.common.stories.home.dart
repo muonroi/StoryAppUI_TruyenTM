@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
-import '../../../Models/Stories/models.stories.story.dart';
-import '../../../Settings/settings.fonts.dart';
-import '../../../Settings/settings.main.dart';
+
+import '../../../../../Models/Stories/models.stories.story.dart';
+import '../../../../../Settings/settings.fonts.dart';
+import '../../../../../Settings/settings.main.dart';
 
 class CommonTopStoriesData extends StatefulWidget {
   final List<StoryModel> storiesCommonInfo;

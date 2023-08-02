@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../Models/Chapters/models.chapters.chapter.dart';
-import '../../../Settings/settings.fonts.dart';
-import '../../../Settings/settings.images.dart';
-import '../../../Settings/settings.language_code.vi..dart';
-import '../../../Settings/settings.main.dart';
+
+import '../../../../../Models/Chapters/models.chapters.chapter.dart';
+import '../../../../../Settings/settings.fonts.dart';
+import '../../../../../Settings/settings.images.dart';
+import '../../../../../Settings/settings.language_code.vi..dart';
+import '../../../../../Settings/settings.main.dart';
 
 class ListNewChapter extends StatelessWidget {
   final List<ChapterInfo> chapterInfos;

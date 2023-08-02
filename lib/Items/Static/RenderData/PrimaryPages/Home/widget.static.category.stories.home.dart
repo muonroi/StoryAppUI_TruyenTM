@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Settings/settings.main.dart';
+import '../../../../../Settings/settings.main.dart';
 
 // #region new stories widget
 class StoriesNewUpdatedData extends StatefulWidget {
@@ -57,27 +57,24 @@ class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                        transform: Matrix4.diagonal3Values(
-                          _storiesFillRowScales[index],
-                          _storiesFillRowScales[index],
-                          1.0,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: SizedBox(
-                              width: MainSetting.getPercentageOfDevice(context,
-                                      expectWidth: 115)
-                                  .width,
-                              height: MainSetting.getPercentageOfDevice(context,
-                                      expectHeight: 170)
-                                  .height,
-                              child: widget.data[index]),
-                        ),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      transform: Matrix4.diagonal3Values(
+                        _storiesFillRowScales[index],
+                        _storiesFillRowScales[index],
+                        1.0,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox(
+                            width: MainSetting.getPercentageOfDevice(context,
+                                    expectWidth: 115)
+                                .width,
+                            height: MainSetting.getPercentageOfDevice(context,
+                                    expectHeight: 170)
+                                .height,
+                            child: widget.data[index]),
                       ),
                     )
                   ],
@@ -99,12 +96,10 @@ class StoriesOfCategoriesData extends StatefulWidget {
     super.key,
     required PageController pageEditorController,
     required this.data,
-    required this.isShowText,
   }) : _pageEditorController = pageEditorController;
 
   final PageController _pageEditorController;
   final List<Widget> data;
-  final bool isShowText;
   @override
   State<StoriesOfCategoriesData> createState() =>
       _StoriesOfCategoriesDataState();
@@ -133,9 +128,8 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MainSetting.getPercentageOfDevice(context,
-              expectHeight: widget.isShowText ? 220 : 150)
-          .height,
+      height:
+          MainSetting.getPercentageOfDevice(context, expectHeight: 150).height,
       child: ListView.builder(
           itemCount: widget.data.length,
           scrollDirection: Axis.horizontal,

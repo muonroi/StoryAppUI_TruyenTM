@@ -4,6 +4,8 @@ import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.images.dart';
 import '../Models/Stories/models.stories.story.dart';
+import '../Pages/PrimaryPages/pages.book.case.dart';
+import '../Pages/PrimaryPages/pages.stories.free.dart';
 import '../Settings/settings.main.dart';
 import '../Items/Static/Buttons/widget.static.menu.bottom.shared.dart';
 import '../Routes/routes.items.home.dart';
@@ -154,6 +156,48 @@ class _HomePageState extends State<HomePage> {
         category: "Huyền huyễn",
         totalView: 99)
   ];
+  final List<StoryModel> storiesIncludeAuthor = [
+    StoryModel(
+        image:
+            'https://www.nae.vn/ttv/ttv/public/images/story/085339edd8d1f181ea709879862bebddf69e1f426809e10b9015359fa887bbba.jpg',
+        name: 'Bách luyện thành tiên',
+        category: 'Tiên hiệp',
+        totalView: 16,
+        authorName: 'Lão trư',
+        numberOfChapter: 2560,
+        lastUpdated: 22,
+        tagsName: ['Sắc', 'Nhiều vợ']),
+    StoryModel(
+        image:
+            'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+        name: 'Ngã dục phong thiên',
+        category: 'Yêu nhân',
+        totalView: 1254,
+        authorName: 'Nhĩ căn',
+        numberOfChapter: 1231,
+        lastUpdated: 2,
+        tagsName: ['Yêu vật', 'Anh vũ']),
+    StoryModel(
+        image:
+            'https://www.nae.vn/ttv/ttv/public/images/story/b65d0b5b1902b17daa87e615174905e60df4be42d649d85ac4b4877d7bc95306.jpg',
+        name: 'Tiên nghịch',
+        category: 'Huyền huyễn',
+        totalView: 1230,
+        authorName: 'Lão ngũ',
+        numberOfChapter: 3201,
+        lastUpdated: 2,
+        tagsName: ['Tiên', 'Ma']),
+    StoryModel(
+        image:
+            'https://www.nae.vn/ttv/ttv/public/images/story/08608f3e3f75d30b8fdf7377e409e284b652cd1daf2f03adede578843eb40f29.jpg',
+        name: 'Thần cấp đại ma thần',
+        category: 'Tiên hiệp',
+        totalView: 1576,
+        authorName: 'Nhĩ căn',
+        numberOfChapter: 3000,
+        lastUpdated: 3,
+        tagsName: ['Hoàn thành', 'Não tàn']),
+  ];
   // #endregion
 
 // #region Define controller
@@ -245,30 +289,37 @@ class _HomePageState extends State<HomePage> {
                       color: ColorDefaults.thirdMainColor)),
             ],
           ),
-          body: TabBarView(children: [
-            // #region HomePage
-            LayoutBuilder(
-              builder: (context, constraints) {
-                _itemHeight = constraints.maxHeight / itemsOfHome.length;
-                return RenderHomePage(
-                    scrollLayoutController: _scrollLayoutController,
-                    componentOfHomePage: itemsOfHome);
-              },
-            ),
-            // #endregion
-            Container(
-              color: Colors.black,
-            ),
-            Container(
-              color: Colors.red,
-            ),
-            Container(
-              color: Colors.green,
-            ),
-            Container(
-              color: Colors.pink,
-            ),
-          ]),
+          body: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                // #region HomePage
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    _itemHeight = constraints.maxHeight / itemsOfHome.length;
+                    return RenderHomePage(
+                        scrollLayoutController: _scrollLayoutController,
+                        componentOfHomePage: itemsOfHome);
+                  },
+                ),
+                // #endregion
+
+                BookCase(
+                  storiesData: storiesIncludeAuthor,
+                ),
+                StoriesFree(
+                  storiesData: storiesIncludeAuthor,
+                  isShowLabel: false,
+                  isShowBack: false,
+                ),
+                StoriesFree(
+                  storiesData: storiesIncludeAuthor,
+                  isShowLabel: false,
+                  isShowBack: false,
+                ),
+                Container(
+                  color: Colors.pink,
+                ),
+              ]),
           floatingActionButton: FloatingActionButton(
             onPressed: () {},
             backgroundColor: ColorDefaults.mainColor,

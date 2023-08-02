@@ -29,6 +29,9 @@ class LocalizationLib {
       ViCode.passedNumberMinuteTextInfo.toString(): 'phút trước',
       ViCode.chapterNumberTextInfo.toString(): 'chương',
       ViCode.rankTextInfo.toString(): 'Top',
+      ViCode.storiesBoughtTextInfo.toString(): 'Truyện đã mua',
+      ViCode.storiesSavedTextInfo.toString(): 'Truyện đã tải',
+      ViCode.storiesContinueChapter.toString(): 'Đọc tiếp'
     }
   };
   static String L(String key, {String locale = 'vi'}) {

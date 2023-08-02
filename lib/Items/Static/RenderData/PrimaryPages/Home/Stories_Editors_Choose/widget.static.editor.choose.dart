@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/Items/Static/RenderData/widget.static.categories.home.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.categories.home.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.less.stories.dart';
+import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
-import '../../../Models/Stories/models.stories.story.dart';
-import '../../../Settings/settings.language_code.vi..dart';
-import '../../../Settings/settings.main.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.main.dart';
 
 class EditorStories extends StatelessWidget {
   final List<List<StoryModel>> storiesData;

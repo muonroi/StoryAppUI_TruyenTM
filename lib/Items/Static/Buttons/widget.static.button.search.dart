@@ -6,11 +6,13 @@ class SearchContainer extends StatelessWidget {
   final TextEditingController searchController;
   final ValueChanged<String> onChanged;
   final bool isShowClearText;
+  final double? sizeBar;
   const SearchContainer(
       {super.key,
       required this.searchController,
       required this.onChanged,
-      required this.isShowClearText});
+      required this.isShowClearText,
+      this.sizeBar});
 
   @override
   Widget build(BuildContext context) {
