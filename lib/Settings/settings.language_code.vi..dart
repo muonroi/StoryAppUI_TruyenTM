@@ -52,7 +52,23 @@ enum ViCode {
 //Stories saved
   storiesSavedTextInfo,
 //Continue reading
-  storiesContinueChapter,
+  storiesContinueChapterTextInfo,
+//My account
+  myAccountTextInfo,
+// Coin of account
+  myAccountCoinTextInfo,
+// Premium account
+  myAccountPremiumTextInfo,
+// GiftCode account
+  myAccountGiftCodeTextInfo,
+// Popup coin
+  myAccountPopupTextInfo,
+// Contact
+  myAccountContactAdminTextInfo,
+// Detail account info
+  myAccountDetailTextInfo,
+// Setting account
+  myAccountSettingTextInfo,
 //Error when search return null or empty
   notfoundTextInfo,
 // #endregion

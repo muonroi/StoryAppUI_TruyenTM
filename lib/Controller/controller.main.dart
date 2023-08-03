@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/Models/Accounts/models.account.signup.dart';
 import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
+import 'package:muonroi/Pages/PrimaryPages/pages.user.info.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.images.dart';
@@ -198,6 +200,17 @@ class _HomePageState extends State<HomePage> {
         lastUpdated: 3,
         tagsName: ['Hoàn thành', 'Não tàn']),
   ];
+  final AccountInfo accountInfo = AccountInfo(
+      fullName: "John Wick",
+      username: "muonroi",
+      password: "12345678Az*",
+      email: "contact.admin@muonroi.com",
+      phoneNumber: "093.310.5367",
+      gender: false,
+      birthDate: DateTime(2002, 17, 06),
+      imageLink: null,
+      totalStoriesBought: 12,
+      coin: 99);
   // #endregion
 
 // #region Define controller
@@ -306,19 +319,13 @@ class _HomePageState extends State<HomePage> {
                 BookCase(
                   storiesData: storiesIncludeAuthor,
                 ),
+                Container(),
                 StoriesFree(
                   storiesData: storiesIncludeAuthor,
                   isShowLabel: false,
                   isShowBack: false,
                 ),
-                StoriesFree(
-                  storiesData: storiesIncludeAuthor,
-                  isShowLabel: false,
-                  isShowBack: false,
-                ),
-                Container(
-                  color: Colors.pink,
-                ),
+                UserInfo(userInfo: accountInfo),
               ]),
           floatingActionButton: FloatingActionButton(
             onPressed: () {},

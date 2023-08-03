@@ -31,7 +31,15 @@ class LocalizationLib {
       ViCode.rankTextInfo.toString(): 'Top',
       ViCode.storiesBoughtTextInfo.toString(): 'Truyện đã mua',
       ViCode.storiesSavedTextInfo.toString(): 'Truyện đã tải',
-      ViCode.storiesContinueChapter.toString(): 'Đọc tiếp'
+      ViCode.storiesContinueChapterTextInfo.toString(): 'Đọc tiếp',
+      ViCode.myAccountTextInfo.toString(): 'Tài khoản của tôi',
+      ViCode.myAccountCoinTextInfo.toString(): 'Ngân lượng',
+      ViCode.myAccountPremiumTextInfo.toString(): 'Nâng cấp tài khoản',
+      ViCode.myAccountGiftCodeTextInfo.toString(): 'Mã khuyến mãi',
+      ViCode.myAccountPopupTextInfo.toString(): 'Nạp ngân lượng',
+      ViCode.myAccountContactAdminTextInfo.toString(): 'Liên hệ & hỗ trợ',
+      ViCode.myAccountDetailTextInfo.toString(): 'Tài khoản',
+      ViCode.myAccountSettingTextInfo.toString(): 'Cài đặt'
     }
   };
   static String L(String key, {String locale = 'vi'}) {

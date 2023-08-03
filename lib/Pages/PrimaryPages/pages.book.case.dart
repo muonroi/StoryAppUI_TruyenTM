@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
-import '../../Items/Static/RenderData/PrimaryPages/Book_Case/widget.static.book.case.stories.items.dart';
-import '../../Items/Static/RenderData/PrimaryPages/Book_Case/widget.static.model.book.case.stories.dart';
+import '../../Items/Static/RenderData/PrimaryPages/BookCase/widget.static.book.case.stories.items.dart';
+import '../../Items/Static/RenderData/PrimaryPages/BookCase/widget.static.model.book.case.stories.dart';
 import '../../Settings/settings.language_code.vi..dart';
 import '../../Settings/settings.main.dart';
 
@@ -67,13 +67,12 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
       child: Container(
         margin: const EdgeInsets.only(top: 16),
         child: Scaffold(
-          backgroundColor: ColorDefaults.secondMainColor,
+          backgroundColor: ColorDefaults.lightAppColor,
           appBar: AppBar(
             backgroundColor: ColorDefaults.lightAppColor,
             title: TabBar(
-                indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: ColorDefaults.mainColor),
+                indicator:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
                 tabs: [
                   Tab(text: L(ViCode.bookCaseTextInfo.toString())),
                   Tab(text: L(ViCode.storiesBoughtTextInfo.toString())),
