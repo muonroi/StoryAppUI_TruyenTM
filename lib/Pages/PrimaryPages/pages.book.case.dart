@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
-import '../../Items/Static/RenderData/PrimaryPages/Book_Case/widget.static.book.case.stories.items.dart';
-import '../../Items/Static/RenderData/PrimaryPages/Book_Case/widget.static.model.book.case.stories.dart';
+import '../../Items/Static/RenderData/PrimaryPages/BookCase/widget.static.book.case.stories.items.dart';
+import '../../Items/Static/RenderData/PrimaryPages/BookCase/widget.static.model.book.case.stories.dart';
 import '../../Settings/settings.language_code.vi..dart';
 import '../../Settings/settings.main.dart';
 
@@ -50,66 +50,88 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    TabBar tabBar = TabBar(
+      unselectedLabelColor: ColorDefaults.secondMainColor,
+      indicatorColor: ColorDefaults.thirdMainColor,
+      tabs: [
+        SizedBox(
+            width: MainSetting.getPercentageOfDevice(context, expectWidth: 70)
+                .width,
+            child: Tab(text: L(ViCode.bookCaseTextInfo.toString()))),
+        SizedBox(
+            width: MainSetting.getPercentageOfDevice(context, expectWidth: 120)
+                .width,
+            child: Tab(text: L(ViCode.storiesBoughtTextInfo.toString()))),
+        SizedBox(
+            width: MainSetting.getPercentageOfDevice(context, expectWidth: 110)
+                .width,
+            child: Tab(text: L(ViCode.storiesSavedTextInfo.toString())))
+      ],
+    );
     List<Widget> dataEachRow = widget.storiesData
         .map((e) => StoriesBookCaseModelWidget(
               nameStory: e.name,
-              categoryName: e.category!,
-              authorName: e.authorName!,
+              categoryName: e.category ?? L(ViCode.notfoundTextInfo.toString()),
+              authorName: e.authorName ?? L(ViCode.notfoundTextInfo.toString()),
               imageLink: e.image,
-              tagsName: e.tagsName!,
-              lastUpdated: e.lastUpdated!,
-              totalViews: e.totalView!,
-              numberOfChapter: e.numberOfChapter!,
+              tagsName: e.tagsName ?? [],
+              lastUpdated: e.lastUpdated ?? 0,
+              totalViews: e.totalView ?? 0,
+              numberOfChapter: e.numberOfChapter ?? 0,
+              vote: e.vote ?? 0,
+              rankNumber: e.rankNumber ?? 0,
+              totalVote: e.totalVote ?? 0,
+              introStory: e.introStory ?? "",
+              notification: e.notification ?? "",
+              newChapters: e.newChapters ?? [],
+              newChapterNames: e.newChapterNames ?? [],
+              userComments: e.userComments ?? [],
+              userCoin: e.userCoin ?? [],
+              similarStories: e.similarStories ?? [],
             ))
         .toList();
     return DefaultTabController(
       length: 3,
-      child: Container(
-        margin: const EdgeInsets.only(top: 16),
-        child: Scaffold(
-          backgroundColor: ColorDefaults.secondMainColor,
-          appBar: AppBar(
-            backgroundColor: ColorDefaults.lightAppColor,
-            title: TabBar(
-                indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: ColorDefaults.mainColor),
-                tabs: [
-                  Tab(text: L(ViCode.bookCaseTextInfo.toString())),
-                  Tab(text: L(ViCode.storiesBoughtTextInfo.toString())),
-                  Tab(text: L(ViCode.storiesSavedTextInfo.toString()))
-                ]),
-          ),
-          body: TabBarView(children: [
-            StoriesItems(
-              storiesData: widget.storiesData,
-              dataEachRow: dataEachRow,
-              reload: _animationReloadController,
-              sort: _animationSortController,
-              isShowClearText: _isShowClearText,
-              onChanged: _onChangedSearch,
-              textSearchController: _textSearchController,
-            ),
-            StoriesItems(
-              storiesData: widget.storiesData,
-              dataEachRow: dataEachRow,
-              reload: _animationReloadController,
-              sort: _animationSortController,
-              isShowClearText: _isShowClearText,
-              onChanged: _onChangedSearch,
-              textSearchController: _textSearchController,
-            ),
-            StoriesItems(
-              storiesData: widget.storiesData,
-              dataEachRow: dataEachRow,
-              reload: _animationReloadController,
-              sort: _animationSortController,
-              isShowClearText: _isShowClearText,
-              onChanged: _onChangedSearch,
-              textSearchController: _textSearchController,
-            ),
-          ]),
+      child: Scaffold(
+        backgroundColor: ColorDefaults.lightAppColor,
+        appBar: AppBar(
+          backgroundColor: ColorDefaults.mainColor,
+          bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(0.0),
+              child: Material(
+                color: ColorDefaults.mainColor,
+                child: tabBar,
+              )),
         ),
+        body: TabBarView(children: [
+          StoriesItems(
+            storiesData: widget.storiesData,
+            dataEachRow: dataEachRow,
+            reload: _animationReloadController,
+            sort: _animationSortController,
+            isShowClearText: _isShowClearText,
+            onChanged: _onChangedSearch,
+            textSearchController: _textSearchController,
+          ),
+          StoriesItems(
+            storiesData: widget.storiesData,
+            dataEachRow: dataEachRow,
+            reload: _animationReloadController,
+            sort: _animationSortController,
+            isShowClearText: _isShowClearText,
+            onChanged: _onChangedSearch,
+            textSearchController: _textSearchController,
+          ),
+          StoriesItems(
+            storiesData: widget.storiesData,
+            dataEachRow: dataEachRow,
+            reload: _animationReloadController,
+            sort: _animationSortController,
+            isShowClearText: _isShowClearText,
+            onChanged: _onChangedSearch,
+            textSearchController: _textSearchController,
+          ),
+        ]),
       ),
     );
   }

@@ -20,7 +20,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  late SignUpDto _signUpDto;
+  late AccountInfo _signUpDto;
   List<Widget> _pageViewsSignUp = [];
   late PageController _pageController;
   int _currentPage = 0;
@@ -29,7 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void initState() {
     _pageController = PageController(initialPage: _currentPage);
     super.initState();
-    _signUpDto = SignUpDto();
+    _signUpDto = AccountInfo();
     _pageViewsSignUp = [
       InputBasicInfoSignUp(
         inputBasicInfo: _signUpDto,
@@ -121,7 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
 }
 
 class InputMoreInfoSignUp extends StatefulWidget {
-  final SignUpDto genderDto;
+  final AccountInfo genderDto;
   const InputMoreInfoSignUp({Key? key, required this.genderDto})
       : super(key: key);
   @override
@@ -196,7 +196,7 @@ class _InputMoreInfoSignUpState extends State<InputMoreInfoSignUp> {
 }
 
 class InputBasicInfoSignUp extends StatefulWidget {
-  final SignUpDto inputBasicInfo;
+  final AccountInfo inputBasicInfo;
   const InputBasicInfoSignUp({
     super.key,
     required this.inputBasicInfo,

@@ -22,7 +22,6 @@ class StoriesItems extends StatefulWidget {
     required this.textSearchController,
     required this.dataEachRow,
   }) : super(key: key);
-
   @override
   State<StoriesItems> createState() => _StoriesItemsState();
 }

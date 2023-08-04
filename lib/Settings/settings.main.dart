@@ -24,7 +24,7 @@ String formatNumberThouSand(double value) {
         '${initNumber}k${decimalNumber > 0 ? decimalNumber : ''}';
     return numberString;
   } else {
-    return value.toString();
+    return value.toInt().toString();
   }
 }
 

@@ -1,4 +1,6 @@
 class ImageDefault {
+  static const String imageAvatarDefault =
+      "https://t3.ftcdn.net/jpg/02/09/37/00/240_F_209370065_JLXhrc5inEmGl52SyvSPeVB23hB6IjrR.jpg";
   static const String imageRootPath = 'assets/images/';
   static const String imagePath2x = '${imageRootPath}2x/';
   static const String imagePath3x = '${imageRootPath}3x/';
@@ -24,4 +26,17 @@ class ImageDefault {
   static const String freeBook2x = '${imagePath2x}free_book.png';
   static const String userInfo3x = '${imagePath3x}UserInfo.png';
   static const String freeBook3x = '${imagePath3x}free_book.png';
+  static const String defaultAvatar = '${imagePath2x}defaultAvatar.png';
+  static const String crown2x = '${imagePath2x}Crown.png';
+  static const String crown3x = '${imagePath3x}Crown.png';
+  static const String coin2x = '${imagePath2x}Coin.png';
+  static const String coin3x = '${imagePath3x}Coin.png';
+  static const String contact2x = '${imagePath2x}Contact.png';
+  static const String contact3x = '${imagePath3x}Contact.png';
+  static const String gift2x = '${imagePath2x}Gift.png';
+  static const String gift3x = '${imagePath3x}Gift.png';
+  static const String user2x = '${imagePath2x}User.png';
+  static const String user3x = '${imagePath3x}User.png';
+  static const String gear2x = '${imagePath2x}Gear.png';
+  static const String gear3x = '${imagePath3x}Gear.png';
 }

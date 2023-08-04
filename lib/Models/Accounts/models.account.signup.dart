@@ -1,4 +1,4 @@
-class SignUpDto {
+class AccountInfo {
   String? fullName;
   String? username;
   String? password;
@@ -6,12 +6,18 @@ class SignUpDto {
   String? phoneNumber;
   bool? gender;
   DateTime? birthDate;
-  SignUpDto(
+  String? imageLink;
+  int? totalStoriesBought;
+  double? coin;
+  AccountInfo(
       {this.fullName,
       this.username,
       this.password,
       this.email,
       this.phoneNumber,
       this.gender,
-      this.birthDate});
+      this.birthDate,
+      this.imageLink,
+      this.totalStoriesBought,
+      this.coin});
 }

@@ -47,8 +47,6 @@ class _StoryLessModelWidgetState extends State<StoryLessModelWidget> {
           widgetScale,
           1.0,
         ),
-        margin: const EdgeInsets.all(8.0),
-        padding: const EdgeInsets.all(8.0),
         width:
             MainSetting.getPercentageOfDevice(context, expectWidth: 100).width,
         height: MainSetting.getPercentageOfDevice(context, expectHeight: 170)
@@ -75,15 +73,17 @@ class _StoryLessModelWidgetState extends State<StoryLessModelWidget> {
                   ),
                 ),
               ),
-              SizedBox(
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 width:
-                    MainSetting.getPercentageOfDevice(context, expectWidth: 80)
+                    MainSetting.getPercentageOfDevice(context, expectWidth: 100)
                         .width,
                 child: Text(
                   widget.storyName,
                   style: FontsDefault.h5,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
               )
             ]),

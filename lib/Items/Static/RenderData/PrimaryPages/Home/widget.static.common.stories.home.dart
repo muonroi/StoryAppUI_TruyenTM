@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
-
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import '../../../../../Models/Stories/models.stories.story.dart';
 import '../../../../../Settings/settings.fonts.dart';
 import '../../../../../Settings/settings.main.dart';
@@ -100,8 +100,10 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1),
                                     Text(
-                                        widget
-                                            .storiesCommonInfo[index].category!,
+                                        widget.storiesCommonInfo[index]
+                                                .category ??
+                                            L(ViCode.notfoundTextInfo
+                                                .toString()),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: FontsDefault.h6),
@@ -127,7 +129,8 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
                                   formatValueNumber(widget
-                                      .storiesCommonInfo[index].totalView!),
+                                          .storiesCommonInfo[index].totalView ??
+                                      0),
                                   style: FontsDefault.h6,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,

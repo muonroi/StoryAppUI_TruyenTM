@@ -12,84 +12,87 @@ class MainCategories extends StatelessWidget {
   const MainCategories({super.key});
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 30,
-              backgroundColor: ColorDefaults.secondMainColor,
-              child: IconButton(
-                onPressed: () {},
-                icon: Image.asset(
-                  ImageDefault.gridFour2x,
+    return SizedBox(
+      width: MainSetting.getPercentageOfDevice(context, expectWidth: 400).width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: ColorDefaults.secondMainColor,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    ImageDefault.gridFour2x,
+                  ),
                 ),
               ),
-            ),
-            Text(
-              L(ViCode.genreOfStrTextInfo.toString()),
-              style: FontsDefault.h5,
-            )
-          ],
-        ),
-        Column(
-          children: [
-            CircleAvatar(
-              radius: 30,
-              backgroundColor: ColorDefaults.secondMainColor,
-              child: IconButton(
-                onPressed: () {},
-                icon: Image.asset(
-                  ImageDefault.translate2x,
+              Text(
+                L(ViCode.genreOfStrTextInfo.toString()),
+                style: FontsDefault.h5,
+              )
+            ],
+          ),
+          Column(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: ColorDefaults.secondMainColor,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    ImageDefault.translate2x,
+                  ),
                 ),
               ),
-            ),
-            Text(
-              L(ViCode.translateStrTextInfo.toString()),
-              style: FontsDefault.h5,
-            )
-          ],
-        ),
-        Column(
-          children: [
-            CircleAvatar(
-              radius: 30,
-              backgroundColor: ColorDefaults.secondMainColor,
-              child: IconButton(
-                onPressed: () {},
-                icon: Image.asset(
-                  ImageDefault.bookOpenText2x,
+              Text(
+                L(ViCode.translateStrTextInfo.toString()),
+                style: FontsDefault.h5,
+              )
+            ],
+          ),
+          Column(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: ColorDefaults.secondMainColor,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    ImageDefault.bookOpenText2x,
+                  ),
                 ),
               ),
-            ),
-            Text(
-              L(ViCode.fullStrTextInfo.toString()),
-              style: FontsDefault.h5,
-            )
-          ],
-        ),
-        Column(
-          children: [
-            CircleAvatar(
-              radius: 30,
-              backgroundColor: ColorDefaults.secondMainColor,
-              child: IconButton(
-                onPressed: () {},
-                icon: Image.asset(
-                  ImageDefault.vector2x,
+              Text(
+                L(ViCode.fullStrTextInfo.toString()),
+                style: FontsDefault.h5,
+              )
+            ],
+          ),
+          Column(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: ColorDefaults.secondMainColor,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    ImageDefault.vector2x,
+                  ),
                 ),
               ),
-            ),
-            Text(
-              L(ViCode.creationStrTextInfo.toString()),
-              style: FontsDefault.h5,
-            )
-          ],
-        )
-      ],
+              Text(
+                L(ViCode.creationStrTextInfo.toString()),
+                style: FontsDefault.h5,
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }

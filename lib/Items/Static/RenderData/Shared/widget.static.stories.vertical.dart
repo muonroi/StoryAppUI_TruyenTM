@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.full.stories.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.main.dart';
 import '../../../../Settings/settings.colors.dart';
 
 class StoriesVerticalData extends StatelessWidget {
@@ -42,13 +44,13 @@ class StoriesVerticalDataBody extends StatelessWidget {
     List<Widget> dataEachRow = storiesData
         .map((e) => StoriesFullModelWidget(
               nameStory: e.name,
-              categoryName: e.category!,
-              authorName: e.authorName!,
+              categoryName: e.category ?? L(ViCode.notfoundTextInfo.toString()),
+              authorName: e.authorName ?? L(ViCode.notfoundTextInfo.toString()),
               imageLink: e.image,
-              tagsName: e.tagsName!,
-              lastUpdated: e.lastUpdated!,
-              totalViews: e.totalView!,
-              numberOfChapter: e.numberOfChapter!,
+              tagsName: e.tagsName ?? [],
+              lastUpdated: e.lastUpdated ?? 0,
+              totalViews: e.totalView ?? 0,
+              numberOfChapter: e.numberOfChapter ?? 0,
               isShowRank: isShowLabel,
               rankNumber: e.rankNumber,
             ))
