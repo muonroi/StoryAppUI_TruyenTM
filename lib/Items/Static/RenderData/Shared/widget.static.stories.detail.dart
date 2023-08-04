@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/Controller/controller.main.dart';
+import 'package:muonroi/Items/Static/Buttons/widget.static.button.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
 import 'DetailStory/widget.static..detail.chapter.story.dart';
@@ -70,6 +73,56 @@ class _StoriesDetailState extends State<StoriesDetail> {
                 ));
           },
         ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: SizedBox(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width:
+                  MainSetting.getPercentageOfDevice(context, expectWidth: 200)
+                      .width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                      child: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.headphones_outlined))),
+                  SizedBox(
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.download_outlined)),
+                  ),
+                  SizedBox(
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.bookmark_add_outlined)),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: SizedBox(
+                width:
+                    MainSetting.getPercentageOfDevice(context, expectWidth: 150)
+                        .width,
+                child: ButtonWidget.buttonNavigatorNextPreviewLanding(
+                    context, const HomePage(),
+                    textStyle: FontsDefault.h5.copyWith(
+                        color: ColorDefaults.thirdMainColor,
+                        fontWeight: FontWeight.w500),
+                    color: ColorDefaults.mainColor,
+                    borderColor: ColorDefaults.mainColor,
+                    widthBorder: 2,
+                    textDisplay:
+                        '${L(ViCode.chapterNumberTextInfo.toString())} ${formatValueNumber(widget.storyInfo.newChapters!.last)}'),
+              ),
+            )
+          ],
+        )),
       ),
     );
   }

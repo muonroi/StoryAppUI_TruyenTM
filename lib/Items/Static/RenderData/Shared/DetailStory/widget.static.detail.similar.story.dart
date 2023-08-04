@@ -19,7 +19,7 @@ class _SimilarStoriesState extends State<SimilarStories> {
   late PageController controller;
   @override
   void initState() {
-    controller = PageController();
+    controller = PageController(viewportFraction: 0.9);
     super.initState();
   }
 
