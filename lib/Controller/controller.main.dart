@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Models/Accounts/models.account.signup.dart';
 import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
+import 'package:muonroi/Models/Users/widget.static.story.user.coin.dart';
+import 'package:muonroi/Models/Users/widget.static.user.comment.dart';
 import 'package:muonroi/Pages/PrimaryPages/pages.user.info.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
@@ -168,7 +170,448 @@ class _HomePageState extends State<HomePage> {
         authorName: 'Lão trư',
         numberOfChapter: 2560,
         lastUpdated: 22,
-        tagsName: ['Sắc', 'Nhiều vợ']),
+        tagsName: ['Sắc', 'Nhiều vợ'],
+        vote: 3.7,
+        totalVote: 42,
+        introStory:
+            "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+        notification:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        newChapters: [1, 2, 4, 5, 6],
+        newChapterNames: [
+          "Thức tỉnh",
+          "Dạ xoa",
+          "Tàn dạ",
+          "Ân công",
+          "Tông môn"
+        ],
+        userComments: [
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent: "Truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent: "Truyen rat hay nhe",
+              createdDate: 5),
+        ],
+        userCoin: [
+          const UserCoin(
+              coinValue: 1000,
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 11),
+          const UserCoin(
+              coinValue: 1200,
+              fullName: 'muonroi1',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 12),
+          const UserCoin(
+              coinValue: 1030,
+              fullName: 'muonroi2',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 15),
+          const UserCoin(
+              coinValue: 2100,
+              fullName: 'muonroi3',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 16)
+        ],
+        similarStories: [
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/085339edd8d1f181ea709879862bebddf69e1f426809e10b9015359fa887bbba.jpg',
+              name: 'Bách luyện thành tiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ])
+        ]),
     StoryModel(
         image:
             'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
@@ -178,7 +621,449 @@ class _HomePageState extends State<HomePage> {
         authorName: 'Nhĩ căn',
         numberOfChapter: 1231,
         lastUpdated: 2,
-        tagsName: ['Yêu vật', 'Anh vũ']),
+        tagsName: ['Yêu vật', 'Anh vũ'],
+        vote: 2.5,
+        totalVote: 25,
+        introStory:
+            "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+        notification:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        newChapters: [1, 2, 4, 5, 6],
+        newChapterNames: [
+          "Thức tỉnh",
+          "Dạ xoa",
+          "Tàn dạ",
+          "Ân công",
+          "Tông môn"
+        ],
+        userComments: [
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent: "Truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+        ],
+        userCoin: [
+          const UserCoin(
+              coinValue: 1000,
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 11),
+          const UserCoin(
+              coinValue: 1200,
+              fullName: 'muonroi1',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 12),
+          const UserCoin(
+              coinValue: 1030,
+              fullName: 'muonroi2',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 15),
+          const UserCoin(
+              coinValue: 2100,
+              fullName: 'muonroi3',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 16)
+        ],
+        similarStories: [
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Tiên nghịch',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/b65d0b5b1902b17daa87e615174905e60df4be42d649d85ac4b4877d7bc95306.jpg',
+              name: 'Tiên nghịch',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ])
+        ]),
     StoryModel(
         image:
             'https://www.nae.vn/ttv/ttv/public/images/story/b65d0b5b1902b17daa87e615174905e60df4be42d649d85ac4b4877d7bc95306.jpg',
@@ -188,7 +1073,449 @@ class _HomePageState extends State<HomePage> {
         authorName: 'Lão ngũ',
         numberOfChapter: 3201,
         lastUpdated: 2,
-        tagsName: ['Tiên', 'Ma']),
+        tagsName: ['Tiên', 'Ma'],
+        vote: 4.5,
+        totalVote: 45,
+        introStory:
+            "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+        notification:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        newChapters: [1, 2, 4, 5, 6],
+        newChapterNames: [
+          "Thức tỉnh",
+          "Dạ xoa",
+          "Tàn dạ",
+          "Ân công",
+          "Tông môn"
+        ],
+        userComments: [
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent: "Truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+        ],
+        userCoin: [
+          const UserCoin(
+              coinValue: 1000,
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 11),
+          const UserCoin(
+              coinValue: 1200,
+              fullName: 'muonroi1',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 12),
+          const UserCoin(
+              coinValue: 1030,
+              fullName: 'muonroi2',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 15),
+          const UserCoin(
+              coinValue: 2100,
+              fullName: 'muonroi3',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 16)
+        ],
+        similarStories: [
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ])
+        ]),
     StoryModel(
         image:
             'https://www.nae.vn/ttv/ttv/public/images/story/08608f3e3f75d30b8fdf7377e409e284b652cd1daf2f03adede578843eb40f29.jpg',
@@ -198,7 +1525,448 @@ class _HomePageState extends State<HomePage> {
         authorName: 'Nhĩ căn',
         numberOfChapter: 3000,
         lastUpdated: 3,
-        tagsName: ['Hoàn thành', 'Não tàn']),
+        tagsName: ['Hoàn thành', 'Não tàn'],
+        vote: 5.0,
+        totalVote: 35,
+        introStory:
+            "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+        notification:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        newChapters: [1, 2, 4, 5, 6],
+        newChapterNames: [
+          "Thức tỉnh",
+          "Dạ xoa",
+          "Tàn dạ",
+          "Ân công",
+          "Tông môn"
+        ],
+        userComments: [
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent: "Truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent:
+                  "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+          const UserCommentModel(
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              voteNumber: 3.5,
+              voteContent: "Truyen rat hay nhe truyen rat hay nhe",
+              createdDate: 5),
+        ],
+        userCoin: [
+          const UserCoin(
+              coinValue: 1000,
+              fullName: 'muonroi',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 11),
+          const UserCoin(
+              coinValue: 1200,
+              fullName: 'muonroi1',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 12),
+          const UserCoin(
+              coinValue: 1030,
+              fullName: 'muonroi2',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 15),
+          const UserCoin(
+              coinValue: 2100,
+              fullName: 'muonroi3',
+              imageLink: ImageDefault.imageAvatarDefault,
+              createdDate: 16)
+        ],
+        similarStories: [
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ]),
+          StoryModel(
+              image:
+                  'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
+              name: 'Ngã dục phong thiên',
+              category: 'Yêu nhân',
+              totalView: 1254,
+              authorName: 'Nhĩ căn',
+              numberOfChapter: 1231,
+              lastUpdated: 2,
+              tagsName: ['Yêu vật', 'Anh vũ'],
+              vote: 2.5,
+              totalVote: 25,
+              introStory:
+                  "Là một câu chuyện thần tiên, nhưng Như Ý Đản của Đại Phong Quát Quá lại hiện thực đến đau lòng. Ở đó có chấp niệm khó buông, có viễn cảnh mộng mơ bị đánh tan về một cuộc sống thần tiên bên nhau đến trời tàn đất tận. Đọc truyện đam mỹ này bạn sẽ hiểu được: thì ra nếu chỉ thích một người, sẽ chẳng có cái gì gọi là thiên trường địa cửu, ngay cả với thần tiên.",
+              notification:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              newChapters: [1, 2, 4, 5, 6],
+              newChapterNames: [
+                "Thức tỉnh",
+                "Dạ xoa",
+                "Tàn dạ",
+                "Ân công",
+                "Tông môn"
+              ],
+              userComments: [
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent: "Truyen rat hay nhe",
+                    createdDate: 5),
+                const UserCommentModel(
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    voteNumber: 3.5,
+                    voteContent:
+                        "Truyen rat hay nhe Truyen rat hay nhe truyen rat hay nhe",
+                    createdDate: 5),
+              ],
+              userCoin: [
+                const UserCoin(
+                    coinValue: 1000,
+                    fullName: 'muonroi',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 11),
+                const UserCoin(
+                    coinValue: 1200,
+                    fullName: 'muonroi1',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 12),
+                const UserCoin(
+                    coinValue: 1030,
+                    fullName: 'muonroi2',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 15),
+                const UserCoin(
+                    coinValue: 2100,
+                    fullName: 'muonroi3',
+                    imageLink: ImageDefault.imageAvatarDefault,
+                    createdDate: 16)
+              ])
+        ]),
   ];
   final AccountInfo accountInfo = AccountInfo(
       fullName: "John Wick",

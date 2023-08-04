@@ -62,13 +62,37 @@ enum ViCode {
 // GiftCode account
   myAccountGiftCodeTextInfo,
 // Popup coin
-  myAccountPopupTextInfo,
+  myAccountRechargeTextInfo,
 // Contact
   myAccountContactAdminTextInfo,
 // Detail account info
   myAccountDetailTextInfo,
 // Setting account
   myAccountSettingTextInfo,
+// Vote story
+  voteStoryTextInfo,
+// Total vote story
+  voteStoryTotalTextInfo,
+// Total view story
+  totalViewStoryTextInfo,
+// Total vote story
+  totalFavoriteStoryTextInfo,
+// Intro of story
+  introStoryTextInfo,
+// Notification of story
+  notifyStoryTextInfo,
+// New chapter of story
+  newChapterStoryTextInfo,
+// List chapter of story
+  listChapterStoryTextInfo,
+// Write comment of story
+  writeCommentStoryTextInfo,
+// Coin
+  coinStoryTextInfo,
+// Push coin to story
+  pushRechargeStoryTextInfo,
+// Similar of the stories
+  similarStoriesTextInfo,
 //Error when search return null or empty
   notfoundTextInfo,
 // #endregion

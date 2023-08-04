@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/Buttons/widget.static.button.dart';
-import 'package:muonroi/Pages/PrimaryPages/pages.book.case.dart';
-
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
+import 'package:muonroi/Models/Stories/models.stories.story.dart';
+import '../../../../../Models/Users/widget.static.story.user.coin.dart';
+import '../../../../../Models/Users/widget.static.user.comment.dart';
 import '../../../../../Settings/settings.colors.dart';
 import '../../../../../Settings/settings.fonts.dart';
 import '../../../../../Settings/settings.language_code.vi..dart';
@@ -17,6 +19,16 @@ class StoriesBookCaseModelWidget extends StatefulWidget {
   final double numberOfChapter;
   final int lastUpdated;
   final double totalViews;
+  final int rankNumber;
+  final double vote;
+  final int totalVote;
+  final String notification;
+  final String introStory;
+  final List<double> newChapters;
+  final List<String> newChapterNames;
+  final List<UserCommentModel> userComments;
+  final List<UserCoin> userCoin;
+  final List<StoryModel> similarStories;
   const StoriesBookCaseModelWidget({
     super.key,
     required this.nameStory,
@@ -27,6 +39,16 @@ class StoriesBookCaseModelWidget extends StatefulWidget {
     required this.numberOfChapter,
     required this.lastUpdated,
     required this.totalViews,
+    required this.vote,
+    required this.rankNumber,
+    required this.totalVote,
+    required this.notification,
+    required this.introStory,
+    required this.newChapters,
+    required this.newChapterNames,
+    required this.userComments,
+    required this.userCoin,
+    required this.similarStories,
   });
 
   @override
@@ -114,12 +136,14 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.nameStory,
-                      style: FontsDefault.h4
-                          .copyWith(fontWeight: FontWeight.w700, fontSize: 18),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    SizedBox(
+                      child: Text(
+                        widget.nameStory,
+                        style: FontsDefault.h4.copyWith(
+                            fontWeight: FontWeight.w700, fontSize: 18),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     Text(
                       widget.authorName,
@@ -138,18 +162,45 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                   .width,
                               child: ButtonWidget
                                   .buttonNavigatorNextPreviewLanding(
-                                      context, const BookCase(storiesData: []),
+                                      context,
+                                      StoriesDetail(
+                                        storyInfo: StoryModel(
+                                            name: widget.nameStory,
+                                            authorName: widget.authorName,
+                                            image: widget.imageLink,
+                                            category: widget.categoryName,
+                                            totalView: widget.totalViews,
+                                            tagsName: widget.tagsName,
+                                            numberOfChapter:
+                                                widget.numberOfChapter,
+                                            lastUpdated: widget.lastUpdated,
+                                            rankNumber: widget.rankNumber,
+                                            vote: widget.vote,
+                                            totalVote: widget.totalVote,
+                                            introStory: widget.introStory,
+                                            notification: widget.notification,
+                                            newChapters: widget.newChapters,
+                                            newChapterNames:
+                                                widget.newChapterNames,
+                                            userComments: widget.userComments,
+                                            userCoin: widget.userCoin,
+                                            similarStories:
+                                                widget.similarStories),
+                                      ),
                                       textDisplay: L(ViCode
                                           .storiesContinueChapterTextInfo
                                           .toString())),
                             )),
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
-                          child: Text(
-                            '${widget.lastUpdated} ${L(ViCode.passedNumberMinuteTextInfo.toString())}',
-                            style: FontsDefault.h5,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                          child: SizedBox(
+                            width: 80,
+                            child: Text(
+                              '${widget.lastUpdated} ${L(ViCode.passedNumberMinuteTextInfo.toString())}',
+                              style: FontsDefault.h5,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         )
                       ],

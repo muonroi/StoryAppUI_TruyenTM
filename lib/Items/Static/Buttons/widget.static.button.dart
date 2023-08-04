@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import '../../../Settings/settings.buttons.dart';
 import '../../../Settings/settings.colors.dart';
 
 class ButtonWidget {
   static Widget buttonNavigatorNextPreviewLanding(
       BuildContext context, Widget nextRoute,
-      {String textDisplay = 'Next'}) {
+      {String textDisplay = 'Next',
+      TextStyle textStyle = const TextStyle(
+          fontFamily: "Inter",
+          fontSize: 16,
+          color: ColorDefaults.defaultTextColor),
+      Color color = ColorDefaults.mainColor,
+      Color borderColor = ColorDefaults.mainColor,
+      double widthBorder = 2}) {
     return ElevatedButton(
       onPressed: () {
         Navigator.push(
@@ -13,8 +19,14 @@ class ButtonWidget {
           MaterialPageRoute(builder: (context) => nextRoute),
         );
       },
-      style: ButtonDefaults.buttonNextPagePreview,
-      child: Text(textDisplay),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          shape: const StadiumBorder(),
+          side: BorderSide(color: borderColor, width: widthBorder)),
+      child: Text(
+        textDisplay,
+        style: textStyle,
+      ),
     );
   }
 

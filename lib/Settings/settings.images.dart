@@ -1,4 +1,6 @@
 class ImageDefault {
+  static const String imageAvatarDefault =
+      "https://t3.ftcdn.net/jpg/02/09/37/00/240_F_209370065_JLXhrc5inEmGl52SyvSPeVB23hB6IjrR.jpg";
   static const String imageRootPath = 'assets/images/';
   static const String imagePath2x = '${imageRootPath}2x/';
   static const String imagePath3x = '${imageRootPath}3x/';

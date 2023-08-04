@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/User/widget.static.user.info.items.dart';
 import 'package:muonroi/Models/Accounts/models.account.signup.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
@@ -40,7 +41,7 @@ class _UserInfoState extends State<UserInfo> {
                       .height,
                   child: CachedNetworkImage(
                     imageUrl: widget.userInfo.imageLink ??
-                        "https://t3.ftcdn.net/jpg/02/09/37/00/240_F_209370065_JLXhrc5inEmGl52SyvSPeVB23hB6IjrR.jpg",
+                        ImageDefault.imageAvatarDefault,
                     progressIndicatorBuilder:
                         (context, url, downloadProgress) =>
                             CircularProgressIndicator(
@@ -54,7 +55,8 @@ class _UserInfoState extends State<UserInfo> {
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
-                  widget.userInfo.username!,
+                  widget.userInfo.username ??
+                      L(ViCode.notfoundTextInfo.toString()),
                   style: FontsDefault.h5,
                 ),
               ),
@@ -70,7 +72,7 @@ class _UserInfoState extends State<UserInfo> {
                         children: [
                           Column(
                             children: [
-                              Text(formatValueNumber(widget.userInfo.coin!),
+                              Text(formatValueNumber(widget.userInfo.coin ?? 0),
                                   style: FontsDefault.h5),
                               SizedBox(
                                 width: MainSetting.getPercentageOfDevice(
@@ -97,7 +99,7 @@ class _UserInfoState extends State<UserInfo> {
                           Column(
                             children: [
                               Text(
-                                widget.userInfo.totalStoriesBought!.toString(),
+                                widget.userInfo.totalStoriesBought.toString(),
                                 style: FontsDefault.h5,
                               ),
                               SizedBox(
@@ -127,7 +129,7 @@ class _UserInfoState extends State<UserInfo> {
                         text: L(ViCode.myAccountGiftCodeTextInfo.toString()),
                         image: ImageDefault.gift2x),
                     SettingItems(
-                        text: L(ViCode.myAccountPopupTextInfo.toString()),
+                        text: L(ViCode.myAccountRechargeTextInfo.toString()),
                         image: ImageDefault.coin2x),
                     SettingItems(
                         text:
@@ -146,68 +148,6 @@ class _UserInfoState extends State<UserInfo> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class SettingItems extends StatelessWidget {
-  final String text;
-  final String image;
-  const SettingItems({super.key, required this.text, required this.image});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      child: TextButton(
-          onPressed: () {},
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                color: ColorDefaults.secondMainColor,
-                borderRadius: BorderRadius.circular(10)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                    width: MainSetting.getPercentageOfDevice(context,
-                            expectWidth: 20)
-                        .width,
-                    height: MainSetting.getPercentageOfDevice(context,
-                            expectHeight: 20)
-                        .height,
-                    child: Image.asset(
-                      image,
-                      fit: BoxFit.cover,
-                    )),
-                SizedBox(
-                  width: MainSetting.getPercentageOfDevice(context,
-                          expectWidth: 200)
-                      .width,
-                  height: MainSetting.getPercentageOfDevice(context,
-                          expectHeight: 25)
-                      .height,
-                  child: Text(
-                    text,
-                    style: FontsDefault.h5,
-                  ),
-                ),
-                SizedBox(
-                  width: MainSetting.getPercentageOfDevice(context,
-                          expectWidth: 25)
-                      .width,
-                  height: MainSetting.getPercentageOfDevice(context,
-                          expectHeight: 25)
-                      .height,
-                  child: Text(
-                    '>',
-                    style: FontsDefault.h5,
-                  ),
-                )
-              ],
-            ),
-          )),
     );
   }
 }
