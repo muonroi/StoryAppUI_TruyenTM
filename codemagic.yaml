@@ -9,7 +9,7 @@ workflows:
         script: flutter pub get
       - name: building
         script: flutter build ios --release
-    publishing:
-      email:
-        recipients:
-          - leanhphi1706@gmail.com
+      - name: unzip
+        script: zip -r ios-build.zip build/ios/
+    artifacts:
+         - ios-build.zip
