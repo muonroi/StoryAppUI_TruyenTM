@@ -8,7 +8,7 @@ import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import '../../Settings/settings.main.dart';
 
 class StoriesFree extends StatefulWidget {
-  final List<StoryModel> storiesData;
+  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowBack;
   const StoriesFree(

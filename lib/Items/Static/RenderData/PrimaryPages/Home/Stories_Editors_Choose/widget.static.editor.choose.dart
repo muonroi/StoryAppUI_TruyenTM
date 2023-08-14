@@ -7,7 +7,7 @@ import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
 
 class EditorStories extends StatelessWidget {
-  final List<StoryModel> storiesData;
+  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowBack;
   const EditorStories(

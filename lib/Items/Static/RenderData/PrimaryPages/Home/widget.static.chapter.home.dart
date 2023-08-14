@@ -52,13 +52,12 @@ class ListNewChapter extends StatelessWidget {
                                     onPressed: () {},
                                     child: RichText(
                                         text: TextSpan(
-                                            text: chapterInfos[index]
-                                                .chapterTitle,
+                                            text: "Coming soon",
                                             style: FontsDefault.h5,
                                             children: <TextSpan>[
                                           TextSpan(
                                             text:
-                                                '\n ${chapterInfos[index].minuteUpdated} ${L(ViCode.passedNumberMinuteTextInfo.toString())}',
+                                                '\n "Coming soon" ${L(ViCode.passedNumberMinuteTextInfo.toString())}',
                                             style: FontsDefault.h6,
                                           )
                                         ]))),
@@ -75,7 +74,7 @@ class ListNewChapter extends StatelessWidget {
                                 TextButton(
                                     onPressed: () {},
                                     child: Text(
-                                      '${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfos[index].chapterNumber}',
+                                      '${L(ViCode.chapterNumberTextInfo.toString())} "Coming soon"',
                                       style: FontsDefault.h5,
                                       textAlign: TextAlign.left,
                                     )),

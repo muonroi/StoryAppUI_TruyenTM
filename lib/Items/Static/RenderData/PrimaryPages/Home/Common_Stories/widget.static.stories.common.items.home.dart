@@ -8,7 +8,7 @@ import '../../../../../../Settings/settings.main.dart';
 import '../../../Shared/widget.static.stories.vertical.dart';
 
 class StoriesCommon extends StatelessWidget {
-  final List<StoryModel> storiesData;
+  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowBack;
   const StoriesCommon(

@@ -9,7 +9,7 @@ import '../../Settings/settings.main.dart';
 
 class BookCase extends StatefulWidget {
   const BookCase({super.key, required this.storiesData});
-  final List<StoryModel> storiesData;
+  final List<StoryItems> storiesData;
   @override
   State<BookCase> createState() => _BookCaseState();
 }
@@ -70,24 +70,29 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
     );
     List<Widget> dataEachRow = widget.storiesData
         .map((e) => StoriesBookCaseModelWidget(
-              nameStory: e.name,
-              categoryName: e.category ?? L(ViCode.notfoundTextInfo.toString()),
-              authorName: e.authorName ?? L(ViCode.notfoundTextInfo.toString()),
-              imageLink: e.image,
-              tagsName: e.tagsName ?? [],
-              lastUpdated: e.lastUpdated ?? 0,
-              totalViews: e.totalView ?? 0,
-              numberOfChapter: e.numberOfChapter ?? 0,
-              vote: e.vote ?? 0,
-              rankNumber: e.rankNumber ?? 0,
-              totalVote: e.totalVote ?? 0,
-              introStory: e.introStory ?? "",
-              notification: e.notification ?? "",
-              newChapters: e.newChapters ?? [],
-              newChapterNames: e.newChapterNames ?? [],
-              userComments: e.userComments ?? [],
-              userCoin: e.userCoin ?? [],
-              similarStories: e.similarStories ?? [],
+              storyId: e.id,
+              totalChapters: e.totalChapters,
+              guid: e.guid,
+              slug: e.slug,
+              isShow: e.isShow,
+              nameStory: e.storyTitle,
+              categoryName: e.nameCategory,
+              authorName: e.authorName,
+              imageLink: e.imgUrl,
+              tagsName: e.nameTag.map((e) => e.toString()).toList(),
+              lastUpdated: "",
+              totalViews: e.totalView,
+              numberOfChapter: e.totalChapters * 1.0,
+              vote: e.rating * 1.0,
+              rankNumber: 0,
+              totalVote: e.totalFavorite,
+              introStory: e.storySynopsis,
+              notification: "",
+              newChapters: const [],
+              newChapterNames: const [],
+              userComments: const [],
+              userCoin: const [],
+              similarStories: const [],
             ))
         .toList();
     return DefaultTabController(

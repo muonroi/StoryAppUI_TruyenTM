@@ -8,7 +8,7 @@ import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
 
 class Header extends StatelessWidget {
-  final StoryModel widget;
+  final StoryItems widget;
   const Header({super.key, required this.widget});
 
   @override
@@ -21,7 +21,7 @@ class Header extends StatelessWidget {
             children: [
               SizedBox(
                 width:
-                    MainSetting.getPercentageOfDevice(context, expectWidth: 119)
+                    MainSetting.getPercentageOfDevice(context, expectWidth: 115)
                         .width,
                 height: MainSetting.getPercentageOfDevice(context,
                         expectHeight: 176)
@@ -29,7 +29,7 @@ class Header extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: CachedNetworkImage(
-                    imageUrl: widget.image,
+                    imageUrl: widget.imgUrl,
                     progressIndicatorBuilder:
                         (context, url, downloadProgress) =>
                             CircularProgressIndicator(
@@ -45,7 +45,7 @@ class Header extends StatelessWidget {
                     MainSetting.getPercentageOfDevice(context, expectWidth: 25)
                             .width ??
                         25,
-                initialRating: widget.vote ?? 0,
+                initialRating: widget.rating * 1.0,
                 minRating: 0.5,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
@@ -64,7 +64,7 @@ class Header extends StatelessWidget {
                 MainSetting.getPercentageOfDevice(context, expectHeight: 176)
                     .height,
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
@@ -72,7 +72,7 @@ class Header extends StatelessWidget {
                             expectWidth: 210)
                         .width,
                     child: Text(
-                      widget.name,
+                      widget.storyTitle,
                       style: FontsDefault.h4.copyWith(fontSize: 20),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
@@ -80,20 +80,21 @@ class Header extends StatelessWidget {
                   ),
                   SizedBox(
                     child: Text(
-                      widget.authorName ??
-                          L(ViCode.notfoundTextInfo.toString()),
-                      style:
-                          FontsDefault.h5.copyWith(fontWeight: FontWeight.w400),
+                      widget.authorName,
+                      style: FontsDefault.h5.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.italic,
+                          color: ColorDefaults.mainColor),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                   ),
                   SizedBox(
                     width: MainSetting.getPercentageOfDevice(context,
-                            expectWidth: 230)
+                            expectWidth: 200)
                         .width,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
                           padding: const EdgeInsets.all(7),
@@ -101,8 +102,7 @@ class Header extends StatelessWidget {
                               color: ColorDefaults.secondMainColor,
                               borderRadius: BorderRadius.circular(10)),
                           child: Text(
-                            widget.category ??
-                                L(ViCode.notfoundTextInfo.toString()),
+                            widget.nameCategory,
                             style: FontsDefault.h5
                                 .copyWith(fontWeight: FontWeight.w400),
                             overflow: TextOverflow.ellipsis,
@@ -115,8 +115,7 @@ class Header extends StatelessWidget {
                               color: ColorDefaults.secondMainColor,
                               borderRadius: BorderRadius.circular(10)),
                           child: Text(
-                            widget.category ??
-                                L(ViCode.notfoundTextInfo.toString()),
+                            widget.nameCategory,
                             style: FontsDefault.h5
                                 .copyWith(fontWeight: FontWeight.w400),
                             overflow: TextOverflow.ellipsis,
@@ -124,6 +123,16 @@ class Header extends StatelessWidget {
                           ),
                         )
                       ],
+                    ),
+                  ),
+                  SizedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: widget.nameTag
+                          .map((e) => e.toString())
+                          .map((String item) {
+                        return Text(item);
+                      }).toList(),
                     ),
                   ),
                   SizedBox(
@@ -136,7 +145,7 @@ class Header extends StatelessWidget {
                                 text: L(ViCode.voteStoryTextInfo.toString()),
                                 children: [
                                   TextSpan(
-                                      text: ' ${widget.vote}/5 ',
+                                      text: ' ${widget.rating}/5 ',
                                       style: FontsDefault.h6.copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,
@@ -149,7 +158,7 @@ class Header extends StatelessWidget {
                                           fontSize: 15)),
                                   TextSpan(
                                       text:
-                                          '  ${widget.totalVote} ${L(ViCode.voteStoryTextInfo.toString()).replaceRange(0, 1, L(ViCode.voteStoryTextInfo.toString())[0].toLowerCase())}',
+                                          '  ${widget.totalFavorite} ${L(ViCode.voteStoryTextInfo.toString()).replaceRange(0, 1, L(ViCode.voteStoryTextInfo.toString())[0].toLowerCase())}',
                                       style: FontsDefault.h6.copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,

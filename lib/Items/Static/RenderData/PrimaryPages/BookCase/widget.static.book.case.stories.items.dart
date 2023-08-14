@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../../../Models/Stories/models.stories.story.dart';
+import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import '../../../../../Settings/settings.colors.dart';
 import '../../../../../Settings/settings.main.dart';
 import '../../../Buttons/widget.static.button.search.dart';
 
 class StoriesItems extends StatefulWidget {
-  final List<StoryModel> storiesData;
+  final List<StoryItems> storiesData;
   final List<Widget> dataEachRow;
   final AnimationController reload;
   final AnimationController sort;

@@ -38,7 +38,7 @@ class InfoDetailStory extends StatelessWidget {
 }
 
 class MoreInfoStory extends StatelessWidget {
-  final StoryModel widget;
+  final StoryItems widget;
   const MoreInfoStory({super.key, required this.widget});
 
   @override
@@ -47,14 +47,14 @@ class MoreInfoStory extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         InfoDetailStory(
-            value: widget.numberOfChapter ?? 0,
+            value: widget.totalChapters * 1.0,
             text: L(ViCode.chapterNumberTextInfo.toString())),
         Text(
           '|',
           style: FontsDefault.h4.copyWith(fontWeight: FontWeight.w300),
         ),
         InfoDetailStory(
-          value: widget.totalView ?? 0,
+          value: widget.totalView * 1.0,
           text: L(ViCode.totalViewStoryTextInfo.toString()),
         ),
         Text(
@@ -62,7 +62,7 @@ class MoreInfoStory extends StatelessWidget {
           style: FontsDefault.h4.copyWith(fontWeight: FontWeight.w300),
         ),
         InfoDetailStory(
-          value: double.parse(widget.totalVote.toString()),
+          value: double.parse(widget.totalFavorite.toString()),
           text: L(ViCode.totalFavoriteStoryTextInfo.toString()),
         ),
       ],

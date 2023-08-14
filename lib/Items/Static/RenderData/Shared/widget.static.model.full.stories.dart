@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
+import 'package:muonroi/Models/Stories/models.stories.story.dart';
 
 import '../../../../../Settings/settings.colors.dart';
 import '../../../../../Settings/settings.fonts.dart';
@@ -17,6 +19,7 @@ class StoriesFullModelWidget extends StatefulWidget {
   final double totalViews;
   final int? rankNumber;
   final bool isShowRank;
+  final StoryItems dataStory;
   const StoriesFullModelWidget(
       {super.key,
       required this.nameStory,
@@ -28,7 +31,8 @@ class StoriesFullModelWidget extends StatefulWidget {
       required this.lastUpdated,
       required this.totalViews,
       this.rankNumber,
-      required this.isShowRank});
+      required this.isShowRank,
+      required this.dataStory});
 
   @override
   State<StoriesFullModelWidget> createState() => _StoriesFullModelWidgetState();
@@ -59,6 +63,13 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
       onTapDown: (_) => _toggleItemState(),
       onTapUp: (_) => _setDefaultItemState(),
       onTapCancel: () => _setDefaultItemState(),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    StoriesDetail(storyInfo: widget.dataStory)));
+      },
       child: AnimatedContainer(
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
@@ -133,20 +144,30 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.authorName,
-                    style: FontsDefault.h5.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: ColorDefaults.mainColor),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    width: MainSetting.getPercentageOfDevice(context,
+                            expectWidth: 200)
+                        .width,
+                    child: Text(
+                      widget.authorName,
+                      style: FontsDefault.h5.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: ColorDefaults.mainColor),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  Text(
-                    widget.nameStory,
-                    style:
-                        FontsDefault.h5.copyWith(fontWeight: FontWeight.w700),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    width: MainSetting.getPercentageOfDevice(context,
+                            expectWidth: 250)
+                        .width,
+                    child: Text(
+                      widget.nameStory,
+                      style:
+                          FontsDefault.h5.copyWith(fontWeight: FontWeight.w700),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
