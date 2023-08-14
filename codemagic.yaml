@@ -2,8 +2,10 @@ workflows:
   main:
     name: Build and Deploy
     environment:
-      # Set environment variables if needed
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.example.id
     scripts:
       - flutter packages get
       - flutter build web
-      - flutter build ios --release --no-codesign  # Use the appropriate flags for your needs
+      - flutter build ios --release
