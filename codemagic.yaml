@@ -3,8 +3,7 @@ workflows:
     name: Build and Deploy
     environment:
       ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.example.id
+        distribution_type: development
     scripts:
       - flutter packages get
       - flutter build web
