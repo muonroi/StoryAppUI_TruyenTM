@@ -1,12 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
-import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import '../../../../../Models/Stories/models.stories.story.dart';
 import '../../../../../Settings/settings.fonts.dart';
 import '../../../../../Settings/settings.main.dart';
 
 class CommonTopStoriesData extends StatefulWidget {
-  final List<StoryModel> storiesCommonInfo;
+  final List<StoryItems> storiesCommonInfo;
 
   const CommonTopStoriesData({
     super.key,
@@ -78,9 +78,18 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                           context,
                                           expectHeight: 145)
                                       .height,
-                                  child: Image.asset(
-                                      widget.storiesCommonInfo[index].image,
-                                      fit: BoxFit.cover)),
+                                  child: SizedBox(
+                                      child: CachedNetworkImage(
+                                    imageUrl:
+                                        widget.storiesCommonInfo[index].imgUrl,
+                                    progressIndicatorBuilder: (context, url,
+                                            downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                    fit: BoxFit.cover,
+                                  ))),
                             ],
                           ),
                         ),
@@ -95,15 +104,15 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                     .width,
                                 child: Column(
                                   children: [
-                                    Text(widget.storiesCommonInfo[index].name,
+                                    Text(
+                                        widget.storiesCommonInfo[index]
+                                            .storyTitle,
                                         style: FontsDefault.h5,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1),
                                     Text(
                                         widget.storiesCommonInfo[index]
-                                                .category ??
-                                            L(ViCode.notfoundTextInfo
-                                                .toString()),
+                                            .nameCategory,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: FontsDefault.h6),
@@ -129,8 +138,8 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
                                   formatValueNumber(widget
-                                          .storiesCommonInfo[index].totalView ??
-                                      0),
+                                          .storiesCommonInfo[index].totalView *
+                                      1.0),
                                   style: FontsDefault.h6,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,

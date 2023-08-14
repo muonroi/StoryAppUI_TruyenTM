@@ -51,7 +51,8 @@ class LocalizationLib {
       ViCode.writeCommentStoryTextInfo.toString(): 'Viết đánh giá  ',
       ViCode.coinStoryTextInfo.toString(): 'Ngân lượng',
       ViCode.pushRechargeStoryTextInfo.toString(): 'Đẩy ngân lượng',
-      ViCode.similarStoriesTextInfo.toString(): 'Truyện tương tự'
+      ViCode.similarStoriesTextInfo.toString(): 'Truyện tương tự',
+      ViCode.chapterEndTextInfo.toString(): "Hết!"
     }
   };
   static String L(String key, {String locale = 'vi'}) {

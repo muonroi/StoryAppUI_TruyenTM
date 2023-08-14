@@ -11,14 +11,15 @@ import '../../../../../Settings/settings.language_code.vi..dart';
 import '../../../../../Settings/settings.main.dart';
 
 class StoriesBookCaseModelWidget extends StatefulWidget {
+  final int storyId;
   final String nameStory;
   final String authorName;
   final String imageLink;
   final List<String> tagsName;
   final String categoryName;
   final double numberOfChapter;
-  final int lastUpdated;
-  final double totalViews;
+  final String lastUpdated;
+  final int totalViews;
   final int rankNumber;
   final double vote;
   final int totalVote;
@@ -28,7 +29,11 @@ class StoriesBookCaseModelWidget extends StatefulWidget {
   final List<String> newChapterNames;
   final List<UserCommentModel> userComments;
   final List<UserCoin> userCoin;
-  final List<StoryModel> similarStories;
+  final List<StoryItems> similarStories;
+  final String guid;
+  final bool isShow;
+  final String slug;
+  final int totalChapters;
   const StoriesBookCaseModelWidget({
     super.key,
     required this.nameStory,
@@ -49,6 +54,11 @@ class StoriesBookCaseModelWidget extends StatefulWidget {
     required this.userComments,
     required this.userCoin,
     required this.similarStories,
+    required this.guid,
+    required this.isShow,
+    required this.slug,
+    required this.storyId,
+    required this.totalChapters,
   });
 
   @override
@@ -137,6 +147,9 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
+                      width: MainSetting.getPercentageOfDevice(context,
+                              expectWidth: 250)
+                          .width,
                       child: Text(
                         widget.nameStory,
                         style: FontsDefault.h4.copyWith(
@@ -164,28 +177,26 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                   .buttonNavigatorNextPreviewLanding(
                                       context,
                                       StoriesDetail(
-                                        storyInfo: StoryModel(
-                                            name: widget.nameStory,
-                                            authorName: widget.authorName,
-                                            image: widget.imageLink,
-                                            category: widget.categoryName,
+                                        storyInfo: StoryItems(
+                                            id: widget.storyId,
+                                            guid: widget.guid,
+                                            storyTitle: widget.nameStory,
+                                            storySynopsis: widget.introStory,
+                                            isShow: widget.isShow,
                                             totalView: widget.totalViews,
-                                            tagsName: widget.tagsName,
-                                            numberOfChapter:
-                                                widget.numberOfChapter,
-                                            lastUpdated: widget.lastUpdated,
-                                            rankNumber: widget.rankNumber,
-                                            vote: widget.vote,
-                                            totalVote: widget.totalVote,
-                                            introStory: widget.introStory,
-                                            notification: widget.notification,
-                                            newChapters: widget.newChapters,
-                                            newChapterNames:
-                                                widget.newChapterNames,
-                                            userComments: widget.userComments,
-                                            userCoin: widget.userCoin,
-                                            similarStories:
-                                                widget.similarStories),
+                                            totalFavorite: widget.totalVote,
+                                            rating: widget.vote,
+                                            slug: widget.slug,
+                                            nameCategory: widget.categoryName,
+                                            authorName: widget.authorName,
+                                            nameTag: widget.tagsName
+                                                .map((e) => e.toString())
+                                                .toList(),
+                                            totalChapters: widget.totalChapters,
+                                            imgUrl: widget.imageLink,
+                                            updatedDateString:
+                                                widget.lastUpdated,
+                                            updatedDateTs: 0),
                                       ),
                                       textDisplay: L(ViCode
                                           .storiesContinueChapterTextInfo

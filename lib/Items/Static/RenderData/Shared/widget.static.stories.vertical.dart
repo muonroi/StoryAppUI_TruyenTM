@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.full.stories.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
-import 'package:muonroi/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/Settings/settings.main.dart';
 import '../../../../Settings/settings.colors.dart';
 
 class StoriesVerticalData extends StatelessWidget {
-  final List<StoryModel> storiesData;
+  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowBack;
   const StoriesVerticalData(
@@ -26,7 +24,7 @@ class StoriesVerticalData extends StatelessWidget {
 }
 
 class StoriesVerticalDataBody extends StatelessWidget {
-  final List<StoryModel> storiesData;
+  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowIconBack;
 
@@ -38,21 +36,38 @@ class StoriesVerticalDataBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isShowLabel) {
-      storiesData.sort((a, b) => a.rankNumber!.compareTo(b.rankNumber!));
-    }
+    // if (isShowLabel) {
+    //   storiesData.sort((a, b) => a.rankNumber!.compareTo(b.rankNumber!));
+    // }
     List<Widget> dataEachRow = storiesData
         .map((e) => StoriesFullModelWidget(
-              nameStory: e.name,
-              categoryName: e.category ?? L(ViCode.notfoundTextInfo.toString()),
-              authorName: e.authorName ?? L(ViCode.notfoundTextInfo.toString()),
-              imageLink: e.image,
-              tagsName: e.tagsName ?? [],
-              lastUpdated: e.lastUpdated ?? 0,
-              totalViews: e.totalView ?? 0,
-              numberOfChapter: e.numberOfChapter ?? 0,
+              nameStory: e.storyTitle,
+              categoryName: e.nameCategory,
+              authorName: e.authorName,
+              imageLink: e.imgUrl,
+              tagsName: e.nameTag.map((e) => e.toString()).toList(),
+              lastUpdated: 0,
+              totalViews: e.totalView * 1.0,
+              numberOfChapter: e.totalChapters * 1.0,
               isShowRank: isShowLabel,
-              rankNumber: e.rankNumber,
+              rankNumber: 0,
+              dataStory: StoryItems(
+                  id: e.id,
+                  guid: e.guid,
+                  storySynopsis: e.storySynopsis,
+                  authorName: e.authorName,
+                  nameCategory: e.nameCategory,
+                  imgUrl: e.imgUrl,
+                  storyTitle: e.storyTitle,
+                  totalChapters: int.parse(e.totalChapters.toString()),
+                  nameTag: e.nameTag,
+                  totalView: e.totalView,
+                  isShow: e.isShow,
+                  rating: e.rating,
+                  slug: e.slug,
+                  totalFavorite: e.totalFavorite,
+                  updatedDateString: e.updatedDateString,
+                  updatedDateTs: 0),
             ))
         .toList();
     return Scaffold(

@@ -1,12 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Pages/Accounts/Logins/pages.logins.sign_up.dart';
-import 'package:muonroi/Controller/controller.main.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.images.dart';
-
-import '../../../Items/Static/Buttons/widget.static.button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -69,14 +66,14 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: totalSize.height *
-                      (((50 / totalSize.height) * 100) / 100),
-                  width: totalSize.width,
-                  child: ButtonWidget.buttonNavigatorNextPreviewLanding(
-                      context, const MainPage(),
-                      textDisplay: 'Send Code'),
-                ),
+                // SizedBox(
+                //   height: totalSize.height *
+                //       (((50 / totalSize.height) * 100) / 100),
+                //   width: totalSize.width,
+                //   child: ButtonWidget.buttonNavigatorNextPreviewLanding(
+                //       context, const MainPage(),
+                //       textDisplay: 'Send Code'),
+                // ),
               ]),
         ),
         bottomNavigationBar: Padding(

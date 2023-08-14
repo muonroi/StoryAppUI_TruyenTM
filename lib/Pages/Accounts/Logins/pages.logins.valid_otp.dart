@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/Controller/controller.main.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});
@@ -56,14 +55,14 @@ class _OTPScreenState extends State<OTPScreen> {
               const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                  String enteredOTP = otpControllers
-                      .map((controller) => controller.text)
-                      .join();
-                  print(enteredOTP);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainPage()));
+                  // String enteredOTP = otpControllers
+                  //     .map((controller) => controller.text)
+                  //     .join();
+                  //print(enteredOTP);
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const MainPage()));
                 },
                 child: const Text('Verify'),
               ),

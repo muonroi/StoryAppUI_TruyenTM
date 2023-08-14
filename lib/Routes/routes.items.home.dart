@@ -32,7 +32,7 @@ class HomePageItems {
       PageController pageBannerController,
       List<Widget> listBannerImage,
       List<ChapterInfo> listChapter,
-      List<StoryModel> listStoriesTopCommon,
+      List<StoryItems> listStoriesTopCommon,
       {int numberOfBanner = 3}) {
     late List<Widget> components = [
       // #region Header
@@ -49,62 +49,20 @@ class HomePageItems {
       // #endregion
 
       // #region Body
-      const MainCategories(),
+      const Padding(
+        padding: EdgeInsets.only(bottom: 32.0),
+        child: MainCategories(),
+      ),
       GroupCategoryTextInfo(
           titleText: L(ViCode.editorChoiceTextInfo.toString()),
           nextRoute: EditorStories(
-            isShowLabel: false,
-            isShowBack: false,
-            storiesData: [
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/085339edd8d1f181ea709879862bebddf69e1f426809e10b9015359fa887bbba.jpg',
-                  name: 'Bách luyện thành tiên',
-                  category: 'Tiên hiệp',
-                  totalView: 16,
-                  authorName: 'Lão trư',
-                  numberOfChapter: 2560,
-                  lastUpdated: 1,
-                  rankNumber: 10,
-                  tagsName: ['Sắc', 'Nhiều vợ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
-                  name: 'Ngã dục phong thiên',
-                  category: 'Yêu nhân',
-                  totalView: 1254,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 1231,
-                  lastUpdated: 2,
-                  rankNumber: 2,
-                  tagsName: ['Yêu vật', 'Anh vũ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/b65d0b5b1902b17daa87e615174905e60df4be42d649d85ac4b4877d7bc95306.jpg',
-                  name: 'Tiên nghịch',
-                  category: 'Huyền huyễn',
-                  totalView: 1230,
-                  authorName: 'Lão ngũ',
-                  numberOfChapter: 3201,
-                  lastUpdated: 2,
-                  rankNumber: 1,
-                  tagsName: ['Tiên', 'Ma']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/08608f3e3f75d30b8fdf7377e409e284b652cd1daf2f03adede578843eb40f29.jpg',
-                  name: 'Thần cấp đại ma thần',
-                  category: 'Tiên hiệp',
-                  totalView: 1576,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 3000,
-                  lastUpdated: 3,
-                  rankNumber: 3,
-                  tagsName: ['Hoàn thành', 'Não tàn']),
-            ],
-          )),
+              isShowLabel: false,
+              isShowBack: false,
+              storiesData: listStoriesTopCommon)),
       StoriesOfCategoriesData(
         pageEditorController: pageEditorChoiceController,
         data: listStoriesChoiceOfEditor,
+        padding: 8.0,
       ),
 
       GroupCategoryTextInfo(
@@ -112,48 +70,7 @@ class HomePageItems {
           nextRoute: StoriesNewUpdate(
             isShowLabel: false,
             isShowBack: false,
-            storiesData: [
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/085339edd8d1f181ea709879862bebddf69e1f426809e10b9015359fa887bbba.jpg',
-                  name: 'Bách luyện thành tiên',
-                  category: 'Tiên hiệp',
-                  totalView: 16,
-                  authorName: 'Lão trư',
-                  numberOfChapter: 2560,
-                  lastUpdated: 1,
-                  tagsName: ['Sắc', 'Nhiều vợ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
-                  name: 'Ngã dục phong thiên',
-                  category: 'Yêu nhân',
-                  totalView: 1254,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 1231,
-                  lastUpdated: 2,
-                  tagsName: ['Yêu vật', 'Anh vũ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/b65d0b5b1902b17daa87e615174905e60df4be42d649d85ac4b4877d7bc95306.jpg',
-                  name: 'Tiên nghịch',
-                  category: 'Huyền huyễn',
-                  totalView: 1230,
-                  authorName: 'Lão ngũ',
-                  numberOfChapter: 3201,
-                  lastUpdated: 2,
-                  tagsName: ['Tiên', 'Ma']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/08608f3e3f75d30b8fdf7377e409e284b652cd1daf2f03adede578843eb40f29.jpg',
-                  name: 'Thần cấp đại ma thần',
-                  category: 'Tiên hiệp',
-                  totalView: 1576,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 3000,
-                  lastUpdated: 3,
-                  tagsName: ['Hoàn thành', 'Não tàn']),
-            ],
+            storiesData: listStoriesTopCommon,
           )),
       StoriesNewUpdatedData(data: listStoriesNewUpdatedFirstRow),
 
@@ -162,52 +79,7 @@ class HomePageItems {
           nextRoute: StoriesCommon(
             isShowLabel: true,
             isShowBack: false,
-            storiesData: [
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/085339edd8d1f181ea709879862bebddf69e1f426809e10b9015359fa887bbba.jpg',
-                  name: 'Bách luyện thành tiên',
-                  category: 'Tiên hiệp',
-                  totalView: 16,
-                  authorName: 'Lão trư',
-                  numberOfChapter: 2560,
-                  lastUpdated: 1,
-                  rankNumber: 10,
-                  tagsName: ['Sắc', 'Nhiều vợ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
-                  name: 'Ngã dục phong thiên',
-                  category: 'Yêu nhân',
-                  totalView: 1254,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 1231,
-                  lastUpdated: 2,
-                  rankNumber: 2,
-                  tagsName: ['Yêu vật', 'Anh vũ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/b65d0b5b1902b17daa87e615174905e60df4be42d649d85ac4b4877d7bc95306.jpg',
-                  name: 'Tiên nghịch',
-                  category: 'Huyền huyễn',
-                  totalView: 1230,
-                  authorName: 'Lão ngũ',
-                  numberOfChapter: 3201,
-                  lastUpdated: 2,
-                  rankNumber: 1,
-                  tagsName: ['Tiên', 'Ma']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/08608f3e3f75d30b8fdf7377e409e284b652cd1daf2f03adede578843eb40f29.jpg',
-                  name: 'Thần cấp đại ma thần',
-                  category: 'Tiên hiệp',
-                  totalView: 1576,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 3000,
-                  lastUpdated: 3,
-                  rankNumber: 3,
-                  tagsName: ['Hoàn thành', 'Não tàn']),
-            ],
+            storiesData: listStoriesTopCommon,
           )),
       const FilterByDateButton(),
       CommonTopStoriesData(
@@ -219,114 +91,24 @@ class HomePageItems {
           nextRoute: StoriesNew(
             isShowLabel: false,
             isShowBack: false,
-            storiesData: [
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/085339edd8d1f181ea709879862bebddf69e1f426809e10b9015359fa887bbba.jpg',
-                  name: 'Bách luyện thành tiên',
-                  category: 'Tiên hiệp',
-                  totalView: 16,
-                  authorName: 'Lão trư',
-                  numberOfChapter: 2560,
-                  lastUpdated: 1,
-                  rankNumber: 10,
-                  tagsName: ['Sắc', 'Nhiều vợ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
-                  name: 'Ngã dục phong thiên',
-                  category: 'Yêu nhân',
-                  totalView: 1254,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 1231,
-                  lastUpdated: 2,
-                  rankNumber: 2,
-                  tagsName: ['Yêu vật', 'Anh vũ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/b65d0b5b1902b17daa87e615174905e60df4be42d649d85ac4b4877d7bc95306.jpg',
-                  name: 'Tiên nghịch',
-                  category: 'Huyền huyễn',
-                  totalView: 1230,
-                  authorName: 'Lão ngũ',
-                  numberOfChapter: 3201,
-                  lastUpdated: 2,
-                  rankNumber: 1,
-                  tagsName: ['Tiên', 'Ma']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/08608f3e3f75d30b8fdf7377e409e284b652cd1daf2f03adede578843eb40f29.jpg',
-                  name: 'Thần cấp đại ma thần',
-                  category: 'Tiên hiệp',
-                  totalView: 1576,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 3000,
-                  lastUpdated: 3,
-                  rankNumber: 3,
-                  tagsName: ['Hoàn thành', 'Não tàn']),
-            ],
+            storiesData: listStoriesTopCommon,
           )),
       StoriesOfCategoriesData(
-        pageEditorController: pageNewStoriesController,
-        data: listNewStories,
-      ),
+          pageEditorController: pageNewStoriesController,
+          data: listNewStories,
+          padding: 8.0),
 
       GroupCategoryTextInfo(
           titleText: L(ViCode.completeStoriesTextInfo.toString()),
           nextRoute: StoriesComplete(
             isShowLabel: false,
             isShowBack: false,
-            storiesData: [
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/085339edd8d1f181ea709879862bebddf69e1f426809e10b9015359fa887bbba.jpg',
-                  name: 'Bách luyện thành tiên',
-                  category: 'Tiên hiệp',
-                  totalView: 16,
-                  authorName: 'Lão trư',
-                  numberOfChapter: 2560,
-                  lastUpdated: 1,
-                  rankNumber: 10,
-                  tagsName: ['Sắc', 'Nhiều vợ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/951c6f420501016a2f36700aa1e806b3072d45ff270b676ebba284416bc5fad4.jpg',
-                  name: 'Ngã dục phong thiên',
-                  category: 'Yêu nhân',
-                  totalView: 1254,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 1231,
-                  lastUpdated: 2,
-                  rankNumber: 2,
-                  tagsName: ['Yêu vật', 'Anh vũ']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/b65d0b5b1902b17daa87e615174905e60df4be42d649d85ac4b4877d7bc95306.jpg',
-                  name: 'Tiên nghịch',
-                  category: 'Huyền huyễn',
-                  totalView: 1230,
-                  authorName: 'Lão ngũ',
-                  numberOfChapter: 3201,
-                  lastUpdated: 2,
-                  rankNumber: 1,
-                  tagsName: ['Tiên', 'Ma']),
-              StoryModel(
-                  image:
-                      'https://www.nae.vn/ttv/ttv/public/images/story/08608f3e3f75d30b8fdf7377e409e284b652cd1daf2f03adede578843eb40f29.jpg',
-                  name: 'Thần cấp đại ma thần',
-                  category: 'Tiên hiệp',
-                  totalView: 1576,
-                  authorName: 'Nhĩ căn',
-                  numberOfChapter: 3000,
-                  lastUpdated: 3,
-                  rankNumber: 3,
-                  tagsName: ['Hoàn thành', 'Não tàn']),
-            ],
+            storiesData: listStoriesTopCommon,
           )),
       StoriesOfCategoriesData(
-        pageEditorController: pageStoriesCompleteController,
-        data: listStoriesComplete,
-      ),
+          pageEditorController: pageStoriesCompleteController,
+          data: listStoriesComplete,
+          padding: 8.0),
       // #endregion
 
       // #region Footer

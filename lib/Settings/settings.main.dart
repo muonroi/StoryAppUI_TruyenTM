@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:muonroi/Settings/settings.api.dart';
 import 'package:muonroi/Settings/settings.languages.dart';
 import 'package:muonroi/Settings/settings.localization.dart';
 import '../Models/Settings/models.mainsettings.device.dart';
@@ -8,6 +10,9 @@ import '../Models/Settings/models.mainsettings.device.dart';
 String L(String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
 }
+
+Dio baseUrl() => Dio(
+    BaseOptions(responseType: ResponseType.plain, baseUrl: ApiNetwork.baseApi));
 
 String formatValueNumber(double value) {
   final numberFormat = NumberFormat("#,###");

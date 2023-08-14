@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.list.stories.image.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.full.stories.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
+import 'package:muonroi/Models/Stories/models.stories.story.dart';
 
 import '../../../../../Settings/settings.main.dart';
 
@@ -45,6 +49,7 @@ class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
         crossAxisCount: 3,
         childAspectRatio: 0.7,
         children: List.generate(6, (index) {
+          var infoStory = widget.data[index] as StoriesImageIncludeSizeBox;
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,6 +58,31 @@ class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
                 onTapDown: (_) => _onTapDown(index, _storiesFillRowScales),
                 onTapUp: (_) => _onTapUp(index, _storiesFillRowScales),
                 onTapCancel: () => _onTapUp(index, _storiesFillRowScales),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => StoriesDetail(
+                                storyInfo: StoryItems(
+                                    id: int.parse(infoStory.storyId),
+                                    guid: infoStory.guid,
+                                    storySynopsis: infoStory.introStory,
+                                    authorName: infoStory.authorName,
+                                    nameCategory: infoStory.categoryName,
+                                    imgUrl: infoStory.imageLink,
+                                    storyTitle: infoStory.nameStory,
+                                    totalChapters: int.parse(
+                                        infoStory.totalChapters.toString()),
+                                    nameTag: infoStory.tagsName,
+                                    totalView: infoStory.totalViews,
+                                    isShow: infoStory.isShow,
+                                    rating: infoStory.vote,
+                                    slug: infoStory.slug,
+                                    totalFavorite: infoStory.totalVote,
+                                    updatedDateString: infoStory.lastUpdated,
+                                    updatedDateTs: 0),
+                              )));
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,10 +126,12 @@ class StoriesOfCategoriesData extends StatefulWidget {
     super.key,
     required PageController pageEditorController,
     required this.data,
+    required this.padding,
   }) : _pageEditorController = pageEditorController;
 
   final PageController _pageEditorController;
   final List<Widget> data;
+  final double padding;
   @override
   State<StoriesOfCategoriesData> createState() =>
       _StoriesOfCategoriesDataState();
@@ -140,27 +172,59 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
               onTapDown: (_) => _onTapDown(index),
               onTapUp: (_) => _onTapUp(index),
               onTapCancel: () => _onTapUp(index),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                      transform: Matrix4.diagonal3Values(
-                        _imageScales[index],
-                        _imageScales[index],
-                        1.0,
+              onTap: () {
+                if (widget.data[index] is StoriesImageIncludeSizeBox) {
+                  StoriesImageIncludeSizeBox infoStory =
+                      widget.data[index] as StoriesImageIncludeSizeBox;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => StoriesDetail(
+                                storyInfo: StoryItems(
+                                    id: int.parse(infoStory.storyId),
+                                    guid: infoStory.guid,
+                                    storySynopsis: infoStory.introStory,
+                                    authorName: infoStory.authorName,
+                                    nameCategory: infoStory.categoryName,
+                                    imgUrl: infoStory.imageLink,
+                                    storyTitle: infoStory.nameStory,
+                                    totalChapters: int.parse(
+                                        infoStory.totalChapters.toString()),
+                                    nameTag: infoStory.tagsName,
+                                    totalView: infoStory.totalViews,
+                                    isShow: infoStory.isShow,
+                                    rating: infoStory.vote,
+                                    slug: infoStory.slug,
+                                    totalFavorite: infoStory.totalVote,
+                                    updatedDateString: infoStory.lastUpdated,
+                                    updatedDateTs: 0),
+                              )));
+                }
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: widget.padding),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        transform: Matrix4.diagonal3Values(
+                          _imageScales[index],
+                          _imageScales[index],
+                          1.0,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: widget.data[index],
+                        ),
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: widget.data[index],
-                      ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             );
           }),

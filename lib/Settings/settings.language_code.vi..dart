@@ -93,6 +93,8 @@ enum ViCode {
   pushRechargeStoryTextInfo,
 // Similar of the stories
   similarStoriesTextInfo,
+// Chapter end
+  chapterEndTextInfo,
 //Error when search return null or empty
   notfoundTextInfo,
 // #endregion
