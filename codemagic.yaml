@@ -1,10 +1,14 @@
 workflows:
-  main:
-    name: Build and Deploy
+  build-ios:
+    name: Build iOS App
     environment:
-      ios_signing:
-        distribution_type: development
+      flutter: stable
+  my-workflow:
     scripts:
-      - flutter packages get
-      - flutter build web
-      - flutter build ios --release
+      - name: Prepare
+        script: flutter pub get
+      - name: building
+        script: flutter build ios --release
+      - name: Archive iOS app
+        script: |
+          - tar czf ios-build.tar.gz build/ios/
