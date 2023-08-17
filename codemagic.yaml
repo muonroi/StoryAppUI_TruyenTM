@@ -1,15 +1,1 @@
-workflows:
-  build-ios:
-    name: Build iOS App
-    environment:
-      flutter: stable
-  my-workflow:
-    scripts:
-      - name: Prepare
-        script: flutter pub get
-      - name: building
-        script: flutter build ios --release
-      - name: unzip
-        script: zip -r ios-build.zip build/ios/
-    artifacts:
-         - ios-build.zip
+

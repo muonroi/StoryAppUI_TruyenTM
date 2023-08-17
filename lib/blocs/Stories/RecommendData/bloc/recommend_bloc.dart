@@ -8,8 +8,12 @@ part 'recommend_state.dart';
 class RecommendStoryPageBloc
     extends Bloc<RecommendStoryEvent, RecommendStoryState> {
   final int storyId;
-  RecommendStoryPageBloc(this.storyId) : super(RecommendStoryInitialState()) {
-    final StoryRepository storyRepository = StoryRepository();
+  final int pageIndex;
+  final int pageSize;
+  RecommendStoryPageBloc(this.storyId, this.pageSize, this.pageIndex)
+      : super(RecommendStoryInitialState()) {
+    final StoryRepository storyRepository =
+        StoryRepository(pageIndex: pageIndex, pageSize: pageSize);
     on<GetRecommendStoriesList>((event, emit) async {
       try {
         emit(RecommendStoryLoadingState());

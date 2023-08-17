@@ -18,7 +18,8 @@ class ListNewChapter extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
-          height: MainSetting.getPercentageOfDevice(context, expectHeight: 376)
+          height: MainSetting.getPercentageOfDevice(context,
+                  expectHeight: chapterInfos.length * 75.2)
               .height,
           child: ListView.builder(
               primary: false,

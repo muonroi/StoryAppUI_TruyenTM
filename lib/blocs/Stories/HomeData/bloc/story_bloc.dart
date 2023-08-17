@@ -7,12 +7,16 @@ part 'story_event.dart';
 part 'story_state.dart';
 
 class StoryDataHomePageBloc extends Bloc<StoryEvent, StoryState> {
-  StoryDataHomePageBloc() : super(StoryInitial()) {
-    final StoryRepository storyRepository = StoryRepository();
+  final int pageIndex;
+  final int pageSize;
+  StoryDataHomePageBloc(this.pageIndex, this.pageSize) : super(StoryInitial()) {
+    final StoryRepository storyRepository =
+        StoryRepository(pageIndex: pageIndex, pageSize: pageSize);
     on<GetStoriesList>((event, emit) async {
       try {
         emit(StoryLoadingState());
-        final mList = await storyRepository.fetchStoriesData();
+        final mList =
+            await storyRepository.fetchStoriesData(pageIndex, pageSize);
         emit(StoryLoadedState(mList));
         if (!mList.isOk) {
           emit(StoryErrorState(

@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.list.stories.image.dart';
-import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.full.stories.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 
@@ -63,25 +61,8 @@ class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => StoriesDetail(
-                                storyInfo: StoryItems(
-                                    id: int.parse(infoStory.storyId),
-                                    guid: infoStory.guid,
-                                    storySynopsis: infoStory.introStory,
-                                    authorName: infoStory.authorName,
-                                    nameCategory: infoStory.categoryName,
-                                    imgUrl: infoStory.imageLink,
-                                    storyTitle: infoStory.nameStory,
-                                    totalChapters: int.parse(
-                                        infoStory.totalChapters.toString()),
-                                    nameTag: infoStory.tagsName,
-                                    totalView: infoStory.totalViews,
-                                    isShow: infoStory.isShow,
-                                    rating: infoStory.vote,
-                                    slug: infoStory.slug,
-                                    totalFavorite: infoStory.totalVote,
-                                    updatedDateString: infoStory.lastUpdated,
-                                    updatedDateTs: 0),
-                              )));
+                              storyId: infoStory.storyId,
+                              storyTitle: infoStory.nameStory)));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -180,25 +161,8 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => StoriesDetail(
-                                storyInfo: StoryItems(
-                                    id: int.parse(infoStory.storyId),
-                                    guid: infoStory.guid,
-                                    storySynopsis: infoStory.introStory,
-                                    authorName: infoStory.authorName,
-                                    nameCategory: infoStory.categoryName,
-                                    imgUrl: infoStory.imageLink,
-                                    storyTitle: infoStory.nameStory,
-                                    totalChapters: int.parse(
-                                        infoStory.totalChapters.toString()),
-                                    nameTag: infoStory.tagsName,
-                                    totalView: infoStory.totalViews,
-                                    isShow: infoStory.isShow,
-                                    rating: infoStory.vote,
-                                    slug: infoStory.slug,
-                                    totalFavorite: infoStory.totalVote,
-                                    updatedDateString: infoStory.lastUpdated,
-                                    updatedDateTs: 0),
-                              )));
+                              storyId: infoStory.storyId,
+                              storyTitle: infoStory.nameStory)));
                 }
               },
               child: Container(

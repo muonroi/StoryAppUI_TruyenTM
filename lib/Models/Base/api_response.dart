@@ -48,7 +48,7 @@ class Result {
   factory Result.fromJson(Map<String, dynamic> json) {
     return Result(
       items: List<dynamic>.from(
-          json['items'].map((item) => StoryModel.fromJson(item))),
+          json['items'].map((item) => StoriesModel.fromJson(item))),
       pagingInfo: PagingInfo.fromJson(json['pagingInfo']),
     );
   }

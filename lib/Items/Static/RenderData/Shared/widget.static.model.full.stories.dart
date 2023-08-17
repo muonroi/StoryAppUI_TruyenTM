@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
-import 'package:muonroi/Models/Stories/models.stories.story.dart';
-
 import '../../../../../Settings/settings.colors.dart';
 import '../../../../../Settings/settings.fonts.dart';
 import '../../../../../Settings/settings.language_code.vi..dart';
@@ -19,7 +17,7 @@ class StoriesFullModelWidget extends StatefulWidget {
   final double totalViews;
   final int? rankNumber;
   final bool isShowRank;
-  final StoryItems dataStory;
+  final int storyId;
   const StoriesFullModelWidget(
       {super.key,
       required this.nameStory,
@@ -32,7 +30,7 @@ class StoriesFullModelWidget extends StatefulWidget {
       required this.totalViews,
       this.rankNumber,
       required this.isShowRank,
-      required this.dataStory});
+      required this.storyId});
 
   @override
   State<StoriesFullModelWidget> createState() => _StoriesFullModelWidgetState();
@@ -67,8 +65,10 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    StoriesDetail(storyInfo: widget.dataStory)));
+                builder: (context) => StoriesDetail(
+                      storyId: widget.storyId,
+                      storyTitle: widget.nameStory,
+                    )));
       },
       child: AnimatedContainer(
         margin: const EdgeInsets.all(8.0),

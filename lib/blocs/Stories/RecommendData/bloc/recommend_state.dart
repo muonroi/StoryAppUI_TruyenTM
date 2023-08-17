@@ -11,7 +11,7 @@ class RecommendStoryInitialState extends RecommendStoryState {}
 class RecommendStoryLoadingState extends RecommendStoryState {}
 
 class RecommendStoryLoadedState extends RecommendStoryState {
-  final StoryModel story;
+  final StoriesModel story;
   const RecommendStoryLoadedState(this.story);
 }
 

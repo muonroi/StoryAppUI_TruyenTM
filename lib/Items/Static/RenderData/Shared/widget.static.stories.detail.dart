@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/Items/Static/Buttons/widget.static.button.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/DetailStory/widget.static..detail.chapter.story.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.chapter.dart';
-import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
+import 'package:muonroi/blocs/Stories/DetailData/bloc/detail_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'DetailStory/widget.static.detail.header.story.dart';
 import 'DetailStory/widget.static.detail.intro.notify.story.dart';
@@ -14,10 +15,12 @@ import 'DetailStory/widget.static.detail.more.info.story.dart';
 import 'DetailStory/widget.static.detail.similar.story.dart';
 
 class StoriesDetail extends StatefulWidget {
-  final StoryItems storyInfo;
+  final int storyId;
+  final String storyTitle;
   const StoriesDetail({
     Key? key,
-    required this.storyInfo,
+    required this.storyId,
+    required this.storyTitle,
   }) : super(key: key);
   @override
   State<StoriesDetail> createState() => _StoriesDetailState();
@@ -26,53 +29,64 @@ class StoriesDetail extends StatefulWidget {
 class _StoriesDetailState extends State<StoriesDetail> {
   @override
   void initState() {
+    detailStory = DetailStoryPageBloc(widget.storyId);
+    detailStory.add(GetDetailStory());
     super.initState();
   }
+
+  @override
+  void dispose() {
+    detailStory.close();
+    super.dispose();
+  }
+
+  late DetailStoryPageBloc detailStory;
 
   double latestChapter = 0;
   set string(String val) => setState(() => latestChapter = double.parse(val));
   final Future<SharedPreferences> sharedPreferences =
       SharedPreferences.getInstance();
+
   Future<void> getChapterId() async {
     final SharedPreferences chapterTemp = await sharedPreferences;
-    chapterId = (chapterTemp.getInt("story-${widget.storyInfo.id}") ?? 0) + 1;
+    chapterId = (chapterTemp.getInt("story-${widget.storyId}") ?? 0) + 1;
   }
 
   late int chapterId = 0;
   @override
   Widget build(BuildContext context) {
     getChapterId();
-    List<Widget> componentOfDetailStory = [
-      Header(widget: widget.storyInfo),
-      MoreInfoStory(widget: widget.storyInfo),
-      IntroAndNotificationStory(
-        name: L(ViCode.introStoryTextInfo.toString()),
-        value: widget.storyInfo.storySynopsis,
-      ),
-      // IntroAndNotificationStory(
-      //   name: L(ViCode.notifyStoryTextInfo.toString()),
-      //   value: "", //widget.storyInfo.notification ?? "",
-      // ),
-      ChapterOfStory(
-        callback: (val) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            setState(() {
-              latestChapter = double.parse(val);
-            });
-          });
-        },
-        storyId: widget.storyInfo.id,
-      ),
-      // CommentOfStory(
-      //   widget: widget.storyInfo,
-      // ),
-      // RechargeStory(
-      //   widget: widget.storyInfo,
-      // ),
-      SimilarStories(
-        storyInfo: widget.storyInfo,
-      )
-    ];
+    // List<Widget> componentOfDetailStory = [
+    //   Header(infoStory: widget.storyInfo),
+    //   MoreInfoStory(infoStory: widget.storyInfo),
+    //   IntroAndNotificationStory(
+    //     name: L(ViCode.introStoryTextInfo.toString()),
+    //     value: widget.storyInfo.storySynopsis,
+    //   ),
+    //   // IntroAndNotificationStory(
+    //   //   name: L(ViCode.notifyStoryTextInfo.toString()),
+    //   //   value: "", //widget.storyInfo.notification ?? "",
+    //   // ),
+    //   ChapterOfStory(
+    //     callback: (val) {
+    //       WidgetsBinding.instance.addPostFrameCallback((_) {
+    //         setState(() {
+    //           latestChapter = double.parse(val);
+    //         });
+    //       });
+    //     },
+    //     storyId: widget.storyInfo.id,
+    //   ),
+    //   // CommentOfStory(
+    //   //   widget: widget.storyInfo,
+    //   // ),
+    //   // RechargeStory(
+    //   //   widget: widget.storyInfo,
+    //   // ),
+    //   SimilarStories(
+    //     infoStory: widget.storyInfo,
+    //   )
+    // ];
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -82,17 +96,55 @@ class _StoriesDetailState extends State<StoriesDetail> {
         ),
       ),
       backgroundColor: ColorDefaults.lightAppColor,
-      body: SizedBox(
-        child: ListView.builder(
-          itemCount: componentOfDetailStory.length,
-          itemBuilder: (context, index) {
-            return Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [componentOfDetailStory[index]],
-                ));
+      body: BlocProvider(
+        create: (context) => detailStory,
+        child: BlocListener<DetailStoryPageBloc, DetailStoryState>(
+          listener: (context, state) {
+            const CircularProgressIndicator();
           },
+          child: BlocBuilder<DetailStoryPageBloc, DetailStoryState>(
+            builder: (context, state) {
+              if (state is DetailStoryLoadingState) {
+                return const CircularProgressIndicator();
+              }
+              if (state is DetailStoryLoadedState) {
+                return SizedBox(
+                  child: ListView.builder(
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                      var storyInfo = state.story.result;
+                      return Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Header(infoStory: storyInfo),
+                              MoreInfoStory(infoStory: storyInfo),
+                              IntroAndNotificationStory(
+                                name: L(ViCode.introStoryTextInfo.toString()),
+                                value: storyInfo.storySynopsis,
+                              ),
+                              ChapterOfStory(
+                                callback: (val) {
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    setState(() {
+                                      latestChapter = double.parse(val);
+                                    });
+                                  });
+                                },
+                                storyId: storyInfo.id,
+                              ),
+                              SimilarStories(infoStory: storyInfo)
+                            ],
+                          ));
+                    },
+                  ),
+                );
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -133,8 +185,8 @@ class _StoriesDetailState extends State<StoriesDetail> {
                 child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                     context,
                     Chapter(
-                      storyId: widget.storyInfo.id,
-                      storyName: widget.storyInfo.storyTitle,
+                      storyId: widget.storyId,
+                      storyName: widget.storyTitle,
                       chapterId: chapterId,
                     ),
                     textStyle: FontsDefault.h5.copyWith(

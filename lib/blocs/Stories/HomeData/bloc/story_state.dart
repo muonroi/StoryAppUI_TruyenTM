@@ -12,7 +12,7 @@ class StoryInitial extends StoryState {}
 class StoryLoadingState extends StoryState {}
 
 class StoryLoadedState extends StoryState {
-  final StoryModel story;
+  final StoriesModel story;
   const StoryLoadedState(this.story);
 }
 
