@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.full.stories.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
+import 'package:muonroi/blocs/Stories/Free/bloc/free_bloc.dart';
 import '../../../../Settings/settings.colors.dart';
 
 class StoriesVerticalData extends StatelessWidget {
@@ -23,7 +25,7 @@ class StoriesVerticalData extends StatelessWidget {
   }
 }
 
-class StoriesVerticalDataBody extends StatelessWidget {
+class StoriesVerticalDataBody extends StatefulWidget {
   final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowIconBack;
@@ -35,44 +37,61 @@ class StoriesVerticalDataBody extends StatelessWidget {
       required this.isShowIconBack});
 
   @override
+  State<StoriesVerticalDataBody> createState() =>
+      _StoriesVerticalDataBodyState();
+}
+
+class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
+  @override
+  void initState() {
+    _freeStoryPageBloc = FreeStoryPageBloc(1, 15);
+    _freeStoryPageBloc.add(GetFreeStoriesList());
+    _scrollController = ScrollController();
+    _scrollController.addListener(loadMore);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _freeStoryPageBloc.close();
+    _scrollController.dispose();
+    _scrollController.removeListener(loadMore);
+    super.dispose();
+  }
+
+  void loadMore() {
+    if (context.mounted) {
+      if (_scrollController.hasClients &&
+          _scrollController.position.atEdge &&
+          _scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          countLoadMore == 1) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            _freeStoryPageBloc.add(GroupMoreFreeStoryList());
+            countLoadMore = 0;
+          });
+        });
+      } else if (_scrollController.position.atEdge &&
+          _scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          countLoadMore < 1) {
+        countLoadMore++;
+      }
+    }
+  }
+
+  late ScrollController _scrollController;
+  late FreeStoryPageBloc _freeStoryPageBloc;
+  int countLoadMore = 0;
+  @override
   Widget build(BuildContext context) {
     // if (isShowLabel) {
     //   storiesData.sort((a, b) => a.rankNumber!.compareTo(b.rankNumber!));
     // }
-    List<Widget> dataEachRow = storiesData
-        .map((e) => StoriesFullModelWidget(
-              nameStory: e.storyTitle,
-              categoryName: e.nameCategory,
-              authorName: e.authorName,
-              imageLink: e.imgUrl,
-              tagsName: e.nameTag.map((e) => e.toString()).toList(),
-              lastUpdated: 0,
-              totalViews: e.totalView * 1.0,
-              numberOfChapter: e.totalChapters * 1.0,
-              isShowRank: isShowLabel,
-              rankNumber: 0,
-              dataStory: StoryItems(
-                  id: e.id,
-                  guid: e.guid,
-                  storySynopsis: e.storySynopsis,
-                  authorName: e.authorName,
-                  nameCategory: e.nameCategory,
-                  imgUrl: e.imgUrl,
-                  storyTitle: e.storyTitle,
-                  totalChapters: int.parse(e.totalChapters.toString()),
-                  nameTag: e.nameTag,
-                  totalView: e.totalView,
-                  isShow: e.isShow,
-                  rating: e.rating,
-                  slug: e.slug,
-                  totalFavorite: e.totalFavorite,
-                  updatedDateString: e.updatedDateString,
-                  updatedDateTs: 0),
-            ))
-        .toList();
     return Scaffold(
       backgroundColor: ColorDefaults.lightAppColor,
-      appBar: isShowIconBack
+      appBar: widget.isShowIconBack
           ? AppBar(
               backgroundColor: ColorDefaults.lightAppColor,
               elevation: 0,
@@ -90,14 +109,53 @@ class StoriesVerticalDataBody extends StatelessWidget {
               ),
             )
           : null,
-      body: ListView.builder(
-          itemCount: storiesData.length,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [dataEachRow[index]],
-            );
-          }),
+      body: BlocProvider(
+        create: (context) => _freeStoryPageBloc,
+        child: BlocListener<FreeStoryPageBloc, FreeStoryState>(
+          listener: (context, state) {
+            const Center(child: CircularProgressIndicator());
+          },
+          child: BlocBuilder<FreeStoryPageBloc, FreeStoryState>(
+            builder: (context, state) {
+              if (state is FreeStoryLoadingState) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is FreeStoryLoadedState) {
+                return SizedBox(
+                  child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: state.story.result.items.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        var storySingleInfo = state.story.result.items[index];
+                        return Column(
+                          children: [
+                            StoriesFullModelWidget(
+                              nameStory: storySingleInfo.storyTitle,
+                              categoryName: storySingleInfo.nameCategory,
+                              authorName: storySingleInfo.authorName,
+                              imageLink: storySingleInfo.imgUrl,
+                              tagsName: storySingleInfo.nameTag
+                                  .map((e) => e.toString())
+                                  .toList(),
+                              lastUpdated: 0,
+                              totalViews: storySingleInfo.totalView.toDouble(),
+                              numberOfChapter:
+                                  storySingleInfo.totalChapters.toDouble(),
+                              isShowRank: widget.isShowLabel,
+                              rankNumber: 0,
+                              storyId: storySingleInfo.id,
+                            )
+                          ],
+                        );
+                      }),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+        ),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:muonroi/Models/Stories/models.single.story.dart';
 import 'package:muonroi/Settings/settings.api.dart';
 import 'package:muonroi/Settings/settings.languages.dart';
 import 'package:muonroi/Settings/settings.localization.dart';
@@ -18,6 +19,26 @@ String formatValueNumber(double value) {
   final numberFormat = NumberFormat("#,###");
 
   return numberFormat.format(value);
+}
+
+SingleResult StorySingleDefaultData() {
+  return SingleResult(
+      id: -1,
+      guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      storyTitle: "",
+      storySynopsis: "",
+      imgUrl: "",
+      isShow: false,
+      totalView: 0,
+      totalFavorite: 0,
+      rating: 0,
+      slug: "",
+      nameCategory: "",
+      authorName: "",
+      nameTag: [],
+      totalChapters: 0,
+      updatedDateTs: 0,
+      updatedDateString: "");
 }
 
 String formatNumberThouSand(double value) {

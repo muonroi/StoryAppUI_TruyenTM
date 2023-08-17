@@ -7,6 +7,7 @@ class ApiNetwork {
   static const String getStoriesPaging = "stories/all?pageIndex=%s&pageSize=%s";
   static const String getRecommendStoriesPaging =
       "stories/recommend?storyId=%s&pageIndex=%s&pageSize=%s";
+  static const String getDetailStory = "stories/single?storyId=%s";
   // #endregion
 
   // #region Chapters endpoint

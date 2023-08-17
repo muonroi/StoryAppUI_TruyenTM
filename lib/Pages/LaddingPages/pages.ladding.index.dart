@@ -14,7 +14,7 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  final StoryDataHomePageBloc _storyBloc = StoryDataHomePageBloc();
+  final StoryDataHomePageBloc _storyBloc = StoryDataHomePageBloc(1, 30);
   @override
   void initState() {
     _storyBloc.add(GetStoriesList());
@@ -56,64 +56,24 @@ class _IndexPageState extends State<IndexPage> {
   }
 }
 
-Widget _homePage(BuildContext context, StoryModel storyItems) {
+Widget _homePage(BuildContext context, StoriesModel storyItems) {
   return MainPage(
     storiesInit: storyItems.result.items,
     storiesCommon: storyItems.result.items
         .map((e) => StoriesImageIncludeSizeBox(
-              guid: e.guid,
-              storyId: e.id.toString(),
+              storyId: e.id,
               nameStory: e.storyTitle,
-              introStory: e.storySynopsis,
-              isShow: e.isShow,
-              totalViews: e.totalView,
-              totalVote: e.totalFavorite,
-              vote: e.rating,
-              slug: e.slug,
-              categoryName: e.nameCategory,
-              authorName: e.authorName,
-              tagsName: e.nameTag.map((e) => e.toString()).toList(),
-              totalChapters: e.totalChapters,
               imageLink: e.imgUrl,
-              lastUpdated: e.updatedDateString,
-              userCoin: const [],
-              userComments: const [],
-              numberOfChapter: e.totalChapters.toDouble(),
-              rankNumber: 0,
-              notification: "",
-              newChapters: const [],
-              newChapterNames: const [],
-              similarStories: const [],
             ))
         .take(6)
         .toList(),
     storiesEditorChoice: storyItems.result.items
         .map((e) => StoriesImageIncludeSizeBox(
-              guid: e.guid,
-              storyId: e.id.toString(),
+              storyId: e.id,
               nameStory: e.storyTitle,
-              introStory: e.storySynopsis,
-              isShow: e.isShow,
-              totalViews: e.totalView,
-              totalVote: e.totalFavorite,
-              vote: e.rating,
-              slug: e.slug,
-              categoryName: e.nameCategory,
-              authorName: e.authorName,
-              tagsName: e.nameTag.map((e) => e.toString()).toList(),
-              totalChapters: e.totalChapters,
               imageLink: e.imgUrl,
-              lastUpdated: e.updatedDateString,
-              userCoin: const [],
-              userComments: const [],
-              numberOfChapter: e.totalChapters.toDouble(),
-              rankNumber: 0,
-              notification: "",
-              newChapters: const [],
-              newChapterNames: const [],
-              similarStories: const [],
             ))
-        .take(15)
+        .take(25)
         .toList(),
   );
 }

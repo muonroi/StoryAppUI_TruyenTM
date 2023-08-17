@@ -177,27 +177,8 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                   .buttonNavigatorNextPreviewLanding(
                                       context,
                                       StoriesDetail(
-                                        storyInfo: StoryItems(
-                                            id: widget.storyId,
-                                            guid: widget.guid,
-                                            storyTitle: widget.nameStory,
-                                            storySynopsis: widget.introStory,
-                                            isShow: widget.isShow,
-                                            totalView: widget.totalViews,
-                                            totalFavorite: widget.totalVote,
-                                            rating: widget.vote,
-                                            slug: widget.slug,
-                                            nameCategory: widget.categoryName,
-                                            authorName: widget.authorName,
-                                            nameTag: widget.tagsName
-                                                .map((e) => e.toString())
-                                                .toList(),
-                                            totalChapters: widget.totalChapters,
-                                            imgUrl: widget.imageLink,
-                                            updatedDateString:
-                                                widget.lastUpdated,
-                                            updatedDateTs: 0),
-                                      ),
+                                          storyId: widget.storyId,
+                                          storyTitle: widget.nameStory),
                                       textDisplay: L(ViCode
                                           .storiesContinueChapterTextInfo
                                           .toString())),
