@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -182,38 +184,55 @@ class _ChapterState extends State<Chapter> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          child: Text(
-                                            "${L(ViCode.chapterNumberTextInfo.toString())} ${chaptersInfo[currentPage].numberOfChapter}: ",
-                                            style: FontsDefault.h5,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              MainSetting.getPercentageOfDevice(
-                                                      context,
-                                                      expectWidth: 200)
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: SizedBox(
+                                        width:
+                                            MainSetting.getPercentageOfDevice(
+                                                    context,
+                                                    expectWidth: 387)
+                                                .width,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: MainSetting
+                                                      .getPercentageOfDevice(
+                                                          context,
+                                                          expectWidth: 96.75)
                                                   .width,
-                                          height:
-                                              MainSetting.getPercentageOfDevice(
-                                                      context,
-                                                      expectHeight: 20)
-                                                  .height,
-                                          child: Text(
-                                            chaptersInfo[currentPage]
-                                                .chapterTitle
-                                                .replaceAll("\n", "")
-                                                .trim(),
-                                            style: FontsDefault.h5,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.visible,
-                                          ),
+                                              child: Text(
+                                                "${L(ViCode.chapterNumberTextInfo.toString())} ${chaptersInfo[currentPage].numberOfChapter}: ",
+                                                style: FontsDefault.h5.copyWith(
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.visible,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: MainSetting
+                                                      .getPercentageOfDevice(
+                                                          context,
+                                                          expectWidth: 290.25)
+                                                  .width,
+                                              child: Text(
+                                                chaptersInfo[currentPage]
+                                                    .chapterTitle
+                                                    .replaceAll("\n", "")
+                                                    .trim(),
+                                                style: FontsDefault.h5.copyWith(
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
                                     Html(
                                         data: chaptersInfo[currentPage]

@@ -71,7 +71,7 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
     List<Widget> dataEachRow = widget.storiesData
         .map((e) => StoriesBookCaseModelWidget(
               storyId: e.id,
-              totalChapters: e.totalChapters,
+              totalChapters: e.totalChapter,
               guid: e.guid,
               slug: e.slug,
               isShow: e.isShow,
@@ -82,9 +82,9 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
               tagsName: e.nameTag.map((e) => e.toString()).toList(),
               lastUpdated: "",
               totalViews: e.totalView,
-              numberOfChapter: e.totalChapters * 1.0,
-              vote: e.rating * 1.0,
-              rankNumber: 0,
+              numberOfChapter: e.totalChapter.toDouble(),
+              vote: e.rating.toDouble(),
+              rankNumber: e.rankNumber,
               totalVote: e.totalFavorite,
               introStory: e.storySynopsis,
               notification: "",

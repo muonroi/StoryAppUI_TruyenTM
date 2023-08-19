@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.list.stories.image.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
-import 'package:muonroi/Models/Stories/models.stories.story.dart';
-
 import '../../../../../Settings/settings.main.dart';
 
 // #region new stories widget

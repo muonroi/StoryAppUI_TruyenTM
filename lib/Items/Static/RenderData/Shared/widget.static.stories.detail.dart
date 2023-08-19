@@ -100,12 +100,12 @@ class _StoriesDetailState extends State<StoriesDetail> {
         create: (context) => detailStory,
         child: BlocListener<DetailStoryPageBloc, DetailStoryState>(
           listener: (context, state) {
-            const CircularProgressIndicator();
+            const Center(child: CircularProgressIndicator());
           },
           child: BlocBuilder<DetailStoryPageBloc, DetailStoryState>(
             builder: (context, state) {
               if (state is DetailStoryLoadingState) {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
               if (state is DetailStoryLoadedState) {
                 return SizedBox(
@@ -142,7 +142,7 @@ class _StoriesDetailState extends State<StoriesDetail> {
                   ),
                 );
               }
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             },
           ),
         ),

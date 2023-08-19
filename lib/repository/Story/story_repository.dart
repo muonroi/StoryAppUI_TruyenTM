@@ -14,6 +14,10 @@ class StoryRepository {
       _provider.getStoriesRecommendList(storyId, pageIndex, pageSize);
   Future<SingleStoryModel> fetchDetailStory(int storyId) =>
       _provider.getDetailStoryList(storyId);
+  Future<bool> voteStory(int storyId, double voteNumber) =>
+      _provider.voteStory(storyId, voteNumber);
+  Future<StoriesModel> searchStory(String keySearch) =>
+      _provider.searchStory(keySearch);
 }
 
 class NetworkError extends Error {}

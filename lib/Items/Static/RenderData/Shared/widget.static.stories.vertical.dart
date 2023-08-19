@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.full.stories.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
-import 'package:muonroi/blocs/Stories/Free/bloc/free_bloc.dart';
+import 'package:muonroi/blocs/Stories/FreeData/bloc/free_bloc.dart';
 import '../../../../Settings/settings.colors.dart';
 
 class StoriesVerticalData extends StatelessWidget {
@@ -86,9 +86,6 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
   int countLoadMore = 0;
   @override
   Widget build(BuildContext context) {
-    // if (isShowLabel) {
-    //   storiesData.sort((a, b) => a.rankNumber!.compareTo(b.rankNumber!));
-    // }
     return Scaffold(
       backgroundColor: ColorDefaults.lightAppColor,
       appBar: widget.isShowIconBack
@@ -141,9 +138,9 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
                               lastUpdated: 0,
                               totalViews: storySingleInfo.totalView.toDouble(),
                               numberOfChapter:
-                                  storySingleInfo.totalChapters.toDouble(),
+                                  storySingleInfo.totalChapter.toDouble(),
                               isShowRank: widget.isShowLabel,
-                              rankNumber: 0,
+                              rankNumber: storySingleInfo.rankNumber,
                               storyId: storySingleInfo.id,
                             )
                           ],

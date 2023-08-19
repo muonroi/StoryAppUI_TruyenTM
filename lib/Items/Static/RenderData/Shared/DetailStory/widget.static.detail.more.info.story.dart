@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:muonroi/Models/Stories/models.single.story.dart';
-import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
@@ -48,7 +47,7 @@ class MoreInfoStory extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         InfoDetailStory(
-            value: infoStory.totalChapters * 1.0,
+            value: infoStory.totalChapter.toDouble(),
             text: L(ViCode.chapterNumberTextInfo.toString())),
         Text(
           '|',

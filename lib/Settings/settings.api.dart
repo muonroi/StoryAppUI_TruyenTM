@@ -1,6 +1,7 @@
 class ApiNetwork {
   // #region Base api
   static const String baseApi = "https://muonroi.online/api/";
+  static const String renewToken = "tokens/access-token";
   // #endregion
 
   // #region Stories endpoint
@@ -8,6 +9,10 @@ class ApiNetwork {
   static const String getRecommendStoriesPaging =
       "stories/recommend?storyId=%s&pageIndex=%s&pageSize=%s";
   static const String getDetailStory = "stories/single?storyId=%s";
+  static const String voteStory = "stories/vote";
+  static const String searchStory =
+      "stories/search?SearchByTitle=%s&PageIndex=%s&PageSize=%s";
+
   // #endregion
 
   // #region Chapters endpoint

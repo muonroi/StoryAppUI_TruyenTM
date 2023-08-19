@@ -6,11 +6,24 @@ import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
+import 'package:muonroi/repository/Story/story_repository.dart';
 
-class Header extends StatelessWidget {
+class Header extends StatefulWidget {
   final SingleResult infoStory;
   const Header({super.key, required this.infoStory});
 
+  @override
+  State<Header> createState() => _HeaderState();
+}
+
+class _HeaderState extends State<Header> {
+  @override
+  void initState() {
+    _storyRepository = StoryRepository(pageIndex: 1, pageSize: 15);
+    super.initState();
+  }
+
+  late StoryRepository _storyRepository;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,11 +42,12 @@ class Header extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: CachedNetworkImage(
-                    imageUrl: infoStory.imgUrl,
+                    imageUrl: widget.infoStory.imgUrl,
                     progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator(
-                                value: downloadProgress.progress),
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                    ),
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                     fit: BoxFit.cover,
@@ -45,7 +59,9 @@ class Header extends StatelessWidget {
                     MainSetting.getPercentageOfDevice(context, expectWidth: 25)
                             .width ??
                         25,
-                initialRating: infoStory.rating * 1.0,
+                initialRating: widget.infoStory.rating == 0.0
+                    ? 0
+                    : widget.infoStory.rating,
                 minRating: 0.5,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
@@ -54,7 +70,11 @@ class Header extends StatelessWidget {
                   Icons.star,
                   color: Colors.amber,
                 ),
-                onRatingUpdate: (rating) {},
+                onRatingUpdate: (rating) {
+                  setState(() {
+                    _storyRepository.voteStory(widget.infoStory.id, rating);
+                  });
+                },
               ),
             ],
           ),
@@ -72,7 +92,7 @@ class Header extends StatelessWidget {
                             expectWidth: 210)
                         .width,
                     child: Text(
-                      infoStory.storyTitle,
+                      widget.infoStory.storyTitle,
                       style: FontsDefault.h4.copyWith(fontSize: 20),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
@@ -80,7 +100,7 @@ class Header extends StatelessWidget {
                   ),
                   SizedBox(
                     child: Text(
-                      infoStory.authorName,
+                      widget.infoStory.authorName,
                       style: FontsDefault.h5.copyWith(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
@@ -102,7 +122,7 @@ class Header extends StatelessWidget {
                               color: ColorDefaults.secondMainColor,
                               borderRadius: BorderRadius.circular(10)),
                           child: Text(
-                            infoStory.nameCategory,
+                            widget.infoStory.nameCategory,
                             style: FontsDefault.h5
                                 .copyWith(fontWeight: FontWeight.w400),
                             overflow: TextOverflow.ellipsis,
@@ -115,7 +135,7 @@ class Header extends StatelessWidget {
                               color: ColorDefaults.secondMainColor,
                               borderRadius: BorderRadius.circular(10)),
                           child: Text(
-                            infoStory.nameCategory,
+                            widget.infoStory.nameCategory,
                             style: FontsDefault.h5
                                 .copyWith(fontWeight: FontWeight.w400),
                             overflow: TextOverflow.ellipsis,
@@ -128,7 +148,7 @@ class Header extends StatelessWidget {
                   SizedBox(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: infoStory.nameTag
+                      children: widget.infoStory.nameTag
                           .map((e) => e.toString())
                           .map((String item) {
                         return Text(item);
@@ -145,7 +165,8 @@ class Header extends StatelessWidget {
                                 text: L(ViCode.voteStoryTextInfo.toString()),
                                 children: [
                                   TextSpan(
-                                      text: ' ${infoStory.rating}/5 ',
+                                      text:
+                                          ' ${widget.infoStory.rating == 0.0 ? 0 : widget.infoStory.rating}/5 ',
                                       style: FontsDefault.h6.copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,
@@ -158,7 +179,7 @@ class Header extends StatelessWidget {
                                           fontSize: 15)),
                                   TextSpan(
                                       text:
-                                          '  ${infoStory.totalFavorite} ${L(ViCode.voteStoryTextInfo.toString()).replaceRange(0, 1, L(ViCode.voteStoryTextInfo.toString())[0].toLowerCase())}',
+                                          '  ${widget.infoStory.totalVote} ${L(ViCode.voteStoryTextInfo.toString()).replaceRange(0, 1, L(ViCode.voteStoryTextInfo.toString())[0].toLowerCase())}',
                                       style: FontsDefault.h6.copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,
