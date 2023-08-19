@@ -1,19 +1,70 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:muonroi/Models/Accounts/models.account.token.dart';
 import 'package:muonroi/Models/Stories/models.single.story.dart';
 import 'package:muonroi/Settings/settings.api.dart';
 import 'package:muonroi/Settings/settings.languages.dart';
 import 'package:muonroi/Settings/settings.localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/Settings/models.mainsettings.device.dart';
 
 String L(String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
 }
 
-Dio baseUrl() => Dio(
-    BaseOptions(responseType: ResponseType.plain, baseUrl: ApiNetwork.baseApi));
+Future<SharedPreferences> initLocalStored() async {
+  SharedPreferences localTemp = await SharedPreferences.getInstance();
+  return localTemp;
+}
+
+Dio baseUrl() {
+  Dio dio = Dio();
+  dio.options.baseUrl = ApiNetwork.baseApi;
+  dio.options.responseType = ResponseType.plain;
+  // dio.interceptors.add(LogInterceptor());
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lX3VzZXIiOiJtdW9uIiwidXNlcm5hbWUiOiJtdW9ucm9pIiwidXNlcl9pZCI6IjAxMjg0MDg5LWRhMGUtNDEwOC05MTM3LTM4NTQ3ZGFkZTY1OSIsImVtYWlsIjoibGVhbmhwaGkxNzA2QGdtYWlsLmNvbSIsImdyb3VwX2lkIjoiMSIsInJvbGUiOlsiUkVBRCIsIldSSVRFIiwiRURJVCIsIkRFTEVURSJdLCJuYmYiOjE2OTIzMzEzNDQsImV4cCI6MTY5MjMzMjI0NCwiaWF0IjoxNjkyMzMxMzQ0LCJpc3MiOiJMRjMxTE9Ga01sZjNwR1BFeXpBYWNLeFJNcHJ4ZFdaUnlhTHhDbWpEIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMS9hcGkifQ.3sFBeFYUBSnhIH5zzexLnnyoDL9uv78hk_bithoAaZc';
+  String refreshTokenStr = 'XmpoRiNaYiQ0Yl5IemtuZUBUZnQlRmQhRk9ReHRnRUA=';
+  dio.interceptors.add(
+    InterceptorsWrapper(
+      onRequest: (request, handler) {
+        if (token != '') {
+          request.headers['Authorization'] = 'Bearer $token';
+        }
+        return handler.next(request);
+      },
+      onError: (e, handler) async {
+        if (e.response?.statusCode == 401) {
+          try {
+            await dio
+                .post(ApiNetwork.renewToken,
+                    data: jsonEncode({"refreshToken": refreshTokenStr}))
+                .then((value) async {
+              if (value.statusCode == 200) {
+                var newToken = tokenModelFromJson(value.data.toString());
+                token = newToken.result;
+                e.requestOptions.headers["Authorization"] =
+                    "Bearer ${newToken.result}";
+                final opts = Options(
+                    method: e.requestOptions.method,
+                    headers: e.requestOptions.headers);
+                final cloneReq = await dio.request(e.requestOptions.path,
+                    options: opts, data: e.requestOptions.data);
+                return handler.resolve(cloneReq);
+              }
+            });
+          } catch (e) {
+            return;
+          }
+        }
+      },
+    ),
+  );
+  return dio;
+}
 
 String formatValueNumber(double value) {
   final numberFormat = NumberFormat("#,###");
@@ -21,7 +72,7 @@ String formatValueNumber(double value) {
   return numberFormat.format(value);
 }
 
-SingleResult StorySingleDefaultData() {
+SingleResult storySingleDefaultData() {
   return SingleResult(
       id: -1,
       guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -31,12 +82,14 @@ SingleResult StorySingleDefaultData() {
       isShow: false,
       totalView: 0,
       totalFavorite: 0,
+      rankNumber: 0,
       rating: 0,
       slug: "",
       nameCategory: "",
       authorName: "",
       nameTag: [],
-      totalChapters: 0,
+      totalVote: 0,
+      totalChapter: 0,
       updatedDateTs: 0,
       updatedDateString: "");
 }

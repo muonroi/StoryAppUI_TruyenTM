@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-StoriesModel storyFromJson(String str) =>
+StoriesModel storiesFromJson(String str) =>
     StoriesModel.fromJson(json.decode(str));
 
-String storyToJson(StoriesModel data) => json.encode(data.toJson());
+String storiesToJson(StoriesModel data) => json.encode(data.toJson());
 
 class StoriesModel {
   final Result result;
@@ -55,24 +55,29 @@ class Result {
 }
 
 class StoryItems {
-  final int id;
-  final String guid;
-  final String storyTitle;
-  final String storySynopsis;
-  final String imgUrl;
-  final bool isShow;
-  final int totalView;
-  final int totalFavorite;
-  final double rating;
-  final String slug;
-  final String nameCategory;
-  final String authorName;
-  final List<dynamic> nameTag;
-  final int totalChapters;
-  final int updatedDateTs;
-  final String updatedDateString;
+  int rankNumber;
+  int totalChapter;
+  int id;
+  String guid;
+  String storyTitle;
+  String storySynopsis;
+  String imgUrl;
+  bool isShow;
+  int totalView;
+  int totalVote;
+  int totalFavorite;
+  double rating;
+  String slug;
+  String nameCategory;
+  String authorName;
+  List<dynamic> nameTag;
+  int updatedDateTs;
+  String updatedDateString;
 
   StoryItems({
+    required this.rankNumber,
+    required this.totalChapter,
+    required this.totalVote,
     required this.id,
     required this.guid,
     required this.storyTitle,
@@ -86,31 +91,34 @@ class StoryItems {
     required this.nameCategory,
     required this.authorName,
     required this.nameTag,
-    required this.totalChapters,
     required this.updatedDateTs,
     required this.updatedDateString,
   });
 
   factory StoryItems.fromJson(Map<String, dynamic> json) => StoryItems(
+        rankNumber: json["rankNumber"],
+        totalChapter: json["totalChapter"],
         id: json["id"],
         guid: json["guid"],
         storyTitle: json["storyTitle"],
         storySynopsis: json["storySynopsis"],
         imgUrl: json["imgUrl"],
         isShow: json["isShow"],
+        totalVote: json["totalVote"],
         totalView: json["totalView"],
         totalFavorite: json["totalFavorite"],
-        rating: json["rating"] * 1.0,
+        rating: double.parse(json["rating"].toString()),
         slug: json["slug"],
         nameCategory: json["nameCategory"],
         authorName: json["authorName"],
         nameTag: List<dynamic>.from(json["nameTag"].map((x) => x)),
-        totalChapters: json["totalChapters"],
         updatedDateTs: json["updatedDateTs"],
         updatedDateString: json["updatedDateString"],
       );
 
   Map<String, dynamic> toJson() => {
+        "rankNumber": rankNumber,
+        "totalChapter": totalChapter,
         "id": id,
         "guid": guid,
         "storyTitle": storyTitle,
@@ -124,7 +132,6 @@ class StoryItems {
         "nameCategory": nameCategory,
         "authorName": authorName,
         "nameTag": List<dynamic>.from(nameTag.map((x) => x)),
-        "totalChapters": totalChapters,
         "updatedDateTs": updatedDateTs,
         "updatedDateString": updatedDateString,
       };

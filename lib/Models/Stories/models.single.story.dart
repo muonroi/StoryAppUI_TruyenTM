@@ -36,6 +36,8 @@ class SingleStoryModel {
 }
 
 class SingleResult {
+  int rankNumber;
+  int totalChapter;
   int id;
   String guid;
   String storyTitle;
@@ -43,17 +45,19 @@ class SingleResult {
   String imgUrl;
   bool isShow;
   int totalView;
+  int totalVote;
   int totalFavorite;
-  int rating;
+  double rating;
   String slug;
   String nameCategory;
   String authorName;
   List<dynamic> nameTag;
-  int totalChapters;
   int updatedDateTs;
   String updatedDateString;
 
   SingleResult({
+    required this.rankNumber,
+    required this.totalChapter,
     required this.id,
     required this.guid,
     required this.storyTitle,
@@ -61,18 +65,20 @@ class SingleResult {
     required this.imgUrl,
     required this.isShow,
     required this.totalView,
+    required this.totalVote,
     required this.totalFavorite,
     required this.rating,
     required this.slug,
     required this.nameCategory,
     required this.authorName,
     required this.nameTag,
-    required this.totalChapters,
     required this.updatedDateTs,
     required this.updatedDateString,
   });
 
   factory SingleResult.fromJson(Map<String, dynamic> json) => SingleResult(
+        rankNumber: json["rankNumber"],
+        totalChapter: json["totalChapter"],
         id: json["id"],
         guid: json["guid"],
         storyTitle: json["storyTitle"],
@@ -80,23 +86,26 @@ class SingleResult {
         imgUrl: json["imgUrl"],
         isShow: json["isShow"],
         totalView: json["totalView"],
+        totalVote: json["totalVote"],
         totalFavorite: json["totalFavorite"],
-        rating: json["rating"],
+        rating: double.parse(json["rating"].toString()),
         slug: json["slug"],
         nameCategory: json["nameCategory"],
         authorName: json["authorName"],
         nameTag: List<dynamic>.from(json["nameTag"].map((x) => x)),
-        totalChapters: json["totalChapters"],
         updatedDateTs: json["updatedDateTs"],
         updatedDateString: json["updatedDateString"],
       );
 
   Map<String, dynamic> toJson() => {
+        "rankNumber": rankNumber,
+        "totalChapter": totalChapter,
         "id": id,
         "guid": guid,
         "storyTitle": storyTitle,
         "storySynopsis": storySynopsis,
         "imgUrl": imgUrl,
+        "totalVote": totalVote,
         "isShow": isShow,
         "totalView": totalView,
         "totalFavorite": totalFavorite,
@@ -105,7 +114,6 @@ class SingleResult {
         "nameCategory": nameCategory,
         "authorName": authorName,
         "nameTag": List<dynamic>.from(nameTag.map((x) => x)),
-        "totalChapters": totalChapters,
         "updatedDateTs": updatedDateTs,
         "updatedDateString": updatedDateString,
       };

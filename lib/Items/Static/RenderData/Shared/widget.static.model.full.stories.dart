@@ -115,9 +115,10 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                           child: CachedNetworkImage(
                             imageUrl: widget.imageLink,
                             progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
+                                (context, url, downloadProgress) => Center(
+                              child: CircularProgressIndicator(
+                                  value: downloadProgress.progress),
+                            ),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                             fit: BoxFit.cover,
@@ -126,9 +127,10 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                       : CachedNetworkImage(
                           imageUrl: widget.imageLink,
                           progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                                  CircularProgressIndicator(
-                                      value: downloadProgress.progress),
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                          ),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                           fit: BoxFit.cover,

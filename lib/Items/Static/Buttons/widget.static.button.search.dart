@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.stories.search.dart';
 import '../../../Settings/settings.language_code.vi..dart';
 import '../../../Settings/settings.main.dart';
 
@@ -18,29 +19,50 @@ class SearchContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: TextField(
-        controller: searchController,
-        onChanged: onChanged,
-        maxLines: 1,
-        minLines: 1,
-        decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(8.0),
-            hintMaxLines: 1,
-            hintText: L(ViCode.searchTextInfo.toString()),
-            suffixIcon: Visibility(
-              visible: isShowClearText,
-              child: IconButton(
-                icon: const Icon(Icons.clear),
+      child: Stack(children: [
+        TextField(
+          controller: searchController,
+          onChanged: onChanged,
+          maxLines: 1,
+          minLines: 1,
+          decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(8.0),
+              hintMaxLines: 1,
+              hintText: L(ViCode.searchTextInfo.toString()),
+              suffixIcon: Visibility(
+                visible: isShowClearText,
+                child: IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    searchController.clear();
+                  },
+                ),
+              ),
+              prefixIcon: IconButton(
+                icon: const Icon(Icons.search),
                 onPressed: () {},
               ),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
+        ),
+        Positioned.fill(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchPage(
+                      searchController: searchController,
+                    ),
+                  ),
+                );
+              },
             ),
-            prefixIcon: IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {},
-            ),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
-      ),
+          ),
+        ),
+      ]),
     );
   }
 }
