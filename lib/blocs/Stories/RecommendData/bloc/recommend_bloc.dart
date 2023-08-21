@@ -10,14 +10,14 @@ class RecommendStoryPageBloc
   final int storyId;
   final int pageIndex;
   final int pageSize;
-  RecommendStoryPageBloc(this.storyId, this.pageSize, this.pageIndex)
+  RecommendStoryPageBloc(this.storyId, this.pageIndex, this.pageSize)
       : super(RecommendStoryInitialState()) {
-    final StoryRepository storyRepository =
-        StoryRepository(pageIndex: pageIndex, pageSize: pageSize);
+    final StoryRepository storyRepository = StoryRepository();
     on<GetRecommendStoriesList>((event, emit) async {
       try {
         emit(RecommendStoryLoadingState());
-        final mList = await storyRepository.fetchRecommendStories(storyId);
+        final mList = await storyRepository.fetchRecommendStories(
+            storyId, pageIndex, pageSize);
         emit(RecommendStoryLoadedState(mList));
         if (!mList.isOk) {
           emit(RecommendStoryErrorState(

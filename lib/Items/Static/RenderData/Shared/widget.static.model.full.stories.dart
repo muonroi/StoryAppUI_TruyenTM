@@ -1,36 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
+import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import '../../../../../Settings/settings.colors.dart';
 import '../../../../../Settings/settings.fonts.dart';
 import '../../../../../Settings/settings.language_code.vi..dart';
 import '../../../../../Settings/settings.main.dart';
 
 class StoriesFullModelWidget extends StatefulWidget {
-  final String nameStory;
-  final String authorName;
-  final String imageLink;
-  final List<String> tagsName;
-  final String categoryName;
-  final double numberOfChapter;
-  final int lastUpdated;
-  final double totalViews;
-  final int? rankNumber;
+  final StoryItems storiesItem;
   final bool isShowRank;
-  final int storyId;
   const StoriesFullModelWidget(
-      {super.key,
-      required this.nameStory,
-      required this.authorName,
-      required this.imageLink,
-      required this.tagsName,
-      required this.categoryName,
-      required this.numberOfChapter,
-      required this.lastUpdated,
-      required this.totalViews,
-      this.rankNumber,
-      required this.isShowRank,
-      required this.storyId});
+      {super.key, required this.storiesItem, required this.isShowRank});
 
   @override
   State<StoriesFullModelWidget> createState() => _StoriesFullModelWidgetState();
@@ -66,8 +47,8 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
             context,
             MaterialPageRoute(
                 builder: (context) => StoriesDetail(
-                      storyId: widget.storyId,
-                      storyTitle: widget.nameStory,
+                      storyId: widget.storiesItem.id,
+                      storyTitle: widget.storiesItem.nameCategory,
                     )));
       },
       child: AnimatedContainer(
@@ -105,15 +86,15 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                   child: widget.isShowRank
                       ? Banner(
                           message:
-                              '${L(ViCode.rankTextInfo.toString())} ${widget.rankNumber}',
-                          color: widget.rankNumber == 1
+                              '${L(ViCode.rankTextInfo.toString())} ${widget.storiesItem.rankNumber}',
+                          color: widget.storiesItem.rankNumber == 1
                               ? ColorDefaults.mainColor
                               : ColorDefaults.secondMainColor,
                           textStyle: FontsDefault.h6
                               .copyWith(fontWeight: FontWeight.w700),
                           location: BannerLocation.topEnd,
                           child: CachedNetworkImage(
-                            imageUrl: widget.imageLink,
+                            imageUrl: widget.storiesItem.imgUrl,
                             progressIndicatorBuilder:
                                 (context, url, downloadProgress) => Center(
                               child: CircularProgressIndicator(
@@ -125,7 +106,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                           ),
                         )
                       : CachedNetworkImage(
-                          imageUrl: widget.imageLink,
+                          imageUrl: widget.storiesItem.imgUrl,
                           progressIndicatorBuilder:
                               (context, url, downloadProgress) => Center(
                             child: CircularProgressIndicator(
@@ -151,7 +132,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                             expectWidth: 200)
                         .width,
                     child: Text(
-                      widget.authorName,
+                      widget.storiesItem.authorName,
                       style: FontsDefault.h5.copyWith(
                           fontWeight: FontWeight.w600,
                           color: ColorDefaults.mainColor),
@@ -164,7 +145,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                             expectWidth: 250)
                         .width,
                     child: Text(
-                      widget.nameStory,
+                      widget.storiesItem.storyTitle,
                       style:
                           FontsDefault.h5.copyWith(fontWeight: FontWeight.w700),
                       maxLines: 1,
@@ -177,7 +158,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
-                          widget.categoryName,
+                          widget.storiesItem.nameCategory,
                           style: FontsDefault.h5,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -186,7 +167,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
-                          '${formatNumberThouSand(widget.numberOfChapter)} ${L(ViCode.chapterNumberTextInfo.toString())}',
+                          '${formatNumberThouSand(widget.storiesItem.totalChapter.toDouble())} ${L(ViCode.chapterNumberTextInfo.toString())}',
                           style: FontsDefault.h5,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -195,7 +176,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                     ],
                   ),
                   Row(
-                    children: widget.tagsName
+                    children: widget.storiesItem.nameTag
                         .map((item) => Padding(
                               padding: const EdgeInsets.only(right: 8.0),
                               child: Text(
@@ -209,7 +190,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                         .toList(),
                   ),
                   Text(
-                    '${widget.lastUpdated.toString()} ${L(ViCode.passedNumberMinuteTextInfo.toString())}',
+                    widget.storiesItem.updatedDateString.toString(),
                     style: FontsDefault.h6
                         .copyWith(fontStyle: FontStyle.italic, fontSize: 12),
                     maxLines: 1,

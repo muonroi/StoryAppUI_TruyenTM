@@ -10,8 +10,7 @@ class StoryDataHomePageBloc extends Bloc<StoryEvent, StoryState> {
   final int pageIndex;
   final int pageSize;
   StoryDataHomePageBloc(this.pageIndex, this.pageSize) : super(StoryInitial()) {
-    final StoryRepository storyRepository =
-        StoryRepository(pageIndex: pageIndex, pageSize: pageSize);
+    final StoryRepository storyRepository = StoryRepository();
     on<GetStoriesList>((event, emit) async {
       try {
         emit(StoryLoadingState());

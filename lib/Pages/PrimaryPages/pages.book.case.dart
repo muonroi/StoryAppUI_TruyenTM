@@ -1,11 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/BookCase/widget.static.book.case.stories.items.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
-import '../../Items/Static/RenderData/PrimaryPages/BookCase/widget.static.book.case.stories.items.dart';
-import '../../Items/Static/RenderData/PrimaryPages/BookCase/widget.static.model.book.case.stories.dart';
-import '../../Settings/settings.language_code.vi..dart';
-import '../../Settings/settings.main.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.main.dart';
 
 class BookCase extends StatefulWidget {
   const BookCase({super.key, required this.storiesData});
@@ -39,13 +38,6 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
 
   late AnimationController _animationReloadController;
   late AnimationController _animationSortController;
-  var _isShowClearText = false;
-  void _onChangedSearch(String textInput) {
-    setState(() {
-      _isShowClearText = textInput.isNotEmpty;
-    });
-  }
-
   late TextEditingController _textSearchController;
 
   @override
@@ -68,33 +60,6 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
             child: Tab(text: L(ViCode.storiesSavedTextInfo.toString())))
       ],
     );
-    List<Widget> dataEachRow = widget.storiesData
-        .map((e) => StoriesBookCaseModelWidget(
-              storyId: e.id,
-              totalChapters: e.totalChapter,
-              guid: e.guid,
-              slug: e.slug,
-              isShow: e.isShow,
-              nameStory: e.storyTitle,
-              categoryName: e.nameCategory,
-              authorName: e.authorName,
-              imageLink: e.imgUrl,
-              tagsName: e.nameTag.map((e) => e.toString()).toList(),
-              lastUpdated: "",
-              totalViews: e.totalView,
-              numberOfChapter: e.totalChapter.toDouble(),
-              vote: e.rating.toDouble(),
-              rankNumber: e.rankNumber,
-              totalVote: e.totalFavorite,
-              introStory: e.storySynopsis,
-              notification: "",
-              newChapters: const [],
-              newChapterNames: const [],
-              userComments: const [],
-              userCoin: const [],
-              similarStories: const [],
-            ))
-        .toList();
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -111,29 +76,20 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
         body: TabBarView(children: [
           StoriesItems(
             storiesData: widget.storiesData,
-            dataEachRow: dataEachRow,
             reload: _animationReloadController,
             sort: _animationSortController,
-            isShowClearText: _isShowClearText,
-            onChanged: _onChangedSearch,
             textSearchController: _textSearchController,
           ),
           StoriesItems(
             storiesData: widget.storiesData,
-            dataEachRow: dataEachRow,
             reload: _animationReloadController,
             sort: _animationSortController,
-            isShowClearText: _isShowClearText,
-            onChanged: _onChangedSearch,
             textSearchController: _textSearchController,
           ),
           StoriesItems(
             storiesData: widget.storiesData,
-            dataEachRow: dataEachRow,
             reload: _animationReloadController,
             sort: _animationSortController,
-            isShowClearText: _isShowClearText,
-            onChanged: _onChangedSearch,
             textSearchController: _textSearchController,
           ),
         ]),

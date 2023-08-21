@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../Settings/settings.colors.dart';
-import '../../../../../Settings/settings.fonts.dart';
-import '../../../../../Settings/settings.images.dart';
-import '../../../../../Settings/settings.language_code.vi..dart';
-import '../../../../../Settings/settings.main.dart';
+import 'package:muonroi/Items/Static/RenderData/ChildPages/Categories/widget.static.categories.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.fonts.dart';
+import 'package:muonroi/Settings/settings.images.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.main.dart';
 
 // #region Main categories
 class MainCategories extends StatelessWidget {
@@ -25,7 +25,13 @@ class MainCategories extends StatelessWidget {
                 radius: 30,
                 backgroundColor: ColorDefaults.secondMainColor,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CategoriesPage()),
+                    );
+                  },
                   icon: Image.asset(
                     ImageDefault.gridFour2x,
                   ),

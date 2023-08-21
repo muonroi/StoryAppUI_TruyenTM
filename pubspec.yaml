@@ -1,7 +1,7 @@
 name: muonroi
 description: muonroi social network
 publish_to: 'none'
-version: 0.0.1
+version: 1.0.0
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
@@ -17,6 +17,7 @@ dependencies:
   flutter_html: ^3.0.0-beta.2
   flutter_rating_bar: ^4.0.1
   html: ^0.15.4
+  icons_flutter: ^0.0.4
   intl: ^0.18.1
   shared_preferences: ^2.2.0
   sprintf: ^7.0.0
@@ -43,7 +44,6 @@ flutter:
     - assets/fonts/
     - assets/fonts/Inters/
     - assets/fonts/Poppins/
-    - assets/fonts/ABeeZees/
   fonts:
     - family: Inter
       fonts:
@@ -57,8 +57,3 @@ flutter:
         - asset: assets/fonts/Poppins/Poppins-Light.ttf
           style: italic
           weight: 500
-    - family: AbeeZees
-      fonts:
-        - asset: assets/fonts/AbeeZees/ABeeZee-Italic.ttf
-          style: italic
-          weight: 700

@@ -4,7 +4,6 @@ import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.
 import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.category.stories.home.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.less.stories.dart';
 import 'package:muonroi/Models/Stories/models.single.story.dart';
-import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Pages/Accounts/Logins/pages.logins.sign_in.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
@@ -22,7 +21,7 @@ class _SimilarStoriesState extends State<SimilarStories> {
   void initState() {
     controller = PageController(viewportFraction: 0.9);
     _recommendStoryPageBloc =
-        RecommendStoryPageBloc(widget.infoStory.id, 1, 15);
+        RecommendStoryPageBloc(widget.infoStory.id, 1, 25);
     _recommendStoryPageBloc.add(GetRecommendStoriesList());
     super.initState();
   }
@@ -55,6 +54,7 @@ class _SimilarStoriesState extends State<SimilarStories> {
                   return const CircularProgressIndicator();
                 }
                 if (state is RecommendStoryLoadedState) {
+                  var storyInfo = state.story.result.items;
                   return Column(
                     children: [
                       GroupCategoryTextInfo(
@@ -63,17 +63,18 @@ class _SimilarStoriesState extends State<SimilarStories> {
                           nextRoute: const SignInPage()),
                       SizedBox(
                         width: MainSetting.getPercentageOfDevice(context,
-                                expectWidth:
-                                    state.story.result.items.length * 120)
+                                expectWidth: storyInfo.length * 120)
                             .width,
                         height: MainSetting.getPercentageOfDevice(context,
                                 expectHeight: 190)
                             .height,
                         child: StoriesOfCategoriesData(
-                          data: state.story.result.items
+                          data: storyInfo
                               .map((e) => StoryLessModelWidget(
-                                  networkImageUrl: e.imgUrl,
-                                  storyName: e.storyTitle))
+                                    networkImageUrl: e.imgUrl,
+                                    storyName: e.storyTitle,
+                                    storyId: e.id,
+                                  ))
                               .toList(),
                           pageEditorController: controller,
                           padding: 0,

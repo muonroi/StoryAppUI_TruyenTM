@@ -8,4 +8,7 @@ abstract class FreeStoryEvent extends Equatable {
 
 class GetFreeStoriesList extends FreeStoryEvent {}
 
-class GroupMoreFreeStoryList extends FreeStoryEvent {}
+class GroupMoreFreeStoryList extends FreeStoryEvent {
+  final int categoryId;
+  const GroupMoreFreeStoryList({required this.categoryId});
+}

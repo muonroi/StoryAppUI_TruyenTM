@@ -33,7 +33,7 @@ class FilterByDateButton extends StatelessWidget {
                         L(ViCode.allCommonStoriesTextInfo.toString()),
                         style: FontsDefault.h5.copyWith(
                             fontWeight: FontWeight.w500,
-                            fontFamily: FontsDefault.abeeZees),
+                            fontFamily: FontsDefault.inter),
                       ),
                     ),
                   ),
@@ -48,7 +48,7 @@ class FilterByDateButton extends StatelessWidget {
                         L(ViCode.commonStoriesOfDayTextInfo.toString()),
                         style: FontsDefault.h5.copyWith(
                             fontWeight: FontWeight.w500,
-                            fontFamily: FontsDefault.abeeZees),
+                            fontFamily: FontsDefault.inter),
                       ),
                     ),
                   ),
@@ -63,7 +63,7 @@ class FilterByDateButton extends StatelessWidget {
                         L(ViCode.commonStoriesOfWeekTextInfo.toString()),
                         style: FontsDefault.h5.copyWith(
                             fontWeight: FontWeight.w500,
-                            fontFamily: FontsDefault.abeeZees),
+                            fontFamily: FontsDefault.inter),
                       ),
                     ),
                   ),
@@ -78,7 +78,7 @@ class FilterByDateButton extends StatelessWidget {
                         L(ViCode.commonStoriesOfMonthTextInfo.toString()),
                         style: FontsDefault.h5.copyWith(
                             fontWeight: FontWeight.w500,
-                            fontFamily: FontsDefault.abeeZees),
+                            fontFamily: FontsDefault.inter),
                       ),
                     ),
                   ),

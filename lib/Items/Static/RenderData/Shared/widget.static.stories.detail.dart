@@ -49,13 +49,17 @@ class _StoriesDetailState extends State<StoriesDetail> {
 
   Future<void> getChapterId() async {
     final SharedPreferences chapterTemp = await sharedPreferences;
-    chapterId = (chapterTemp.getInt("story-${widget.storyId}") ?? 0) + 1;
+    chapterId =
+        (chapterTemp.getInt("story-${widget.storyId}-current-chapter") ?? 0);
   }
 
   late int chapterId = 0;
+  late int lastChapterId = 0;
+  late int firstChapterId = 0;
   @override
   Widget build(BuildContext context) {
     getChapterId();
+    // #region not use now
     // List<Widget> componentOfDetailStory = [
     //   Header(infoStory: widget.storyInfo),
     //   MoreInfoStory(infoStory: widget.storyInfo),
@@ -87,6 +91,7 @@ class _StoriesDetailState extends State<StoriesDetail> {
     //     infoStory: widget.storyInfo,
     //   )
     // ];
+    // #endregion
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -108,6 +113,8 @@ class _StoriesDetailState extends State<StoriesDetail> {
                 return const Center(child: CircularProgressIndicator());
               }
               if (state is DetailStoryLoadedState) {
+                lastChapterId = state.story.result.lastChapterId;
+                firstChapterId = state.story.result.firstChapterId;
                 return SizedBox(
                   child: ListView.builder(
                     itemCount: 1,
@@ -187,7 +194,8 @@ class _StoriesDetailState extends State<StoriesDetail> {
                     Chapter(
                       storyId: widget.storyId,
                       storyName: widget.storyTitle,
-                      chapterId: chapterId,
+                      chapterId: chapterId == 0 ? firstChapterId : chapterId,
+                      lastChapterId: lastChapterId,
                     ),
                     textStyle: FontsDefault.h5.copyWith(
                         color: ColorDefaults.thirdMainColor,
@@ -196,7 +204,7 @@ class _StoriesDetailState extends State<StoriesDetail> {
                     borderColor: ColorDefaults.mainColor,
                     widthBorder: 2,
                     textDisplay:
-                        '${L(ViCode.chapterNumberTextInfo.toString())} ${formatValueNumber(latestChapter)}'),
+                        '${L(ViCode.chapterNumberTextInfo.toString())} ${chapterId == 0 ? firstChapterId : chapterId}'),
               ),
             )
           ],

@@ -7,14 +7,10 @@ import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
 
 class EditorStories extends StatelessWidget {
-  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowBack;
   const EditorStories(
-      {super.key,
-      required this.storiesData,
-      required this.isShowLabel,
-      required this.isShowBack});
+      {super.key, required this.isShowLabel, required this.isShowBack});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +23,6 @@ class EditorStories extends StatelessWidget {
             style: FontsDefault.h5.copyWith(fontWeight: FontWeight.w600),
           )),
       body: StoriesVerticalData(
-        storiesData: storiesData,
         isShowLabel: isShowLabel,
         isShowBack: isShowBack,
       ),

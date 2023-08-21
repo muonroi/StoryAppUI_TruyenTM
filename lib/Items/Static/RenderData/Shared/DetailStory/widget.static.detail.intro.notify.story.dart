@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:html/parser.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 
 class IntroAndNotificationStory extends StatefulWidget {
@@ -56,7 +55,7 @@ class _IntroAndNotificationStoryState extends State<IntroAndNotificationStory>
                     style: {
                       '#': Style(
                         fontSize: FontSize(15),
-                        maxLines: 5,
+                        maxLines: 50,
                         textOverflow: TextOverflow.ellipsis,
                       ),
                     },
@@ -64,45 +63,9 @@ class _IntroAndNotificationStoryState extends State<IntroAndNotificationStory>
                 ),
               ],
             ),
-            SizedBox(
-              child: RotationTransition(
-                  turns: Tween(
-                    begin: 0.0,
-                    end: 0.5,
-                  ).animate(animationReadMoreController),
-                  child: null //isReadMore == false
-                  // ? IconButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         if (animationReadMoreController.value == 1) {
-                  //           animationReadMoreController.reverse(from: 0.0);
-                  //         } else {
-                  //           isReadMore = true;
-                  //           animationReadMoreController.forward(from: 0.5);
-                  //         }
-                  //       });
-                  //     },
-                  //     icon: const Icon(Icons.keyboard_arrow_down))
-                  //: null,
-                  ),
-            ),
           ],
         ),
       ),
     );
-  }
-
-  double _calcIntroHeight(BuildContext context, String content) {
-    final document = parse(content);
-    final String? parsedString =
-        parse(document.body?.text).documentElement?.text;
-    final textSpan =
-        TextSpan(text: parsedString, style: const TextStyle(fontSize: 13));
-    final textPainter = TextPainter(
-      text: textSpan,
-      maxLines: null,
-      textDirection: TextDirection.ltr,
-    )..layout(maxWidth: MediaQuery.of(context).size.width);
-    return textPainter.size.height + 100;
   }
 }

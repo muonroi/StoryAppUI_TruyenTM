@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../Models/Chapters/models.chapters.chapter.dart';
+import '../../../../../Models/Chapters/models.chapters.list.chapter.dart';
 import '../../../../../Settings/settings.fonts.dart';
 import '../../../../../Settings/settings.images.dart';
 import '../../../../../Settings/settings.language_code.vi..dart';

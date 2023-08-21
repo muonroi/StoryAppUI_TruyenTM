@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.stories.search.dart';
 import 'package:muonroi/Models/Accounts/models.account.signup.dart';
-import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
+import 'package:muonroi/Models/Chapters/models.chapters.list.chapter.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Pages/PrimaryPages/pages.user.info.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
@@ -181,12 +182,21 @@ class _HomePageState extends State<HomePage> {
             actions: [
               _currentIndex > 0
                   ? IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchPage(
+                              searchController: _textSearchController,
+                            ),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.search,
                           color: ColorDefaults.thirdMainColor))
-                  : IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.search,
+                  : const IconButton(
+                      onPressed: null,
+                      icon: Icon(Icons.search,
                           color: Color.fromARGB(255, 255, 255, 255))),
               IconButton(
                   onPressed: () {},
@@ -216,8 +226,7 @@ class _HomePageState extends State<HomePage> {
                   storiesData: widget.storiesInit,
                 ),
                 Container(),
-                StoriesFree(
-                  storiesData: widget.storiesInit,
+                const StoriesFree(
                   isShowLabel: false,
                   isShowBack: false,
                 ),

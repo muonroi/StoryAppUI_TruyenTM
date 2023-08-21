@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
+import 'package:muonroi/Settings/Enums/enum.search.story.dart';
 import 'package:muonroi/repository/Story/story_repository.dart';
 part 'free_event.dart';
 part 'free_state.dart';
@@ -10,8 +11,7 @@ class FreeStoryPageBloc extends Bloc<FreeStoryEvent, FreeStoryState> {
   final int pageSize;
   FreeStoryPageBloc(this.pageIndex, this.pageSize)
       : super(FreeStoryInitialState()) {
-    final StoryRepository storyRepository =
-        StoryRepository(pageIndex: pageIndex, pageSize: pageSize);
+    final StoryRepository storyRepository = StoryRepository();
     on<GetFreeStoriesList>((event, emit) async {
       try {
         emit(FreeStoryLoadingState());
@@ -31,8 +31,16 @@ class FreeStoryPageBloc extends Bloc<FreeStoryEvent, FreeStoryState> {
       try {
         emit(FreeStoryLoadingState());
         pageIndex++;
-        final mList =
-            await storyRepository.fetchStoriesData(pageIndex, pageSize);
+        late StoriesModel mList;
+        if (event.categoryId == 0) {
+          mList = await storyRepository.fetchStoriesData(pageIndex, pageSize);
+        } else {
+          mList = await storyRepository.searchStory(
+              [event.categoryId.toString()],
+              [SearchType.category],
+              pageIndex,
+              pageSize);
+        }
         emit(FreeStoryLoadedState(mList));
         if (!mList.isOk) {
           emit(FreeStoryErrorState(

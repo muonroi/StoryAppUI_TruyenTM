@@ -1,37 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/Items/Static/RenderData/PrimaryPages/BookCase/widget.static.model.book.case.stories.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
-import '../../../../../Settings/settings.colors.dart';
-import '../../../../../Settings/settings.main.dart';
-import '../../../Buttons/widget.static.button.search.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.main.dart';
 
 class StoriesItems extends StatefulWidget {
   final List<StoryItems> storiesData;
-  final List<Widget> dataEachRow;
   final AnimationController reload;
   final AnimationController sort;
-  final bool isShowClearText;
-  final ValueChanged<String> onChanged;
   final TextEditingController textSearchController;
   const StoriesItems({
     Key? key,
     required this.storiesData,
     required this.reload,
     required this.sort,
-    required this.isShowClearText,
-    required this.onChanged,
     required this.textSearchController,
-    required this.dataEachRow,
   }) : super(key: key);
   @override
   State<StoriesItems> createState() => _StoriesItemsState();
 }
 
 class _StoriesItemsState extends State<StoriesItems> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   var isShort = false;
+  bool isShowClearText = false;
+  List<StoryItems> storiesSearch = [];
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.storiesData.length + 1,
+        itemCount: storiesSearch.isNotEmpty
+            ? storiesSearch.length
+            : widget.storiesData.length + 1,
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {
           return Column(
@@ -52,11 +56,45 @@ class _StoriesItemsState extends State<StoriesItems> {
                               width: MainSetting.getPercentageOfDevice(context,
                                       expectWidth: 200)
                                   .width,
-                              child: SearchContainer(
-                                  isShowClearText: widget.isShowClearText,
-                                  onChanged: widget.onChanged,
-                                  searchController:
-                                      widget.textSearchController),
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: TextField(
+                                  controller: widget.textSearchController,
+                                  onChanged: (value) {
+                                    if (context.mounted) {
+                                      WidgetsBinding.instance
+                                          .addPostFrameCallback((_) {
+                                        _handleSearch(
+                                            value, widget.storiesData);
+                                      });
+                                    }
+                                  },
+                                  maxLines: 1,
+                                  minLines: 1,
+                                  decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.all(8.0),
+                                      hintMaxLines: 1,
+                                      hintText:
+                                          L(ViCode.searchTextInfo.toString()),
+                                      suffixIcon: Visibility(
+                                        visible: isShowClearText,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.clear),
+                                          onPressed: () {
+                                            widget.textSearchController.clear();
+                                          },
+                                        ),
+                                      ),
+                                      prefixIcon: IconButton(
+                                        icon: const Icon(Icons.search),
+                                        onPressed: () {},
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30))),
+                                ),
+                              ),
                             ),
                             Row(
                               children: [
@@ -82,8 +120,18 @@ class _StoriesItemsState extends State<StoriesItems> {
                                   child: IconButton(
                                       onPressed: () {
                                         if (isShort) {
+                                          setState(() {
+                                            widget.storiesData.sort((a, b) => a
+                                                .storyTitle
+                                                .compareTo(b.storyTitle));
+                                          });
                                           widget.sort.reverse(from: 0.5);
                                         } else {
+                                          setState(() {
+                                            widget.storiesData.sort((a, b) => b
+                                                .storyTitle
+                                                .compareTo(a.storyTitle));
+                                          });
                                           widget.sort.forward(from: 0.0);
                                         }
                                         isShort = !isShort;
@@ -102,9 +150,25 @@ class _StoriesItemsState extends State<StoriesItems> {
                   : Container(),
               index > widget.storiesData.length - 1
                   ? Container()
-                  : widget.dataEachRow[index]
+                  : StoriesBookCaseModelWidget(
+                      storyInfo: storiesSearch.isNotEmpty
+                          ? storiesSearch[index]
+                          : widget.storiesData[index])
             ],
           );
         });
+  }
+
+  void _handleSearch(String value, List<StoryItems> data) {
+    final isInputNotEmpty = value.isNotEmpty;
+    List<StoryItems> searchedStories = [];
+    if (isInputNotEmpty) {
+      searchedStories.addAll(data.where((element) =>
+          element.storyTitle.toLowerCase().contains(value.toLowerCase())));
+    }
+    setState(() {
+      isShowClearText = isInputNotEmpty;
+      storiesSearch = searchedStories;
+    });
   }
 }

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
+import 'package:muonroi/Models/Chapters/models.chapters.list.chapter.dart';
 import 'package:muonroi/repository/Chapter/chapter_repository.dart';
 part 'group_chapters_of_story_event.dart';
 part 'group_chapters_of_story_state.dart';
@@ -21,7 +21,7 @@ class GroupChapterOfStoryBloc
     on<GroupChapterOfStoryList>((event, emit) async {
       try {
         emit(GroupChapterOfStoryLoadingState());
-        final mList = await chapterRepository.fetchGroupChapterOfStory(
+        var mList = await chapterRepository.fetchGroupChapterOfStory(
             storyId, chapterId,
             pageIndex: pageIndex, pageSize: pageSize);
         emit(GroupChapterOfStoryLoadedState(mList));
@@ -54,7 +54,7 @@ class GroupChapterOfStoryBloc
     on<DetailChapterOfStoryList>((event, emit) async {
       try {
         emit(GroupChapterOfStoryLoadingState());
-        final mList = await chapterRepository.fetchGroupChapterOfStory(
+        ChapterInfo mList = await chapterRepository.fetchGroupChapterOfStory(
             storyId, chapterId,
             pageIndex: pageIndex, pageSize: pageSize);
         emit(GroupChapterOfStoryLoadedState(mList));

@@ -19,7 +19,7 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   @override
   void initState() {
-    _storyRepository = StoryRepository(pageIndex: 1, pageSize: 15);
+    _storyRepository = StoryRepository();
     super.initState();
   }
 
@@ -91,12 +91,15 @@ class _HeaderState extends State<Header> {
                     width: MainSetting.getPercentageOfDevice(context,
                             expectWidth: 210)
                         .width,
-                    child: Text(
-                      widget.infoStory.storyTitle,
-                      style: FontsDefault.h4.copyWith(fontSize: 20),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
+                    child: Stack(children: [
+                      Text(
+                        widget.infoStory.storyTitle,
+                        style: FontsDefault.h4.copyWith(fontSize: 20),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      showToolTip(widget.infoStory.storyTitle)
+                    ]),
                   ),
                   SizedBox(
                     child: Text(

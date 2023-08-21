@@ -6,35 +6,39 @@ import 'package:muonroi/blocs/Stories/FreeData/bloc/free_bloc.dart';
 import '../../../../Settings/settings.colors.dart';
 
 class StoriesVerticalData extends StatelessWidget {
-  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowBack;
+  final int? categoryId;
+  final List<StoryItems>? stories;
   const StoriesVerticalData(
       {super.key,
-      required this.storiesData,
       required this.isShowLabel,
-      required this.isShowBack});
+      required this.isShowBack,
+      this.categoryId,
+      this.stories});
 
   @override
   Widget build(BuildContext context) {
     return StoriesVerticalDataBody(
-      storiesData: storiesData,
       isShowLabel: isShowLabel,
       isShowIconBack: isShowBack,
+      idCategory: categoryId,
+      stories: stories,
     );
   }
 }
 
 class StoriesVerticalDataBody extends StatefulWidget {
-  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowIconBack;
-
+  final int? idCategory;
+  final List<StoryItems>? stories;
   const StoriesVerticalDataBody(
       {super.key,
-      required this.storiesData,
       required this.isShowLabel,
-      required this.isShowIconBack});
+      required this.isShowIconBack,
+      this.idCategory,
+      this.stories});
 
   @override
   State<StoriesVerticalDataBody> createState() =>
@@ -45,9 +49,15 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
   @override
   void initState() {
     _freeStoryPageBloc = FreeStoryPageBloc(1, 15);
-    _freeStoryPageBloc.add(GetFreeStoriesList());
+    if (widget.idCategory == 0) {
+      _freeStoryPageBloc.add(GetFreeStoriesList());
+    } else {
+      _freeStoryPageBloc
+          .add(GroupMoreFreeStoryList(categoryId: widget.idCategory ?? 0));
+    }
     _scrollController = ScrollController();
     _scrollController.addListener(loadMore);
+    tempData = widget.stories;
     super.initState();
   }
 
@@ -68,7 +78,8 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
           countLoadMore == 1) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
-            _freeStoryPageBloc.add(GroupMoreFreeStoryList());
+            _freeStoryPageBloc.add(
+                GroupMoreFreeStoryList(categoryId: widget.idCategory ?? 0));
             countLoadMore = 0;
           });
         });
@@ -81,6 +92,7 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
     }
   }
 
+  late List<StoryItems>? tempData;
   late ScrollController _scrollController;
   late FreeStoryPageBloc _freeStoryPageBloc;
   int countLoadMore = 0;
@@ -118,30 +130,20 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
                 return const Center(child: CircularProgressIndicator());
               }
               if (state is FreeStoryLoadedState) {
+                var storiesInfo = tempData ?? state.story.result.items;
+                tempData = null;
                 return SizedBox(
                   child: ListView.builder(
                       controller: _scrollController,
-                      itemCount: state.story.result.items.length,
+                      itemCount: storiesInfo.length,
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) {
-                        var storySingleInfo = state.story.result.items[index];
+                        var storySingleInfo = storiesInfo[index];
                         return Column(
                           children: [
                             StoriesFullModelWidget(
-                              nameStory: storySingleInfo.storyTitle,
-                              categoryName: storySingleInfo.nameCategory,
-                              authorName: storySingleInfo.authorName,
-                              imageLink: storySingleInfo.imgUrl,
-                              tagsName: storySingleInfo.nameTag
-                                  .map((e) => e.toString())
-                                  .toList(),
-                              lastUpdated: 0,
-                              totalViews: storySingleInfo.totalView.toDouble(),
-                              numberOfChapter:
-                                  storySingleInfo.totalChapter.toDouble(),
                               isShowRank: widget.isShowLabel,
-                              rankNumber: storySingleInfo.rankNumber,
-                              storyId: storySingleInfo.id,
+                              storiesItem: storySingleInfo,
                             )
                           ],
                         );

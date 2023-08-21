@@ -75,29 +75,13 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                         itemCount: state.chapter.result.items.length,
                         itemBuilder: ((context, index) {
                           final chapterItem = state.chapter.result.items[index];
-                          return GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                colorOfRow[index] = Colors.grey[200]!;
-                              });
-                            },
-                            onTapUp: (details) {
-                              setState(() {
-                                colorOfRow[index] = Colors.white;
-                              });
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                colorOfRow[index] = Colors.white;
-                              });
-                            },
-                            child: AnimatedContainer(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
-                              color: colorOfRow[index],
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.linear,
-                              child: Row(
+                          return AnimatedContainer(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            color: colorOfRow[index],
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.linear,
+                            child: Stack(children: [
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -107,7 +91,7 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                         margin:
                                             const EdgeInsets.only(right: 8.0),
                                         child: Text(
-                                          "${L(ViCode.chapterNumberTextInfo.toString()).replaceRange(0, 1, L(ViCode.chapterNumberTextInfo.toString())[0].toUpperCase())} ${formatNumberThouSand(double.parse(chapterItem.numberOfChapter.toString()))}: ",
+                                          "${L(ViCode.chapterNumberTextInfo.toString()).replaceRange(0, 1, L(ViCode.chapterNumberTextInfo.toString())[0].toUpperCase())} ${chapterItem.numberOfChapter.toString()}: ",
                                           style: FontsDefault.h5.copyWith(
                                               color: ColorDefaults.mainColor),
                                         ),
@@ -135,7 +119,9 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                   ),
                                 ],
                               ),
-                            ),
+                              showToolTipHaveAnimation(
+                                  chapterItem.chapterName.trim())
+                            ]),
                           );
                         })),
                   ),

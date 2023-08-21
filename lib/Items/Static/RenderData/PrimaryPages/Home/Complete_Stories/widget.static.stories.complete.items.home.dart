@@ -8,14 +8,10 @@ import '../../../../../../Settings/settings.main.dart';
 import '../../../Shared/widget.static.stories.vertical.dart';
 
 class StoriesComplete extends StatelessWidget {
-  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowBack;
   const StoriesComplete(
-      {super.key,
-      required this.storiesData,
-      required this.isShowLabel,
-      required this.isShowBack});
+      {super.key, required this.isShowLabel, required this.isShowBack});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +24,6 @@ class StoriesComplete extends StatelessWidget {
             style: FontsDefault.h5.copyWith(fontWeight: FontWeight.w600),
           )),
       body: StoriesVerticalData(
-        storiesData: storiesData,
         isShowLabel: isShowLabel,
         isShowBack: isShowBack,
       ),
