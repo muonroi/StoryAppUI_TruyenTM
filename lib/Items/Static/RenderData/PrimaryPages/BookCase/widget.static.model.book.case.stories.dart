@@ -3,62 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/Buttons/widget.static.button.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
-import '../../../../../Models/Users/widget.static.story.user.coin.dart';
-import '../../../../../Models/Users/widget.static.user.comment.dart';
-import '../../../../../Settings/settings.colors.dart';
-import '../../../../../Settings/settings.fonts.dart';
-import '../../../../../Settings/settings.language_code.vi..dart';
-import '../../../../../Settings/settings.main.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.fonts.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.main.dart';
 
 class StoriesBookCaseModelWidget extends StatefulWidget {
-  final int storyId;
-  final String nameStory;
-  final String authorName;
-  final String imageLink;
-  final List<String> tagsName;
-  final String categoryName;
-  final double numberOfChapter;
-  final String lastUpdated;
-  final int totalViews;
-  final int rankNumber;
-  final double vote;
-  final int totalVote;
-  final String notification;
-  final String introStory;
-  final List<double> newChapters;
-  final List<String> newChapterNames;
-  final List<UserCommentModel> userComments;
-  final List<UserCoin> userCoin;
-  final List<StoryItems> similarStories;
-  final String guid;
-  final bool isShow;
-  final String slug;
-  final int totalChapters;
+  final StoryItems storyInfo;
   const StoriesBookCaseModelWidget({
     super.key,
-    required this.nameStory,
-    required this.authorName,
-    required this.imageLink,
-    required this.tagsName,
-    required this.categoryName,
-    required this.numberOfChapter,
-    required this.lastUpdated,
-    required this.totalViews,
-    required this.vote,
-    required this.rankNumber,
-    required this.totalVote,
-    required this.notification,
-    required this.introStory,
-    required this.newChapters,
-    required this.newChapterNames,
-    required this.userComments,
-    required this.userCoin,
-    required this.similarStories,
-    required this.guid,
-    required this.isShow,
-    required this.slug,
-    required this.storyId,
-    required this.totalChapters,
+    required this.storyInfo,
   });
 
   @override
@@ -126,7 +80,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
-                      imageUrl: widget.imageLink,
+                      imageUrl: widget.storyInfo.imgUrl,
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) =>
                               CircularProgressIndicator(
@@ -151,7 +105,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                               expectWidth: 250)
                           .width,
                       child: Text(
-                        widget.nameStory,
+                        widget.storyInfo.storyTitle,
                         style: FontsDefault.h4.copyWith(
                             fontWeight: FontWeight.w700, fontSize: 18),
                         maxLines: 1,
@@ -159,7 +113,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                       ),
                     ),
                     Text(
-                      widget.authorName,
+                      widget.storyInfo.authorName,
                       style: FontsDefault.h5,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -177,8 +131,9 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                   .buttonNavigatorNextPreviewLanding(
                                       context,
                                       StoriesDetail(
-                                          storyId: widget.storyId,
-                                          storyTitle: widget.nameStory),
+                                          storyId: widget.storyInfo.id,
+                                          storyTitle:
+                                              widget.storyInfo.storyTitle),
                                       textDisplay: L(ViCode
                                           .storiesContinueChapterTextInfo
                                           .toString())),
@@ -186,13 +141,17 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: SizedBox(
-                            width: 80,
-                            child: Text(
-                              '${widget.lastUpdated} ${L(ViCode.passedNumberMinuteTextInfo.toString())}',
-                              style: FontsDefault.h5,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            width: 100,
+                            child: Stack(children: [
+                              Text(
+                                widget.storyInfo.updatedDateString,
+                                style: FontsDefault.h5.copyWith(
+                                    fontSize: 12, fontStyle: FontStyle.italic),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              showToolTip(widget.storyInfo.updatedDateString)
+                            ]),
                           ),
                         )
                       ],

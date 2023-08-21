@@ -41,21 +41,23 @@ class _StoriesDetailState extends State<StoriesDetail> {
   }
 
   late DetailStoryPageBloc detailStory;
-
-  double latestChapter = 0;
-  set string(String val) => setState(() => latestChapter = double.parse(val));
   final Future<SharedPreferences> sharedPreferences =
       SharedPreferences.getInstance();
 
   Future<void> getChapterId() async {
     final SharedPreferences chapterTemp = await sharedPreferences;
-    chapterId = (chapterTemp.getInt("story-${widget.storyId}") ?? 0) + 1;
+    chapterId =
+        (chapterTemp.getInt("story-${widget.storyId}-current-chapter-id") ?? 0);
+    chapterNumber =
+        (chapterTemp.getInt("story-${widget.storyId}-current-chapter") ?? 0);
   }
 
   late int chapterId = 0;
+  late int chapterNumber = 0;
   @override
   Widget build(BuildContext context) {
     getChapterId();
+    // #region not use now
     // List<Widget> componentOfDetailStory = [
     //   Header(infoStory: widget.storyInfo),
     //   MoreInfoStory(infoStory: widget.storyInfo),
@@ -87,120 +89,114 @@ class _StoriesDetailState extends State<StoriesDetail> {
     //     infoStory: widget.storyInfo,
     //   )
     // ];
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ColorDefaults.lightAppColor,
-        leading: const BackButton(
-          color: ColorDefaults.thirdMainColor,
-        ),
-      ),
-      backgroundColor: ColorDefaults.lightAppColor,
-      body: BlocProvider(
-        create: (context) => detailStory,
-        child: BlocListener<DetailStoryPageBloc, DetailStoryState>(
-          listener: (context, state) {
-            const Center(child: CircularProgressIndicator());
+    // #endregion
+    return BlocProvider(
+      create: (context) => detailStory,
+      child: BlocListener<DetailStoryPageBloc, DetailStoryState>(
+        listener: (context, state) {
+          const Center(child: CircularProgressIndicator());
+        },
+        child: BlocBuilder<DetailStoryPageBloc, DetailStoryState>(
+          builder: (context, state) {
+            if (state is DetailStoryLoadedState) {
+              var storyInfo = state.story.result;
+              return Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  backgroundColor: ColorDefaults.lightAppColor,
+                  leading: const BackButton(
+                    color: ColorDefaults.thirdMainColor,
+                  ),
+                ),
+                backgroundColor: ColorDefaults.lightAppColor,
+                body: SizedBox(
+                    child: ListView.builder(
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Header(infoStory: storyInfo),
+                            MoreInfoStory(infoStory: storyInfo),
+                            IntroAndNotificationStory(
+                              name: L(ViCode.introStoryTextInfo.toString()),
+                              value: storyInfo.storySynopsis,
+                            ),
+                            ChapterOfStory(
+                              storyId: storyInfo.id,
+                            ),
+                            SimilarStories(infoStory: storyInfo)
+                          ],
+                        ));
+                  },
+                )),
+                bottomNavigationBar: BottomAppBar(
+                  child: SizedBox(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MainSetting.getPercentageOfDevice(context,
+                                expectWidth: 200)
+                            .width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(
+                                child: IconButton(
+                                    onPressed: () {},
+                                    icon:
+                                        const Icon(Icons.headphones_outlined))),
+                            SizedBox(
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.download_outlined)),
+                            ),
+                            SizedBox(
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon:
+                                      const Icon(Icons.bookmark_add_outlined)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: SizedBox(
+                          width: MainSetting.getPercentageOfDevice(context,
+                                  expectWidth: 150)
+                              .width,
+                          child: ButtonWidget.buttonNavigatorNextPreviewLanding(
+                              context,
+                              Chapter(
+                                storyId: widget.storyId,
+                                storyName: widget.storyTitle,
+                                chapterId: chapterId == 0
+                                    ? storyInfo.firstChapterId
+                                    : chapterId,
+                                lastChapterId: storyInfo.lastChapterId,
+                              ),
+                              textStyle: FontsDefault.h5.copyWith(
+                                  color: ColorDefaults.thirdMainColor,
+                                  fontWeight: FontWeight.w500),
+                              color: ColorDefaults.mainColor,
+                              borderColor: ColorDefaults.mainColor,
+                              widthBorder: 2,
+                              textDisplay:
+                                  '${L(ViCode.chapterNumberTextInfo.toString())} $chapterNumber'),
+                        ),
+                      )
+                    ],
+                  )),
+                ),
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
           },
-          child: BlocBuilder<DetailStoryPageBloc, DetailStoryState>(
-            builder: (context, state) {
-              if (state is DetailStoryLoadingState) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state is DetailStoryLoadedState) {
-                return SizedBox(
-                  child: ListView.builder(
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      var storyInfo = state.story.result;
-                      return Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Header(infoStory: storyInfo),
-                              MoreInfoStory(infoStory: storyInfo),
-                              IntroAndNotificationStory(
-                                name: L(ViCode.introStoryTextInfo.toString()),
-                                value: storyInfo.storySynopsis,
-                              ),
-                              ChapterOfStory(
-                                callback: (val) {
-                                  WidgetsBinding.instance
-                                      .addPostFrameCallback((_) {
-                                    setState(() {
-                                      latestChapter = double.parse(val);
-                                    });
-                                  });
-                                },
-                                storyId: storyInfo.id,
-                              ),
-                              SimilarStories(infoStory: storyInfo)
-                            ],
-                          ));
-                    },
-                  ),
-                );
-              }
-              return const Center(child: CircularProgressIndicator());
-            },
-          ),
         ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: SizedBox(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width:
-                  MainSetting.getPercentageOfDevice(context, expectWidth: 200)
-                      .width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.headphones_outlined))),
-                  SizedBox(
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.download_outlined)),
-                  ),
-                  SizedBox(
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.bookmark_add_outlined)),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: SizedBox(
-                width:
-                    MainSetting.getPercentageOfDevice(context, expectWidth: 150)
-                        .width,
-                child: ButtonWidget.buttonNavigatorNextPreviewLanding(
-                    context,
-                    Chapter(
-                      storyId: widget.storyId,
-                      storyName: widget.storyTitle,
-                      chapterId: chapterId,
-                    ),
-                    textStyle: FontsDefault.h5.copyWith(
-                        color: ColorDefaults.thirdMainColor,
-                        fontWeight: FontWeight.w500),
-                    color: ColorDefaults.mainColor,
-                    borderColor: ColorDefaults.mainColor,
-                    widthBorder: 2,
-                    textDisplay:
-                        '${L(ViCode.chapterNumberTextInfo.toString())} ${formatValueNumber(latestChapter)}'),
-              ),
-            )
-          ],
-        )),
       ),
     );
   }

@@ -7,14 +7,10 @@ import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import '../../Settings/settings.main.dart';
 
 class StoriesFree extends StatefulWidget {
-  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowBack;
   const StoriesFree(
-      {super.key,
-      required this.storiesData,
-      required this.isShowLabel,
-      required this.isShowBack});
+      {super.key, required this.isShowLabel, required this.isShowBack});
 
   @override
   State<StoriesFree> createState() => _StoriesFreeState();
@@ -31,7 +27,6 @@ class _StoriesFreeState extends State<StoriesFree> {
             style: FontsDefault.h5.copyWith(fontWeight: FontWeight.w600),
           )),
       body: StoriesVerticalData(
-        storiesData: widget.storiesData,
         isShowLabel: widget.isShowLabel,
         isShowBack: widget.isShowBack,
       ),

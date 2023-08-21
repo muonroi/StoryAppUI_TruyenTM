@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../../Models/Stories/models.stories.story.dart';
 import '../../../../../../Settings/settings.colors.dart';
 import '../../../../../../Settings/settings.fonts.dart';
 import '../../../../../../Settings/settings.language_code.vi..dart';
@@ -8,14 +6,10 @@ import '../../../../../../Settings/settings.main.dart';
 import '../../../Shared/widget.static.stories.vertical.dart';
 
 class StoriesNew extends StatelessWidget {
-  final List<StoryItems> storiesData;
   final bool isShowLabel;
   final bool isShowBack;
   const StoriesNew(
-      {super.key,
-      required this.storiesData,
-      required this.isShowLabel,
-      required this.isShowBack});
+      {super.key, required this.isShowLabel, required this.isShowBack});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +22,6 @@ class StoriesNew extends StatelessWidget {
             style: FontsDefault.h5.copyWith(fontWeight: FontWeight.w600),
           )),
       body: StoriesVerticalData(
-        storiesData: storiesData,
         isShowLabel: isShowLabel,
         isShowBack: isShowBack,
       ),

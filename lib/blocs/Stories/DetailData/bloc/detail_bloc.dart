@@ -8,8 +8,7 @@ part 'detail_state.dart';
 class DetailStoryPageBloc extends Bloc<DetailStoryEvent, DetailStoryState> {
   final int storyId;
   DetailStoryPageBloc(this.storyId) : super(DetailStoryInitialState()) {
-    final StoryRepository storyRepository =
-        StoryRepository(pageIndex: 1, pageSize: 15);
+    final StoryRepository storyRepository = StoryRepository();
     on<GetDetailStory>((event, emit) async {
       try {
         emit(DetailStoryLoadingState());

@@ -54,7 +54,8 @@ class SingleResult {
   List<dynamic> nameTag;
   int updatedDateTs;
   String updatedDateString;
-
+  int firstChapterId;
+  int lastChapterId;
   SingleResult({
     required this.rankNumber,
     required this.totalChapter,
@@ -74,6 +75,8 @@ class SingleResult {
     required this.nameTag,
     required this.updatedDateTs,
     required this.updatedDateString,
+    required this.firstChapterId,
+    required this.lastChapterId,
   });
 
   factory SingleResult.fromJson(Map<String, dynamic> json) => SingleResult(
@@ -95,6 +98,8 @@ class SingleResult {
         nameTag: List<dynamic>.from(json["nameTag"].map((x) => x)),
         updatedDateTs: json["updatedDateTs"],
         updatedDateString: json["updatedDateString"],
+        firstChapterId: json["firstChapterId"],
+        lastChapterId: json["lastChapterId"],
       );
 
   Map<String, dynamic> toJson() => {

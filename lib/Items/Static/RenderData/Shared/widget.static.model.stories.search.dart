@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
+import 'package:muonroi/Settings/Enums/enum.search.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
@@ -22,7 +23,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   bool isShowClearText = false;
-  StoryRepository storyRepository = StoryRepository(pageIndex: 1, pageSize: 10);
+  StoryRepository storyRepository = StoryRepository();
   List<StoryItems> storiesSearch = [];
   @override
   Widget build(BuildContext context) {
@@ -129,7 +130,8 @@ class _SearchPageState extends State<SearchPage> {
     List<StoryItems> searchedStories = [];
 
     if (isInputNotEmpty) {
-      var resultData = await storyRepository.searchStory(value);
+      var resultData =
+          await storyRepository.searchStory([value], [SearchType.title], 1, 15);
       searchedStories = resultData.result.items;
     }
 

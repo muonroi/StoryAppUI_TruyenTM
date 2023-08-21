@@ -1,5 +1,6 @@
 import 'package:muonroi/Models/Stories/models.single.story.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
+import 'package:muonroi/Settings/Enums/enum.search.story.dart';
 import 'package:muonroi/Settings/settings.main.dart';
 import 'package:sprintf/sprintf.dart';
 import '../Settings/settings.api.dart';
@@ -91,23 +92,29 @@ class StoryProvider {
     }
   }
 
-  Future<bool> searchStoryByName(String name) async {
+  Future<StoriesModel> searchStory(List<String> keySearch,
+      List<SearchType> type, int pageIndex, int pageSize) async {
     try {
-      final response = await baseUrl().get(ApiNetwork.voteStory);
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        return false;
+      String url = "";
+      String paging = "PageIndex=$pageIndex&PageSize=$pageSize";
+      for (int i = 0; i < type.length; i++) {
+        switch (type[i]) {
+          case SearchType.title:
+            url += "SearchByTitle=${keySearch[i]}&";
+            break;
+          case SearchType.category:
+            url += "SearchByCategory=${keySearch[i]}&";
+            break;
+          case SearchType.tag:
+            url += "SearchByTagName=${keySearch[i]}&";
+            break;
+          case SearchType.chapter:
+            url += "SearchByNumberChapter=${keySearch[i]}&";
+            break;
+        }
       }
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<StoriesModel> searchStory(String keySearch) async {
-    try {
-      final response = await baseUrl()
-          .get(sprintf(ApiNetwork.searchStory, [keySearch, "1", "10"]));
+      url += paging;
+      final response = await baseUrl().get("${ApiNetwork.baseSearchStory}$url");
       if (response.statusCode == 200) {
         return storiesFromJson(response.data.toString());
       } else {

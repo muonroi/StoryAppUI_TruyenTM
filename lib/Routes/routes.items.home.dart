@@ -11,7 +11,7 @@ import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.
 import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.category.stories.home.dart';
 import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.chapter.home.dart';
 import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.common.stories.home.dart';
-import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
+import 'package:muonroi/Models/Chapters/models.chapters.list.chapter.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
@@ -55,10 +55,8 @@ class HomePageItems {
       ),
       GroupCategoryTextInfo(
           titleText: L(ViCode.editorChoiceTextInfo.toString()),
-          nextRoute: EditorStories(
-              isShowLabel: false,
-              isShowBack: false,
-              storiesData: listStoriesTopCommon)),
+          nextRoute:
+              const EditorStories(isShowLabel: false, isShowBack: false)),
       StoriesOfCategoriesData(
         pageEditorController: pageEditorChoiceController,
         data: listStoriesChoiceOfEditor,
@@ -67,19 +65,17 @@ class HomePageItems {
 
       GroupCategoryTextInfo(
           titleText: L(ViCode.newUpdatedStoriesTextInfo.toString()),
-          nextRoute: StoriesNewUpdate(
+          nextRoute: const StoriesNewUpdate(
             isShowLabel: false,
             isShowBack: false,
-            storiesData: listStoriesTopCommon,
           )),
       StoriesNewUpdatedData(data: listStoriesNewUpdatedFirstRow),
 
       GroupCategoryTextInfo(
           titleText: L(ViCode.commonOfStoriesTextInfo.toString()),
-          nextRoute: StoriesCommon(
+          nextRoute: const StoriesCommon(
             isShowLabel: true,
             isShowBack: false,
-            storiesData: listStoriesTopCommon,
           )),
       const FilterByDateButton(),
       CommonTopStoriesData(
@@ -88,10 +84,9 @@ class HomePageItems {
 
       GroupCategoryTextInfo(
           titleText: L(ViCode.newStoriesTextInfo.toString()),
-          nextRoute: StoriesNew(
+          nextRoute: const StoriesNew(
             isShowLabel: false,
             isShowBack: false,
-            storiesData: listStoriesTopCommon,
           )),
       StoriesOfCategoriesData(
           pageEditorController: pageNewStoriesController,
@@ -100,10 +95,9 @@ class HomePageItems {
 
       GroupCategoryTextInfo(
           titleText: L(ViCode.completeStoriesTextInfo.toString()),
-          nextRoute: StoriesComplete(
+          nextRoute: const StoriesComplete(
             isShowLabel: false,
             isShowBack: false,
-            storiesData: listStoriesTopCommon,
           )),
       StoriesOfCategoriesData(
           pageEditorController: pageStoriesCompleteController,

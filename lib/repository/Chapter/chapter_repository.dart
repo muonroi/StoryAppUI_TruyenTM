@@ -1,4 +1,5 @@
-import 'package:muonroi/Models/Chapters/models.chapters.chapter.dart';
+import 'package:muonroi/Models/Chapters/models.chapter.single.chapter.dart';
+import 'package:muonroi/Models/Chapters/models.chapters.list.chapter.dart';
 import 'package:muonroi/Models/Chapters/models.chapters.preview.chapter.dart';
 import 'package:muonroi/resource/api_chapter_provider.dart';
 
@@ -20,6 +21,12 @@ class ChapterRepository {
           {int pageIndex = 1, int pageSize = 20}) =>
       _provider.getGroupChaptersDataDetail(storyId, chapterId,
           pageIndex: pageIndex, pageSize: pageSize);
+
+  Future<DetailChapterInfo> fetchChapterOfStory(int chapterId) =>
+      _provider.getChapterDataDetail(chapterId);
+  Future<DetailChapterInfo> fetchActionChapterOfStory(
+          int chapterId, int storyId, bool action) =>
+      _provider.fetchActionChapterOfStory(chapterId, storyId, action);
 }
 
 class NetworkError extends Error {}

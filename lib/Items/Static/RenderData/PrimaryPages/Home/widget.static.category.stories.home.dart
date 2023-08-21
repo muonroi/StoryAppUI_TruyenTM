@@ -145,7 +145,6 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
           itemCount: widget.data.length,
           scrollDirection: Axis.horizontal,
           controller: widget._pageEditorController,
-          itemExtent: 118,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTapDown: (_) => _onTapDown(index),
@@ -172,7 +171,7 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 100),
                         curve: Curves.easeInOut,
                         transform: Matrix4.diagonal3Values(
                           _imageScales[index],

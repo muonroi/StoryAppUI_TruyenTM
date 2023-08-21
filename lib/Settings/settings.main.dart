@@ -3,16 +3,75 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.vertical.dart';
 import 'package:muonroi/Models/Accounts/models.account.token.dart';
 import 'package:muonroi/Models/Stories/models.single.story.dart';
+import 'package:muonroi/Models/Stories/models.stories.story.dart';
+import 'package:muonroi/Settings/Enums/enum.search.story.dart';
 import 'package:muonroi/Settings/settings.api.dart';
 import 'package:muonroi/Settings/settings.languages.dart';
 import 'package:muonroi/Settings/settings.localization.dart';
+import 'package:muonroi/repository/Story/story_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/Settings/models.mainsettings.device.dart';
 
 String L(String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
+}
+
+Widget showToolTipHaveAnimation(String message,
+    {BuildContext? context, String? data}) {
+  return Positioned.fill(
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: context == null
+            ? () {}
+            : () async {
+                List<StoryItems> storiesData =
+                    await _handleSearchByCategory(data!, SearchType.category);
+                if (context.mounted) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StoriesVerticalData(
+                        isShowBack: true,
+                        isShowLabel: false,
+                        categoryId: int.parse(data),
+                        stories: storiesData,
+                      ),
+                    ),
+                  );
+                }
+              },
+        child: Tooltip(
+          onTriggered: () => TooltipTriggerMode.longPress,
+          message: message,
+          showDuration: const Duration(milliseconds: 1000),
+        ),
+      ),
+    ),
+  );
+}
+
+Future<List<StoryItems>> _handleSearchByCategory(
+    String data, SearchType type) async {
+  StoryRepository storyRepository = StoryRepository();
+  var resultData = await storyRepository.searchStory([data], [type], 1, 15);
+  return resultData.result.items;
+}
+
+Widget showToolTip(String message) {
+  return Positioned.fill(
+    child: Material(
+      color: Colors.transparent,
+      child: Tooltip(
+        onTriggered: () => TooltipTriggerMode.longPress,
+        message: message,
+        showDuration: const Duration(milliseconds: 1000),
+      ),
+    ),
+  );
 }
 
 Future<SharedPreferences> initLocalStored() async {
@@ -91,7 +150,9 @@ SingleResult storySingleDefaultData() {
       totalVote: 0,
       totalChapter: 0,
       updatedDateTs: 0,
-      updatedDateString: "");
+      updatedDateString: "",
+      firstChapterId: 0,
+      lastChapterId: 0);
 }
 
 String formatNumberThouSand(double value) {
