@@ -28,8 +28,8 @@ class Chapter extends StatefulWidget {
 class _ChapterState extends State<Chapter> {
   @override
   void initState() {
+    isLoad = true;
     initSharedPreferences();
-    isLoad = false;
     scrollPositionKey = "scrollPosition-${widget.storyId}";
     _detailChapterOfStoryBloc =
         DetailChapterOfStoryBloc(chapterId: widget.chapterId);
@@ -42,9 +42,12 @@ class _ChapterState extends State<Chapter> {
 
   @override
   void dispose() {
+    isLoad = false;
     _detailChapterOfStoryBloc.close();
     _scrollController.removeListener(_saveScrollPosition);
     _scrollController.dispose();
+    maxPosition = false;
+    minPosition = false;
     super.dispose();
   }
 
@@ -57,7 +60,10 @@ class _ChapterState extends State<Chapter> {
         scrollPositionKey, _scrollController.offset);
     await _sharedPreferences.setInt("story-${widget.storyId}", widget.storyId);
     await _sharedPreferences.setInt(
-        "story-${widget.storyId}-current-chapter", chapterIdOld);
+        "story-${widget.storyId}-current-chapter-id", chapterIdOld);
+    await _sharedPreferences.setInt(
+        "story-${widget.storyId}-current-chapter", chapterNumber);
+
     if (_scrollController.hasClients &&
         _scrollController.position.pixels ==
             _scrollController.position.maxScrollExtent &&
@@ -92,7 +98,6 @@ class _ChapterState extends State<Chapter> {
       savedScrollPosition = savedLocation.getDouble(scrollPositionKey) ?? 0.0;
       if (_scrollController.hasClients) {
         _scrollController.jumpTo(savedScrollPosition);
-        isLoad = true;
       }
     }
   }
@@ -102,7 +107,7 @@ class _ChapterState extends State<Chapter> {
   late bool isLoad = false;
   var storyIdOld = 0;
   var chapterIdOld = 0;
-
+  var chapterNumber = 0;
   var savedScrollPosition = 0.0;
   var isNextPage = false;
   var isPrePage = false;
@@ -160,14 +165,15 @@ class _ChapterState extends State<Chapter> {
                       controller: _scrollController,
                       itemCount: 1,
                       itemBuilder: (context, index) {
-                        var chaptersInfo = state.chapter.result;
-                        chapterIdOld = chaptersInfo.id;
+                        var chapterInfo = state.chapter.result;
+                        chapterIdOld = chapterInfo.id;
+                        chapterNumber = chapterInfo.numberOfChapter;
                         if (maxPosition) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             setState(() {
                               _detailChapterOfStoryBloc.add(
                                   DetailChapterOfStory(true, widget.storyId,
-                                      chapterId: chaptersInfo.id));
+                                      chapterId: chapterInfo.id));
                               maxPosition = false;
                               _scrollController.jumpTo(0.5);
                             });
@@ -178,7 +184,7 @@ class _ChapterState extends State<Chapter> {
                             setState(() {
                               _detailChapterOfStoryBloc.add(
                                   DetailChapterOfStory(false, widget.storyId,
-                                      chapterId: chaptersInfo.id));
+                                      chapterId: chapterInfo.id));
                               minPosition = false;
                               _scrollController.jumpTo(0.5);
                             });
@@ -207,7 +213,7 @@ class _ChapterState extends State<Chapter> {
                                                       expectWidth: 96.75)
                                                   .width,
                                           child: Text(
-                                            "${L(ViCode.chapterNumberTextInfo.toString())} ${chaptersInfo.numberOfChapter}: ",
+                                            "${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}: ",
                                             style: FontsDefault.h5.copyWith(
                                                 fontWeight: FontWeight.w600),
                                             maxLines: 2,
@@ -222,7 +228,7 @@ class _ChapterState extends State<Chapter> {
                                                       expectWidth: 290.25)
                                                   .width,
                                           child: Text(
-                                            chaptersInfo.chapterTitle
+                                            chapterInfo.chapterTitle
                                                 .replaceAll("\n", "")
                                                 .trim(),
                                             style: FontsDefault.h5.copyWith(
@@ -236,7 +242,7 @@ class _ChapterState extends State<Chapter> {
                                   ),
                                 ),
                                 Html(
-                                    data: chaptersInfo.body
+                                    data: chapterInfo.body
                                         .replaceAll("\n", "")
                                         .trim())
                               ],

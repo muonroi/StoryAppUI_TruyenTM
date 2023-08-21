@@ -11,10 +11,8 @@ import 'package:muonroi/blocs/Chapters/latest_bloc/latest_chapter_of_story_bloc.
 typedef LatestChapter = void Function(String val);
 
 class ChapterOfStory extends StatefulWidget {
-  final LatestChapter callback;
   final int storyId;
-  const ChapterOfStory(
-      {super.key, required this.storyId, required this.callback});
+  const ChapterOfStory({super.key, required this.storyId});
 
   @override
   State<ChapterOfStory> createState() => _ChapterOfStoryState();
@@ -52,8 +50,6 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
               return const CircularProgressIndicator();
             }
             if (state is LatestChapterOfStoryLoadedState) {
-              widget.callback(
-                  state.chapter.result.items.first.numberOfChapter.toString());
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
