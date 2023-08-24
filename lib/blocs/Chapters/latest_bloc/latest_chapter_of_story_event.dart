@@ -8,3 +8,13 @@ abstract class LatestChapterOfStoryEvent extends Equatable {
 }
 
 class GetLatestChapterOfStoryList extends LatestChapterOfStoryEvent {}
+
+class GetAnyLatestChapterList extends LatestChapterOfStoryEvent {}
+
+class GetFromToChapterOfStoryList extends LatestChapterOfStoryEvent {
+  final int fromChapterId;
+  final int toChapterId;
+
+  const GetFromToChapterOfStoryList(
+      {required this.fromChapterId, required this.toChapterId});
+}

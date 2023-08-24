@@ -46,10 +46,13 @@ class _StoriesDetailState extends State<StoriesDetail> {
 
   Future<void> getChapterId() async {
     final SharedPreferences chapterTemp = await sharedPreferences;
-    chapterId =
-        (chapterTemp.getInt("story-${widget.storyId}-current-chapter-id") ?? 0);
-    chapterNumber =
-        (chapterTemp.getInt("story-${widget.storyId}-current-chapter") ?? 0);
+    setState(() {
+      chapterId =
+          (chapterTemp.getInt("story-${widget.storyId}-current-chapter-id") ??
+              0);
+      chapterNumber =
+          (chapterTemp.getInt("story-${widget.storyId}-current-chapter") ?? 0);
+    });
   }
 
   late int chapterId = 0;
@@ -126,6 +129,7 @@ class _StoriesDetailState extends State<StoriesDetail> {
                             ),
                             ChapterOfStory(
                               storyId: storyInfo.id,
+                              storyInfo: storyInfo,
                             ),
                             SimilarStories(infoStory: storyInfo)
                           ],
@@ -172,12 +176,14 @@ class _StoriesDetailState extends State<StoriesDetail> {
                           child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                               context,
                               Chapter(
+                                isLoadHistory: true,
                                 storyId: widget.storyId,
                                 storyName: widget.storyTitle,
                                 chapterId: chapterId == 0
                                     ? storyInfo.firstChapterId
                                     : chapterId,
                                 lastChapterId: storyInfo.lastChapterId,
+                                firstChapterId: storyInfo.firstChapterId,
                               ),
                               textStyle: FontsDefault.h5.copyWith(
                                   color: ColorDefaults.thirdMainColor,
@@ -186,7 +192,7 @@ class _StoriesDetailState extends State<StoriesDetail> {
                               borderColor: ColorDefaults.mainColor,
                               widthBorder: 2,
                               textDisplay:
-                                  '${L(ViCode.chapterNumberTextInfo.toString())} $chapterNumber'),
+                                  '${L(ViCode.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}'),
                         ),
                       )
                     ],

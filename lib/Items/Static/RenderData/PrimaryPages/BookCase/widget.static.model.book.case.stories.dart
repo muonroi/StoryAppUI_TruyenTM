@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:muonroi/Items/Static/Buttons/widget.static.button.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.chapter.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StoriesBookCaseModelWidget extends StatefulWidget {
   final StoryItems storyInfo;
@@ -39,10 +40,42 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
     });
   }
 
+  Future<void> getChapterId() async {
+    final SharedPreferences chapterTemp = await sharedPreferences;
+    if (mounted) {
+      setState(() {
+        chapterId = (chapterTemp
+                .getInt("story-${widget.storyInfo.id}-current-chapter-id") ??
+            0);
+        chapterNumber = (chapterTemp
+                .getInt("story-${widget.storyInfo.id}-current-chapter") ??
+            0);
+      });
+    }
+  }
+
+  late bool buttonState = true;
+  late int chapterId = 0;
+  late int chapterNumber = 0;
+  final Future<SharedPreferences> sharedPreferences =
+      SharedPreferences.getInstance();
+
   @override
   Widget build(BuildContext context) {
+    getChapterId();
+    buttonState = true;
     return GestureDetector(
-      onTapDown: (_) => _toggleItemState(),
+      onTapDown: (_) {
+        _toggleItemState();
+      },
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => StoriesDetail(
+                    storyId: widget.storyInfo.id,
+                    storyTitle: widget.storyInfo.storyTitle)));
+      },
       onTapUp: (_) => _setDefaultItemState(),
       onTapCancel: () => _setDefaultItemState(),
       child: AnimatedContainer(
@@ -104,13 +137,16 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                       width: MainSetting.getPercentageOfDevice(context,
                               expectWidth: 250)
                           .width,
-                      child: Text(
-                        widget.storyInfo.storyTitle,
-                        style: FontsDefault.h4.copyWith(
-                            fontWeight: FontWeight.w700, fontSize: 18),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      child: Stack(children: [
+                        Text(
+                          widget.storyInfo.storyTitle,
+                          style: FontsDefault.h4.copyWith(
+                              fontWeight: FontWeight.w700, fontSize: 18),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        showToolTip(widget.storyInfo.storyTitle)
+                      ]),
                     ),
                     Text(
                       widget.storyInfo.authorName,
@@ -124,24 +160,63 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                         Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: SizedBox(
-                              width: MainSetting.getPercentageOfDevice(context,
-                                      expectWidth: 170)
-                                  .width,
-                              child: ButtonWidget
-                                  .buttonNavigatorNextPreviewLanding(
-                                      context,
-                                      StoriesDetail(
-                                          storyId: widget.storyInfo.id,
-                                          storyTitle:
-                                              widget.storyInfo.storyTitle),
-                                      textDisplay: L(ViCode
-                                          .storiesContinueChapterTextInfo
-                                          .toString())),
-                            )),
+                                width: MainSetting.getPercentageOfDevice(
+                                        context,
+                                        expectWidth: 170)
+                                    .width,
+                                child: ElevatedButton(
+                                  onPressed: buttonState
+                                      ? () async {
+                                          buttonState = false;
+                                          var storyInfo = await getInfoStory(
+                                              widget.storyInfo.id);
+                                          if (context.mounted) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => Chapter(
+                                                      isLoadHistory: true,
+                                                      storyId:
+                                                          storyInfo.result.id,
+                                                      storyName: storyInfo
+                                                          .result.storyTitle,
+                                                      chapterId: chapterId == 0
+                                                          ? storyInfo.result
+                                                              .firstChapterId
+                                                          : chapterId,
+                                                      lastChapterId: storyInfo
+                                                          .result.lastChapterId,
+                                                      firstChapterId: storyInfo
+                                                          .result
+                                                          .firstChapterId)),
+                                            );
+                                          }
+                                        }
+                                      : null,
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: buttonState
+                                          ? ColorDefaults.mainColor
+                                          : ColorDefaults.secondMainColor,
+                                      shape: const StadiumBorder(),
+                                      side: BorderSide(
+                                          color: buttonState
+                                              ? ColorDefaults.mainColor
+                                              : ColorDefaults.secondMainColor,
+                                          width: 2)),
+                                  child: Text(
+                                    '${L(ViCode.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}',
+                                    style: const TextStyle(
+                                        fontFamily: FontsDefault.inter,
+                                        fontSize: 16,
+                                        color: ColorDefaults.defaultTextColor),
+                                  ),
+                                ))),
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: SizedBox(
-                            width: 100,
+                            width: MainSetting.getPercentageOfDevice(context,
+                                    expectWidth: 100)
+                                .width,
                             child: Stack(children: [
                               Text(
                                 widget.storyInfo.updatedDateString,

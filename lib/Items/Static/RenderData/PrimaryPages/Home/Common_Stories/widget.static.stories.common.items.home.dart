@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../../Models/Stories/models.stories.story.dart';
-import '../../../../../../Settings/settings.colors.dart';
-import '../../../../../../Settings/settings.fonts.dart';
-import '../../../../../../Settings/settings.language_code.vi..dart';
-import '../../../../../../Settings/settings.main.dart';
-import '../../../Shared/widget.static.stories.vertical.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.vertical.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
+import 'package:muonroi/Settings/settings.fonts.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.main.dart';
 
 class StoriesCommon extends StatelessWidget {
   final bool isShowLabel;

@@ -9,7 +9,3 @@ abstract class GroupChapterOfStoryEvent extends Equatable {
 }
 
 class GroupChapterOfStoryList extends GroupChapterOfStoryEvent {}
-
-class GroupMoreChapterOfStoryList extends GroupChapterOfStoryEvent {}
-
-class DetailChapterOfStoryList extends GroupChapterOfStoryEvent {}

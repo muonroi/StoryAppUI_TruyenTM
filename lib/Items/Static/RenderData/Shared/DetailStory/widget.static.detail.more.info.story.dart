@@ -38,7 +38,7 @@ class InfoDetailStory extends StatelessWidget {
 }
 
 class MoreInfoStory extends StatelessWidget {
-  final SingleResult infoStory;
+  final StorySingleResult infoStory;
   const MoreInfoStory({super.key, required this.infoStory});
 
   @override

@@ -25,9 +25,11 @@ class _SearchPageState extends State<SearchPage> {
   bool isShowClearText = false;
   StoryRepository storyRepository = StoryRepository();
   List<StoryItems> storiesSearch = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: ColorDefaults.lightAppColor,
         elevation: 0,
@@ -58,6 +60,9 @@ class _SearchPageState extends State<SearchPage> {
                     Icons.clear,
                   ),
                   onPressed: () {
+                    setState(() {
+                      isShowClearText = false;
+                    });
                     widget.searchController.clear();
                   },
                 ),
@@ -73,10 +78,7 @@ class _SearchPageState extends State<SearchPage> {
       body: SizedBox(
         child: Column(
           children: [
-            SizedBox(
-              height:
-                  MainSetting.getPercentageOfDevice(context, expectHeight: 400)
-                      .height,
+            Expanded(
               child: ListView.builder(
                 itemCount: storiesSearch.length,
                 itemBuilder: (context, index) => Container(

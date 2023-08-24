@@ -52,7 +52,11 @@ class LocalizationLib {
       ViCode.coinStoryTextInfo.toString(): 'Ngân lượng',
       ViCode.pushRechargeStoryTextInfo.toString(): 'Đẩy ngân lượng',
       ViCode.similarStoriesTextInfo.toString(): 'Truyện tương tự',
-      ViCode.chapterEndTextInfo.toString(): "Hết!"
+      ViCode.chapterEndTextInfo.toString(): "Hết!",
+      ViCode.tagCompleteTextInfo.toString(): "hoàn thành",
+      ViCode.nextChapterTextInfo.toString(): "Chương kế",
+      ViCode.previousChapterTextInfo.toString(): "Chương trước",
+      ViCode.loadingTextInfo.toString(): "Đang tải",
     }
   };
   static String L(String key, {String locale = 'vi'}) {

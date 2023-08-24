@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../../Models/Stories/models.stories.story.dart';
 import '../../../../../../Settings/settings.colors.dart';
 import '../../../../../../Settings/settings.fonts.dart';
 import '../../../../../../Settings/settings.language_code.vi..dart';

@@ -97,5 +97,13 @@ enum ViCode {
   chapterEndTextInfo,
 //Error when search return null or empty
   notfoundTextInfo,
+// Tag complete
+  tagCompleteTextInfo,
+// Next chapter
+  nextChapterTextInfo,
+// Previous chapter
+  previousChapterTextInfo,
+// Loading text info
+  loadingTextInfo,
 // #endregion
 }

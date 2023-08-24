@@ -1,3 +1,5 @@
+import 'package:muonroi/Models/Chapters/models.chapter.list.paging.dart';
+import 'package:muonroi/Models/Chapters/models.chapter.list.paging.range.dart';
 import 'package:muonroi/Models/Chapters/models.chapter.single.chapter.dart';
 import 'package:muonroi/Models/Chapters/models.chapters.list.chapter.dart';
 import 'package:muonroi/Models/Chapters/models.chapters.preview.chapter.dart';
@@ -15,18 +17,23 @@ class ChapterRepository {
       {required this.storyId, required this.isLatest});
 
   Future<ChapterPreviewModel> fetchChaptersData() =>
-      _provider.getChaptersDataList(storyId, isLatest: isLatest);
+      _provider.getChaptersDataList(storyId, pageIndex, isLatest: isLatest);
 
-  Future<ChapterInfo> fetchGroupChapterOfStory(int storyId, int chapterId,
-          {int pageIndex = 1, int pageSize = 20}) =>
-      _provider.getGroupChaptersDataDetail(storyId, chapterId,
-          pageIndex: pageIndex, pageSize: pageSize);
+  Future<ListPagingChapters> fetchGroupChapterOfStory(int storyId) =>
+      _provider.getGroupChaptersDataDetail(storyId);
 
   Future<DetailChapterInfo> fetchChapterOfStory(int chapterId) =>
       _provider.getChapterDataDetail(chapterId);
   Future<DetailChapterInfo> fetchActionChapterOfStory(
           int chapterId, int storyId, bool action) =>
       _provider.fetchActionChapterOfStory(chapterId, storyId, action);
+  Future<ChapterInfo> fetchLatestChapterAnyStory(int pageIndex, int pageSize) =>
+      _provider.fetchLatestChapterAnyStory(
+          pageIndex: pageIndex, pageSize: pageSize);
+
+  Future<ListPagingRangeChapters> fetchFromToChapterOfStory(
+          int storyId, int from, int to) =>
+      _provider.getFromToChaptersDataDetail(storyId, from, to);
 }
 
 class NetworkError extends Error {}
