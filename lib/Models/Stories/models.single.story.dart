@@ -7,7 +7,7 @@ String singleStoryModelToJson(SingleStoryModel data) =>
     json.encode(data.toJson());
 
 class SingleStoryModel {
-  SingleResult result;
+  StorySingleResult result;
   List<dynamic> errorMessages;
   bool isOk;
   dynamic statusCode;
@@ -21,7 +21,7 @@ class SingleStoryModel {
 
   factory SingleStoryModel.fromJson(Map<String, dynamic> json) =>
       SingleStoryModel(
-        result: SingleResult.fromJson(json["result"]),
+        result: StorySingleResult.fromJson(json["result"]),
         errorMessages: List<dynamic>.from(json["errorMessages"].map((x) => x)),
         isOk: json["isOK"],
         statusCode: json["statusCode"],
@@ -35,7 +35,7 @@ class SingleStoryModel {
       };
 }
 
-class SingleResult {
+class StorySingleResult {
   int rankNumber;
   int totalChapter;
   int id;
@@ -56,7 +56,7 @@ class SingleResult {
   String updatedDateString;
   int firstChapterId;
   int lastChapterId;
-  SingleResult({
+  StorySingleResult({
     required this.rankNumber,
     required this.totalChapter,
     required this.id,
@@ -79,7 +79,8 @@ class SingleResult {
     required this.lastChapterId,
   });
 
-  factory SingleResult.fromJson(Map<String, dynamic> json) => SingleResult(
+  factory StorySingleResult.fromJson(Map<String, dynamic> json) =>
+      StorySingleResult(
         rankNumber: json["rankNumber"],
         totalChapter: json["totalChapter"],
         id: json["id"],

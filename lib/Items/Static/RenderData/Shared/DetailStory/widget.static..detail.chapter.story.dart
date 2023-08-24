@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/Items/Static/Buttons/widget.static.button.dart';
-import 'package:muonroi/Pages/Accounts/Logins/pages.logins.sign_in.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.chapter.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.list.chapter.dart';
+import 'package:muonroi/Models/Stories/models.single.story.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
@@ -12,7 +14,9 @@ typedef LatestChapter = void Function(String val);
 
 class ChapterOfStory extends StatefulWidget {
   final int storyId;
-  const ChapterOfStory({super.key, required this.storyId});
+  final StorySingleResult storyInfo;
+  const ChapterOfStory(
+      {super.key, required this.storyId, required this.storyInfo});
 
   @override
   State<ChapterOfStory> createState() => _ChapterOfStoryState();
@@ -115,8 +119,38 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                   ),
                                 ],
                               ),
-                              showToolTipHaveAnimation(
-                                  chapterItem.chapterName.trim())
+                              Positioned.fill(
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () async {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Chapter(
+                                            isLoadHistory: true,
+                                            storyId: widget.storyId,
+                                            storyName:
+                                                widget.storyInfo.storyTitle,
+                                            chapterId: chapterItem.chapterId,
+                                            lastChapterId:
+                                                widget.storyInfo.lastChapterId,
+                                            firstChapterId:
+                                                widget.storyInfo.firstChapterId,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Tooltip(
+                                      onTriggered: () =>
+                                          TooltipTriggerMode.longPress,
+                                      message: chapterItem.chapterName,
+                                      showDuration:
+                                          const Duration(milliseconds: 1000),
+                                    ),
+                                  ),
+                                ),
+                              )
                             ]),
                           );
                         })),
@@ -132,13 +166,19 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                 expectHeight: 40)
                             .height,
                         child: ButtonWidget.buttonNavigatorNextPreviewLanding(
-                            context, const SignInPage(),
+                            context,
+                            ChapterListPage(
+                              storyId: widget.storyId,
+                              storyTitle: widget.storyInfo.storyTitle,
+                              lastChapterId: widget.storyInfo.lastChapterId,
+                              firstChapterId: widget.storyInfo.firstChapterId,
+                            ),
                             textStyle: FontsDefault.h5.copyWith(
                                 color: ColorDefaults.mainColor,
                                 fontWeight: FontWeight.w600),
                             color: ColorDefaults.lightAppColor,
                             borderColor: ColorDefaults.mainColor,
-                            widthBorder: 2,
+                            widthBorder: 1,
                             textDisplay:
                                 L(ViCode.listChapterStoryTextInfo.toString())),
                       ),

@@ -30,88 +30,102 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocProvider(
-      create: (context) => categoriesBloc,
-      child: BlocListener<CategoriesBloc, CategoriesState>(
-        listener: (context, state) {
-          const Center(child: CircularProgressIndicator());
-        },
-        child: BlocBuilder<CategoriesBloc, CategoriesState>(
-          builder: (context, state) {
-            if (state is CategoriesLoadingState) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state is CategoriesLoadedState) {
-              return GridView.count(
-                  scrollDirection: Axis.vertical,
-                  childAspectRatio: (1 / .4),
-                  shrinkWrap: true,
-                  crossAxisCount: 2,
-                  children: List.generate(state.categories.result.items.length,
-                      (index) {
-                    var categoryInfo = state.categories.result.items[index];
-                    var iconData =
-                        _getIconDataFromApiResponse(categoryInfo.iconName);
-                    return Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              WidgetSpan(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: ColorDefaults.secondMainColor,
-                                      borderRadius:
-                                          BorderRadius.circular(10.0)),
-                                  child: Stack(children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 4.0),
-                                            child: Icon(iconData, size: 34)),
-                                        Container(
-                                          width:
-                                              MainSetting.getPercentageOfDevice(
-                                                      context,
-                                                      expectWidth: 110)
-                                                  .width,
-                                          padding: const EdgeInsets.all(8.0),
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 4.0),
-                                          child: Text(
-                                            categoryInfo.nameCategory,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    showToolTipHaveAnimation(
-                                        categoryInfo.nameCategory,
-                                        data: categoryInfo.id.toString(),
-                                        context: context)
-                                  ]),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }));
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.pop(context),
+            color: ColorDefaults.thirdMainColor,
+          ),
+          backgroundColor: ColorDefaults.lightAppColor,
+          elevation: 0,
         ),
-      ),
-    ));
+        body: BlocProvider(
+          create: (context) => categoriesBloc,
+          child: BlocListener<CategoriesBloc, CategoriesState>(
+            listener: (context, state) {
+              const Center(child: CircularProgressIndicator());
+            },
+            child: BlocBuilder<CategoriesBloc, CategoriesState>(
+              builder: (context, state) {
+                if (state is CategoriesLoadingState) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state is CategoriesLoadedState) {
+                  return GridView.count(
+                      scrollDirection: Axis.vertical,
+                      childAspectRatio: (1 / .4),
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      children: List.generate(
+                          state.categories.result.items.length, (index) {
+                        var categoryInfo = state.categories.result.items[index];
+                        var iconData =
+                            _getIconDataFromApiResponse(categoryInfo.iconName);
+                        return Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: ColorDefaults.secondMainColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      child: Stack(children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4.0),
+                                                child:
+                                                    Icon(iconData, size: 34)),
+                                            Container(
+                                              width: MainSetting
+                                                      .getPercentageOfDevice(
+                                                          context,
+                                                          expectWidth: 110)
+                                                  .width,
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 4.0),
+                                              child: Text(
+                                                categoryInfo.nameCategory,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        showToolTipHaveAnimationStories(
+                                            categoryInfo.nameCategory,
+                                            data: categoryInfo.id.toString(),
+                                            context: context)
+                                      ]),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }));
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+        ));
   }
 }
 

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.fonts.dart';
 import 'package:muonroi/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/Settings/settings.main.dart';
 import 'package:muonroi/blocs/Chapters/Detail_bloc/detail_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Chapter extends StatefulWidget {
@@ -14,12 +16,16 @@ class Chapter extends StatefulWidget {
   final String storyName;
   final int chapterId;
   final int lastChapterId;
+  final int firstChapterId;
+  final bool isLoadHistory;
   const Chapter(
       {super.key,
       required this.storyId,
       required this.storyName,
       required this.chapterId,
-      required this.lastChapterId});
+      required this.lastChapterId,
+      required this.firstChapterId,
+      required this.isLoadHistory});
 
   @override
   State<Chapter> createState() => _ChapterState();
@@ -46,6 +52,7 @@ class _ChapterState extends State<Chapter> {
     _detailChapterOfStoryBloc.close();
     _scrollController.removeListener(_saveScrollPosition);
     _scrollController.dispose();
+    _refreshController.dispose();
     maxPosition = false;
     minPosition = false;
     super.dispose();
@@ -63,43 +70,42 @@ class _ChapterState extends State<Chapter> {
         "story-${widget.storyId}-current-chapter-id", chapterIdOld);
     await _sharedPreferences.setInt(
         "story-${widget.storyId}-current-chapter", chapterNumber);
-
-    if (_scrollController.hasClients &&
-        _scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent &&
-        isNextPage) {
-      setState(() {
-        maxPosition = true;
-        isNextPage = false;
-      });
-    } else if (_scrollController.hasClients &&
-        _scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent &&
-        !isNextPage) {
-      isNextPage = true;
-    }
-    if (_scrollController.hasClients &&
-        _scrollController.position.pixels == 0.0 &&
-        isPrePage) {
-      setState(() {
-        minPosition = true;
-        isPrePage = false;
-      });
-    } else if (_scrollController.hasClients &&
-        _scrollController.position.pixels == 0.0 &&
-        !isPrePage) {
-      isPrePage = true;
-    }
   }
 
   void loadSavedScrollPosition() async {
-    if (isLoad) {
+    if (isLoad && widget.isLoadHistory) {
       SharedPreferences savedLocation = await SharedPreferences.getInstance();
       savedScrollPosition = savedLocation.getDouble(scrollPositionKey) ?? 0.0;
       if (_scrollController.hasClients) {
         _scrollController.jumpTo(savedScrollPosition);
       }
     }
+  }
+
+  void _onRefresh(int chapterId) async {
+    if (mounted && widget.firstChapterId != chapterId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _detailChapterOfStoryBloc.add(DetailChapterOfStory(
+              false, widget.storyId,
+              chapterId: chapterId));
+        });
+      });
+    }
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading(int chapterId) async {
+    if (mounted && widget.lastChapterId != chapterId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _detailChapterOfStoryBloc.add(
+              DetailChapterOfStory(true, widget.storyId, chapterId: chapterId));
+          _scrollController.jumpTo(0.0);
+        });
+      });
+    }
+    _refreshController.loadComplete();
   }
 
   late bool maxPosition = false;
@@ -115,13 +121,20 @@ class _ChapterState extends State<Chapter> {
   late SharedPreferences _sharedPreferences;
   late DetailChapterOfStoryBloc _detailChapterOfStoryBloc;
   late ScrollController _scrollController;
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
   late String scrollPositionKey;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _detailChapterOfStoryBloc,
       child: BlocListener<DetailChapterOfStoryBloc, DetailChapterOfStoryState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
         child: Scaffold(
           appBar: isVisible
               ? AppBar(
@@ -130,12 +143,23 @@ class _ChapterState extends State<Chapter> {
                   leading: const BackButton(
                     color: ColorDefaults.thirdMainColor,
                   ),
-                  title: Title(
-                      color: ColorDefaults.thirdMainColor,
-                      child: Text(
-                        widget.storyName,
-                        style: FontsDefault.h5,
-                      )),
+                  title: GestureDetector(
+                    onDoubleTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StoriesDetail(
+                                    storyId: widget.storyId,
+                                    storyTitle: widget.storyName,
+                                  )));
+                    },
+                    child: Title(
+                        color: ColorDefaults.thirdMainColor,
+                        child: Text(
+                          widget.storyName,
+                          style: FontsDefault.h5,
+                        )),
+                  ),
                 )
               : PreferredSize(preferredSize: Size.zero, child: Container()),
           backgroundColor: ColorDefaults.lightAppColor,
@@ -160,36 +184,32 @@ class _ChapterState extends State<Chapter> {
                 if (state is DetailChapterOfStoryLoadingState) {}
                 if (state is DetailChapterOfStoryLoadedState) {
                   loadSavedScrollPosition();
-                  return Stack(children: [
-                    ListView.builder(
+                  var chapterInfo = state.chapter.result;
+                  return SmartRefresher(
+                    enablePullDown: true,
+                    enablePullUp: true,
+                    header: ClassicHeader(
+                      idleIcon: const Icon(Icons.arrow_upward),
+                      idleText: L(ViCode.previousChapterTextInfo.toString()),
+                      refreshingText: L(ViCode.loadingTextInfo.toString()),
+                      releaseText: L(ViCode.loadingTextInfo.toString()),
+                    ),
+                    controller: _refreshController,
+                    onRefresh: () => _onRefresh(chapterInfo.id),
+                    onLoading: () => _onLoading(chapterInfo.id),
+                    footer: ClassicFooter(
+                      canLoadingIcon: const Icon(Icons.arrow_downward),
+                      canLoadingText: L(ViCode.nextChapterTextInfo.toString()),
+                    ),
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
                       controller: _scrollController,
                       itemCount: 1,
                       itemBuilder: (context, index) {
-                        var chapterInfo = state.chapter.result;
                         chapterIdOld = chapterInfo.id;
                         chapterNumber = chapterInfo.numberOfChapter;
-                        if (maxPosition) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            setState(() {
-                              _detailChapterOfStoryBloc.add(
-                                  DetailChapterOfStory(true, widget.storyId,
-                                      chapterId: chapterInfo.id));
-                              maxPosition = false;
-                              _scrollController.jumpTo(0.5);
-                            });
-                          });
-                        }
-                        if (minPosition) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            setState(() {
-                              _detailChapterOfStoryBloc.add(
-                                  DetailChapterOfStory(false, widget.storyId,
-                                      chapterId: chapterInfo.id));
-                              minPosition = false;
-                              _scrollController.jumpTo(0.5);
-                            });
-                          });
-                        }
+                        if (minPosition &&
+                            chapterInfo.id != widget.firstChapterId) {}
                         return Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Column(
@@ -258,7 +278,7 @@ class _ChapterState extends State<Chapter> {
                         //   );
                       },
                     ),
-                  ]);
+                  );
                 }
                 return const Center(child: CircularProgressIndicator());
               },

@@ -19,7 +19,8 @@ String L(String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
 }
 
-Widget showToolTipHaveAnimation(String message,
+//use with category
+Widget showToolTipHaveAnimationStories(String message,
     {BuildContext? context, String? data}) {
   return Positioned.fill(
     child: Material(
@@ -52,6 +53,16 @@ Widget showToolTipHaveAnimation(String message,
       ),
     ),
   );
+}
+
+Future<SingleStoryModel> getInfoStory(int storyId) async {
+  final StoryRepository storyRepository = StoryRepository();
+  try {
+    final story = await storyRepository.fetchDetailStory(storyId);
+    return story;
+  } on NetworkError {
+    throw Exception("Failed to fetch data. is your device online?");
+  }
 }
 
 Future<List<StoryItems>> _handleSearchByCategory(
@@ -131,8 +142,8 @@ String formatValueNumber(double value) {
   return numberFormat.format(value);
 }
 
-SingleResult storySingleDefaultData() {
-  return SingleResult(
+StorySingleResult storySingleDefaultData() {
+  return StorySingleResult(
       id: -1,
       guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       storyTitle: "",

@@ -12,7 +12,7 @@ class GroupChapterOfStoryInitial extends GroupChapterOfStoryState {}
 class GroupChapterOfStoryLoadingState extends GroupChapterOfStoryState {}
 
 class GroupChapterOfStoryLoadedState extends GroupChapterOfStoryState {
-  final ChapterInfo chapter;
+  final ListPagingChapters chapter;
   const GroupChapterOfStoryLoadedState(this.chapter);
 }
 

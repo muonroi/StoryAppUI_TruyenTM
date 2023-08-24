@@ -1,3 +1,5 @@
+import 'package:muonroi/Models/Chapters/models.chapter.list.paging.dart';
+import 'package:muonroi/Models/Chapters/models.chapter.list.paging.range.dart';
 import 'package:muonroi/Models/Chapters/models.chapter.single.chapter.dart';
 import 'package:muonroi/Models/Chapters/models.chapters.list.chapter.dart';
 import 'package:muonroi/Models/Chapters/models.chapters.preview.chapter.dart';
@@ -6,11 +8,11 @@ import 'package:muonroi/Settings/settings.main.dart';
 import 'package:sprintf/sprintf.dart';
 
 class ChapterProvider {
-  Future<ChapterPreviewModel> getChaptersDataList(int storyId,
+  Future<ChapterPreviewModel> getChaptersDataList(int storyId, int pageIndex,
       {bool isLatest = false}) async {
     try {
-      final response = await baseUrl().get(sprintf(
-          ApiNetwork.getChapterPaging, ["$storyId", "1", "100", "$isLatest"]));
+      final response = await baseUrl().get(sprintf(ApiNetwork.getChapterPaging,
+          ["$storyId", "$pageIndex", "100", "$isLatest"]));
       if (response.statusCode == 200) {
         return chapterPreviewModelFromJson(response.data.toString());
       } else {
@@ -21,14 +23,12 @@ class ChapterProvider {
     }
   }
 
-  Future<ChapterInfo> getGroupChaptersDataDetail(int storyId, int fromChapterId,
-      {int pageIndex = 1, int pageSize = 20}) async {
+  Future<ListPagingChapters> getGroupChaptersDataDetail(int storyId) async {
     try {
-      final response = await baseUrl().get(sprintf(
-          ApiNetwork.getGroupChapterDetail,
-          ["$storyId", "$fromChapterId", "$pageIndex", "$pageSize"]));
+      final response = await baseUrl()
+          .get(sprintf(ApiNetwork.getListChapterPaging, ["$storyId"]));
       if (response.statusCode == 200) {
-        return chapterInfoFromJson(response.data.toString());
+        return listPagingChaptersFromJson(response.data.toString());
       } else {
         throw Exception("Failed to load chapter");
       }
@@ -65,6 +65,36 @@ class ChapterProvider {
       }
     } catch (e) {
       throw Exception("Failed to load detail chapter");
+    }
+  }
+
+  Future<ChapterInfo> fetchLatestChapterAnyStory(
+      {int pageIndex = 1, int pageSize = 5}) async {
+    try {
+      final response = await baseUrl().get(
+          sprintf(ApiNetwork.getLatestChapterNumber, [pageIndex, pageSize]));
+      if (response.statusCode == 200) {
+        return chapterInfoFromJson(response.data.toString());
+      } else {
+        throw Exception("Failed to load list chapter");
+      }
+    } catch (e) {
+      throw Exception("Failed to load list chapter");
+    }
+  }
+
+  Future<ListPagingRangeChapters> getFromToChaptersDataDetail(
+      int storyId, int from, int to) async {
+    try {
+      final response = await baseUrl().get(sprintf(
+          ApiNetwork.getFromToChapterPaging, ["$storyId", "$from", "$to"]));
+      if (response.statusCode == 200) {
+        return listPagingRangeChaptersFromJson(response.data.toString());
+      } else {
+        throw Exception("Failed to load chapter");
+      }
+    } catch (e) {
+      throw Exception("Failed to load chapter");
     }
   }
 }

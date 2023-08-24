@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/Models/Chapters/models.chapters.list.chapter.dart';
+import 'package:muonroi/Models/Chapters/models.chapter.list.paging.dart';
 import 'package:muonroi/repository/Chapter/chapter_repository.dart';
 part 'group_chapters_of_story_event.dart';
 part 'group_chapters_of_story_state.dart';
@@ -21,42 +21,7 @@ class GroupChapterOfStoryBloc
     on<GroupChapterOfStoryList>((event, emit) async {
       try {
         emit(GroupChapterOfStoryLoadingState());
-        var mList = await chapterRepository.fetchGroupChapterOfStory(
-            storyId, chapterId,
-            pageIndex: pageIndex, pageSize: pageSize);
-        emit(GroupChapterOfStoryLoadedState(mList));
-        if (!mList.isOk) {
-          emit(GroupChapterOfStoryErrorState(
-              mList.errorMessages.map((e) => e.toString()).toList().join(',')));
-        }
-      } on NetworkError {
-        emit(const GroupChapterOfStoryErrorState(
-            "Failed to fetch data. is your device online?"));
-      }
-    });
-    on<GroupMoreChapterOfStoryList>((event, emit) async {
-      try {
-        emit(GroupChapterOfStoryLoadingState());
-        pageIndex++;
-        final mList = await chapterRepository.fetchGroupChapterOfStory(
-            storyId, chapterId,
-            pageIndex: pageIndex, pageSize: pageSize);
-        emit(GroupChapterOfStoryLoadedState(mList));
-        if (!mList.isOk) {
-          emit(GroupChapterOfStoryErrorState(
-              mList.errorMessages.map((e) => e.toString()).toList().join(',')));
-        }
-      } on NetworkError {
-        emit(const GroupChapterOfStoryErrorState(
-            "Failed to fetch data. is your device online?"));
-      }
-    });
-    on<DetailChapterOfStoryList>((event, emit) async {
-      try {
-        emit(GroupChapterOfStoryLoadingState());
-        ChapterInfo mList = await chapterRepository.fetchGroupChapterOfStory(
-            storyId, chapterId,
-            pageIndex: pageIndex, pageSize: pageSize);
+        var mList = await chapterRepository.fetchGroupChapterOfStory(storyId);
         emit(GroupChapterOfStoryLoadedState(mList));
         if (!mList.isOk) {
           emit(GroupChapterOfStoryErrorState(

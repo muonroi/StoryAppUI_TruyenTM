@@ -9,7 +9,7 @@ import 'package:muonroi/Settings/settings.main.dart';
 import 'package:muonroi/repository/Story/story_repository.dart';
 
 class Header extends StatefulWidget {
-  final SingleResult infoStory;
+  final StorySingleResult infoStory;
   const Header({super.key, required this.infoStory});
 
   @override
@@ -117,7 +117,7 @@ class _HeaderState extends State<Header> {
                             expectWidth: 200)
                         .width,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
                           padding: const EdgeInsets.all(7),
@@ -132,19 +132,6 @@ class _HeaderState extends State<Header> {
                             maxLines: 1,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(7),
-                          decoration: BoxDecoration(
-                              color: ColorDefaults.secondMainColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Text(
-                            widget.infoStory.nameCategory,
-                            style: FontsDefault.h5
-                                .copyWith(fontWeight: FontWeight.w400),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                        )
                       ],
                     ),
                   ),
@@ -154,7 +141,18 @@ class _HeaderState extends State<Header> {
                       children: widget.infoStory.nameTag
                           .map((e) => e.toString())
                           .map((String item) {
-                        return Text(item);
+                        return item.toLowerCase().trim() ==
+                                L(ViCode.tagCompleteTextInfo.toString().trim())
+                            ? Text(
+                                '#$item ',
+                                style: FontsDefault.h6.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 11,
+                                    backgroundColor: ColorDefaults.mainColor),
+                              )
+                            : Text('#$item ',
+                                style: FontsDefault.h6.copyWith(
+                                    fontStyle: FontStyle.italic, fontSize: 11));
                       }).toList(),
                     ),
                   ),

@@ -109,7 +109,7 @@ class HomePageItems {
       OnlyTitleTextInfo(
         textInfo: L(ViCode.newChapterUpdatedTextInfo.toString()),
       ),
-      ListNewChapter(chapterInfos: listChapter),
+      const ListNewChapter(),
       // #endregion
     ];
     return components;
