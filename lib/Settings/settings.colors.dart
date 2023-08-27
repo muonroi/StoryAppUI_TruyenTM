@@ -10,5 +10,5 @@ class ColorDefaults {
   static const Color titleColor = Color(0xFF2D2D2D);
   static const Color defaultTextColor = Color(0xFF2D2D2D);
   static const Color buttonPreviewPage = Color(0xFF707070);
-  static const Color borderButtonPreviewPage = Color(0xFFB5B5B5);
+  static const Color colorGrey200 = Color.fromRGBO(238, 238, 238, 1);
 }

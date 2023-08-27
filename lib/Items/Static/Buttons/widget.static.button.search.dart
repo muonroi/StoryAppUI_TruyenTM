@@ -18,7 +18,7 @@ class SearchContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+      margin: const EdgeInsets.all(10.0),
       child: Stack(children: [
         TextField(
           controller: searchController,

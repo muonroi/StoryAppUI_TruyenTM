@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:muonroi/Models/Stories/models.single.story.dart';
@@ -24,6 +23,7 @@ class _HeaderState extends State<Header> {
   }
 
   late StoryRepository _storyRepository;
+  late double ratingValue = 0.0;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -41,17 +41,7 @@ class _HeaderState extends State<Header> {
                     .height,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.infoStory.imgUrl,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                      child: CircularProgressIndicator(
-                          value: downloadProgress.progress),
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    fit: BoxFit.cover,
-                  ),
+                  child: netWorkImage(widget.infoStory.imgUrl, true),
                 ),
               ),
               RatingBar.builder(

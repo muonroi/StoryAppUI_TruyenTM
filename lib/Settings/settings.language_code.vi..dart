@@ -105,5 +105,29 @@ enum ViCode {
   previousChapterTextInfo,
 // Loading text info
   loadingTextInfo,
+// Load more stories
+  loadingMoreTextInfo,
+// Load more stories
+  loadingPreviousTextInfo,
+// Custom dashboard reading story
+  customDashboardReadingTextInfo,
+// Custom dashboard
+  defaultDashboardTextInfo,
+// Custom another dashboard(font,color)
+  customAnotherDashboardTextInfo,
+  scrollConfigDashboardTextInfo,
+  buttonScrollConfigDashboardTextInfo,
+  scrollConfigVerticalDashboardTextInfo,
+  scrollConfigHorizontalDashboardTextInfo,
+  buttonScrollConfigNoneDashboardTextInfo,
+  buttonScrollConfigLeftDashboardTextInfo,
+  buttonScrollConfigRightDashboardTextInfo,
+  alignConfigLeftDashboardTextInfo,
+  alignConfigRegularDashboardTextInfo,
+  fontConfigDashboardTextInfo,
+  fontSizeConfigDashboardTextInfo,
+  fontColorConfigDashboardTextInfo,
+  backgroundConfigDashboardTextInfo,
+  alignConfigDashboardTextInfo,
 // #endregion
 }

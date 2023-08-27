@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/PrimaryPages/User/widget.static.user.info.items.dart';
 import 'package:muonroi/Models/Accounts/models.account.signup.dart';
@@ -39,17 +38,10 @@ class _UserInfoState extends State<UserInfo> {
                   height: MainSetting.getPercentageOfDevice(context,
                           expectHeight: 70)
                       .height,
-                  child: CachedNetworkImage(
-                    imageUrl: widget.userInfo.imageLink ??
-                        ImageDefault.imageAvatarDefault,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator(
-                                value: downloadProgress.progress),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    fit: BoxFit.cover,
-                  ),
+                  child: netWorkImage(
+                      widget.userInfo.imageLink ??
+                          ImageDefault.imageAvatarDefault,
+                      true),
                 ),
               ),
               Container(

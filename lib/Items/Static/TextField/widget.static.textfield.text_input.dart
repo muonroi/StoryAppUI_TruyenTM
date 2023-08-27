@@ -75,7 +75,7 @@ class SearchBar extends StatelessWidget {
       decoration: BoxDecoration(
           color: ColorDefaults.secondMainColor,
           borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: ColorDefaults.borderButtonPreviewPage)),
+          border: Border.all(color: ColorDefaults.colorGrey200)),
       child: child,
     );
   }

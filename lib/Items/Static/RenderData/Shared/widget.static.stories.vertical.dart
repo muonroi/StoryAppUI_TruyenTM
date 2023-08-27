@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.model.full.stories.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
+import 'package:muonroi/Settings/settings.language_code.vi..dart';
+import 'package:muonroi/Settings/settings.main.dart';
 import 'package:muonroi/blocs/Stories/FreeData/bloc/free_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../Settings/settings.colors.dart';
 
 class StoriesVerticalData extends StatelessWidget {
@@ -52,10 +55,11 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
     if (widget.idCategory == 0) {
       _freeStoryPageBloc.add(GetFreeStoriesList());
     } else {
-      _freeStoryPageBloc
-          .add(GroupMoreFreeStoryList(categoryId: widget.idCategory ?? 0));
+      _freeStoryPageBloc.add(GroupMoreFreeStoryList(
+          categoryId: widget.idCategory ?? 0, isPrevious: false));
     }
     _scrollController = ScrollController();
+    _refreshController = RefreshController(initialRefresh: false);
     _scrollController.addListener(loadMore);
     tempData = widget.stories;
     super.initState();
@@ -65,6 +69,7 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
   void dispose() {
     _freeStoryPageBloc.close();
     _scrollController.dispose();
+    _refreshController.dispose();
     _scrollController.removeListener(loadMore);
     super.dispose();
   }
@@ -78,8 +83,8 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
           countLoadMore == 1) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
-            _freeStoryPageBloc.add(
-                GroupMoreFreeStoryList(categoryId: widget.idCategory ?? 0));
+            _freeStoryPageBloc.add(GroupMoreFreeStoryList(
+                categoryId: widget.idCategory ?? 0, isPrevious: false));
             countLoadMore = 0;
           });
         });
@@ -92,9 +97,33 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
     }
   }
 
+  void _onRefresh() async {
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _freeStoryPageBloc.add(GroupMoreFreeStoryList(
+              categoryId: widget.idCategory ?? 0, isPrevious: true));
+        });
+      });
+    }
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    Future.delayed(const Duration(milliseconds: 1000));
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {});
+      });
+    }
+    _refreshController.loadComplete();
+  }
+
   late List<StoryItems>? tempData;
   late ScrollController _scrollController;
   late FreeStoryPageBloc _freeStoryPageBloc;
+  late RefreshController _refreshController;
+
   int countLoadMore = 0;
   @override
   Widget build(BuildContext context) {
@@ -107,14 +136,12 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
               leading: Align(
                 alignment: Alignment.centerLeft,
                 child: IconButton(
+                    splashRadius: 25,
                     color: ColorDefaults.thirdMainColor,
                     onPressed: () {
                       Navigator.maybePop(context, true);
                     },
-                    icon: const Icon(
-                      Icons.arrow_back_ios_sharp,
-                      color: ColorDefaults.thirdMainColor,
-                    )),
+                    icon: backButtonCommon()),
               ),
             )
           : null,
@@ -132,8 +159,25 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
               if (state is FreeStoryLoadedState) {
                 var storiesInfo = tempData ?? state.story.result.items;
                 tempData = null;
-                return SizedBox(
+                return SmartRefresher(
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  onLoading: _onLoading,
+                  footer: ClassicFooter(
+                    canLoadingIcon: const Icon(Icons.arrow_downward),
+                    canLoadingText: L(ViCode.nextChapterTextInfo.toString()),
+                    idleText: L(ViCode.loadingMoreTextInfo.toString()),
+                  ),
+                  header: ClassicHeader(
+                    idleIcon: const Icon(Icons.arrow_upward),
+                    refreshingText: L(ViCode.loadingTextInfo.toString()),
+                    releaseText: L(ViCode.loadingTextInfo.toString()),
+                    idleText: L(ViCode.loadingPreviousTextInfo.toString()),
+                  ),
                   child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
                       controller: _scrollController,
                       itemCount: storiesInfo.length,
                       scrollDirection: Axis.vertical,

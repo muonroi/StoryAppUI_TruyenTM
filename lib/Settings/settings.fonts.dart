@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
 
 class FontsDefault {
+  static List<String> getFontsNameAvailable() => [inter, poppins];
   //Fonts setting
   static const String inter = 'Inter';
   static const String poppins = 'Poppins';

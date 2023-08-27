@@ -15,7 +15,16 @@ class EditorStories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          leading: const BackButton(color: ColorDefaults.thirdMainColor),
+          leading: IconButton(
+              splashRadius:
+                  MainSetting.getPercentageOfDevice(context, expectWidth: 25)
+                      .width,
+              color: ColorDefaults.thirdMainColor,
+              highlightColor: const Color.fromARGB(255, 255, 175, 0),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: backButtonCommon()),
           backgroundColor: ColorDefaults.mainColor,
           title: Text(
             L(ViCode.editorChoiceTextInfo.toString()),

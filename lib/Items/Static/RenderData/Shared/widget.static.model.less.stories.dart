@@ -1,8 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
-import '../../../../../Settings/settings.fonts.dart';
-import '../../../../../Settings/settings.main.dart';
+import 'package:muonroi/Settings/settings.fonts.dart';
+import 'package:muonroi/Settings/settings.main.dart';
 
 class StoryLessModelWidget extends StatefulWidget {
   final String networkImageUrl;
@@ -71,16 +70,7 @@ class _StoryLessModelWidgetState extends State<StoryLessModelWidget> {
                     height: MainSetting.getPercentageOfDevice(context,
                             expectHeight: 100)
                         .height,
-                    child: CachedNetworkImage(
-                      imageUrl: widget.networkImageUrl,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) =>
-                              CircularProgressIndicator(
-                                  value: downloadProgress.progress),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      fit: BoxFit.cover,
-                    ),
+                    child: netWorkImage(widget.networkImageUrl, true),
                   ),
                 ),
                 Container(
