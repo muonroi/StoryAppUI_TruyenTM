@@ -10,5 +10,7 @@ class GetFreeStoriesList extends FreeStoryEvent {}
 
 class GroupMoreFreeStoryList extends FreeStoryEvent {
   final int categoryId;
-  const GroupMoreFreeStoryList({required this.categoryId});
+  final bool isPrevious;
+  const GroupMoreFreeStoryList(
+      {required this.isPrevious, required this.categoryId});
 }

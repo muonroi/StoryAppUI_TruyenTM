@@ -15,7 +15,15 @@ class StoriesComplete extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          leading: const BackButton(color: ColorDefaults.thirdMainColor),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+              splashRadius: 25,
+              color: ColorDefaults.mainColor,
+              highlightColor: const Color.fromARGB(255, 255, 175, 0),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: backButtonCommon()),
           backgroundColor: ColorDefaults.mainColor,
           title: Text(
             L(ViCode.completeStoriesTextInfo.toString()),

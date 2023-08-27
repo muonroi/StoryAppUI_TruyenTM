@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
@@ -93,29 +92,9 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                           textStyle: FontsDefault.h6
                               .copyWith(fontWeight: FontWeight.w700),
                           location: BannerLocation.topEnd,
-                          child: CachedNetworkImage(
-                            imageUrl: widget.storiesItem.imgUrl,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) => Center(
-                              child: CircularProgressIndicator(
-                                  value: downloadProgress.progress),
-                            ),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                            fit: BoxFit.cover,
-                          ),
+                          child: netWorkImage(widget.storiesItem.imgUrl, true),
                         )
-                      : CachedNetworkImage(
-                          imageUrl: widget.storiesItem.imgUrl,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) => Center(
-                            child: CircularProgressIndicator(
-                                value: downloadProgress.progress),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          fit: BoxFit.cover,
-                        ),
+                      : netWorkImage(widget.storiesItem.imgUrl, true),
                 ),
               ),
             ),

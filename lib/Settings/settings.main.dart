@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_flutter/icons_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.vertical.dart';
 import 'package:muonroi/Models/Accounts/models.account.token.dart';
@@ -9,6 +11,7 @@ import 'package:muonroi/Models/Stories/models.single.story.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
 import 'package:muonroi/Settings/Enums/enum.search.story.dart';
 import 'package:muonroi/Settings/settings.api.dart';
+import 'package:muonroi/Settings/settings.colors.dart';
 import 'package:muonroi/Settings/settings.languages.dart';
 import 'package:muonroi/Settings/settings.localization.dart';
 import 'package:muonroi/repository/Story/story_repository.dart';
@@ -19,6 +22,35 @@ String L(String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
 }
 
+// const Icon(
+//                 RpgAwesome.book,
+//                 size: 56,
+//               )
+Widget netWorkImage(String url, bool setCache) =>
+    ExtendedImage.network(url, fit: BoxFit.cover, cache: setCache,
+        loadStateChanged: (state) {
+      switch (state.extendedImageLoadState) {
+        case LoadState.loading:
+          return const Center(child: CircularProgressIndicator());
+        case LoadState.completed:
+          return state.completedWidget;
+        case LoadState.failed:
+          return const Expanded(
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: Icon(
+                RpgAwesome.book,
+                size: 56,
+              ),
+            ),
+          );
+      }
+    });
+
+Icon backButtonCommon() => const Icon(
+      Icons.arrow_back_ios_sharp,
+      color: ColorDefaults.thirdMainColor,
+    );
 //use with category
 Widget showToolTipHaveAnimationStories(String message,
     {BuildContext? context, String? data}) {

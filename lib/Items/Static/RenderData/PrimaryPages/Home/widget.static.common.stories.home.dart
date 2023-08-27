@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
 import 'package:muonroi/Settings/settings.colors.dart';
@@ -60,17 +59,10 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                         expectHeight: 145)
                                     .height,
                                 child: SizedBox(
-                                    child: CachedNetworkImage(
-                                  imageUrl:
+                                  child: netWorkImage(
                                       widget.storiesCommonInfo[index].imgUrl,
-                                  progressIndicatorBuilder:
-                                      (context, url, downloadProgress) =>
-                                          CircularProgressIndicator(
-                                              value: downloadProgress.progress),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                  fit: BoxFit.cover,
-                                ))),
+                                      true),
+                                )),
                           ],
                         ),
                       ),

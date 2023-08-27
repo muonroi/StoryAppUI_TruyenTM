@@ -30,7 +30,12 @@ class FreeStoryPageBloc extends Bloc<FreeStoryEvent, FreeStoryState> {
     on<GroupMoreFreeStoryList>((event, emit) async {
       try {
         emit(FreeStoryLoadingState());
-        pageIndex++;
+        if (event.isPrevious) {
+          pageIndex--;
+        } else if (!event.isPrevious) {
+          pageIndex++;
+        }
+        pageIndex = pageIndex < 1 ? 1 : pageIndex;
         late StoriesModel mList;
         if (event.categoryId == 0) {
           mList = await storyRepository.fetchStoriesData(pageIndex, pageSize);

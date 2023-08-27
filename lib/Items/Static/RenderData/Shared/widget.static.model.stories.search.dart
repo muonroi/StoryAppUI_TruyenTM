@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/Items/Static/RenderData/Shared/widget.static.stories.detail.dart';
 import 'package:muonroi/Models/Stories/models.stories.story.dart';
@@ -31,6 +30,13 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        leading: IconButton(
+            splashRadius: 25,
+            color: ColorDefaults.thirdMainColor,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: backButtonCommon()),
         backgroundColor: ColorDefaults.lightAppColor,
         elevation: 0,
         iconTheme: const IconThemeData(
@@ -103,16 +109,8 @@ class _SearchPageState extends State<SearchPage> {
                           height: MainSetting.getPercentageOfDevice(context,
                                   expectHeight: 100)
                               .height,
-                          child: CachedNetworkImage(
-                            imageUrl: storiesSearch[index].imgUrl,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                            fit: BoxFit.cover,
-                          ),
+                          child:
+                              netWorkImage(storiesSearch[index].imgUrl, true),
                         ),
                       ),
                       title: Text(storiesSearch[index].storyTitle),

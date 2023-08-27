@@ -58,7 +58,10 @@
 //                                     CircularProgressIndicator(
 //                                         value: downloadProgress.progress),
 //                             errorWidget: (context, url, error) =>
-//                                 const Icon(Icons.error),
+//                                 const Icon(
+//                     RpgAwesome.book,
+//                      size: 56,
+//                    ),
 //                             fit: BoxFit.cover,
 //                           ),
 //                         ),
