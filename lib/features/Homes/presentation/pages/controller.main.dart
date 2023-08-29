@@ -6,7 +6,7 @@ import 'package:muonroi/shared/Settings/settings.colors.dart';
 import 'package:muonroi/shared/Settings/settings.fonts.dart';
 import 'package:muonroi/shared/Settings/settings.images.dart';
 import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Accounts/data/models/models.account.signup.dart';
+import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
 import 'package:muonroi/features/Chapters/data/models/models.chapters.list.chapter.dart';
 import 'package:muonroi/features/Homes/presentation/pages/pages.book.case.dart';
 import 'package:muonroi/features/Homes/presentation/pages/pages.home.dart';

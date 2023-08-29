@@ -5,7 +5,7 @@ import 'package:muonroi/shared/Settings/settings.fonts.dart';
 import 'package:muonroi/shared/Settings/settings.images.dart';
 import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
 import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Accounts/data/models/models.account.signup.dart';
+import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
 import 'package:muonroi/features/Homes/settings/settings.dart';
 
 class UserInfo extends StatefulWidget {

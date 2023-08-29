@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:muonroi/features/Accounts/presentation/pages/pages.logins.sign_in.dart';
-import 'package:muonroi/features/Accounts/presentation/pages/pages.logins.valid_otp.dart';
+import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_in.dart';
+import 'package:muonroi/features/accounts/presentation/pages/pages.logins.valid_otp.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.password_input.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
 import 'package:muonroi/shared/Settings/settings.colors.dart';
 import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/features/Accounts/data/models/models.account.signup.dart';
+import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
 
 enum Gender { male, female }
 

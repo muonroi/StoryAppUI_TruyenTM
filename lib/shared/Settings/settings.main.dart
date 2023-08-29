@@ -7,7 +7,7 @@ import 'package:muonroi/shared/Settings/settings.api.dart';
 import 'package:muonroi/shared/Settings/settings.colors.dart';
 import 'package:muonroi/shared/Settings/settings.languages.dart';
 import 'package:muonroi/shared/Settings/settings.localization.dart';
-import 'package:muonroi/features/Accounts/data/models/models.account.token.dart';
+import 'package:muonroi/features/accounts/data/models/models.account.token.dart';
 import 'package:muonroi/core/models/Settings/models.mainsettings.device.dart';
 
 String L(String key, {String locate = Languages.vi}) {
