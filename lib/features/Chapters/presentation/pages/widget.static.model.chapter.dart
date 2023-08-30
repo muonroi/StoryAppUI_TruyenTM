@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:muonroi/features/chapters/presentation/widgets/widget.static.body.chapter.dart';
+import 'package:muonroi/features/chapters/presentation/widgets/widget.static.button.scroll.chapter.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
-import 'package:muonroi/features/chapters/bloc/Detail_bloc/detail_bloc.dart';
+import 'package:muonroi/features/chapters/bloc/detail_bloc/detail_bloc.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.detail.chapter.bottom.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
@@ -12,7 +13,6 @@ import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
-import 'package:muonroi/shared/static/buttons/widget.static.floating.action.button.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -258,141 +258,45 @@ class _ChapterState extends State<Chapter> {
                       });
                     },
                     child: SmartRefresher(
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      header: ClassicHeader(
-                        idleIcon: Icon(
-                          Icons.arrow_upward,
-                          color: tempFontColor,
-                        ),
-                        idleText: L(ViCode.previousChapterTextInfo.toString()),
-                        refreshingText: L(ViCode.loadingTextInfo.toString()),
-                        releaseText: L(ViCode.loadingTextInfo.toString()),
-                      ),
-                      controller: _refreshController,
-                      onRefresh: () => _onRefresh(chapterInfo.id),
-                      onLoading: () => _onLoading(chapterInfo.id, true),
-                      footer: ClassicFooter(
-                        canLoadingIcon: Icon(
-                          Icons.arrow_downward,
-                          color: tempFontColor,
-                        ),
-                        idleText: L(ViCode.loadingMoreTextInfo.toString()),
-                        canLoadingText:
-                            L(ViCode.nextChapterTextInfo.toString()),
-                      ),
-                      child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          controller: _scrollController,
-                          itemCount: 1,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: SizedBox(
-                                        width:
-                                            MainSetting.getPercentageOfDevice(
-                                                    context,
-                                                    expectWidth: 387)
-                                                .width,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: MainSetting
-                                                      .getPercentageOfDevice(
-                                                          context,
-                                                          expectWidth: 96.75)
-                                                  .width,
-                                              child: Text(
-                                                "${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}",
-                                                style: FontsDefault.h5.copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontFamily: tempFontFamily,
-                                                    color: tempFontColor),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.visible,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: MainSetting
-                                                      .getPercentageOfDevice(
-                                                          context,
-                                                          expectWidth: 290.25)
-                                                  .width,
-                                              child: Text(
-                                                chapterInfo.chapterTitle
-                                                    .replaceAll(
-                                                        RegExp(r'Chương \d+:'),
-                                                        '')
-                                                    .replaceAll("\n", "")
-                                                    .trim(),
-                                                style: FontsDefault.h5.copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontFamily: tempFontFamily,
-                                                    color: tempFontColor),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Html(
-                                      data: chapterInfo.body
-                                          .replaceAll("\n", "")
-                                          .trim(),
-                                      style: {
-                                        '#': Style(
-                                          textAlign: tempIsLeftAlign!
-                                              ? TextAlign.justify
-                                              : TextAlign.left,
-                                          fontFamily: tempFontFamily,
-                                          fontSize: FontSize(tempFontSize!),
-                                          color: tempFontColor,
-                                          backgroundColor: tempBackground,
-                                        ),
-                                      },
-                                    ),
-                                  ],
-                                ));
-                          }),
-                    ),
-                  ),
-                  floatingActionButton: ExpandableDraggableFab(
-                      isVisibleButtonScroll: tempLocationScrollButton ??
-                          KeyChapterButtonScroll.none,
-                      fontColor: tempFontColor!,
-                      backgroundColor: tempBackground!,
-                      distance: 10,
-                      controller: _scrollController,
-                      childrenCount: 1,
-                      children: [
-                        FloatingActionButton(
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                width: 2,
-                                color: tempFontColor,
-                              ),
-                              borderRadius: BorderRadius.circular(100)),
-                          onPressed: () {
-                            _scrollController
-                                .jumpTo(_scrollController.offset + 200);
-                          },
-                          backgroundColor: tempBackground,
-                          child: Icon(
-                            Icons.keyboard_double_arrow_down,
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        header: ClassicHeader(
+                          idleIcon: Icon(
+                            Icons.arrow_upward,
                             color: tempFontColor,
                           ),
+                          idleText:
+                              L(ViCode.previousChapterTextInfo.toString()),
+                          refreshingText: L(ViCode.loadingTextInfo.toString()),
+                          releaseText: L(ViCode.loadingTextInfo.toString()),
                         ),
-                      ]),
+                        controller: _refreshController,
+                        onRefresh: () => _onRefresh(chapterInfo.id),
+                        onLoading: () => _onLoading(chapterInfo.id, true),
+                        footer: ClassicFooter(
+                          canLoadingIcon: Icon(
+                            Icons.arrow_downward,
+                            color: tempFontColor,
+                          ),
+                          idleText: L(ViCode.loadingMoreTextInfo.toString()),
+                          canLoadingText:
+                              L(ViCode.nextChapterTextInfo.toString()),
+                        ),
+                        child: BodyChapter(
+                          scrollController: _scrollController,
+                          chapterInfo: chapterInfo,
+                          tempFontFamily: tempFontFamily!,
+                          tempFontColor: tempFontColor!,
+                          tempIsLeftAlign: tempIsLeftAlign!,
+                          tempFontSize: tempFontSize!,
+                          tempBackground: tempBackground!,
+                        )),
+                  ),
+                  floatingActionButton: ButtonChapterScroll(
+                      tempLocationScrollButton: tempLocationScrollButton,
+                      tempFontColor: tempFontColor,
+                      tempBackground: tempBackground,
+                      scrollController: _scrollController),
                   bottomNavigationBar: _isVisible
                       ? AnimatedContainer(
                           duration: const Duration(milliseconds: 300),

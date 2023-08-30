@@ -88,13 +88,14 @@ class _CustomDashboardState extends State<CustomDashboard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  margin: const EdgeInsets.all(12.0),
+                  margin: const EdgeInsets.all(8.0),
                   child: Text(
                     L(ViCode.defaultDashboardTextInfo.toString()),
                     style:
                         FontsDefault.h5.copyWith(fontWeight: FontWeight.w700),
                   ),
                 ),
+                // #region Chosse template
                 SizedBox(
                   height: MainSetting.getPercentageOfDevice(context,
                           expectHeight: 50)
@@ -126,6 +127,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                         );
                       })),
                 ),
+                // #endregion
                 Container(
                   margin: const EdgeInsets.all(12.0),
                   child: Text(
@@ -139,6 +141,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // #region Chosse type reading (horizontal or vertical)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -177,6 +180,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
                           ),
                         ],
                       ),
+                      // #endregion
+
+                      // #region Chosse Button scroll (hide or show)
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 12.0),
                         child: Row(
@@ -282,6 +288,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
                           ],
                         ),
                       ),
+                      // #endregion
+
+                      // #region Chosse align
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -388,6 +397,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
                           ),
                         ],
                       ),
+                      // #endregion
+
+                      // #region Chosse font
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
@@ -411,7 +423,13 @@ class _CustomDashboardState extends State<CustomDashboard> {
                               Container(
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20.0),
-                                    color: ColorDefaults.colorGrey200),
+                                    color: ColorDefaults.colorGrey200,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Color.fromARGB(
+                                              181, 156, 154, 154),
+                                          spreadRadius: 0.5)
+                                    ]),
                                 width: MainSetting.getPercentageOfDevice(
                                         context,
                                         expectWidth: 280)
@@ -452,6 +470,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
                           ],
                         ),
                       ),
+                      // #endregion
+
+                      // #region Chosse color (background or font)
                       Row(
                         children: [
                           Expanded(
@@ -550,6 +571,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                           ),
                         ],
                       ),
+                      // #endregion
                     ],
                   ),
                 )
