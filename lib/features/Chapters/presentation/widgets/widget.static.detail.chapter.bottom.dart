@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'widget.static.custom.dashboard.chapter.bottom.dart';
 
 class BottomChapterDetail extends StatefulWidget {

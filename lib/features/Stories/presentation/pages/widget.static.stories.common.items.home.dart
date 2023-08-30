@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.vertical.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.vertical.dart';
 
 class StoriesCommon extends StatelessWidget {
   final bool isShowLabel;

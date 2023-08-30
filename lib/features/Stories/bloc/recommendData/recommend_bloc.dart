@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:muonroi/features/Stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/Stories/data/repositories/story_repository.dart';
+import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
 part 'recommend_event.dart';
 part 'recommend_state.dart';
 

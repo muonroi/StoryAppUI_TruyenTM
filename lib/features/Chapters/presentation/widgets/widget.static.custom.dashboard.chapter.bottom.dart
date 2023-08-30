@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/Chapters/provider/models.chapter.scroll.button.setting.dart';
-import 'package:muonroi/features/Chapters/provider/models.chapter.ui.available.settings.dart';
+import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
+import 'package:muonroi/features/chapters/settings/settings.dart';
+import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
-import 'package:muonroi/shared/Settings/Enums/emum.key.local.storage.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.dashboard.available.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.dashboard.available.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'widget.static.choose.font.color.chapter.bottom.dart';
@@ -22,42 +22,48 @@ class CustomDashboard extends StatefulWidget {
 class _CustomDashboardState extends State<CustomDashboard> {
   @override
   void initState() {
-    buttonSettingName = KeyButtonScroll.none.name;
-    selectedRadio = KeyButtonScroll.none;
+    _selectedRadio = KeyChapterButtonScroll.none;
+    _fontSetting = FontsDefault.inter;
+    _isSelected = [false, false];
+    _templateAvailable = DashboardSettings.getDashboardAvailableSettings();
+    _templateSettingData = TemplateSetting();
+    _fontColor = ColorDefaults.thirdMainColor;
+    _backgroundColor = ColorDefaults.lightAppColor;
+
     _initSharedPreferences();
     super.initState();
   }
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
-    buttonSettingName =
-        _sharedPreferences.getString(KeyButtonScroll.buttonScroll.toString()) ??
-            KeyButtonScroll.none.name;
     setState(() {
-      selectedRadio =
-          enumFromString(KeyButtonScroll.values, buttonSettingName) ??
-              KeyButtonScroll.none;
+      _templateSettingData = getCurrentTemplate(_sharedPreferences);
+      _selectedRadio =
+          _templateSettingData.locationButton ?? KeyChapterButtonScroll.none;
+      _fontSetting = _templateSettingData.fontFamily ?? FontsDefault.inter;
+      _isSelected[_sharedPreferences.getInt('align_index') ?? 0] = true;
+      _fontColor =
+          _templateSettingData.fontColor ?? ColorDefaults.thirdMainColor;
+      _backgroundColor =
+          _templateSettingData.backgroundColor ?? ColorDefaults.lightAppColor;
     });
   }
 
-  Future<void> _saveKeyScrollButton() async {
-    _sharedPreferences.setString(
-        KeyButtonScroll.buttonScroll.toString(), selectedRadio.name);
-  }
-
-  late String buttonSettingName;
+  late TemplateSetting _templateSettingData;
   late SharedPreferences _sharedPreferences;
-  List<bool> isSelected = [true, false];
-  var uiAvailable = DashboardSettings.getDashboardAvailableSettings();
-  late KeyButtonScroll selectedRadio;
-
+  late String _fontSetting;
+  late List<bool> _isSelected;
+  late List<TemplateSetting> _templateAvailable;
+  late KeyChapterButtonScroll _selectedRadio;
+  late Color? _fontColor;
+  late Color? _backgroundColor;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorDefaults.lightAppColor,
+      backgroundColor: ColorDefaults.secondMainColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: ColorDefaults.lightAppColor,
+        backgroundColor: ColorDefaults.secondMainColor,
         title: Title(
           color: ColorDefaults.thirdMainColor,
           child: Text(
@@ -74,8 +80,8 @@ class _CustomDashboardState extends State<CustomDashboard> {
             icon: backButtonCommon()),
         elevation: 0,
       ),
-      body: Consumer<SettingObject>(
-        builder: (context, value, child) {
+      body: Consumer<TemplateSetting>(
+        builder: (context, templateValue, child) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -95,25 +101,25 @@ class _CustomDashboardState extends State<CustomDashboard> {
                       .height,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: uiAvailable.length,
+                      itemCount: _templateAvailable.length,
                       itemBuilder: ((context, index) {
                         return InkWell(
                           onTap: () {
-                            _sharedPreferences.setString(
-                                KeyChapter.chapterConfig.toString(),
-                                settingObjectToJson(uiAvailable[index]));
-                            value.valueSetting = uiAvailable[index];
+                            templateValue.valueSetting =
+                                _templateAvailable[index];
+                            setCurrentTemplate(
+                                _sharedPreferences, _templateAvailable[index]);
                           },
                           child: Container(
                             margin:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: CircleAvatar(
                               backgroundColor:
-                                  uiAvailable[index].backgroundColor,
+                                  _templateAvailable[index].backgroundColor,
                               child: Text(
                                 'AB',
                                 style: TextStyle(
-                                    color: uiAvailable[index].fontColor),
+                                    color: _templateAvailable[index].fontColor),
                               ),
                             ),
                           ),
@@ -167,7 +173,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 .toString()),
                             selectedBackgroundColor: ColorDefaults.mainColor,
                             noneSelectedBackgroundColor:
-                                ColorDefaults.colorGrey200,
+                                ColorDefaults.secondMainColor,
                           ),
                         ],
                       ),
@@ -192,98 +198,87 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 ],
                               ),
                             ),
-                            Consumer<ButtonScrollSettings>(
-                              builder: (context, object, child) {
-                                return SizedBox(
-                                    width: MainSetting.getPercentageOfDevice(
-                                            context,
-                                            expectWidth: 280)
-                                        .width,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          child: Row(
-                                            children: [
-                                              Radio(
-                                                value: KeyButtonScroll.none,
-                                                groupValue: selectedRadio,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    object.valueSetting =
-                                                        value ??
-                                                            KeyButtonScroll
-                                                                .none;
-                                                    selectedRadio = value ??
-                                                        KeyButtonScroll.none;
-                                                    _saveKeyScrollButton();
-                                                  });
-                                                },
-                                              ),
-                                              Text(
-                                                  L(ViCode
-                                                      .buttonScrollConfigNoneDashboardTextInfo
-                                                      .toString()),
-                                                  style: FontsDefault.h5),
-                                            ],
+                            SizedBox(
+                                width: MainSetting.getPercentageOfDevice(
+                                        context,
+                                        expectWidth: 280)
+                                    .width,
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      child: Row(
+                                        children: [
+                                          Radio(
+                                            value: KeyChapterButtonScroll.none,
+                                            groupValue: _selectedRadio,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                var currentTemplate =
+                                                    getCurrentTemplate(
+                                                        _sharedPreferences);
+
+                                                currentTemplate.locationButton =
+                                                    value;
+
+                                                templateValue.valueSetting =
+                                                    currentTemplate;
+
+                                                _selectedRadio = value ??
+                                                    KeyChapterButtonScroll.none;
+                                                setCurrentTemplate(
+                                                    _sharedPreferences,
+                                                    currentTemplate);
+                                                templateValue.valueSetting =
+                                                    currentTemplate;
+                                              });
+                                            },
                                           ),
-                                        ),
-                                        SizedBox(
-                                          child: Row(
-                                            children: [
-                                              Radio(
-                                                value: KeyButtonScroll.left,
-                                                groupValue: selectedRadio,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    object.valueSetting =
-                                                        value ??
-                                                            KeyButtonScroll
-                                                                .none;
-                                                    selectedRadio = value ??
-                                                        KeyButtonScroll.none;
-                                                    _saveKeyScrollButton();
-                                                  });
-                                                },
-                                              ),
-                                              Text(
-                                                  L(ViCode
-                                                      .buttonScrollConfigLeftDashboardTextInfo
-                                                      .toString()),
-                                                  style: FontsDefault.h5),
-                                            ],
+                                          Text(
+                                              L(ViCode
+                                                  .buttonScrollConfigNoneDashboardTextInfo
+                                                  .toString()),
+                                              style: FontsDefault.h5),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      child: Row(
+                                        children: [
+                                          Radio(
+                                            value: KeyChapterButtonScroll.show,
+                                            groupValue: _selectedRadio,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                var currentTempLate =
+                                                    getCurrentTemplate(
+                                                        _sharedPreferences);
+
+                                                currentTempLate.locationButton =
+                                                    value ??
+                                                        KeyChapterButtonScroll
+                                                            .none;
+
+                                                _selectedRadio = value ??
+                                                    KeyChapterButtonScroll.none;
+                                                setCurrentTemplate(
+                                                    _sharedPreferences,
+                                                    currentTempLate);
+
+                                                templateValue.valueSetting =
+                                                    currentTempLate;
+                                              });
+                                            },
                                           ),
-                                        ),
-                                        SizedBox(
-                                          child: Row(
-                                            children: [
-                                              Radio(
-                                                value: KeyButtonScroll.right,
-                                                groupValue: selectedRadio,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    object.valueSetting =
-                                                        value ??
-                                                            KeyButtonScroll
-                                                                .none;
-                                                    selectedRadio = value ??
-                                                        KeyButtonScroll.none;
-                                                    _saveKeyScrollButton();
-                                                  });
-                                                },
-                                              ),
-                                              Text(
-                                                L(ViCode
-                                                    .buttonScrollConfigRightDashboardTextInfo
-                                                    .toString()),
-                                                style: FontsDefault.h5,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ));
-                              },
-                            ),
+                                          Text(
+                                              L(ViCode
+                                                  .buttonScrollConfigDisplayDashboardTextInfo
+                                                  .toString()),
+                                              style: FontsDefault.h5),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ))
                           ],
                         ),
                       ),
@@ -313,7 +308,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                     expectHeight: 40)
                                 .height,
                             child: ToggleButtons(
-                              isSelected: isSelected,
+                              isSelected: _isSelected,
                               selectedColor: Colors.white,
                               color: ColorDefaults.thirdMainColor,
                               fillColor: ColorDefaults.mainColor,
@@ -361,12 +356,30 @@ class _CustomDashboardState extends State<CustomDashboard> {
                               onPressed: (int newIndex) {
                                 setState(() {
                                   for (int index = 0;
-                                      index < isSelected.length;
+                                      index < _isSelected.length;
                                       index++) {
                                     if (index == newIndex) {
-                                      isSelected[index] = true;
+                                      var currentTempLate = getCurrentTemplate(
+                                          _sharedPreferences);
+                                      currentTempLate.isLeftAlign = true;
+                                      _isSelected[index] = true;
+                                      setCurrentTemplate(
+                                          _sharedPreferences, currentTempLate);
+                                      templateValue.valueSetting =
+                                          currentTempLate;
+                                      _sharedPreferences.setInt(
+                                          'align_index', newIndex);
                                     } else {
-                                      isSelected[index] = false;
+                                      var currentTempLate = getCurrentTemplate(
+                                          _sharedPreferences);
+                                      currentTempLate.isLeftAlign = false;
+                                      _isSelected[index] = false;
+                                      setCurrentTemplate(
+                                          _sharedPreferences, currentTempLate);
+                                      templateValue.valueSetting =
+                                          currentTempLate;
+                                      _sharedPreferences.setInt(
+                                          'align_index', newIndex);
                                     }
                                   }
                                 });
@@ -410,7 +423,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    FontsDefault.inter,
+                                    templateValue.fontFamily ?? _fontSetting,
                                     style: FontsDefault.h5,
                                   ),
                                 ),
@@ -471,13 +484,16 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                     clipBehavior: Clip.antiAliasWithSaveLayer,
                                     context: context,
                                     builder: (context) {
-                                      return const ChooseFontColor();
+                                      return ChooseFontColor(
+                                        colorType: KeyChapterColor.font,
+                                      );
                                     },
                                   ),
                                   child: Container(
                                     margin: const EdgeInsets.only(left: 10.0),
-                                    child: const CircleAvatar(
-                                      backgroundColor: ColorDefaults.mainColor,
+                                    child: CircleAvatar(
+                                      backgroundColor:
+                                          templateValue.fontColor ?? _fontColor,
                                     ),
                                   ),
                                 ),
@@ -515,13 +531,17 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                     clipBehavior: Clip.antiAliasWithSaveLayer,
                                     context: context,
                                     builder: (context) {
-                                      return const ChooseFontColor();
+                                      return ChooseFontColor(
+                                        colorType: KeyChapterColor.background,
+                                      );
                                     },
                                   ),
                                   child: Container(
                                     margin: const EdgeInsets.only(left: 10.0),
-                                    child: const CircleAvatar(
-                                      backgroundColor: ColorDefaults.mainColor,
+                                    child: CircleAvatar(
+                                      backgroundColor:
+                                          templateValue.backgroundColor ??
+                                              _backgroundColor,
                                     ),
                                   ),
                                 ),

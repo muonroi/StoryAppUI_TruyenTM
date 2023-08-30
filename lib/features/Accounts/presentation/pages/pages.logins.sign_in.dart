@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/shared/Settings/settings.images.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.images.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_up.dart';
 
 class SignInPage extends StatefulWidget {

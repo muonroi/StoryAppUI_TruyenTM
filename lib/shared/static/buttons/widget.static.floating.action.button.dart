@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/Chapters/provider/models.chapter.scroll.button.setting.dart';
-import 'package:muonroi/shared/Settings/Enums/emum.key.local.storage.dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
+import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
+import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 
 @immutable
@@ -33,7 +33,7 @@ class ExpandableDraggableFab extends StatefulWidget {
       this.fontColor,
       this.backgroundColor,
       required this.isVisibleButtonScroll});
-  final KeyButtonScroll isVisibleButtonScroll;
+  final KeyChapterButtonScroll isVisibleButtonScroll;
   final ChildrenType? childrenType;
   final ScrollController? controller;
   final Color? fontColor;
@@ -178,7 +178,7 @@ class _ExpandableDraggableFabState extends State<ExpandableDraggableFab>
                               ),
                             ),
                     )),
-          Consumer<ButtonScrollSettings>(
+          Consumer<TemplateSetting>(
             builder: (context, value, child) {
               value.locationButton =
                   value.locationButton ?? widget.isVisibleButtonScroll;
@@ -186,7 +186,7 @@ class _ExpandableDraggableFabState extends State<ExpandableDraggableFab>
                 parentKey: _key,
                 initialOffset: widget.initialDraggableOffset ??
                     Offset(20, size.height - size.height + 200),
-                child: value.locationButton == KeyButtonScroll.none
+                child: value.locationButton == KeyChapterButtonScroll.none
                     ? Container()
                     : Stack(
                         alignment: Alignment.center,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.detail.dart';
-import 'package:muonroi/features/Stories/settings/settings.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/features/stories/settings/settings.dart';
 
 class StoriesFullModelWidget extends StatefulWidget {
   final StoryItems storiesItem;

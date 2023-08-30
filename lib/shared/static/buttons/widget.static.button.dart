@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import '../../Settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import '../../settings/settings.colors.dart';
 
 class ButtonWidget {
   static Widget buttonNavigatorNextPreviewLanding(
@@ -97,11 +97,14 @@ class _ToggleButtonState extends State<ToggleButton> {
         width: widget.width,
         height: widget.height,
         decoration: BoxDecoration(
-          color: widget.noneSelectedBackgroundColor,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(50.0),
-          ),
-        ),
+            color: widget.noneSelectedBackgroundColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(50.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                  color: Color.fromARGB(181, 156, 154, 154), spreadRadius: 0.5)
+            ]),
         child: Stack(
           children: [
             AnimatedAlign(

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 
-import '../../../../shared/Settings/settings.main.dart';
+import '../../../../shared/settings/settings.main.dart';
 
 class BannerHomePage extends StatefulWidget {
   final List<Widget> bannerListImage;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.categories.home.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.category.stories.home.dart';
-import 'package:muonroi/features/Stories/bloc/RecommendData/recommend_bloc.dart';
-import 'package:muonroi/features/Stories/data/models/models.single.story.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.vertical.dart';
-import 'package:muonroi/features/Stories/presentation/widgets/widget.static.model.less.stories.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.categories.home.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.category.stories.home.dart';
+import 'package:muonroi/features/stories/bloc/RecommendData/recommend_bloc.dart';
+import 'package:muonroi/features/stories/data/models/models.single.story.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.vertical.dart';
+import 'package:muonroi/features/stories/presentation/widgets/widget.static.model.less.stories.dart';
 
 class SimilarStories extends StatefulWidget {
   final StorySingleResult infoStory;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.model.book.case.stories.dart';
-import 'package:muonroi/features/Stories/data/models/models.stories.story.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.model.book.case.stories.dart';
+import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 
 class StoriesItems extends StatefulWidget {
   final List<StoryItems> storiesData;

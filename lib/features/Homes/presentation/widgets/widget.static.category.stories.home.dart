@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.list.stories.image.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.list.stories.image.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
 
 // #region new stories widget
 class StoriesNewUpdatedData extends StatefulWidget {

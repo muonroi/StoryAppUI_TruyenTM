@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
 
-import '../../Settings/settings.colors.dart';
+import '../../settings/settings.colors.dart';
 
 class RoundedPasswordField extends StatelessWidget {
   final String hintText;

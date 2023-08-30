@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
-import 'package:muonroi/features/Chapters/presentation/pages/widget.static.model.chapter.dart';
-import 'package:muonroi/features/Chapters/presentation/pages/widget.static.model.list.chapter.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
-import 'package:muonroi/features/Stories/data/models/models.single.story.dart';
+import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
+import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.list.chapter.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
+import 'package:muonroi/features/stories/data/models/models.single.story.dart';
 
 typedef LatestChapter = void Function(String val);
 

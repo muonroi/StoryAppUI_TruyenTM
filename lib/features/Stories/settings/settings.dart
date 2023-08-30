@@ -1,4 +1,4 @@
-import 'package:muonroi/features/Stories/data/models/models.single.story.dart';
+import 'package:muonroi/features/stories/data/models/models.single.story.dart';
 
 StorySingleResult storySingleDefaultData() {
   return StorySingleResult(

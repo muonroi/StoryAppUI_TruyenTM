@@ -1,10 +1,10 @@
-import 'package:muonroi/shared/Settings/settings.api.dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapter.list.paging.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapter.list.paging.range.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapter.single.chapter.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapters.list.chapter.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapters.preview.chapter.dart';
+import 'package:muonroi/shared/settings/settings.api.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.range.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.single.chapter.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapters.preview.chapter.dart';
 import 'package:sprintf/sprintf.dart';
 
 class ChapterProvider {

@@ -2,13 +2,13 @@
 // import 'package:flutter/material.dart';
 // import 'package:muonroi/Items/Static/Buttons/widget.static.button.dart';
 // import 'package:muonroi/Items/Static/RenderData/PrimaryPages/Home/widget.static.categories.home.dart';
-// import 'package:muonroi/Models/Stories/models.stories.story.dart';
+// import 'package:muonroi/Models/stories/models.stories.story.dart';
 // import 'package:muonroi/Pages/Accounts/Logins/pages.logins.sign_in.dart';
-// import 'package:muonroi/Settings/settings.colors.dart';
-// import 'package:muonroi/Settings/settings.fonts.dart';
-// import 'package:muonroi/Settings/settings.images.dart';
-// import 'package:muonroi/Settings/settings.language_code.vi..dart';
-// import 'package:muonroi/Settings/settings.main.dart';
+// import 'package:muonroi/settings/settings.colors.dart';
+// import 'package:muonroi/settings/settings.fonts.dart';
+// import 'package:muonroi/settings/settings.images.dart';
+// import 'package:muonroi/settings/settings.language_code.vi..dart';
+// import 'package:muonroi/settings/settings.main.dart';
 
 // class RechargeStory extends StatelessWidget {
 //   final StoryModel widget;

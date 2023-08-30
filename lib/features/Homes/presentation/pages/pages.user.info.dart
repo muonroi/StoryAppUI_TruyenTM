@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.user.info.items.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/shared/Settings/settings.images.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.user.info.items.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.images.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
-import 'package:muonroi/features/Homes/settings/settings.dart';
+import 'package:muonroi/features/homes/settings/settings.dart';
 
 class UserInfo extends StatefulWidget {
   final AccountInfo userInfo;

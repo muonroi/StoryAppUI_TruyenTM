@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/Settings/settings.colors.dart';
-import '../../../../shared/Settings/settings.fonts.dart';
-import '../../../../shared/Settings/settings.language_code.vi..dart';
-import '../../../../shared/Settings/settings.main.dart';
+import '../../../../shared/settings/settings.colors.dart';
+import '../../../../shared/settings/settings.fonts.dart';
+import '../../../../shared/settings/settings.language_code.vi..dart';
+import '../../../../shared/settings/settings.main.dart';
 import 'widget.static.stories.vertical.dart';
 
 class StoriesNewUpdate extends StatelessWidget {

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/Homes/settings/settings.dart';
+import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.menu.bottom.shared.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/routes.items.home.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/shared/Settings/settings.images.dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
+import 'package:muonroi/features/homes/presentation/widgets/routes.items.home.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.images.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapters.list.chapter.dart';
-import 'package:muonroi/features/Homes/presentation/pages/pages.book.case.dart';
-import 'package:muonroi/features/Homes/presentation/pages/pages.home.dart';
-import 'package:muonroi/features/Homes/presentation/pages/pages.stories.free.dart';
-import 'package:muonroi/features/Homes/presentation/pages/pages.user.info.dart';
-import 'package:muonroi/features/Stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.model.stories.search.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
+import 'package:muonroi/features/homes/presentation/pages/pages.book.case.dart';
+import 'package:muonroi/features/homes/presentation/pages/pages.home.dart';
+import 'package:muonroi/features/homes/presentation/pages/pages.stories.free.dart';
+import 'package:muonroi/features/homes/presentation/pages/pages.user.info.dart';
+import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.model.stories.search.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage(

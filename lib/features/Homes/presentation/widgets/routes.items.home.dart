@@ -1,20 +1,20 @@
 import 'package:flutter/cupertino.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.button.search.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.button.search.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.filter.home.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.banner.home.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapters.list.chapter.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.categories.home.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.category.stories.home.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.chapter.home.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.common.stories.home.dart';
-import 'package:muonroi/features/Stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.editor.choose.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.common.items.home.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.complete.items.home.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.new.items.home.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.new.update.items.home.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.banner.home.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.categories.home.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.category.stories.home.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.chapter.home.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.common.stories.home.dart';
+import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.editor.choose.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.common.items.home.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.complete.items.home.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.new.items.home.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.new.update.items.home.dart';
 
 class HomePageItems {
   List<Widget> getHomePageItems(
