@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Stories/data/models/models.single.story.dart';
-import 'package:muonroi/features/Stories/settings/settings.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/stories/data/models/models.single.story.dart';
+import 'package:muonroi/features/stories/settings/settings.dart';
 
 class InfoDetailStory extends StatelessWidget {
   final double value;

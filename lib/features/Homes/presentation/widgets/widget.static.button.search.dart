@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.model.stories.search.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.model.stories.search.dart';
 
 class SearchContainer extends StatelessWidget {
   final TextEditingController searchController;

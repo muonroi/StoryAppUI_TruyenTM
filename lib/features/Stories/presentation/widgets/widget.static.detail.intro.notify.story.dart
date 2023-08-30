@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
 
 class IntroAndNotificationStory extends StatefulWidget {
   final String name;

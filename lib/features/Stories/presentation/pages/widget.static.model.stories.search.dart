@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/Enums/enum.search.story.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/Stories/data/repositories/story_repository.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
 
 class SearchPage extends StatefulWidget {
   final TextEditingController searchController;

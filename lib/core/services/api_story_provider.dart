@@ -1,10 +1,10 @@
-import 'package:muonroi/shared/Settings/Enums/enum.search.story.dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Stories/data/models/models.single.story.dart';
-import 'package:muonroi/features/Stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/Stories/settings/settings.dart';
+import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/stories/data/models/models.single.story.dart';
+import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/stories/settings/settings.dart';
 import 'package:sprintf/sprintf.dart';
-import '../../shared/Settings/settings.api.dart';
+import '../../shared/settings/settings.api.dart';
 
 class StoryProvider {
   Future<StoriesModel> getStoriesDataList(

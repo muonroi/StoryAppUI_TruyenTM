@@ -3,12 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_flutter/icons_flutter.dart';
-import 'package:muonroi/shared/Settings/settings.api.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.languages.dart';
-import 'package:muonroi/shared/Settings/settings.localization.dart';
+import 'package:muonroi/core/models/settings/models.mainsettings.device.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.token.dart';
-import 'package:muonroi/core/models/Settings/models.mainsettings.device.dart';
+import 'package:muonroi/shared/settings/settings.api.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.localization.dart';
+
+import 'settings.languages.dart';
 
 String L(String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
@@ -32,7 +33,7 @@ Widget netWorkImage(String url, bool setCache) =>
               fit: BoxFit.cover,
               child: Icon(
                 RpgAwesome.book,
-                size: 30,
+                size: 25,
               ),
             ),
           );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/features/Homes/bloc/homeData/story_bloc.dart';
-import 'package:muonroi/features/Homes/presentation/pages/controller.main.dart';
-import 'package:muonroi/shared/Settings/settings.images.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.list.stories.image.dart';
-import 'package:muonroi/features/Stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/homes/bloc/homeData/story_bloc.dart';
+import 'package:muonroi/features/homes/presentation/pages/controller.main.dart';
+import 'package:muonroi/shared/settings/settings.images.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.list.stories.image.dart';
+import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});

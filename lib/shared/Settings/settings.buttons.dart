@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
 
 class ButtonDefaults {
   static final ButtonStyle buttonNextPagePreview = ButtonStyle(

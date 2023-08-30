@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:muonroi/shared/Settings/Enums/emum.key.local.storage.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Chapters/bloc/Detail_bloc/detail_bloc.dart';
-import 'package:muonroi/features/Chapters/presentation/widgets/widget.static.detail.chapter.bottom.dart';
-import 'package:muonroi/features/Chapters/provider/models.chapter.scroll.button.setting.dart';
-import 'package:muonroi/features/Chapters/provider/models.chapter.ui.available.settings.dart';
-import 'package:muonroi/features/Stories/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
+import 'package:muonroi/features/chapters/bloc/Detail_bloc/detail_bloc.dart';
+import 'package:muonroi/features/chapters/presentation/widgets/widget.static.detail.chapter.bottom.dart';
+import 'package:muonroi/features/chapters/settings/settings.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.floating.action.button.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -41,18 +41,18 @@ class _ChapterState extends State<Chapter> {
   @override
   void initState() {
     _initSharedPreferences();
-    settingConfig = SettingObject();
+    _settingConfig = TemplateSetting();
     _scrollPositionKey = "scrollPosition-${widget.storyId}";
     _detailChapterOfStoryBloc =
         DetailChapterOfStoryBloc(chapterId: widget.chapterId);
     _detailChapterOfStoryBloc
         .add(const DetailChapterOfStory(null, null, chapterId: 0));
     super.initState();
-    isLoad = true;
     _scrollController = ScrollController();
     _refreshController = RefreshController(initialRefresh: false);
     _scrollController.addListener(_saveScrollPosition);
-    isVisible = false;
+    _isVisible = false;
+    _isLoad = true;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 
@@ -62,21 +62,14 @@ class _ChapterState extends State<Chapter> {
     _scrollController.removeListener(_saveScrollPosition);
     _scrollController.dispose();
     _refreshController.dispose();
-    maxPosition = false;
-    minPosition = false;
-    isLoad = false;
+    _isLoad = false;
     super.dispose();
   }
 // #region Methods
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
-    settingConfig = settingObjectFromJson(
-        _sharedPreferences.getString(KeyChapter.chapterConfig.toString()) ??
-            '');
-    settingButtonScroll =
-        _sharedPreferences.getString(KeyButtonScroll.buttonScroll.toString()) ??
-            KeyButtonScroll.none.name;
+    _settingConfig = getCurrentTemplate(_sharedPreferences);
   }
 
   void _saveScrollPosition() async {
@@ -84,17 +77,17 @@ class _ChapterState extends State<Chapter> {
         _scrollPositionKey, _scrollController.offset);
     await _sharedPreferences.setInt("story-${widget.storyId}", widget.storyId);
     await _sharedPreferences.setInt(
-        "story-${widget.storyId}-current-chapter-id", chapterIdOld);
+        "story-${widget.storyId}-current-chapter-id", _chapterIdOld);
     await _sharedPreferences.setInt(
-        "story-${widget.storyId}-current-chapter", chapterNumber);
+        "story-${widget.storyId}-current-chapter", _chapterNumber);
   }
 
   void _loadSavedScrollPosition() async {
-    if (isLoad && widget.isLoadHistory) {
+    if (_isLoad && widget.isLoadHistory) {
       SharedPreferences savedLocation = await SharedPreferences.getInstance();
-      savedScrollPosition = savedLocation.getDouble(_scrollPositionKey) ?? 0.0;
+      _savedScrollPosition = savedLocation.getDouble(_scrollPositionKey) ?? 0.0;
       if (_scrollController.hasClients) {
-        _scrollController.jumpTo(savedScrollPosition);
+        _scrollController.jumpTo(_savedScrollPosition);
       }
     }
   }
@@ -114,51 +107,62 @@ class _ChapterState extends State<Chapter> {
 
   void _onLoading(int chapterId, bool isCheckShow) async {
     if (!isCheckShow) {
-      isLoading = true;
+      _isLoading = true;
     }
-    if (mounted && widget.lastChapterId != chapterId && isLoading) {
+    if (mounted && widget.lastChapterId != chapterId && _isLoading) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
           _detailChapterOfStoryBloc.add(
               DetailChapterOfStory(true, widget.storyId, chapterId: chapterId));
           _scrollController.jumpTo(0.0);
-          isLoading = false;
+          _isLoading = false;
         });
       });
-    } else if (!isLoading) {
-      isLoading = true;
+    } else if (!_isLoading) {
+      _isLoading = true;
     }
     _refreshController.loadComplete();
   }
 
+  void _reNewValueInSettingTemplate(TemplateSetting newValue) {
+    _settingConfig.backgroundColor = newValue.backgroundColor == null
+        ? _settingConfig.backgroundColor
+        : newValue.backgroundColor;
+    _settingConfig.fontColor = newValue.fontColor == null
+        ? _settingConfig.fontColor
+        : newValue.backgroundColor;
+    _settingConfig.fontSize =
+        newValue.fontSize == null ? _settingConfig.fontSize : newValue.fontSize;
+    _settingConfig.fontFamily = newValue.fontFamily == null
+        ? _settingConfig.fontFamily
+        : newValue.fontFamily;
+    _settingConfig.isLeftAlign = newValue.isLeftAlign == null
+        ? _settingConfig.isLeftAlign
+        : newValue.isLeftAlign;
+    _settingConfig.locationButton = newValue.locationButton == null
+        ? _settingConfig.locationButton
+        : newValue.locationButton;
+  }
 // #endregion
 
 // #region Variables
-  late SettingObject settingConfig;
-  late bool maxPosition = false;
-  late bool minPosition = false;
-  late bool isLoad = false;
-  String settingButtonScroll = KeyButtonScroll.none.name;
-  var storyIdOld = 0;
-  var chapterIdOld = 0;
-  var chapterNumber = 0;
-  var savedScrollPosition = 0.0;
-  var isLoading = false;
-  var isNextPage = false;
-  var isPrePage = false;
-  var isVisible = false;
+  late TemplateSetting _settingConfig;
+  late bool _isLoad;
+  var _chapterIdOld = 0;
+  var _chapterNumber = 0;
+  var _savedScrollPosition = 0.0;
+  var _isLoading = false;
+  var _isVisible = false;
   late SharedPreferences _sharedPreferences;
   late DetailChapterOfStoryBloc _detailChapterOfStoryBloc;
   late ScrollController _scrollController;
   late RefreshController _refreshController;
   late String _scrollPositionKey;
-  late double xPosition = 0;
-  late double yPosition = 0;
   // #endregion
 
   @override
   Widget build(BuildContext context) {
-    if (!isVisible) {
+    if (!_isVisible) {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
           overlays: SystemUiOverlay.values);
     }
@@ -178,36 +182,51 @@ class _ChapterState extends State<Chapter> {
             );
           }
           if (state is DetailChapterOfStoryLoadedState) {
-            settingConfig.backgroundColor =
-                settingConfig.backgroundColor ?? ColorDefaults.lightAppColor;
-            settingConfig.fontColor =
-                settingConfig.fontColor ?? ColorDefaults.thirdMainColor;
-            settingConfig.fontFamily =
-                settingConfig.fontFamily ?? FontsDefault.inter;
-            settingConfig.fontSize = settingConfig.fontSize ?? 15;
+            _settingConfig.backgroundColor =
+                _settingConfig.backgroundColor ?? ColorDefaults.lightAppColor;
+            _settingConfig.fontColor =
+                _settingConfig.fontColor ?? ColorDefaults.thirdMainColor;
+            _settingConfig.fontFamily =
+                _settingConfig.fontFamily ?? FontsDefault.inter;
+            _settingConfig.fontSize = _settingConfig.fontSize ?? 15;
+            _settingConfig.isLeftAlign = _settingConfig.isLeftAlign ?? true;
+            _settingConfig.locationButton =
+                _settingConfig.locationButton ?? KeyChapterButtonScroll.none;
             _loadSavedScrollPosition();
             var chapterInfo = state.chapter.result;
-            chapterIdOld = chapterInfo.id;
-            chapterNumber = chapterInfo.numberOfChapter;
-            return Consumer<SettingObject>(
-              builder: (context, value, child) {
+            _chapterIdOld = chapterInfo.id;
+            _chapterNumber = chapterInfo.numberOfChapter;
+            return Consumer<TemplateSetting>(
+              builder: (context, templateValue, child) {
+                _reNewValueInSettingTemplate(templateValue);
+                var tempBackground = templateValue.backgroundColor ??
+                    _settingConfig.backgroundColor;
+                var tempFontColor =
+                    templateValue.fontColor ?? _settingConfig.fontColor;
+                var tempFontFamily =
+                    templateValue.fontFamily ?? _settingConfig.fontFamily;
+                var tempFontSize =
+                    templateValue.fontSize ?? _settingConfig.fontSize;
+                var tempIsLeftAlign =
+                    templateValue.isLeftAlign ?? _settingConfig.isLeftAlign;
+                var tempLocationScrollButton = templateValue.locationButton ??
+                    _settingConfig.locationButton;
+
                 return Scaffold(
-                  appBar: isVisible
+                  appBar: _isVisible
                       ? AppBar(
                           automaticallyImplyLeading: false,
                           elevation: 0,
-                          backgroundColor: value.backgroundColor ??
-                              settingConfig.backgroundColor,
+                          backgroundColor: tempBackground,
                           leading: IconButton(
                               splashRadius: 25,
-                              color: value.fontColor ?? settingConfig.fontColor,
+                              color: tempFontColor,
                               onPressed: () {
                                 Navigator.maybePop(context, true);
                               },
                               icon: Icon(
                                 Icons.arrow_back_ios_sharp,
-                                color:
-                                    value.fontColor ?? settingConfig.fontColor,
+                                color: tempFontColor,
                               )),
                           title: GestureDetector(
                             onDoubleTap: () {
@@ -220,26 +239,22 @@ class _ChapterState extends State<Chapter> {
                                           )));
                             },
                             child: Title(
-                                color:
-                                    value.fontColor ?? settingConfig.fontColor!,
+                                color: tempFontColor!,
                                 child: Text(
                                   widget.storyName,
                                   style: FontsDefault.h5.copyWith(
-                                      fontFamily: value.fontFamily ??
-                                          settingConfig.fontFamily,
-                                      color: value.fontColor ??
-                                          settingConfig.fontColor!),
+                                      fontFamily: tempFontFamily,
+                                      color: tempFontColor),
                                 )),
                           ),
                         )
                       : PreferredSize(
                           preferredSize: Size.zero, child: Container()),
-                  backgroundColor:
-                      value.backgroundColor ?? settingConfig.backgroundColor,
+                  backgroundColor: tempBackground,
                   body: GestureDetector(
                     onTap: () {
                       setState(() {
-                        isVisible = !isVisible;
+                        _isVisible = !_isVisible;
                       });
                     },
                     child: SmartRefresher(
@@ -248,7 +263,7 @@ class _ChapterState extends State<Chapter> {
                       header: ClassicHeader(
                         idleIcon: Icon(
                           Icons.arrow_upward,
-                          color: value.fontColor ?? settingConfig.fontColor,
+                          color: tempFontColor,
                         ),
                         idleText: L(ViCode.previousChapterTextInfo.toString()),
                         refreshingText: L(ViCode.loadingTextInfo.toString()),
@@ -260,7 +275,7 @@ class _ChapterState extends State<Chapter> {
                       footer: ClassicFooter(
                         canLoadingIcon: Icon(
                           Icons.arrow_downward,
-                          color: value.fontColor ?? settingConfig.fontColor,
+                          color: tempFontColor,
                         ),
                         idleText: L(ViCode.loadingMoreTextInfo.toString()),
                         canLoadingText:
@@ -298,13 +313,8 @@ class _ChapterState extends State<Chapter> {
                                                 "${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}",
                                                 style: FontsDefault.h5.copyWith(
                                                     fontWeight: FontWeight.w600,
-                                                    fontFamily:
-                                                        value.fontFamily ??
-                                                            settingConfig
-                                                                .fontFamily,
-                                                    color: value.fontColor ??
-                                                        settingConfig
-                                                            .fontColor),
+                                                    fontFamily: tempFontFamily,
+                                                    color: tempFontColor),
                                                 maxLines: 2,
                                                 overflow: TextOverflow.visible,
                                                 textAlign: TextAlign.center,
@@ -325,13 +335,8 @@ class _ChapterState extends State<Chapter> {
                                                     .trim(),
                                                 style: FontsDefault.h5.copyWith(
                                                     fontWeight: FontWeight.w600,
-                                                    fontFamily:
-                                                        value.fontFamily ??
-                                                            settingConfig
-                                                                .fontFamily,
-                                                    color: value.fontColor ??
-                                                        settingConfig
-                                                            .fontColor),
+                                                    fontFamily: tempFontFamily,
+                                                    color: tempFontColor),
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
@@ -346,13 +351,13 @@ class _ChapterState extends State<Chapter> {
                                           .trim(),
                                       style: {
                                         '#': Style(
-                                          fontSize: FontSize(value.fontSize ??
-                                              settingConfig.fontSize!),
-                                          color: value.fontColor ??
-                                              settingConfig.fontColor,
-                                          backgroundColor:
-                                              value.backgroundColor ??
-                                                  settingConfig.backgroundColor,
+                                          textAlign: tempIsLeftAlign!
+                                              ? TextAlign.justify
+                                              : TextAlign.left,
+                                          fontFamily: tempFontFamily,
+                                          fontSize: FontSize(tempFontSize!),
+                                          color: tempFontColor,
+                                          backgroundColor: tempBackground,
                                         ),
                                       },
                                     ),
@@ -361,60 +366,40 @@ class _ChapterState extends State<Chapter> {
                           }),
                     ),
                   ),
-                  floatingActionButton: Consumer<ButtonScrollSettings>(
-                    builder: (context, buttonScrollValue, child) {
-                      String nameButton =
-                          buttonScrollValue.locationButton == null
-                              ? settingButtonScroll
-                              : buttonScrollValue.locationButton
-                                  .toString()
-                                  .split('.')
-                                  .last
-                                  .toString();
-                      return ExpandableDraggableFab(
-                          isVisibleButtonScroll: enumFromString(
-                                  KeyButtonScroll.values, nameButton) ??
-                              KeyButtonScroll.none,
-                          fontColor:
-                              value.fontColor ?? settingConfig.fontColor!,
-                          backgroundColor: value.backgroundColor ??
-                              settingConfig.backgroundColor!,
-                          distance: 10,
-                          controller: _scrollController,
-                          childrenCount: 1,
-                          children: [
-                            FloatingActionButton(
-                              shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                    width: 2,
-                                    color: value.fontColor ??
-                                        settingConfig.fontColor!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(100)),
-                              onPressed: () {
-                                _scrollController
-                                    .jumpTo(_scrollController.offset + 200);
-                              },
-                              backgroundColor: value.backgroundColor ??
-                                  settingConfig.backgroundColor!,
-                              child: Icon(
-                                Icons.keyboard_double_arrow_down,
-                                color:
-                                    value.fontColor ?? settingConfig.fontColor!,
+                  floatingActionButton: ExpandableDraggableFab(
+                      isVisibleButtonScroll: tempLocationScrollButton ??
+                          KeyChapterButtonScroll.none,
+                      fontColor: tempFontColor!,
+                      backgroundColor: tempBackground!,
+                      distance: 10,
+                      controller: _scrollController,
+                      childrenCount: 1,
+                      children: [
+                        FloatingActionButton(
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                width: 2,
+                                color: tempFontColor,
                               ),
-                            ),
-                          ]);
-                    },
-                  ),
-                  bottomNavigationBar: isVisible
+                              borderRadius: BorderRadius.circular(100)),
+                          onPressed: () {
+                            _scrollController
+                                .jumpTo(_scrollController.offset + 200);
+                          },
+                          backgroundColor: tempBackground,
+                          child: Icon(
+                            Icons.keyboard_double_arrow_down,
+                            color: tempFontColor,
+                          ),
+                        ),
+                      ]),
+                  bottomNavigationBar: _isVisible
                       ? AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.linearToEaseOut,
                           child: BottomChapterDetail(
-                              fontColor:
-                                  value.fontColor ?? settingConfig.fontColor!,
-                              backgroundColor: value.backgroundColor ??
-                                  settingConfig.backgroundColor!,
+                              fontColor: tempFontColor,
+                              backgroundColor: tempBackground,
                               chapterId: chapterInfo.id,
                               onRefresh: (int chapterId) =>
                                   _onRefresh(chapterInfo.id),

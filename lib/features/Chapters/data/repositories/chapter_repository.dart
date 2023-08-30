@@ -1,9 +1,9 @@
 import 'package:muonroi/core/services/api_chapter_provider.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapter.list.paging.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapter.list.paging.range.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapter.single.chapter.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapters.list.chapter.dart';
-import 'package:muonroi/features/Chapters/data/models/models.chapters.preview.chapter.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.range.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.single.chapter.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapters.preview.chapter.dart';
 
 class ChapterRepository {
   final int storyId;

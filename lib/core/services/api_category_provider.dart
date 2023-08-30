@@ -1,5 +1,5 @@
-import 'package:muonroi/shared/Settings/settings.api.dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
+import 'package:muonroi/shared/settings/settings.api.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/Categories/data/models/models.stories.dart';
 import 'package:sprintf/sprintf.dart';
 

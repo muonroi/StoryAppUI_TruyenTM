@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
-import 'package:muonroi/features/Homes/presentation/widgets/widget.static.book.case.stories.items.dart';
-import 'package:muonroi/features/Stories/data/models/models.stories.story.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.book.case.stories.items.dart';
+import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 
 class BookCase extends StatefulWidget {
   const BookCase({super.key, required this.storiesData});

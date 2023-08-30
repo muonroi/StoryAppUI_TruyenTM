@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.main.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 
 class StoriesListHorizontal extends StatelessWidget {
   final String imageUrl;

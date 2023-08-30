@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
 
 class FontsDefault {
   static List<String> getFontsNameAvailable() => [inter, poppins];

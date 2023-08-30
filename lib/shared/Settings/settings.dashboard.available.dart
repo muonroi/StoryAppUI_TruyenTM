@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/Settings/settings.colors.dart';
-import 'package:muonroi/shared/Settings/settings.fonts.dart';
-import 'package:muonroi/features/Chapters/provider/models.chapter.ui.available.settings.dart';
+import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
+import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
 
 class DashboardSettings {
-  static List<SettingObject> getDashboardAvailableSettings() {
-    List<SettingObject> fontAvailable = [
-      SettingObject(
-        backgroundColor: ColorDefaults.thirdMainColor,
-        fontColor: ColorDefaults.lightAppColor,
-        fontFamily: FontsDefault.inter,
-        fontSize: 15,
-      ),
-      SettingObject(
-        backgroundColor: const Color.fromARGB(217, 247, 244, 120),
-        fontColor: ColorDefaults.thirdMainColor,
-        fontFamily: FontsDefault.poppins,
-        fontSize: 15,
-      )
+  static List<TemplateSetting> getDashboardAvailableSettings() {
+    List<TemplateSetting> fontAvailable = [
+      TemplateSetting(
+          backgroundColor: ColorDefaults.lightAppColor,
+          fontColor: ColorDefaults.thirdMainColor,
+          fontFamily: FontsDefault.inter,
+          fontSize: 15,
+          isLeftAlign: true,
+          locationButton: KeyChapterButtonScroll.none),
+      TemplateSetting(
+          backgroundColor: ColorDefaults.thirdMainColor,
+          fontColor: ColorDefaults.lightAppColor,
+          fontFamily: FontsDefault.inter,
+          fontSize: 15,
+          isLeftAlign: true,
+          locationButton: KeyChapterButtonScroll.none),
+      TemplateSetting(
+          backgroundColor: const Color.fromARGB(217, 247, 244, 120),
+          fontColor: ColorDefaults.thirdMainColor,
+          fontFamily: FontsDefault.poppins,
+          fontSize: 15,
+          isLeftAlign: true,
+          locationButton: KeyChapterButtonScroll.none)
     ];
     return fontAvailable;
   }
