@@ -1,16 +1,17 @@
+import 'package:muonroi/core/Authorization/setting.api.dart';
 import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/data/models/models.single.story.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 import 'package:muonroi/features/stories/settings/settings.dart';
 import 'package:sprintf/sprintf.dart';
-import '../../shared/settings/settings.api.dart';
+import 'api_route.dart';
 
 class StoryProvider {
   Future<StoriesModel> getStoriesDataList(
       [int pageIndex = 1, int pageSize = 15]) async {
     try {
-      final response = await baseUrl().get(
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint.get(
           sprintf(ApiNetwork.getStoriesPaging, ["$pageIndex", "$pageSize"]));
       if (response.statusCode == 200) {
         return storiesFromJson(response.data.toString());
@@ -25,7 +26,8 @@ class StoryProvider {
   Future<StoriesModel> getStoriesRecommendList(int storyId,
       [int pageIndex = 1, int pageSize = 15]) async {
     try {
-      final response = await baseUrl().get(sprintf(
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint.get(sprintf(
           ApiNetwork.getRecommendStoriesPaging,
           ["$storyId", "$pageIndex", "$pageSize"]));
       if (response.statusCode == 200) {
@@ -54,8 +56,9 @@ class StoryProvider {
 
   Future<SingleStoryModel> getDetailStoryList(int storyId) async {
     try {
-      final response =
-          await baseUrl().get(sprintf(ApiNetwork.getDetailStory, ["$storyId"]));
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint
+          .get(sprintf(ApiNetwork.getDetailStory, ["$storyId"]));
       if (response.statusCode == 200) {
         return singleStoryModelFromJson(response.data.toString());
       } else {
@@ -82,7 +85,9 @@ class StoryProvider {
         'storyId': '$storyId',
         'voteValue': '$voteNumber'
       };
-      final response = await baseUrl().patch(ApiNetwork.voteStory, data: data);
+      var baseEndpoint = await endPoint();
+      final response =
+          await baseEndpoint.patch(ApiNetwork.voteStory, data: data);
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -96,6 +101,7 @@ class StoryProvider {
   Future<StoriesModel> searchStory(List<String> keySearch,
       List<SearchType> type, int pageIndex, int pageSize) async {
     try {
+      var baseEndpoint = await endPoint();
       String url = "";
       String paging = "PageIndex=$pageIndex&PageSize=$pageSize";
       for (int i = 0; i < type.length; i++) {
@@ -115,7 +121,8 @@ class StoryProvider {
         }
       }
       url += paging;
-      final response = await baseUrl().get("${ApiNetwork.baseSearchStory}$url");
+      final response =
+          await baseEndpoint.get("${ApiNetwork.baseSearchStory}$url");
       if (response.statusCode == 200) {
         return storiesFromJson(response.data.toString());
       } else {

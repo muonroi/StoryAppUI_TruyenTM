@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 
 class ChooseFontColor extends StatefulWidget {
@@ -74,31 +74,31 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
       ),
       body: Consumer<TemplateSetting>(
         builder: (context, templateValue, child) {
-          return HueRingPicker(
-            onColorChanged: (Color value) {
-              var currentTemplate = getCurrentTemplate(_sharedPreferences);
-              switch (widget.colorType) {
-                case KeyChapterColor.background:
-                  currentTemplate.backgroundColor = value;
-                  templateValue.valueSetting = currentTemplate;
-                  break;
-                case KeyChapterColor.font:
-                  currentTemplate.fontColor = value;
-                  templateValue.valueSetting = currentTemplate;
-                  break;
-                case KeyChapterColor.chapterColor:
-                  break;
-                case KeyChapterColor.none:
-                  break;
-              }
-              setState(() {
-                _pickerColor = value;
-              });
-              setCurrentTemplate(_sharedPreferences, currentTemplate);
-            },
-            pickerColor: _pickerColor,
-            enableAlpha: true,
-            displayThumbColor: false,
+          return SingleChildScrollView(
+            child: HueRingPicker(
+              onColorChanged: (Color value) {
+                var currentTemplate = getCurrentTemplate(_sharedPreferences);
+                switch (widget.colorType) {
+                  case KeyChapterColor.background:
+                    currentTemplate.backgroundColor = value;
+                    templateValue.valueSetting = currentTemplate;
+                    break;
+                  case KeyChapterColor.font:
+                    currentTemplate.fontColor = value;
+                    templateValue.valueSetting = currentTemplate;
+                    break;
+                  case KeyChapterColor.chapterColor:
+                    break;
+                  case KeyChapterColor.none:
+                    break;
+                }
+                setState(() {
+                  _pickerColor = value;
+                });
+                setCurrentTemplate(_sharedPreferences, currentTemplate);
+              },
+              pickerColor: _pickerColor,
+            ),
           );
         },
       ),

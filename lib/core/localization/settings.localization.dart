@@ -1,5 +1,5 @@
-import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
-import 'package:muonroi/shared/settings/settings.languages.dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.languages.dart';
 
 class LocalizationLib {
   static final Map<String, Map<String, String>> _localizedValues = {
@@ -66,7 +66,7 @@ class LocalizationLib {
       ViCode.scrollConfigVerticalDashboardTextInfo.toString(): "Cuộn dọc",
       ViCode.scrollConfigHorizontalDashboardTextInfo.toString(): "Cuộn ngang",
       ViCode.buttonScrollConfigDashboardTextInfo.toString(): "Nút cuộn",
-      ViCode.buttonScrollConfigNoneDashboardTextInfo.toString(): "Không",
+      ViCode.buttonScrollConfigNoneDashboardTextInfo.toString(): "Ẩn",
       ViCode.buttonScrollConfigDisplayDashboardTextInfo.toString(): "Hiện",
       ViCode.alignConfigDashboardTextInfo.toString(): "Căn Lề",
       ViCode.alignConfigLeftDashboardTextInfo.toString(): "Căn trái",
@@ -75,6 +75,8 @@ class LocalizationLib {
       ViCode.fontSizeConfigDashboardTextInfo.toString(): "Cỡ chữ",
       ViCode.fontColorConfigDashboardTextInfo.toString(): "Màu chữ",
       ViCode.backgroundConfigDashboardTextInfo.toString(): "Màu nền",
+      ViCode.limitFontSizeConfigTextInfo.toString():
+          "Cỡ chữ nằm trong khoảng (10-50)",
     }
   };
   static String L(String key, {String locale = 'vi'}) {

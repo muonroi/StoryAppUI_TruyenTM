@@ -1,5 +1,5 @@
-import 'package:muonroi/shared/settings/settings.api.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/core/Authorization/setting.api.dart';
+import 'package:muonroi/core/services/api_route.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.range.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.single.chapter.dart';
@@ -11,7 +11,9 @@ class ChapterProvider {
   Future<ChapterPreviewModel> getChaptersDataList(int storyId, int pageIndex,
       {bool isLatest = false}) async {
     try {
-      final response = await baseUrl().get(sprintf(ApiNetwork.getChapterPaging,
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint.get(sprintf(
+          ApiNetwork.getChapterPaging,
           ["$storyId", "$pageIndex", "100", "$isLatest"]));
       if (response.statusCode == 200) {
         return chapterPreviewModelFromJson(response.data.toString());
@@ -25,7 +27,9 @@ class ChapterProvider {
 
   Future<ListPagingChapters> getGroupChaptersDataDetail(int storyId) async {
     try {
-      final response = await baseUrl()
+      var baseEndpoint = await endPoint();
+
+      final response = await baseEndpoint
           .get(sprintf(ApiNetwork.getListChapterPaging, ["$storyId"]));
       if (response.statusCode == 200) {
         return listPagingChaptersFromJson(response.data.toString());
@@ -39,7 +43,9 @@ class ChapterProvider {
 
   Future<DetailChapterInfo> getChapterDataDetail(int fromChapterId) async {
     try {
-      final response = await baseUrl()
+      var baseEndpoint = await endPoint();
+
+      final response = await baseEndpoint
           .get(sprintf(ApiNetwork.getChapterDetail, ["$fromChapterId"]));
       if (response.statusCode == 200) {
         return detailChapterInfoFromJson(response.data.toString());
@@ -54,8 +60,10 @@ class ChapterProvider {
   Future<DetailChapterInfo> fetchActionChapterOfStory(
       int chapterId, int storyId, bool action) async {
     try {
+      var baseEndpoint = await endPoint();
+
       var stringEndpointName = action ? "Next" : "Previous";
-      final response = await baseUrl().get(sprintf(
+      final response = await baseEndpoint.get(sprintf(
           ApiNetwork.getActionChapterDetail,
           [stringEndpointName, "$storyId", "$chapterId"]));
       if (response.statusCode == 200) {
@@ -71,7 +79,8 @@ class ChapterProvider {
   Future<ChapterInfo> fetchLatestChapterAnyStory(
       {int pageIndex = 1, int pageSize = 5}) async {
     try {
-      final response = await baseUrl().get(
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint.get(
           sprintf(ApiNetwork.getLatestChapterNumber, [pageIndex, pageSize]));
       if (response.statusCode == 200) {
         return chapterInfoFromJson(response.data.toString());
@@ -86,7 +95,8 @@ class ChapterProvider {
   Future<ListPagingRangeChapters> getFromToChaptersDataDetail(
       int storyId, int from, int to) async {
     try {
-      final response = await baseUrl().get(sprintf(
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint.get(sprintf(
           ApiNetwork.getFromToChapterPaging, ["$storyId", "$from", "$to"]));
       if (response.statusCode == 200) {
         return listPagingRangeChaptersFromJson(response.data.toString());

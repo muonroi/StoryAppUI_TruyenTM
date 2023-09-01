@@ -304,8 +304,6 @@ class _ExpandingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print((directionInDegrees*(math.pi / 180.0)).toString()+"-");
-    //  print(math.pi);
     return AnimatedBuilder(
       animation: progress,
       builder: (context, child) {
@@ -329,12 +327,6 @@ class _ExpandingActionButton extends StatelessWidget {
       },
       child: FadeTransition(opacity: progress, child: child),
     );
-    /*
-    Transform.translate(
-                offset: Offset(
-                    0,//(closePosition == ClosePosition.closeToRight ? 1 : -1) * offset.dy,
-                    0),
-     */
   }
 }
 

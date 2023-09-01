@@ -1,18 +1,19 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:muonroi/features/chapters/presentation/widgets/widget.static.button.scroll.chapter.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
-import 'package:muonroi/features/chapters/bloc/Detail_bloc/detail_bloc.dart';
+import 'package:muonroi/features/chapters/bloc/detail_bloc/detail_bloc.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.detail.chapter.bottom.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
-import 'package:muonroi/shared/static/buttons/widget.static.floating.action.button.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,6 +54,7 @@ class _ChapterState extends State<Chapter> {
     _scrollController.addListener(_saveScrollPosition);
     _isVisible = false;
     _isLoad = true;
+
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 
@@ -65,6 +67,7 @@ class _ChapterState extends State<Chapter> {
     _isLoad = false;
     super.dispose();
   }
+
 // #region Methods
 
   Future<void> _initSharedPreferences() async {
@@ -142,11 +145,13 @@ class _ChapterState extends State<Chapter> {
     _settingConfig.locationButton = newValue.locationButton == null
         ? _settingConfig.locationButton
         : newValue.locationButton;
+    _settingConfig.isHorizontal = newValue.isHorizontal == null
+        ? _settingConfig.isHorizontal
+        : newValue.isHorizontal;
   }
 // #endregion
 
 // #region Variables
-  late TemplateSetting _settingConfig;
   late bool _isLoad;
   var _chapterIdOld = 0;
   var _chapterNumber = 0;
@@ -158,6 +163,8 @@ class _ChapterState extends State<Chapter> {
   late ScrollController _scrollController;
   late RefreshController _refreshController;
   late String _scrollPositionKey;
+  late TemplateSetting _settingConfig;
+
   // #endregion
 
   @override
@@ -182,6 +189,8 @@ class _ChapterState extends State<Chapter> {
             );
           }
           if (state is DetailChapterOfStoryLoadedState) {
+            _loadSavedScrollPosition();
+
             _settingConfig.backgroundColor =
                 _settingConfig.backgroundColor ?? ColorDefaults.lightAppColor;
             _settingConfig.fontColor =
@@ -192,7 +201,7 @@ class _ChapterState extends State<Chapter> {
             _settingConfig.isLeftAlign = _settingConfig.isLeftAlign ?? true;
             _settingConfig.locationButton =
                 _settingConfig.locationButton ?? KeyChapterButtonScroll.none;
-            _loadSavedScrollPosition();
+            _settingConfig.isHorizontal = _settingConfig.isHorizontal ?? false;
             var chapterInfo = state.chapter.result;
             _chapterIdOld = chapterInfo.id;
             _chapterNumber = chapterInfo.numberOfChapter;
@@ -211,8 +220,10 @@ class _ChapterState extends State<Chapter> {
                     templateValue.isLeftAlign ?? _settingConfig.isLeftAlign;
                 var tempLocationScrollButton = templateValue.locationButton ??
                     _settingConfig.locationButton;
-
+                var tempIsHorizontal =
+                    templateValue.isHorizontal ?? _settingConfig.isHorizontal;
                 return Scaffold(
+                  resizeToAvoidBottomInset: false,
                   appBar: _isVisible
                       ? AppBar(
                           automaticallyImplyLeading: false,
@@ -281,14 +292,126 @@ class _ChapterState extends State<Chapter> {
                         canLoadingText:
                             L(ViCode.nextChapterTextInfo.toString()),
                       ),
-                      child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          controller: _scrollController,
-                          itemCount: 1,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
+                      child: tempIsHorizontal!
+                          ? ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: const PageScrollPhysics(),
+                              controller: _scrollController,
+                              itemCount: chapterInfo.bodyChunk.length,
+                              itemBuilder: (context, index) {
+                                var textString = convertTagHtmlFormatToString(
+                                        chapterInfo.bodyChunk[index])
+                                    .trim();
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    index == 0
+                                        ? Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: SizedBox(
+                                                width: MainSetting
+                                                        .getPercentageOfDevice(
+                                                            context,
+                                                            expectWidth: 387)
+                                                    .width,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: MainSetting
+                                                              .getPercentageOfDevice(
+                                                                  context,
+                                                                  expectWidth:
+                                                                      96.75)
+                                                          .width,
+                                                      child: Text(
+                                                        "${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}",
+                                                        style: FontsDefault.h5
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontFamily:
+                                                                    tempFontFamily,
+                                                                color:
+                                                                    tempFontColor),
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .visible,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: MainSetting
+                                                              .getPercentageOfDevice(
+                                                                  context,
+                                                                  expectWidth:
+                                                                      290.25)
+                                                          .width,
+                                                      child: Text(
+                                                        chapterInfo.chapterTitle
+                                                            .replaceAll(
+                                                                RegExp(
+                                                                    r'Chương \d+:'),
+                                                                '')
+                                                            .replaceAll(
+                                                                "\n", "")
+                                                            .trim(),
+                                                        style: FontsDefault.h5
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontFamily:
+                                                                    tempFontFamily,
+                                                                color:
+                                                                    tempFontColor),
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : Container(),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12.0),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: AutoSizeText(
+                                          textString,
+                                          style: TextStyle(
+                                            fontSize: tempFontSize! > 30
+                                                ? 30
+                                                : tempFontSize,
+                                            fontFamily: tempFontFamily,
+                                            color: tempFontColor,
+                                            backgroundColor: tempBackground,
+                                          ),
+                                          textAlign: tempIsLeftAlign!
+                                              ? TextAlign.justify
+                                              : TextAlign.left,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              })
+                          : ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              controller: _scrollController,
+                              itemCount: 1,
+                              itemBuilder: (context, index) {
+                                return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Align(
@@ -345,54 +468,35 @@ class _ChapterState extends State<Chapter> {
                                         ),
                                       ),
                                     ),
-                                    Html(
-                                      data: chapterInfo.body
-                                          .replaceAll("\n", "")
-                                          .trim(),
-                                      style: {
-                                        '#': Style(
-                                          textAlign: tempIsLeftAlign!
-                                              ? TextAlign.justify
-                                              : TextAlign.left,
-                                          fontFamily: tempFontFamily,
-                                          fontSize: FontSize(tempFontSize!),
-                                          color: tempFontColor,
-                                          backgroundColor: tempBackground,
-                                        ),
-                                      },
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Html(
+                                        data: chapterInfo.body
+                                            .replaceAll("\n", "")
+                                            .trim(),
+                                        style: {
+                                          '#': Style(
+                                            textAlign: tempIsLeftAlign!
+                                                ? TextAlign.justify
+                                                : TextAlign.left,
+                                            fontFamily: tempFontFamily,
+                                            fontSize: FontSize(tempFontSize!),
+                                            color: tempFontColor,
+                                            backgroundColor: tempBackground,
+                                          ),
+                                        },
+                                      ),
                                     ),
                                   ],
-                                ));
-                          }),
+                                );
+                              }),
                     ),
                   ),
-                  floatingActionButton: ExpandableDraggableFab(
-                      isVisibleButtonScroll: tempLocationScrollButton ??
-                          KeyChapterButtonScroll.none,
-                      fontColor: tempFontColor!,
-                      backgroundColor: tempBackground!,
-                      distance: 10,
-                      controller: _scrollController,
-                      childrenCount: 1,
-                      children: [
-                        FloatingActionButton(
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                width: 2,
-                                color: tempFontColor,
-                              ),
-                              borderRadius: BorderRadius.circular(100)),
-                          onPressed: () {
-                            _scrollController
-                                .jumpTo(_scrollController.offset + 200);
-                          },
-                          backgroundColor: tempBackground,
-                          child: Icon(
-                            Icons.keyboard_double_arrow_down,
-                            color: tempFontColor,
-                          ),
-                        ),
-                      ]),
+                  floatingActionButton: ButtonChapterScroll(
+                      tempLocationScrollButton: tempLocationScrollButton,
+                      tempFontColor: tempFontColor!,
+                      tempBackground: tempBackground!,
+                      scrollController: _scrollController),
                   bottomNavigationBar: _isVisible
                       ? AnimatedContainer(
                           duration: const Duration(milliseconds: 300),

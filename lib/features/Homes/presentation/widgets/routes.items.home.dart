@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.button.search.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.filter.home.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.banner.home.dart';
-import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.categories.home.dart';

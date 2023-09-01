@@ -128,5 +128,6 @@ enum ViCode {
   fontColorConfigDashboardTextInfo,
   backgroundConfigDashboardTextInfo,
   alignConfigDashboardTextInfo,
+  limitFontSizeConfigTextInfo,
 // #endregion
 }

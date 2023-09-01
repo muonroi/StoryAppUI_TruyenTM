@@ -7,7 +7,7 @@ String detailChapterInfoToJson(DetailChapterInfo data) =>
     json.encode(data.toJson());
 
 class DetailChapterInfo {
-  Result result;
+  DetailChapterResult result;
   List<dynamic> errorMessages;
   bool isOk;
   int statusCode;
@@ -21,7 +21,7 @@ class DetailChapterInfo {
 
   factory DetailChapterInfo.fromJson(Map<String, dynamic> json) =>
       DetailChapterInfo(
-        result: Result.fromJson(json["result"]),
+        result: DetailChapterResult.fromJson(json["result"]),
         errorMessages: List<dynamic>.from(json["errorMessages"].map((x) => x)),
         isOk: json["isOK"],
         statusCode: json["statusCode"],
@@ -35,7 +35,7 @@ class DetailChapterInfo {
       };
 }
 
-class Result {
+class DetailChapterResult {
   int id;
   String chapterTitle;
   String body;
@@ -47,8 +47,9 @@ class Result {
   int updatedDateTs;
   String createdUserName;
   String updatedUserName;
-
-  Result({
+  List<String> bodyChunk;
+  int chunkSize;
+  DetailChapterResult({
     required this.id,
     required this.chapterTitle,
     required this.body,
@@ -60,9 +61,13 @@ class Result {
     required this.updatedDateTs,
     required this.createdUserName,
     required this.updatedUserName,
+    required this.bodyChunk,
+    required this.chunkSize,
   });
-
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory DetailChapterResult.fromJson(Map<String, dynamic> json) =>
+      DetailChapterResult(
+        bodyChunk: List<String>.from(json["bodyChunk"].map((x) => x)),
+        chunkSize: json["chunkSize"],
         id: json["id"],
         chapterTitle: json["chapterTitle"],
         body: json["body"],
@@ -77,6 +82,8 @@ class Result {
       );
 
   Map<String, dynamic> toJson() => {
+        "bodyChunk": List<dynamic>.from(bodyChunk.map((x) => x)),
+        "chunkSize": chunkSize,
         "id": id,
         "chapterTitle": chapterTitle,
         "body": body,

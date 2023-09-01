@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
+import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../settings/settings.colors.dart';
 
 class ButtonWidget {
@@ -58,7 +62,6 @@ class ToggleButton extends StatefulWidget {
   final Color? normalColor;
   final String textLeft;
   final String textRight;
-
   const ToggleButton(
       {super.key,
       required this.width,
@@ -78,100 +81,153 @@ const double leftAlign = -1;
 const double rightAlign = 1;
 
 class _ToggleButtonState extends State<ToggleButton> {
-  late double xAlign;
-  late Color leftColor;
-  late Color rightColor;
-
   @override
   void initState() {
+    _initSharedPreferences();
     super.initState();
     xAlign = leftAlign;
     leftColor = widget.selectedColor ?? ColorDefaults.lightAppColor;
     rightColor = widget.normalColor ?? ColorDefaults.thirdMainColor;
   }
 
+  Future<void> _initSharedPreferences() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      var _templateSettingData = getCurrentTemplate(_sharedPreferences);
+      if (_templateSettingData.isHorizontal != null &&
+          !_templateSettingData.isHorizontal!) {
+        xAlign = leftAlign;
+        leftColor = widget.selectedColor!;
+        rightColor = widget.normalColor!;
+      } else if (_templateSettingData.isHorizontal != null &&
+          _templateSettingData.isHorizontal!) {
+        xAlign = rightAlign;
+        rightColor = widget.selectedColor!;
+        leftColor = widget.normalColor!;
+      } else {
+        xAlign = leftAlign;
+        leftColor = widget.selectedColor!;
+        rightColor = widget.normalColor!;
+      }
+    });
+  }
+
+  late double xAlign;
+  late Color leftColor;
+  late Color rightColor;
+  late SharedPreferences _sharedPreferences;
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        width: widget.width,
-        height: widget.height,
-        decoration: BoxDecoration(
-            color: widget.noneSelectedBackgroundColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(50.0),
-            ),
-            boxShadow: [
-              BoxShadow(
-                  color: Color.fromARGB(181, 156, 154, 154), spreadRadius: 0.5)
-            ]),
-        child: Stack(
-          children: [
-            AnimatedAlign(
-              alignment: Alignment(xAlign, 0),
-              duration: const Duration(milliseconds: 200),
-              child: Container(
-                width: widget.width! * 0.5,
-                height: widget.height,
-                decoration: BoxDecoration(
-                  color: widget.selectedBackgroundColor,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(50.0),
-                  ),
-                ),
+      child: Consumer<TemplateSetting>(builder:
+          (BuildContext context, TemplateSetting value, Widget? child) {
+        if (value.isHorizontal != null && !value.isHorizontal!) {
+          xAlign = leftAlign;
+          leftColor = widget.selectedColor!;
+          rightColor = widget.normalColor!;
+        } else if (value.isHorizontal != null && value.isHorizontal!) {
+          xAlign = rightAlign;
+          rightColor = widget.selectedColor!;
+          leftColor = widget.normalColor!;
+        } else {
+          xAlign = leftAlign;
+          leftColor = widget.selectedColor!;
+          rightColor = widget.normalColor!;
+        }
+        return Container(
+          width: widget.width,
+          height: widget.height,
+          decoration: BoxDecoration(
+              color: widget.noneSelectedBackgroundColor,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(50.0),
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  xAlign = leftAlign;
-                  leftColor = widget.selectedColor!;
-                  rightColor = widget.normalColor!;
-                });
-              },
-              child: Align(
-                alignment: const Alignment(-1, 0),
+              boxShadow: [
+                BoxShadow(
+                    color: Color.fromARGB(181, 156, 154, 154),
+                    spreadRadius: 0.5)
+              ]),
+          child: Stack(
+            children: [
+              AnimatedAlign(
+                alignment: Alignment(xAlign, 0),
+                duration: const Duration(milliseconds: 200),
                 child: Container(
                   width: widget.width! * 0.5,
-                  color: Colors.transparent,
-                  alignment: Alignment.center,
-                  child: Text(
-                    widget.textLeft,
-                    style: TextStyle(
-                        color: leftColor,
-                        fontFamily: FontsDefault.inter,
-                        fontWeight: FontWeight.w500),
+                  height: widget.height,
+                  decoration: BoxDecoration(
+                    color: widget.selectedBackgroundColor,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(50.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  xAlign = rightAlign;
-                  rightColor = widget.selectedColor!;
-                  leftColor = widget.normalColor!;
-                });
-              },
-              child: Align(
-                alignment: const Alignment(1, 0),
-                child: Container(
-                  width: widget.width! * 0.5,
-                  color: Colors.transparent,
-                  alignment: Alignment.center,
-                  child: Text(
-                    widget.textRight,
-                    style: TextStyle(
-                        color: rightColor,
-                        fontFamily: FontsDefault.inter,
-                        fontWeight: FontWeight.w500),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    xAlign = leftAlign;
+                    leftColor = widget.selectedColor!;
+                    rightColor = widget.normalColor!;
+                    var currentTemplate =
+                        getCurrentTemplate(_sharedPreferences);
+                    currentTemplate.isHorizontal = false;
+                    currentTemplate.fontSize = 16;
+                    setCurrentTemplate(_sharedPreferences, currentTemplate);
+                    value.valueSetting = currentTemplate;
+                  });
+                },
+                child: Align(
+                  alignment: const Alignment(-1, 0),
+                  child: Container(
+                    width: widget.width! * 0.5,
+                    color: Colors.transparent,
+                    alignment: Alignment.center,
+                    child: Text(
+                      widget.textLeft,
+                      style: TextStyle(
+                          color: leftColor,
+                          fontFamily: FontsDefault.inter,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    xAlign = rightAlign;
+                    rightColor = widget.selectedColor!;
+                    leftColor = widget.normalColor!;
+                    var currentTemplate =
+                        getCurrentTemplate(_sharedPreferences);
+                    currentTemplate.isHorizontal = true;
+                    currentTemplate.fontSize = 25;
+                    setCurrentTemplate(_sharedPreferences, currentTemplate);
+                    value.valueSetting = currentTemplate;
+                  });
+                },
+                child: Align(
+                  alignment: const Alignment(1, 0),
+                  child: Container(
+                    width: widget.width! * 0.5,
+                    color: Colors.transparent,
+                    alignment: Alignment.center,
+                    child: Text(
+                      widget.textRight,
+                      style: TextStyle(
+                          color: rightColor,
+                          fontFamily: FontsDefault.inter,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

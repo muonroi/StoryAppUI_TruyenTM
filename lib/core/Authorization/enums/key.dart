@@ -1,0 +1,1 @@
+enum KeyToken { accessToken, refreshToken }
