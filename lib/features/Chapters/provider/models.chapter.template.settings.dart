@@ -16,6 +16,7 @@ class TemplateSetting with ChangeNotifier {
   Color? backgroundColor;
   double? fontSize;
   bool? isLeftAlign;
+  bool? isHorizontal;
   KeyChapterButtonScroll? locationButton;
 
   TemplateSetting(
@@ -24,7 +25,8 @@ class TemplateSetting with ChangeNotifier {
       this.fontColor,
       this.backgroundColor,
       this.isLeftAlign,
-      this.locationButton});
+      this.locationButton,
+      this.isHorizontal});
   set valueSetting(TemplateSetting newValue) {
     fontColor = newValue.fontColor;
     backgroundColor = newValue.backgroundColor;
@@ -32,27 +34,35 @@ class TemplateSetting with ChangeNotifier {
     isLeftAlign = newValue.isLeftAlign;
     locationButton = newValue.locationButton;
     fontFamily = newValue.fontFamily;
+    isHorizontal = newValue.isHorizontal;
     notifyListeners();
   }
 
   factory TemplateSetting.fromJson(Map<String, dynamic> json) =>
       TemplateSetting(
-          fontFamily: json["fontFamily"],
-          fontColor:
-              colorFromJson(json["fontColor"], ColorDefaults.thirdMainColor),
-          backgroundColor: colorFromJson(
-              json["backgroundColor"], ColorDefaults.lightAppColor),
-          fontSize: json["fontSize"] ?? 15,
-          isLeftAlign: bool.parse(json["isLeftAlign"]),
-          locationButton: KeyChapterButtonScroll.fromJson(
-              json["locationButton"] ?? 'none'));
+        fontFamily: json["fontFamily"],
+        fontColor:
+            colorFromJson(json["fontColor"], ColorDefaults.thirdMainColor),
+        backgroundColor:
+            colorFromJson(json["backgroundColor"], ColorDefaults.lightAppColor),
+        fontSize: checkDouble(json["fontSize"]),
+        isLeftAlign: json["isLeftAlign"] != "null"
+            ? bool.parse(json["isLeftAlign"])
+            : bool.parse("false"),
+        locationButton:
+            KeyChapterButtonScroll.fromJson(json["locationButton"] ?? 'none'),
+        isHorizontal: json["isHorizontal"] != "null"
+            ? bool.parse(json["isHorizontal"])
+            : bool.parse("false"),
+      );
   Map<String, dynamic> toJson() => {
         "fontFamily": fontFamily,
         "fontColor": colorToJson(fontColor, ColorDefaults.thirdMainColor.value),
         "backgroundColor":
             colorToJson(backgroundColor, ColorDefaults.lightAppColor.value),
-        "fontSize": fontSize ?? 15,
+        "fontSize": checkDouble(fontSize),
         "isLeftAlign": isLeftAlign.toString(),
         "locationButton": locationButton?.toJson(),
+        "isHorizontal": isHorizontal.toString(),
       };
 }

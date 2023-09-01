@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../shared/settings/settings.colors.dart';
 import '../../../../shared/settings/settings.fonts.dart';
-import '../../../../shared/settings/settings.language_code.vi..dart';
+import '../../../../core/localization/settings.language_code.vi..dart';
 import '../../../../shared/settings/settings.main.dart';
 import 'widget.static.stories.vertical.dart';
 

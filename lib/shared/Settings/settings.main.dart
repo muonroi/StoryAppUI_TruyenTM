@@ -1,15 +1,10 @@
-import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_flutter/icons_flutter.dart';
+import 'package:muonroi/core/localization/settings.languages.dart';
 import 'package:muonroi/core/models/settings/models.mainsettings.device.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.token.dart';
-import 'package:muonroi/shared/settings/settings.api.dart';
 import 'package:muonroi/shared/settings/settings.colors.dart';
-import 'package:muonroi/shared/settings/settings.localization.dart';
-
-import 'settings.languages.dart';
+import 'package:muonroi/core/localization/settings.localization.dart';
 
 String L(String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
@@ -56,52 +51,6 @@ Widget showToolTip(String message) {
       ),
     ),
   );
-}
-
-Dio baseUrl() {
-  Dio dio = Dio();
-  dio.options.baseUrl = ApiNetwork.baseApi;
-  dio.options.responseType = ResponseType.plain;
-  // dio.interceptors.add(LogInterceptor());
-  String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lX3VzZXIiOiJtdW9uIiwidXNlcm5hbWUiOiJtdW9ucm9pIiwidXNlcl9pZCI6IjAxMjg0MDg5LWRhMGUtNDEwOC05MTM3LTM4NTQ3ZGFkZTY1OSIsImVtYWlsIjoibGVhbmhwaGkxNzA2QGdtYWlsLmNvbSIsImdyb3VwX2lkIjoiMSIsInJvbGUiOlsiUkVBRCIsIldSSVRFIiwiRURJVCIsIkRFTEVURSJdLCJuYmYiOjE2OTIzMzEzNDQsImV4cCI6MTY5MjMzMjI0NCwiaWF0IjoxNjkyMzMxMzQ0LCJpc3MiOiJMRjMxTE9Ga01sZjNwR1BFeXpBYWNLeFJNcHJ4ZFdaUnlhTHhDbWpEIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMS9hcGkifQ.3sFBeFYUBSnhIH5zzexLnnyoDL9uv78hk_bithoAaZc';
-  String refreshTokenStr = 'XmpoRiNaYiQ0Yl5IemtuZUBUZnQlRmQhRk9ReHRnRUA=';
-  dio.interceptors.add(
-    InterceptorsWrapper(
-      onRequest: (request, handler) {
-        if (token != '') {
-          request.headers['Authorization'] = 'Bearer $token';
-        }
-        return handler.next(request);
-      },
-      onError: (e, handler) async {
-        if (e.response?.statusCode == 401) {
-          try {
-            await dio
-                .post(ApiNetwork.renewToken,
-                    data: jsonEncode({"refreshToken": refreshTokenStr}))
-                .then((value) async {
-              if (value.statusCode == 200) {
-                var newToken = tokenModelFromJson(value.data.toString());
-                token = newToken.result;
-                e.requestOptions.headers["Authorization"] =
-                    "Bearer ${newToken.result}";
-                final opts = Options(
-                    method: e.requestOptions.method,
-                    headers: e.requestOptions.headers);
-                final cloneReq = await dio.request(e.requestOptions.path,
-                    options: opts, data: e.requestOptions.data);
-                return handler.resolve(cloneReq);
-              }
-            });
-          } catch (e) {
-            return;
-          }
-        }
-      },
-    ),
-  );
-  return dio;
 }
 
 class MainSetting {

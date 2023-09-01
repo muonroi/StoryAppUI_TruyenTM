@@ -3,7 +3,7 @@ import 'package:muonroi/features/homes/presentation/widgets/widget.static.user.i
 import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
-import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';

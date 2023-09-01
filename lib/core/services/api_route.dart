@@ -6,6 +6,11 @@ class ApiNetwork {
   static const String baseSearchStory = "stories/search?";
   // #endregion
 
+// #region Account endpoint
+  static const String login = "users/login";
+  static const String register = "users";
+// #endregion
+
   // #region Stories endpoint
   static const String getStoriesPaging = "stories/all?pageIndex=%s&pageSize=%s";
   static const String getRecommendStoriesPaging =

@@ -11,23 +11,26 @@ class DashboardSettings {
           backgroundColor: ColorDefaults.lightAppColor,
           fontColor: ColorDefaults.thirdMainColor,
           fontFamily: FontsDefault.inter,
-          fontSize: 15,
+          fontSize: 15.2,
           isLeftAlign: true,
-          locationButton: KeyChapterButtonScroll.none),
+          locationButton: KeyChapterButtonScroll.none,
+          isHorizontal: false),
       TemplateSetting(
           backgroundColor: ColorDefaults.thirdMainColor,
           fontColor: ColorDefaults.lightAppColor,
           fontFamily: FontsDefault.inter,
-          fontSize: 15,
+          fontSize: 15.2,
           isLeftAlign: true,
-          locationButton: KeyChapterButtonScroll.none),
+          locationButton: KeyChapterButtonScroll.none,
+          isHorizontal: false),
       TemplateSetting(
           backgroundColor: const Color.fromARGB(217, 247, 244, 120),
           fontColor: ColorDefaults.thirdMainColor,
           fontFamily: FontsDefault.poppins,
-          fontSize: 15,
+          fontSize: 15.2,
           isLeftAlign: true,
-          locationButton: KeyChapterButtonScroll.none)
+          locationButton: KeyChapterButtonScroll.none,
+          isHorizontal: false)
     ];
     return fontAvailable;
   }

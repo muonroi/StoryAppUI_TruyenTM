@@ -6,7 +6,7 @@ import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/bloc/DetailData/detail_bloc.dart';
 import 'package:muonroi/features/stories/presentation/widgets/widget.static..detail.chapter.story.dart';

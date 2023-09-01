@@ -47,7 +47,8 @@ class DetailChapterResult {
   int updatedDateTs;
   String createdUserName;
   String updatedUserName;
-
+  List<String> bodyChunk;
+  int chunkSize;
   DetailChapterResult({
     required this.id,
     required this.chapterTitle,
@@ -60,10 +61,13 @@ class DetailChapterResult {
     required this.updatedDateTs,
     required this.createdUserName,
     required this.updatedUserName,
+    required this.bodyChunk,
+    required this.chunkSize,
   });
-
   factory DetailChapterResult.fromJson(Map<String, dynamic> json) =>
       DetailChapterResult(
+        bodyChunk: List<String>.from(json["bodyChunk"].map((x) => x)),
+        chunkSize: json["chunkSize"],
         id: json["id"],
         chapterTitle: json["chapterTitle"],
         body: json["body"],
@@ -78,6 +82,8 @@ class DetailChapterResult {
       );
 
   Map<String, dynamic> toJson() => {
+        "bodyChunk": List<dynamic>.from(bodyChunk.map((x) => x)),
+        "chunkSize": chunkSize,
         "id": id,
         "chapterTitle": chapterTitle,
         "body": body,
