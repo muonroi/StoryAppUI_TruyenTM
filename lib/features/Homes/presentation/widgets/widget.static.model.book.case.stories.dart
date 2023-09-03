@@ -73,7 +73,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => StoriesDetail(
+                builder: (context) => StoryDetail(
                     storyId: widget.storyInfo.id,
                     storyTitle: widget.storyInfo.storyTitle)));
       },

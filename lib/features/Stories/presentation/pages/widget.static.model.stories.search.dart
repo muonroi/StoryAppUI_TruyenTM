@@ -94,7 +94,7 @@ class _SearchPageState extends State<SearchPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => StoriesDetail(
+                              builder: (context) => StoryDetail(
                                     storyId: storiesSearch[index].id,
                                     storyTitle: storiesSearch[index].storyTitle,
                                   )));

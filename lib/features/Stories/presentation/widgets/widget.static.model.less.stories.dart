@@ -45,7 +45,7 @@ class _StoryLessModelWidgetState extends State<StoryLessModelWidget> {
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => StoriesDetail(
+              builder: (context) => StoryDetail(
                   storyId: widget.storyId, storyTitle: widget.storyName))),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),

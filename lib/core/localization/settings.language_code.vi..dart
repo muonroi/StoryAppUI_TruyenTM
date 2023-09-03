@@ -129,5 +129,11 @@ enum ViCode {
   backgroundConfigDashboardTextInfo,
   alignConfigDashboardTextInfo,
   limitFontSizeConfigTextInfo,
+  listChapterDetailConfigTextInfo,
+  storyDetailConfigTextInfo,
+  storyDownloadConfigTextInfo,
+  storyPushCoinConfigTextInfo,
+  storyShareConfigTextInfo,
+  storyReportConfigTextInfo,
 // #endregion
 }
