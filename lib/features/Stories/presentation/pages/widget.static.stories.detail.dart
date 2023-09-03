@@ -14,19 +14,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/widget.static.detail.header.story.dart';
 import '../widgets/widget.static.detail.intro.notify.story.dart';
 
-class StoriesDetail extends StatefulWidget {
+class StoryDetail extends StatefulWidget {
   final int storyId;
   final String storyTitle;
-  const StoriesDetail({
+  const StoryDetail({
     Key? key,
     required this.storyId,
     required this.storyTitle,
   }) : super(key: key);
   @override
-  State<StoriesDetail> createState() => _StoriesDetailState();
+  State<StoryDetail> createState() => _StoryDetailState();
 }
 
-class _StoriesDetailState extends State<StoriesDetail> {
+class _StoryDetailState extends State<StoryDetail> {
   @override
   void initState() {
     detailStory = DetailStoryPageBloc(widget.storyId);

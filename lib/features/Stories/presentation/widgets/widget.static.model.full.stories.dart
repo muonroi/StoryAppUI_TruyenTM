@@ -46,7 +46,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => StoriesDetail(
+                builder: (context) => StoryDetail(
                       storyId: widget.storiesItem.id,
                       storyTitle: widget.storiesItem.nameCategory,
                     )));

@@ -131,7 +131,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => StoriesDetail(
+                                  builder: (context) => StoryDetail(
                                       storyId:
                                           widget.storiesCommonInfo[index].id,
                                       storyTitle: widget

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.list.chapter.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.button.scroll.chapter.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/bloc/detail_bloc/detail_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
+
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -158,6 +160,7 @@ class _ChapterState extends State<Chapter> {
   var _savedScrollPosition = 0.0;
   var _isLoading = false;
   var _isVisible = false;
+  var _isShowDetailAppbar = false;
   late SharedPreferences _sharedPreferences;
   late DetailChapterOfStoryBloc _detailChapterOfStoryBloc;
   late ScrollController _scrollController;
@@ -239,12 +242,191 @@ class _ChapterState extends State<Chapter> {
                                 Icons.arrow_back_ios_sharp,
                                 color: tempFontColor,
                               )),
+                          actions: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.more_horiz,
+                                color: tempFontColor,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isShowDetailAppbar = !_isShowDetailAppbar;
+                                });
+                              },
+                              splashRadius: 25,
+                            )
+                          ],
+                          bottom: _isShowDetailAppbar
+                              ? PreferredSize(
+                                  preferredSize: const Size.fromHeight(80),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: () => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ChapterListPage(
+                                                              storyId:
+                                                                  chapterInfo
+                                                                      .storyId,
+                                                              lastChapterId: widget
+                                                                  .lastChapterId,
+                                                              firstChapterId: widget
+                                                                  .firstChapterId,
+                                                              storyTitle: widget
+                                                                  .storyName,
+                                                            ))),
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 4.0,
+                                                              right: 4.0,
+                                                              top: 4.0),
+                                                      child: Icon(Icons.list),
+                                                    ),
+                                                    Text(
+                                                      L(ViCode
+                                                          .listChapterDetailConfigTextInfo
+                                                          .toString()),
+                                                      style: FontsDefault.h6,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            StoryDetail(
+                                                              storyId:
+                                                                  chapterInfo
+                                                                      .storyId,
+                                                              storyTitle: widget
+                                                                  .storyName,
+                                                            ))),
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Icon(Icons.book),
+                                                    ),
+                                                    Text(
+                                                      L(ViCode
+                                                          .storyDetailConfigTextInfo
+                                                          .toString()),
+                                                      style: FontsDefault.h6,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Icon(Icons.download),
+                                                  ),
+                                                  Text(
+                                                    L(ViCode
+                                                        .storyDownloadConfigTextInfo
+                                                        .toString()),
+                                                    style: FontsDefault.h6,
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 4.0,
+                                                            right: 4.0,
+                                                            top: 4.0),
+                                                    child: Icon(
+                                                        Icons.publish_sharp),
+                                                  ),
+                                                  Text(
+                                                    L(ViCode
+                                                        .storyPushCoinConfigTextInfo
+                                                        .toString()),
+                                                    style: FontsDefault.h6,
+                                                  )
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Icon(Icons.share),
+                                                  ),
+                                                  Text(
+                                                    L(ViCode
+                                                        .storyShareConfigTextInfo
+                                                        .toString()),
+                                                    style: FontsDefault.h6,
+                                                  )
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Icon(Icons.error),
+                                                  ),
+                                                  Text(
+                                                    L(ViCode
+                                                        .storyReportConfigTextInfo
+                                                        .toString()),
+                                                    style: FontsDefault.h6,
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ))
+                              : null,
                           title: GestureDetector(
                             onDoubleTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => StoriesDetail(
+                                      builder: (context) => StoryDetail(
                                             storyId: widget.storyId,
                                             storyTitle: widget.storyName,
                                           )));
@@ -266,6 +448,7 @@ class _ChapterState extends State<Chapter> {
                     onTap: () {
                       setState(() {
                         _isVisible = !_isVisible;
+                        _isShowDetailAppbar = false;
                       });
                     },
                     child: SmartRefresher(

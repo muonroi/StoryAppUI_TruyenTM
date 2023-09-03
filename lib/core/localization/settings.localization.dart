@@ -77,6 +77,12 @@ class LocalizationLib {
       ViCode.backgroundConfigDashboardTextInfo.toString(): "Màu nền",
       ViCode.limitFontSizeConfigTextInfo.toString():
           "Cỡ chữ nằm trong khoảng (10-50)",
+      ViCode.listChapterDetailConfigTextInfo.toString(): "Ds Chương",
+      ViCode.storyDetailConfigTextInfo.toString(): "TT Truyện",
+      ViCode.storyDownloadConfigTextInfo.toString(): "Tải về",
+      ViCode.storyPushCoinConfigTextInfo.toString(): "Ném tiền",
+      ViCode.storyShareConfigTextInfo.toString(): "Chia sẻ",
+      ViCode.storyReportConfigTextInfo.toString(): "Báo lỗi",
     }
   };
   static String L(String key, {String locale = 'vi'}) {

@@ -58,7 +58,7 @@ class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => StoriesDetail(
+                          builder: (context) => StoryDetail(
                               storyId: infoStory.storyId,
                               storyTitle: infoStory.nameStory)));
                 },
@@ -157,7 +157,7 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => StoriesDetail(
+                          builder: (context) => StoryDetail(
                               storyId: infoStory.storyId,
                               storyTitle: infoStory.nameStory)));
                 }
