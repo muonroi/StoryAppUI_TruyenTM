@@ -56,6 +56,9 @@ class StorySingleResult {
   String updatedDateString;
   int firstChapterId;
   int lastChapterId;
+  String slugAuthor;
+  bool isBookmark;
+
   StorySingleResult({
     required this.rankNumber,
     required this.totalChapter,
@@ -77,6 +80,8 @@ class StorySingleResult {
     required this.updatedDateString,
     required this.firstChapterId,
     required this.lastChapterId,
+    required this.slugAuthor,
+    required this.isBookmark,
   });
 
   factory StorySingleResult.fromJson(Map<String, dynamic> json) =>
@@ -101,6 +106,8 @@ class StorySingleResult {
         updatedDateString: json["updatedDateString"],
         firstChapterId: json["firstChapterId"],
         lastChapterId: json["lastChapterId"],
+        slugAuthor: json["slugAuthor"],
+        isBookmark: json["isBookmark"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -122,5 +129,7 @@ class StorySingleResult {
         "nameTag": List<dynamic>.from(nameTag.map((x) => x)),
         "updatedDateTs": updatedDateTs,
         "updatedDateString": updatedDateString,
+        "slugAuthor": slugAuthor,
+        "isBookmark": isBookmark,
       };
 }

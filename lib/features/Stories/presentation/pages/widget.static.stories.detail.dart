@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
 import 'package:muonroi/features/stories/presentation/widgets/widget.static.detail.more.info.story.dart';
 import 'package:muonroi/features/stories/presentation/widgets/widget.static.detail.similar.story.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
@@ -29,34 +30,38 @@ class StoryDetail extends StatefulWidget {
 class _StoryDetailState extends State<StoryDetail> {
   @override
   void initState() {
-    detailStory = DetailStoryPageBloc(widget.storyId);
-    detailStory.add(GetDetailStory());
+    _detailStory = DetailStoryPageBloc(widget.storyId);
+    _detailStory.add(GetDetailStory());
+    _isFirstLoad = true;
     super.initState();
   }
 
   @override
   void dispose() {
-    detailStory.close();
+    _detailStory.close();
+    _isFirstLoad = true;
     super.dispose();
   }
 
-  late DetailStoryPageBloc detailStory;
-  final Future<SharedPreferences> sharedPreferences =
-      SharedPreferences.getInstance();
-
   Future<void> getChapterId() async {
-    final SharedPreferences chapterTemp = await sharedPreferences;
+    final SharedPreferences chapterTemp = await _sharedPreferences;
     setState(() {
-      chapterId =
+      _chapterId =
           (chapterTemp.getInt("story-${widget.storyId}-current-chapter-id") ??
               0);
-      chapterNumber =
+      _chapterNumber =
           (chapterTemp.getInt("story-${widget.storyId}-current-chapter") ?? 0);
     });
   }
 
-  late int chapterId = 0;
-  late int chapterNumber = 0;
+  late DetailStoryPageBloc _detailStory;
+  final Future<SharedPreferences> _sharedPreferences =
+      SharedPreferences.getInstance();
+  late int _chapterId = 0;
+  late int _chapterNumber = 0;
+  late StoryRepository _storyRepository = StoryRepository();
+  late bool _isFirstLoad = true;
+  late Color? _colorBookmark;
   @override
   Widget build(BuildContext context) {
     getChapterId();
@@ -94,7 +99,7 @@ class _StoryDetailState extends State<StoryDetail> {
     // ];
     // #endregion
     return BlocProvider(
-      create: (context) => detailStory,
+      create: (context) => _detailStory,
       child: BlocListener<DetailStoryPageBloc, DetailStoryState>(
         listener: (context, state) {
           const Center(child: CircularProgressIndicator());
@@ -103,6 +108,14 @@ class _StoryDetailState extends State<StoryDetail> {
           builder: (context, state) {
             if (state is DetailStoryLoadedState) {
               var storyInfo = state.story.result;
+              late bool _isBookmarkColor = storyInfo.isBookmark;
+              if (_isFirstLoad && _isBookmarkColor) {
+                _colorBookmark = ColorDefaults.mainColor;
+              } else if (!_isFirstLoad) {
+                _colorBookmark = ColorDefaults.mainColor;
+              } else {
+                _colorBookmark = null;
+              }
               return Scaffold(
                 appBar: AppBar(
                   elevation: 0,
@@ -160,9 +173,21 @@ class _StoryDetailState extends State<StoryDetail> {
                             ),
                             SizedBox(
                               child: IconButton(
-                                  onPressed: () {},
-                                  icon:
-                                      const Icon(Icons.bookmark_add_outlined)),
+                                  onPressed: () async {
+                                    final bool isBookmarked =
+                                        await _storyRepository
+                                            .bookmarkStory(storyInfo.id);
+                                    setState(() {
+                                      _colorBookmark = isBookmarked
+                                          ? ColorDefaults.mainColor
+                                          : null;
+                                      _isFirstLoad = false;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.bookmark_add_outlined,
+                                    color: _colorBookmark,
+                                  )),
                             ),
                           ],
                         ),
@@ -179,9 +204,9 @@ class _StoryDetailState extends State<StoryDetail> {
                                 isLoadHistory: true,
                                 storyId: widget.storyId,
                                 storyName: widget.storyTitle,
-                                chapterId: chapterId == 0
+                                chapterId: _chapterId == 0
                                     ? storyInfo.firstChapterId
-                                    : chapterId,
+                                    : _chapterId,
                                 lastChapterId: storyInfo.lastChapterId,
                                 firstChapterId: storyInfo.firstChapterId,
                               ),
@@ -192,7 +217,7 @@ class _StoryDetailState extends State<StoryDetail> {
                               borderColor: ColorDefaults.mainColor,
                               widthBorder: 2,
                               textDisplay:
-                                  '${L(ViCode.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}'),
+                                  '${L(ViCode.chapterNumberTextInfo.toString())} ${_chapterNumber == 0 ? 1 : _chapterNumber}'),
                         ),
                       )
                     ],

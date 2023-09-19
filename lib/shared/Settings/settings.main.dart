@@ -1,13 +1,21 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:icons_flutter/icons_flutter.dart';
+import 'package:muonroi/core/SignalR/enum/enum.signalr.type.dart';
 import 'package:muonroi/core/localization/settings.languages.dart';
 import 'package:muonroi/core/models/settings/models.mainsettings.device.dart';
 import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/core/localization/settings.localization.dart';
 
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 String L(String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
+}
+
+String N(int type, {String locale = 'vi', List<String>? args}) {
+  return LocalizationLib.N(type, locale: locale, args: args);
 }
 
 T? enumFromString<T>(Iterable<T> values, String value) {
@@ -51,6 +59,13 @@ Widget showToolTip(String message) {
       ),
     ),
   );
+}
+
+TypeSignalr intToEnum(int value) {
+  if (value < 0 || value >= TypeSignalr.values.length) {
+    throw Exception('Invalid enum value');
+  }
+  return TypeSignalr.values[value];
 }
 
 class MainSetting {

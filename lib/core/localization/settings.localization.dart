@@ -1,5 +1,8 @@
+import 'package:muonroi/core/SignalR/enum/enum.signalr.type.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/core/localization/settings.languages.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:sprintf/sprintf.dart';
 
 class LocalizationLib {
   static final Map<String, Map<String, String>> _localizedValues = {
@@ -83,10 +86,48 @@ class LocalizationLib {
       ViCode.storyPushCoinConfigTextInfo.toString(): "Ném tiền",
       ViCode.storyShareConfigTextInfo.toString(): "Chia sẻ",
       ViCode.storyReportConfigTextInfo.toString(): "Báo lỗi",
+      ViCode.signinConfigTextInfo.toString(): "Đăng nhập",
+      ViCode.signupConfigTextInfo.toString(): "Đăng kí",
+      ViCode.inputUsernameTextConfigTextInfo.toString(): "Tài khoản",
+      ViCode.inputPasswordTextConfigTextInfo.toString(): "Mật khẩu",
+      ViCode.noHaveAccountTextConfigTextInfo.toString(): "Chưa có tài khoản?",
+      ViCode.inValidAccountTextConfigTextInfo.toString():
+          "Tài khoản hoặc mật khẩu không hợp lệ!",
+      ViCode.publishStoryTextConfigTextInfo.toString():
+          "Truyện %s - %s Vừa được công bố!",
+      ViCode.notificationTextConfigTextInfo.toString(): "Thông báo",
+      ViCode.notificationByUserTextConfigTextInfo.toString():
+          "Người dùng %s vừa theo dõi truyện %s của bạn",
     }
   };
   static String L(String key, {String locale = 'vi'}) {
     return _localizedValues[locale]![key] ??
         _localizedValues[locale]![ViCode.notfoundTextInfo.toString()]!;
+  }
+
+  static String N(int type, {String locale = 'vi', List<String>? args}) {
+    String key = ViCode.notfoundTextInfo.toString();
+    String textResult = '';
+    switch (intToEnum(type)) {
+      case TypeSignalr.Global:
+        key = ViCode.notfoundTextInfo.toString();
+        break;
+      case TypeSignalr.StoryFavorite:
+        key = ViCode.publishStoryTextConfigTextInfo.toString();
+        var textInfo = L(key);
+        textResult = sprintf(textInfo, args);
+        break;
+      case TypeSignalr.VoteStory:
+        key = ViCode.notfoundTextInfo.toString();
+        break;
+      case TypeSignalr.BookmarkStory:
+        key = ViCode.notificationByUserTextConfigTextInfo.toString();
+        var textInfo = L(key);
+        textResult = sprintf(textInfo, args);
+        break;
+      default:
+        key = ViCode.notfoundTextInfo.toString();
+    }
+    return textResult;
   }
 }

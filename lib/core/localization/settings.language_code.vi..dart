@@ -135,5 +135,14 @@ enum ViCode {
   storyPushCoinConfigTextInfo,
   storyShareConfigTextInfo,
   storyReportConfigTextInfo,
+  signinConfigTextInfo,
+  inputUsernameTextConfigTextInfo,
+  signupConfigTextInfo,
+  inputPasswordTextConfigTextInfo,
+  noHaveAccountTextConfigTextInfo,
+  inValidAccountTextConfigTextInfo,
+  publishStoryTextConfigTextInfo,
+  notificationTextConfigTextInfo,
+  notificationByUserTextConfigTextInfo,
 // #endregion
 }

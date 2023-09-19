@@ -19,6 +19,8 @@ class StoryRepository {
   Future<StoriesModel> searchStory(List<String> keySearch,
           List<SearchType> type, int pageIndex, int pageSize) =>
       _provider.searchStory(keySearch, type, pageIndex, pageSize);
+  Future<bool> bookmarkStory(int storyId) =>
+      _provider.createBookmarkStory(storyId);
 }
 
 class NetworkError extends Error {}
