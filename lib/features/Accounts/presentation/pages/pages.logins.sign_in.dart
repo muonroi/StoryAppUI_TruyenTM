@@ -9,6 +9,7 @@ import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_up.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {
@@ -59,44 +60,41 @@ class _SignInPageState extends State<SignInPage> {
                   MainSetting.getPercentageOfDevice(context, expectHeight: 100)
                       .height,
               child: Align(
-                alignment: Alignment.bottomLeft,
-                child: TextFormField(
-                  controller: usernameController,
-                  decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.person,
-                        color: ColorDefaults.buttonColor,
-                      ),
-                      border: UnderlineInputBorder(),
-                      labelText:
-                          L(ViCode.inputUsernameTextConfigTextInfo.toString())),
-                ),
-              ),
+                  alignment: Alignment.bottomLeft,
+                  child: TextFormFieldGlobal(
+                      obscureText: false,
+                      controller: usernameController,
+                      decoration: InputDecoration(
+                          icon: Icon(
+                            Icons.person,
+                            color: ColorDefaults.buttonColor,
+                          ),
+                          border: UnderlineInputBorder(),
+                          labelText: L(ViCode.inputUsernameTextConfigTextInfo
+                              .toString())))),
             ),
             SizedBox(
               height:
                   MainSetting.getPercentageOfDevice(context, expectHeight: 100)
                       .height,
               child: Align(
-                alignment: Alignment.bottomLeft,
-                child: TextFormField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    icon: Icon(
-                      Icons.lock,
-                      color: ColorDefaults.buttonColor,
-                    ),
-                    border: UnderlineInputBorder(),
-                    labelText:
-                        L(ViCode.inputPasswordTextConfigTextInfo.toString()),
-                    suffixIcon: const Icon(
-                      Icons.visibility,
-                      color: ColorDefaults.buttonColor,
-                    ),
-                  ),
-                ),
-              ),
+                  alignment: Alignment.bottomLeft,
+                  child: TextFormFieldGlobal(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.lock,
+                          color: ColorDefaults.buttonColor,
+                        ),
+                        border: UnderlineInputBorder(),
+                        labelText: L(
+                            ViCode.inputPasswordTextConfigTextInfo.toString()),
+                        suffixIcon: const Icon(
+                          Icons.visibility,
+                          color: ColorDefaults.buttonColor,
+                        ),
+                      ))),
             ),
           ]),
         ),

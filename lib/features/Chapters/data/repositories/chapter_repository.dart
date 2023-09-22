@@ -1,4 +1,5 @@
 import 'package:muonroi/core/services/api_chapter_provider.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.range.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.single.chapter.dart';
@@ -24,9 +25,11 @@ class ChapterRepository {
 
   Future<DetailChapterInfo> fetchChapterOfStory(int chapterId) =>
       _provider.getChapterDataDetail(chapterId);
+
   Future<DetailChapterInfo> fetchActionChapterOfStory(
           int chapterId, int storyId, bool action) =>
       _provider.fetchActionChapterOfStory(chapterId, storyId, action);
+
   Future<ChapterInfo> fetchLatestChapterAnyStory(int pageIndex, int pageSize) =>
       _provider.fetchLatestChapterAnyStory(
           pageIndex: pageIndex, pageSize: pageSize);
@@ -34,6 +37,10 @@ class ChapterRepository {
   Future<ListPagingRangeChapters> fetchFromToChapterOfStory(
           int storyId, int from, int to) =>
       _provider.getFromToChaptersDataDetail(storyId, from, to);
+
+  Future<GroupChapters> fetchGroupChapters(int storyId, int pageIndex,
+          {int pageSize = 100}) =>
+      _provider.getGroupChapters(storyId, pageIndex, pageSize: pageSize);
 }
 
 class NetworkError extends Error {}
