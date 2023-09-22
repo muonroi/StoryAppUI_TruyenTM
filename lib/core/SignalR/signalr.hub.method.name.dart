@@ -1,0 +1,1 @@
+enum HubMethod { JoinGroup }

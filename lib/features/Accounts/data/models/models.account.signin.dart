@@ -11,7 +11,7 @@ String accountSignInToJson(AccountSignInModel data) =>
     json.encode(data.toJson());
 
 class AccountSignInModel {
-  AccountResult result;
+  AccountResult? result;
   List<dynamic> errorMessages;
   bool isOk;
   int statusCode;
@@ -32,7 +32,7 @@ class AccountSignInModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "result": result.toJson(),
+        "result": result != null ? result?.toJson() : null,
         "errorMessages": List<dynamic>.from(errorMessages.map((x) => x)),
         "isOK": isOk,
         "statusCode": statusCode,

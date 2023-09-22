@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:muonroi/features/chapters/bloc/group_chapter/group_chapter_bloc.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.list.chapter.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.button.scroll.chapter.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
-import 'package:muonroi/features/chapters/bloc/detail_bloc/detail_bloc.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.detail.chapter.bottom.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
@@ -15,7 +16,6 @@ import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
-
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,13 +43,34 @@ class Chapter extends StatefulWidget {
 class _ChapterState extends State<Chapter> {
   @override
   void initState() {
-    _initSharedPreferences();
+    _pageIndex = 1;
+    _chapterIndex = 0;
+    _initSharedPreferences().then((value) async {
+      _pageIndex = _sharedPreferences
+                  .getInt("story-${widget.storyId}-current-page-index") ==
+              null
+          ? 1
+          : _sharedPreferences
+              .getInt("story-${widget.storyId}-current-page-index")!;
+      _chapterIndex = _chapterIndex = _sharedPreferences
+              .getInt("story-${widget.storyId}-current-chapter-index") ??
+          0;
+    });
+
+    _isFirstRefresh = true;
+    _chapterIdOld = 0;
+    _chapterNumber = 0;
+    _savedScrollPosition = 0.0;
+    _isLoading = false;
+    _isVisible = false;
+    _isDisableNextButton = false;
+    _isDisablePreviousButton = false;
+    _pageSize = 99;
+    _isShowDetailAppbar = false;
     _settingConfig = TemplateSetting();
     _scrollPositionKey = "scrollPosition-${widget.storyId}";
-    _detailChapterOfStoryBloc =
-        DetailChapterOfStoryBloc(chapterId: widget.chapterId);
-    _detailChapterOfStoryBloc
-        .add(const DetailChapterOfStory(null, null, chapterId: 0));
+    _groupChaptersBloc = GroupChapterBloc(widget.storyId, _pageIndex, 100);
+    _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
     super.initState();
     _scrollController = ScrollController();
     _refreshController = RefreshController(initialRefresh: false);
@@ -62,7 +83,7 @@ class _ChapterState extends State<Chapter> {
 
   @override
   void dispose() {
-    _detailChapterOfStoryBloc.close();
+    _groupChaptersBloc.close();
     _scrollController.removeListener(_saveScrollPosition);
     _scrollController.dispose();
     _refreshController.dispose();
@@ -77,22 +98,44 @@ class _ChapterState extends State<Chapter> {
     _settingConfig = getCurrentTemplate(_sharedPreferences);
   }
 
-  void _saveScrollPosition() async {
-    await _sharedPreferences.setDouble(
-        _scrollPositionKey, _scrollController.offset);
-    await _sharedPreferences.setInt("story-${widget.storyId}", widget.storyId);
-    await _sharedPreferences.setInt(
+  void _saveScrollPosition() {
+    var groupData = _sharedPreferences
+        .getString("story-${widget.storyId}-current-group-chapter");
+    if (_groupChapterItems == null && groupData == null) {
+      _sharedPreferences.setString(
+          "story-${widget.storyId}-current-group-chapter",
+          groupChaptersToJson(_groupChapterItems!));
+    }
+    _sharedPreferences.setDouble(_scrollPositionKey, _scrollController.offset);
+    _sharedPreferences.setInt("story-${widget.storyId}", widget.storyId);
+    _sharedPreferences.setInt(
         "story-${widget.storyId}-current-chapter-id", _chapterIdOld);
-    await _sharedPreferences.setInt(
+    _sharedPreferences.setInt(
         "story-${widget.storyId}-current-chapter", _chapterNumber);
+    _sharedPreferences.setInt("story-${widget.storyId}-current-page-index",
+        _pageIndex == 0 ? 1 : _pageIndex);
+    _sharedPreferences.setInt(
+        "story-${widget.storyId}-current-chapter-index", _chapterIndex);
   }
 
   void _loadSavedScrollPosition() async {
-    if (_isLoad && widget.isLoadHistory) {
+    if (_isLoad && widget.isLoadHistory && _isFirstRefresh) {
       SharedPreferences savedLocation = await SharedPreferences.getInstance();
       _savedScrollPosition = savedLocation.getDouble(_scrollPositionKey) ?? 0.0;
+      _pageIndex = savedLocation
+                  .getInt("story-${widget.storyId}-current-page-index") ==
+              null
+          ? 1
+          : savedLocation.getInt("story-${widget.storyId}-current-page-index")!;
+
       if (_scrollController.hasClients) {
-        _scrollController.jumpTo(_savedScrollPosition);
+        setState(() {
+          _chapterIndex = savedLocation
+                  .getInt("story-${widget.storyId}-current-chapter-index") ??
+              0;
+          _scrollController.jumpTo(_savedScrollPosition);
+          _isFirstRefresh = false;
+        });
       }
     }
   }
@@ -101,11 +144,29 @@ class _ChapterState extends State<Chapter> {
     if (mounted && widget.firstChapterId != chapterId) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
-          _detailChapterOfStoryBloc.add(DetailChapterOfStory(
-              false, widget.storyId,
-              chapterId: chapterId));
+          _isDisableNextButton = false;
+          if (_pageIndex > 1 && _chapterIndex == 0) {
+            _sharedPreferences
+                .remove("story-${widget.storyId}-current-group-chapter");
+            _pageIndex = --_pageIndex;
+            _sharedPreferences.setInt(
+                "story-${widget.storyId}-current-page-index",
+                _pageIndex == 0 ? 1 : _pageIndex);
+            _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
+            _chapterIndex = _pageSize;
+            _sharedPreferences.setInt(
+                "story-${widget.storyId}-current-chapter-index", _chapterIndex);
+          } else {
+            _chapterIndex = _chapterIndex > 0 ? --_chapterIndex : 0;
+            if (_pageIndex == 1 && _chapterIndex == 0) {
+              _isDisablePreviousButton = true;
+            }
+          }
         });
       });
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(0);
+      }
     }
     _refreshController.refreshCompleted();
   }
@@ -117,10 +178,29 @@ class _ChapterState extends State<Chapter> {
     if (mounted && widget.lastChapterId != chapterId && _isLoading) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
-          _detailChapterOfStoryBloc.add(
-              DetailChapterOfStory(true, widget.storyId, chapterId: chapterId));
-          _scrollController.jumpTo(0.0);
+          _isDisablePreviousButton = false;
+          _chapterIndex =
+              _chapterIndex < _pageSize ? ++_chapterIndex : _pageSize + 1;
+          if (_chapterIndex > _pageSize) {
+            _sharedPreferences
+                .remove("story-${widget.storyId}-current-group-chapter");
+            _pageIndex = ++_pageIndex;
+            _sharedPreferences.setInt(
+                "story-${widget.storyId}-current-page-index",
+                _pageIndex == 0 ? 1 : _pageIndex);
+            _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
+            _chapterIndex = 0;
+          }
           _isLoading = false;
+          if (_scrollController.hasClients) {
+            _scrollController.jumpTo(0);
+          }
+        });
+      });
+    } else if (widget.lastChapterId == chapterId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _isDisableNextButton = true;
         });
       });
     } else if (!_isLoading) {
@@ -154,15 +234,22 @@ class _ChapterState extends State<Chapter> {
 // #endregion
 
 // #region Variables
+  late int _chapterIndex;
+  late int _pageIndex;
+  late int _pageSize;
   late bool _isLoad;
-  var _chapterIdOld = 0;
-  var _chapterNumber = 0;
-  var _savedScrollPosition = 0.0;
-  var _isLoading = false;
-  var _isVisible = false;
-  var _isShowDetailAppbar = false;
+  late bool _isFirstRefresh;
+  late int _chapterIdOld;
+  late int _chapterNumber;
+  late double _savedScrollPosition;
+  late bool _isLoading;
+  late bool _isVisible;
+  late bool _isShowDetailAppbar;
+  late bool _isDisableNextButton;
+  late bool _isDisablePreviousButton;
+  late GroupChapters? _groupChapterItems;
   late SharedPreferences _sharedPreferences;
-  late DetailChapterOfStoryBloc _detailChapterOfStoryBloc;
+  late GroupChapterBloc _groupChaptersBloc;
   late ScrollController _scrollController;
   late RefreshController _refreshController;
   late String _scrollPositionKey;
@@ -177,23 +264,32 @@ class _ChapterState extends State<Chapter> {
           overlays: SystemUiOverlay.values);
     }
     return BlocProvider(
-      create: (context) => _detailChapterOfStoryBloc,
-      child: BlocListener<DetailChapterOfStoryBloc, DetailChapterOfStoryState>(
+      create: (context) => _groupChaptersBloc,
+      child: BlocListener<GroupChapterBloc, GroupChapterBlocState>(
           listener: (context, state) {
         const Center(
           child: CircularProgressIndicator(),
         );
-      }, child:
-              BlocBuilder<DetailChapterOfStoryBloc, DetailChapterOfStoryState>(
+      }, child: BlocBuilder<GroupChapterBloc, GroupChapterBlocState>(
         builder: (context, state) {
-          if (state is DetailChapterOfStoryLoadingState) {
+          if (state is GroupChapterNoDataState) {
+            Center(
+              child: Container(
+                child: Text(
+                  L(ViCode.chapterEndTextInfo.toString()),
+                  style: FontsDefault.h4,
+                ),
+              ),
+            );
+          }
+          if (state is GroupChapterLoadingState) {
             const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (state is DetailChapterOfStoryLoadedState) {
+          if (state is GroupChapterLoadedState) {
             _loadSavedScrollPosition();
-
+            _groupChapterItems = state.chapter;
             _settingConfig.backgroundColor =
                 _settingConfig.backgroundColor ?? ColorDefaults.lightAppColor;
             _settingConfig.fontColor =
@@ -205,9 +301,11 @@ class _ChapterState extends State<Chapter> {
             _settingConfig.locationButton =
                 _settingConfig.locationButton ?? KeyChapterButtonScroll.none;
             _settingConfig.isHorizontal = _settingConfig.isHorizontal ?? false;
-            var chapterInfo = state.chapter.result;
-            _chapterIdOld = chapterInfo.id;
-            _chapterNumber = chapterInfo.numberOfChapter;
+            var chapterInfo = state.chapter.result.items;
+            _chapterIdOld = chapterInfo[_chapterIndex].id;
+            _chapterNumber = chapterInfo[_chapterIndex].numberOfChapter;
+            _pageSize =
+                chapterInfo.length < _pageSize ? chapterInfo.length : _pageSize;
             return Consumer<TemplateSetting>(
               builder: (context, templateValue, child) {
                 _reNewValueInSettingTemplate(templateValue);
@@ -279,9 +377,9 @@ class _ChapterState extends State<Chapter> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             ChapterListPage(
-                                                              storyId:
-                                                                  chapterInfo
-                                                                      .storyId,
+                                                              storyId: chapterInfo[
+                                                                      _chapterIndex]
+                                                                  .storyId,
                                                               lastChapterId: widget
                                                                   .lastChapterId,
                                                               firstChapterId: widget
@@ -314,9 +412,9 @@ class _ChapterState extends State<Chapter> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             StoryDetail(
-                                                              storyId:
-                                                                  chapterInfo
-                                                                      .storyId,
+                                                              storyId: chapterInfo[
+                                                                      _chapterIndex]
+                                                                  .storyId,
                                                               storyTitle: widget
                                                                   .storyName,
                                                             ))),
@@ -464,8 +562,10 @@ class _ChapterState extends State<Chapter> {
                         releaseText: L(ViCode.loadingTextInfo.toString()),
                       ),
                       controller: _refreshController,
-                      onRefresh: () => _onRefresh(chapterInfo.id),
-                      onLoading: () => _onLoading(chapterInfo.id, true),
+                      onRefresh: () =>
+                          _onRefresh(chapterInfo[_chapterIndex].id),
+                      onLoading: () =>
+                          _onLoading(chapterInfo[_chapterIndex].id, true),
                       footer: ClassicFooter(
                         canLoadingIcon: Icon(
                           Icons.arrow_downward,
@@ -480,10 +580,12 @@ class _ChapterState extends State<Chapter> {
                               scrollDirection: Axis.horizontal,
                               physics: const PageScrollPhysics(),
                               controller: _scrollController,
-                              itemCount: chapterInfo.bodyChunk.length,
+                              itemCount:
+                                  chapterInfo[_chapterIndex].bodyChunk.length,
                               itemBuilder: (context, index) {
                                 var textString = convertTagHtmlFormatToString(
-                                        chapterInfo.bodyChunk[index])
+                                        chapterInfo[_chapterIndex]
+                                            .bodyChunk[index])
                                     .trim();
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,7 +614,7 @@ class _ChapterState extends State<Chapter> {
                                                                       96.75)
                                                           .width,
                                                       child: Text(
-                                                        "${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}",
+                                                        "${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo[_chapterIndex].numberOfChapter}",
                                                         style: FontsDefault.h5
                                                             .copyWith(
                                                                 fontWeight:
@@ -537,7 +639,9 @@ class _ChapterState extends State<Chapter> {
                                                                       290.25)
                                                           .width,
                                                       child: Text(
-                                                        chapterInfo.chapterTitle
+                                                        chapterInfo[
+                                                                _chapterIndex]
+                                                            .chapterTitle
                                                             .replaceAll(
                                                                 RegExp(
                                                                     r'Chương \d+:'),
@@ -616,7 +720,7 @@ class _ChapterState extends State<Chapter> {
                                                           expectWidth: 96.75)
                                                   .width,
                                               child: Text(
-                                                "${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}",
+                                                "${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo[_chapterIndex].numberOfChapter}",
                                                 style: FontsDefault.h5.copyWith(
                                                     fontWeight: FontWeight.w600,
                                                     fontFamily: tempFontFamily,
@@ -633,7 +737,8 @@ class _ChapterState extends State<Chapter> {
                                                           expectWidth: 290.25)
                                                   .width,
                                               child: Text(
-                                                chapterInfo.chapterTitle
+                                                chapterInfo[_chapterIndex]
+                                                    .chapterTitle
                                                     .replaceAll(
                                                         RegExp(r'Chương \d+:'),
                                                         '')
@@ -654,7 +759,8 @@ class _ChapterState extends State<Chapter> {
                                     Container(
                                       width: MediaQuery.of(context).size.width,
                                       child: Html(
-                                        data: chapterInfo.body
+                                        data: chapterInfo[_chapterIndex]
+                                            .body
                                             .replaceAll("\n", "")
                                             .trim(),
                                         style: {
@@ -685,20 +791,25 @@ class _ChapterState extends State<Chapter> {
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.linearToEaseOut,
                           child: BottomChapterDetail(
+                              isDisablePreviousButton: _isDisablePreviousButton,
+                              isDisableNextButton: _isDisableNextButton,
                               fontColor: tempFontColor,
                               backgroundColor: tempBackground,
-                              chapterId: chapterInfo.id,
+                              chapterId: chapterInfo[_chapterIndex].id,
                               onRefresh: (int chapterId) =>
-                                  _onRefresh(chapterInfo.id),
+                                  _onRefresh(chapterInfo[_chapterIndex].id),
                               onLoading: (int chapterId, bool isCheckShow) =>
-                                  _onLoading(chapterInfo.id, false)),
+                                  _onLoading(
+                                      chapterInfo[_chapterIndex].id, false)),
                         )
                       : null,
                 );
               },
             );
           }
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
       )),
     );

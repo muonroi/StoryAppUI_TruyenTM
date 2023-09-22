@@ -14,11 +14,14 @@ class AccountsProvider {
       final response = await dio.post(ApiNetwork.login, data: data);
       if (response.statusCode == 200) {
         return accountSignInFromJson(response.data.toString());
-      } else {
-        throw Exception("Failed to signin");
       }
-    } catch (e) {
-      throw Exception("Failed to signin");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
+        return AccountSignInModel(
+            result: null, errorMessages: [], isOk: false, statusCode: 400);
+      }
     }
+    return AccountSignInModel(
+        result: null, errorMessages: [], isOk: false, statusCode: 400);
   }
 }

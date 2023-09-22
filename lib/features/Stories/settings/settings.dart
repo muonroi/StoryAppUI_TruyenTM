@@ -21,7 +21,9 @@ StorySingleResult storySingleDefaultData() {
       updatedDateTs: 0,
       updatedDateString: "",
       firstChapterId: 0,
-      lastChapterId: 0);
+      lastChapterId: 0,
+      slugAuthor: "",
+      isBookmark: false);
 }
 
 String formatNumberThouSand(double value) {

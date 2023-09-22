@@ -1,4 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:muonroi/core/Notification/widget.notification.dart';
+import 'package:muonroi/core/SignalR/signalr.hub.dart';
+import 'package:muonroi/core/SignalR/signalr.hub.stream.name.dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/models/signalr/widget.notification.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.menu.bottom.shared.dart';
 import 'package:muonroi/features/homes/presentation/widgets/routes.items.home.dart';
@@ -14,6 +20,8 @@ import 'package:muonroi/features/homes/presentation/pages/pages.stories.free.dar
 import 'package:muonroi/features/homes/presentation/pages/pages.user.info.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 import 'package:muonroi/features/stories/presentation/pages/widget.static.model.stories.search.dart';
+import 'package:signalr_netcore/hub_connection.dart';
+import 'package:signalr_netcore/hub_connection_builder.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage(
@@ -29,6 +37,48 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    initHubAndListenGlobalNotification();
+    super.initState();
+  }
+
+  Future<void> initHubAndListenGlobalNotification() async {
+    final hubConnection = HubConnectionBuilder()
+        .withUrl(SignalrCentral.notificationListen,
+            options: SignalrCentral.httpConnectionOptions)
+        .build();
+    hubConnection.onclose(({error}) =>
+        print("Connection ${SignalrCentral.notificationListen} Closed!"));
+    await hubConnection.start();
+    if (hubConnection.state == HubConnectionState.Connected) {
+      hubConnection.on(HubStream.ReceiveGlobalNotification.name, (arguments) {
+        print(arguments);
+        var notifyInfo = (json.decode(arguments.toString()) as List)
+            .map((data) => NotificationSignalr.fromJson(data))
+            .toList()
+            .first;
+        NotificationPush.showNotification(
+            title: L(ViCode.notificationTextConfigTextInfo.toString()),
+            body: N(notifyInfo.type,
+                args: notifyInfo.notificationContent.split('-')),
+            fln: flutterLocalNotificationsPlugin);
+      });
+      hubConnection.on(HubStream.ReceiveNotificationByUser.name, (arguments) {
+        print(arguments);
+        var notifyInfo = (json.decode(arguments.toString()) as List)
+            .map((data) => NotificationSignalr.fromJson(data))
+            .toList()
+            .first;
+        NotificationPush.showNotification(
+            title: L(ViCode.notificationTextConfigTextInfo.toString()),
+            body: N(notifyInfo.type,
+                args: notifyInfo.notificationContent.split('-')),
+            fln: flutterLocalNotificationsPlugin);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -125,7 +175,7 @@ class _HomePageState extends State<HomePage> {
   final _homePageItem = HomePageItems();
   final _debouncer = Debouncer(const Duration(milliseconds: 100));
   final _throttle = Throttle(const Duration(milliseconds: 100));
-
+  var _totalNotification = 0;
   // #endregion
 
 // #region Define methods
@@ -146,7 +196,6 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
-
   // #endregion
 // #endregion
 
@@ -203,10 +252,35 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {},
                   icon: const Icon(Icons.chat_outlined,
                       color: ColorDefaults.thirdMainColor)),
-              IconButton(
+              Stack(children: [
+                IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.notifications_none,
-                      color: ColorDefaults.thirdMainColor)),
+                      color: ColorDefaults.thirdMainColor),
+                  splashRadius: 25,
+                ),
+                Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      width: MainSetting.getPercentageOfDevice(context,
+                              expectWidth: 20)
+                          .width,
+                      height: MainSetting.getPercentageOfDevice(context,
+                              expectHeight: 20)
+                          .height,
+                      decoration: BoxDecoration(
+                          color: ColorDefaults.mainColor,
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Center(
+                        child: Text(
+                          '$_totalNotification+',
+                          style: FontsDefault.h6,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ))
+              ]),
             ],
           ),
           body: TabBarView(

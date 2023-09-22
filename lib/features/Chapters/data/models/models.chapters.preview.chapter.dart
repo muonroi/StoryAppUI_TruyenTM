@@ -59,23 +59,26 @@ class Item {
   int chapterId;
   int numberOfChapter;
   String chapterName;
-
+  int pageIndex;
   Item({
     required this.chapterId,
     required this.numberOfChapter,
     required this.chapterName,
+    required this.pageIndex,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         chapterId: json["chapterId"],
         numberOfChapter: json["numberOfChapter"],
         chapterName: json["chapterName"],
+        pageIndex: json["index"],
       );
 
   Map<String, dynamic> toJson() => {
         "chapterId": chapterId,
         "numberOfChapter": numberOfChapter,
         "chapterName": chapterName,
+        "index": pageIndex
       };
 }
 

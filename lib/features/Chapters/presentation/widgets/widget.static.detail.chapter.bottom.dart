@@ -9,13 +9,17 @@ class BottomChapterDetail extends StatefulWidget {
   final void Function(int chapterId) onRefresh;
   final Color backgroundColor;
   final Color fontColor;
+  final bool isDisableNextButton;
+  final bool isDisablePreviousButton;
   const BottomChapterDetail(
       {super.key,
       required this.chapterId,
       required this.onLoading,
       required this.onRefresh,
       required this.backgroundColor,
-      required this.fontColor});
+      required this.fontColor,
+      required this.isDisableNextButton,
+      required this.isDisablePreviousButton});
 
   @override
   State<BottomChapterDetail> createState() => _BottomChapterDetailState();
@@ -35,26 +39,34 @@ class _BottomChapterDetailState extends State<BottomChapterDetail> {
               splashRadius:
                   MainSetting.getPercentageOfDevice(context, expectWidth: 25)
                       .width,
-              onPressed: () => widget.onRefresh(widget.chapterId),
+              onPressed: !widget.isDisablePreviousButton
+                  ? () => widget.onRefresh(widget.chapterId)
+                  : null,
               icon: Icon(
                 Icons.arrow_circle_left_outlined,
                 size:
                     MainSetting.getPercentageOfDevice(context, expectWidth: 30)
                         .width,
-                color: widget.fontColor,
+                color: !widget.isDisablePreviousButton
+                    ? widget.fontColor
+                    : ColorDefaults.colorGrey200,
               ),
             ),
             IconButton(
               splashRadius:
                   MainSetting.getPercentageOfDevice(context, expectWidth: 25)
                       .width,
-              onPressed: () => widget.onLoading(widget.chapterId, false),
+              onPressed: !widget.isDisableNextButton
+                  ? () => widget.onLoading(widget.chapterId, false)
+                  : null,
               icon: Icon(
                 Icons.arrow_circle_right_outlined,
                 size:
                     MainSetting.getPercentageOfDevice(context, expectWidth: 30)
                         .width,
-                color: ColorDefaults.mainColor,
+                color: !widget.isDisableNextButton
+                    ? ColorDefaults.mainColor
+                    : ColorDefaults.colorGrey200,
               ),
             ),
             IconButton(

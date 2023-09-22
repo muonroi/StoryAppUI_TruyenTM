@@ -1,10 +1,12 @@
 import 'package:muonroi/core/Authorization/setting.api.dart';
 import 'package:muonroi/core/services/api_route.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.range.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.single.chapter.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapters.preview.chapter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
 
 class ChapterProvider {
@@ -103,6 +105,29 @@ class ChapterProvider {
       } else {
         throw Exception("Failed to load chapter");
       }
+    } catch (e) {
+      throw Exception("Failed to load chapter");
+    }
+  }
+
+  Future<GroupChapters> getGroupChapters(int storyId, int pageIndex,
+      {int pageSize = 100}) async {
+    try {
+      var sharedPreferences = await SharedPreferences.getInstance();
+      var chapterDataOfStoryId =
+          sharedPreferences.getString("story-$storyId-current-group-chapter");
+      var baseEndpoint = await endPoint();
+      if (chapterDataOfStoryId == null) {
+        final response = await baseEndpoint.get(sprintf(
+            ApiNetwork.getGroupChapters,
+            ["$storyId", "$pageIndex", "$pageSize"]));
+        if (response.statusCode == 200) {
+          return groupChaptersFromJson(response.data.toString());
+        } else {
+          throw Exception("Failed to load chapter");
+        }
+      }
+      return groupChaptersFromJson(chapterDataOfStoryId);
     } catch (e) {
       throw Exception("Failed to load chapter");
     }

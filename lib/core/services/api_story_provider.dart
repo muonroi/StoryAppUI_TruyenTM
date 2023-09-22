@@ -19,7 +19,7 @@ class StoryProvider {
         throw Exception("Failed to load story");
       }
     } catch (e) {
-      throw Exception("Failed to load story");
+      throw Exception("Failed to load story - $e");
     }
   }
 
@@ -144,6 +144,22 @@ class StoryProvider {
         isOk: false,
         statusCode: 400,
       );
+    }
+  }
+
+  Future<bool> createBookmarkStory(int storyId) async {
+    try {
+      Map<String, dynamic> data = {'storyId': storyId};
+      var baseEndpoint = await endPoint();
+      final response =
+          await baseEndpoint.post(ApiNetwork.bookmarkStory, data: data);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception("Failed to bookmark story - $e");
     }
   }
 }

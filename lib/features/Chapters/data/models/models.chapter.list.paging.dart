@@ -45,12 +45,13 @@ class Result {
   int to;
   int fromId;
   int toId;
-
+  int pageIndex;
   Result({
     required this.from,
     required this.to,
     required this.fromId,
     required this.toId,
+    required this.pageIndex,
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -58,6 +59,7 @@ class Result {
         to: json["to"],
         fromId: json["fromId"],
         toId: json["toId"],
+        pageIndex: json["index"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,5 +67,6 @@ class Result {
         "to": to,
         "fromId": fromId,
         "toId": toId,
+        "index": pageIndex
       };
 }

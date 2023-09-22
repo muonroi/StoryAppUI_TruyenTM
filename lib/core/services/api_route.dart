@@ -1,9 +1,14 @@
 class ApiNetwork {
   static const String apiVersion = "1.0";
   // #region Base api
-  static const String baseApi = "https://muonroi.online/api/v$apiVersion/";
+  static const String baseUrl = "https://muonroi.online/";
+  static const String baseApi = "${baseUrl}api/v$apiVersion/";
   static const String renewToken = "tokens/access-token";
   static const String baseSearchStory = "stories/search?";
+  // #endregion
+
+  // #region Signlr
+  static const String notification = "hubs/noti-hub";
   // #endregion
 
 // #region Account endpoint
@@ -17,6 +22,7 @@ class ApiNetwork {
       "stories/recommend?storyId=%s&pageIndex=%s&pageSize=%s";
   static const String getDetailStory = "stories/single?storyId=%s";
   static const String voteStory = "stories/vote";
+  static const String bookmarkStory = "stories/bookmark";
 
   // #endregion
 
@@ -34,6 +40,8 @@ class ApiNetwork {
       "chapters/paging-chapter?storyId=%s";
   static const String getFromToChapterPaging =
       "chapters/group?storyId=%s&fromChapterId=%s&toChapterId=%s";
+  static const String getGroupChapters =
+      "chapters/group-chapter?storyId=%s&pageIndex=%s&pageSize=%s";
   // #endregion
   // #region Categories endpoint
   static const String getCategoriesPaging =

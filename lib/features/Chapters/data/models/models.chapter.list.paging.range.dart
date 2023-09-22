@@ -48,7 +48,7 @@ class Result {
   int updatedDateTs;
   String createdUserName;
   String updatedUserName;
-
+  int pageIndex;
   Result({
     required this.id,
     required this.chapterTitle,
@@ -61,21 +61,22 @@ class Result {
     required this.updatedDateTs,
     required this.createdUserName,
     required this.updatedUserName,
+    required this.pageIndex,
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        id: json["id"],
-        chapterTitle: json["chapterTitle"],
-        body: json["body"],
-        numberOfChapter: json["numberOfChapter"],
-        numberOfWord: json["numberOfWord"],
-        storyId: json["storyId"],
-        slug: json["slug"],
-        createdDateTs: json["createdDateTS"],
-        updatedDateTs: json["updatedDateTS"],
-        createdUserName: json["createdUserName"],
-        updatedUserName: json["updatedUserName"],
-      );
+      id: json["id"],
+      chapterTitle: json["chapterTitle"],
+      body: json["body"],
+      numberOfChapter: json["numberOfChapter"],
+      numberOfWord: json["numberOfWord"],
+      storyId: json["storyId"],
+      slug: json["slug"],
+      createdDateTs: json["createdDateTS"],
+      updatedDateTs: json["updatedDateTS"],
+      createdUserName: json["createdUserName"],
+      updatedUserName: json["updatedUserName"],
+      pageIndex: json["index"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -89,5 +90,6 @@ class Result {
         "updatedDateTS": updatedDateTs,
         "createdUserName": createdUserName,
         "updatedUserName": updatedUserName,
+        "index": pageIndex
       };
 }

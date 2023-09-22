@@ -9,6 +9,7 @@ import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
 import 'package:muonroi/features/stories/data/models/models.single.story.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 typedef LatestChapter = void Function(String val);
 
@@ -124,6 +125,22 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                   color: Colors.transparent,
                                   child: InkWell(
                                     onTap: () async {
+                                      var sharePreferences =
+                                          await SharedPreferences.getInstance();
+                                      sharePreferences.setInt(
+                                          "story-${widget.storyId}-current-page-index",
+                                          chapterItem.pageIndex == 0
+                                              ? 1
+                                              : chapterItem.pageIndex);
+                                      sharePreferences.setInt(
+                                          "story-${widget.storyId}-current-chapter-index",
+                                          99 - (index + 1));
+                                      sharePreferences.setInt(
+                                          "story-${widget.storyId}-current-chapter-id",
+                                          chapterItem.chapterId);
+                                      sharePreferences.setInt(
+                                          "story-${widget.storyId}-current-chapter",
+                                          chapterItem.numberOfChapter);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(

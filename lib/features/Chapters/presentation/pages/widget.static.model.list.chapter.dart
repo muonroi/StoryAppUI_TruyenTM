@@ -7,6 +7,7 @@ import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/chapters/bloc/group_bloc/group_chapters_of_story_bloc.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChapterListPage extends StatefulWidget {
   final int storyId;
@@ -250,18 +251,37 @@ class _ChapterListPageState extends State<ChapterListPage>
                             child: Column(
                               children: [
                                 InkWell(
-                                  onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Chapter(
-                                            isLoadHistory: false,
-                                            storyId: chapterInfo.storyId,
-                                            storyName: widget.storyTitle,
-                                            chapterId: chapterInfo.id,
-                                            lastChapterId: widget.lastChapterId,
-                                            firstChapterId:
-                                                widget.firstChapterId),
-                                      )),
+                                  onTap: () async {
+                                    var sharePreferences =
+                                        await SharedPreferences.getInstance();
+                                    sharePreferences.setInt(
+                                        "story-${widget.storyId}-current-page-index",
+                                        chapterInfo.pageIndex == 0
+                                            ? 1
+                                            : chapterInfo.pageIndex);
+                                    sharePreferences.setInt(
+                                        "story-${widget.storyId}-current-chapter-index",
+                                        index);
+                                    sharePreferences.setInt(
+                                        "story-${widget.storyId}-current-chapter-id",
+                                        chapterInfo.id);
+                                    sharePreferences.setInt(
+                                        "story-${widget.storyId}-current-chapter",
+                                        chapterInfo.numberOfChapter);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Chapter(
+                                              isLoadHistory: false,
+                                              storyId: chapterInfo.storyId,
+                                              storyName: widget.storyTitle,
+                                              chapterId: chapterInfo.id,
+                                              lastChapterId:
+                                                  widget.lastChapterId,
+                                              firstChapterId:
+                                                  widget.firstChapterId),
+                                        ));
+                                  },
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 8.0),
