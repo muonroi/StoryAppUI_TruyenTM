@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.book.case.stories.items.dart';
@@ -42,33 +42,35 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     TabBar tabBar = TabBar(
-      unselectedLabelColor: ColorDefaults.secondMainColor,
-      indicatorColor: ColorDefaults.thirdMainColor,
+      unselectedLabelColor: themMode(context, ColorCode.modeColor.name),
+      indicatorColor: themMode(context, ColorCode.textColor.name),
       tabs: [
         SizedBox(
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 70)
                 .width,
-            child: Tab(text: L(ViCode.bookCaseTextInfo.toString()))),
+            child: Tab(text: L(context, ViCode.bookCaseTextInfo.toString()))),
         SizedBox(
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 120)
                 .width,
-            child: Tab(text: L(ViCode.storiesBoughtTextInfo.toString()))),
+            child:
+                Tab(text: L(context, ViCode.storiesBoughtTextInfo.toString()))),
         SizedBox(
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 110)
                 .width,
-            child: Tab(text: L(ViCode.storiesSavedTextInfo.toString())))
+            child:
+                Tab(text: L(context, ViCode.storiesSavedTextInfo.toString())))
       ],
     );
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: ColorDefaults.lightAppColor,
+        backgroundColor: themMode(context, ColorCode.modeColor.name),
         appBar: AppBar(
-          backgroundColor: ColorDefaults.mainColor,
+          backgroundColor: themMode(context, ColorCode.mainColor.name),
           bottom: PreferredSize(
               preferredSize: const Size.fromHeight(0.0),
               child: Material(
-                color: ColorDefaults.mainColor,
+                color: themMode(context, ColorCode.mainColor.name),
                 child: tabBar,
               )),
         ),

@@ -114,10 +114,10 @@ class ChapterProvider {
       {int pageSize = 100}) async {
     try {
       var sharedPreferences = await SharedPreferences.getInstance();
-      var chapterDataOfStoryId =
-          sharedPreferences.getString("story-$storyId-current-group-chapter");
+      var chaptersOfficeByIndex = sharedPreferences
+          .getString("story-$storyId-current-group-chapter-$pageIndex");
       var baseEndpoint = await endPoint();
-      if (chapterDataOfStoryId == null) {
+      if (chaptersOfficeByIndex == null) {
         final response = await baseEndpoint.get(sprintf(
             ApiNetwork.getGroupChapters,
             ["$storyId", "$pageIndex", "$pageSize"]));
@@ -127,7 +127,7 @@ class ChapterProvider {
           throw Exception("Failed to load chapter");
         }
       }
-      return groupChaptersFromJson(chapterDataOfStoryId);
+      return groupChaptersFromJson(chaptersOfficeByIndex);
     } catch (e) {
       throw Exception("Failed to load chapter");
     }

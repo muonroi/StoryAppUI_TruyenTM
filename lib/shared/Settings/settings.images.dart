@@ -39,4 +39,8 @@ class ImageDefault {
   static const String user3x = '${imagePath3x}User.png';
   static const String gear2x = '${imagePath2x}Gear.png';
   static const String gear3x = '${imagePath3x}Gear.png';
+  static const String logout2x = '${imagePath2x}logout.png';
+  static const String email2x = '${imagePath2x}email.png';
+  static const String privacy2x = '${imagePath2x}privacy.png';
+  static const String privacy_terms2x = '${imagePath2x}privacy_terms.png';
 }

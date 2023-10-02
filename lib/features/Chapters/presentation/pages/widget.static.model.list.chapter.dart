@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -62,28 +62,29 @@ class _ChapterListPageState extends State<ChapterListPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: themMode(context, ColorCode.modeColor.name),
         appBar: AppBar(
-          backgroundColor: ColorDefaults.lightAppColor,
+          backgroundColor: themMode(context, ColorCode.modeColor.name),
           elevation: 0,
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back_ios),
-            color: ColorDefaults.thirdMainColor,
+            color: themMode(context, ColorCode.textColor.name),
           ),
           title: Title(
-              color: ColorDefaults.lightAppColor,
+              color: themMode(context, ColorCode.modeColor.name),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    L(ViCode.listChapterStoryTextInfo.toString()),
-                    style:
-                        FontsDefault.h5.copyWith(fontWeight: FontWeight.w600),
+                    L(context, ViCode.listChapterStoryTextInfo.toString()),
+                    style: FontsDefault.h5(context)
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                   Stack(children: [
                     Text(
                       widget.storyTitle,
-                      style: FontsDefault.h6.copyWith(fontSize: 13),
+                      style: FontsDefault.h6(context).copyWith(fontSize: 13),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -94,7 +95,8 @@ class _ChapterListPageState extends State<ChapterListPage>
         ),
         body: Column(
           children: [
-            SizedBox(
+            Container(
+              color: themMode(context, ColorCode.modeColor.name),
               height:
                   MainSetting.getPercentageOfDevice(context, expectHeight: 50)
                       .height,
@@ -116,9 +118,9 @@ class _ChapterListPageState extends State<ChapterListPage>
                             }
                             isShort = !isShort;
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.sort,
-                            color: ColorDefaults.thirdMainColor,
+                            color: themMode(context, ColorCode.textColor.name),
                           )),
                     )),
                 BlocProvider(
@@ -157,7 +159,10 @@ class _ChapterListPageState extends State<ChapterListPage>
                                     var chapterPagingInfo =
                                         state.chapter.result[index];
                                     return InkWell(
-                                      splashColor: ColorDefaults.mainColor
+                                      hoverColor: themMode(
+                                          context, ColorCode.textColor.name),
+                                      splashColor: themMode(
+                                              context, ColorCode.mainColor.name)
                                           .withOpacity(0.5),
                                       onTap: () async {
                                         WidgetsBinding.instance
@@ -190,9 +195,12 @@ class _ChapterListPageState extends State<ChapterListPage>
                                               child: selectedItemIndex == index
                                                   ? Text(
                                                       '${chapterPagingInfo.from}-${chapterPagingInfo.to}',
-                                                      style: const TextStyle(
-                                                          color: ColorDefaults
-                                                              .mainColor),
+                                                      style: TextStyle(
+                                                          color: themMode(
+                                                              context,
+                                                              ColorCode
+                                                                  .mainColor
+                                                                  .name)),
                                                       textAlign:
                                                           TextAlign.center,
                                                     )
@@ -246,6 +254,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                           var chapterInfo = state.chapter.result[index];
 
                           return Container(
+                            color: themMode(context, ColorCode.modeColor.name),
                             margin:
                                 const EdgeInsets.symmetric(horizontal: 15.0),
                             child: Column(
@@ -302,7 +311,12 @@ class _ChapterListPageState extends State<ChapterListPage>
                                                         expectWidth: 40)
                                                 .width,
                                             child: Text(
-                                                '${chapterInfo.numberOfChapter}'),
+                                              '${chapterInfo.numberOfChapter}',
+                                              style: TextStyle(
+                                                color: themMode(context,
+                                                    ColorCode.textColor.name),
+                                              ),
+                                            ),
                                           ),
                                           SizedBox(
                                             width: MainSetting
@@ -320,18 +334,18 @@ class _ChapterListPageState extends State<ChapterListPage>
                                                   .replaceAll(
                                                       RegExp(r'chương \d+: '),
                                                       ''),
-                                              style: FontsDefault.h5,
+                                              style: FontsDefault.h5(context),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               textAlign: TextAlign.left,
                                             ),
                                           ),
-                                          const SizedBox(
+                                          SizedBox(
                                             child: Icon(
                                               size: 15,
                                               Icons.arrow_forward_ios,
-                                              color:
-                                                  ColorDefaults.thirdMainColor,
+                                              color: themMode(context,
+                                                  ColorCode.textColor.name),
                                             ),
                                           )
                                         ],

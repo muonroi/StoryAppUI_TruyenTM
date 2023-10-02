@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/presentation/pages/widget.static.model.stories.search.dart';
 
@@ -28,18 +30,23 @@ class SearchContainer extends StatelessWidget {
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8.0),
               hintMaxLines: 1,
-              hintText: L(ViCode.searchTextInfo.toString()),
+              hintText: L(context, ViCode.searchTextInfo.toString()),
+              hintStyle: FontsDefault.h5(context),
               suffixIcon: Visibility(
                 visible: isShowClearText,
                 child: IconButton(
-                  icon: const Icon(Icons.clear),
+                  icon: Icon(Icons.clear,
+                      color: themMode(context, ColorCode.textColor.name)),
                   onPressed: () {
                     searchController.clear();
                   },
                 ),
               ),
               prefixIcon: IconButton(
-                icon: const Icon(Icons.search),
+                icon: Icon(
+                  Icons.search,
+                  color: themMode(context, ColorCode.textColor.name),
+                ),
                 onPressed: () {},
               ),
               border:

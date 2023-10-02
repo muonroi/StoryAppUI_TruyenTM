@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'widget.static.custom.dashboard.chapter.bottom.dart';
 
@@ -49,7 +49,7 @@ class _BottomChapterDetailState extends State<BottomChapterDetail> {
                         .width,
                 color: !widget.isDisablePreviousButton
                     ? widget.fontColor
-                    : ColorDefaults.colorGrey200,
+                    : themMode(context, ColorCode.disableColor.name),
               ),
             ),
             IconButton(
@@ -65,8 +65,8 @@ class _BottomChapterDetailState extends State<BottomChapterDetail> {
                     MainSetting.getPercentageOfDevice(context, expectWidth: 30)
                         .width,
                 color: !widget.isDisableNextButton
-                    ? ColorDefaults.mainColor
-                    : ColorDefaults.colorGrey200,
+                    ? themMode(context, ColorCode.mainColor.name)
+                    : themMode(context, ColorCode.disableColor.name),
               ),
             ),
             IconButton(

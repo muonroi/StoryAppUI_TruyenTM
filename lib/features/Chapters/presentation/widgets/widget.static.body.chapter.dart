@@ -50,8 +50,8 @@ class BodyChapter extends StatelessWidget {
                                   expectWidth: 96.75)
                               .width,
                           child: Text(
-                            "${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}",
-                            style: FontsDefault.h5.copyWith(
+                            "${L(context, ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}",
+                            style: FontsDefault.h5(context).copyWith(
                                 fontWeight: FontWeight.w600,
                                 fontFamily: tempFontFamily,
                                 color: tempFontColor),
@@ -69,7 +69,7 @@ class BodyChapter extends StatelessWidget {
                                 .replaceAll(RegExp(r'Chương \d+:'), '')
                                 .replaceAll("\n", "")
                                 .trim(),
-                            style: FontsDefault.h5.copyWith(
+                            style: FontsDefault.h5(context).copyWith(
                                 fontWeight: FontWeight.w600,
                                 fontFamily: tempFontFamily,
                                 color: tempFontColor),

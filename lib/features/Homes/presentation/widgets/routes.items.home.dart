@@ -18,6 +18,7 @@ import 'package:muonroi/features/stories/presentation/pages/widget.static.storie
 
 class HomePageItems {
   List<Widget> getHomePageItems(
+      BuildContext context,
       PageController pageEditorChoiceController,
       List<Widget> listStoriesChoiceOfEditor,
       List<Widget> listStoriesNewUpdatedFirstRow,
@@ -54,7 +55,7 @@ class HomePageItems {
         child: MainCategories(),
       ),
       GroupCategoryTextInfo(
-          titleText: L(ViCode.editorChoiceTextInfo.toString()),
+          titleText: L(context, ViCode.editorChoiceTextInfo.toString()),
           nextRoute:
               const EditorStories(isShowLabel: false, isShowBack: false)),
       StoriesOfCategoriesData(
@@ -64,7 +65,7 @@ class HomePageItems {
       ),
 
       GroupCategoryTextInfo(
-          titleText: L(ViCode.newUpdatedStoriesTextInfo.toString()),
+          titleText: L(context, ViCode.newUpdatedStoriesTextInfo.toString()),
           nextRoute: const StoriesNewUpdate(
             isShowLabel: false,
             isShowBack: false,
@@ -72,7 +73,7 @@ class HomePageItems {
       StoriesNewUpdatedData(data: listStoriesNewUpdatedFirstRow),
 
       GroupCategoryTextInfo(
-          titleText: L(ViCode.commonOfStoriesTextInfo.toString()),
+          titleText: L(context, ViCode.commonOfStoriesTextInfo.toString()),
           nextRoute: const StoriesCommon(
             isShowLabel: true,
             isShowBack: false,
@@ -83,7 +84,7 @@ class HomePageItems {
       ),
 
       GroupCategoryTextInfo(
-          titleText: L(ViCode.newStoriesTextInfo.toString()),
+          titleText: L(context, ViCode.newStoriesTextInfo.toString()),
           nextRoute: const StoriesNew(
             isShowLabel: false,
             isShowBack: false,
@@ -94,7 +95,7 @@ class HomePageItems {
           padding: 8.0),
 
       GroupCategoryTextInfo(
-          titleText: L(ViCode.completeStoriesTextInfo.toString()),
+          titleText: L(context, ViCode.completeStoriesTextInfo.toString()),
           nextRoute: const StoriesComplete(
             isShowLabel: false,
             isShowBack: false,
@@ -107,7 +108,7 @@ class HomePageItems {
 
       // #region Footer
       OnlyTitleTextInfo(
-        textInfo: L(ViCode.newChapterUpdatedTextInfo.toString()),
+        textInfo: L(context, ViCode.newChapterUpdatedTextInfo.toString()),
       ),
       const ListNewChapter(),
       // #endregion

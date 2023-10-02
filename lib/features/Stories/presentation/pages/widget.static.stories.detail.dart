@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/stories/data/models/models.single.story.dart';
 import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
+import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.download.dart';
 import 'package:muonroi/features/stories/presentation/widgets/widget.static.detail.more.info.story.dart';
 import 'package:muonroi/features/stories/presentation/widgets/widget.static.detail.similar.story.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -33,6 +35,7 @@ class _StoryDetailState extends State<StoryDetail> {
     _detailStory = DetailStoryPageBloc(widget.storyId);
     _detailStory.add(GetDetailStory());
     _isFirstLoad = true;
+    _initSharedPreferences();
     super.initState();
   }
 
@@ -44,7 +47,7 @@ class _StoryDetailState extends State<StoryDetail> {
   }
 
   Future<void> getChapterId() async {
-    final SharedPreferences chapterTemp = await _sharedPreferences;
+    final SharedPreferences chapterTemp = await SharedPreferences.getInstance();
     setState(() {
       _chapterId =
           (chapterTemp.getInt("story-${widget.storyId}-current-chapter-id") ??
@@ -54,9 +57,12 @@ class _StoryDetailState extends State<StoryDetail> {
     });
   }
 
+  Future<void> _initSharedPreferences() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+  }
+
   late DetailStoryPageBloc _detailStory;
-  final Future<SharedPreferences> _sharedPreferences =
-      SharedPreferences.getInstance();
+  late SharedPreferences _sharedPreferences;
   late int _chapterId = 0;
   late int _chapterNumber = 0;
   late StoryRepository _storyRepository = StoryRepository();
@@ -70,11 +76,11 @@ class _StoryDetailState extends State<StoryDetail> {
     //   Header(infoStory: widget.storyInfo),
     //   MoreInfoStory(infoStory: widget.storyInfo),
     //   IntroAndNotificationStory(
-    //     name: L(ViCode.introStoryTextInfo.toString()),
+    //     name:L(context,ViCode.introStoryTextInfo.toString()),
     //     value: widget.storyInfo.storySynopsis,
     //   ),
     //   // IntroAndNotificationStory(
-    //   //   name: L(ViCode.notifyStoryTextInfo.toString()),
+    //   //   name:L(context,ViCode.notifyStoryTextInfo.toString()),
     //   //   value: "", //widget.storyInfo.notification ?? "",
     //   // ),
     //   ChapterOfStory(
@@ -109,22 +115,25 @@ class _StoryDetailState extends State<StoryDetail> {
             if (state is DetailStoryLoadedState) {
               var storyInfo = state.story.result;
               late bool _isBookmarkColor = storyInfo.isBookmark;
+              _sharedPreferences.setString(
+                  "recently-story", singleStoryModelToJson(state.story));
+              _sharedPreferences.setInt("recently-chapterId", _chapterId);
               if (_isFirstLoad && _isBookmarkColor) {
-                _colorBookmark = ColorDefaults.mainColor;
+                _colorBookmark = themMode(context, ColorCode.mainColor.name);
               } else if (!_isFirstLoad) {
-                _colorBookmark = ColorDefaults.mainColor;
+                _colorBookmark = themMode(context, ColorCode.mainColor.name);
               } else {
                 _colorBookmark = null;
               }
               return Scaffold(
                 appBar: AppBar(
                   elevation: 0,
-                  backgroundColor: ColorDefaults.lightAppColor,
-                  leading: const BackButton(
-                    color: ColorDefaults.thirdMainColor,
+                  backgroundColor: themMode(context, ColorCode.modeColor.name),
+                  leading: BackButton(
+                    color: themMode(context, ColorCode.textColor.name),
                   ),
                 ),
-                backgroundColor: ColorDefaults.lightAppColor,
+                backgroundColor: themMode(context, ColorCode.modeColor.name),
                 body: SizedBox(
                     child: ListView.builder(
                   itemCount: 1,
@@ -137,7 +146,8 @@ class _StoryDetailState extends State<StoryDetail> {
                             Header(infoStory: storyInfo),
                             MoreInfoStory(infoStory: storyInfo),
                             IntroAndNotificationStory(
-                              name: L(ViCode.introStoryTextInfo.toString()),
+                              name: L(context,
+                                  ViCode.introStoryTextInfo.toString()),
                               value: storyInfo.storySynopsis,
                             ),
                             ChapterOfStory(
@@ -150,6 +160,7 @@ class _StoryDetailState extends State<StoryDetail> {
                   },
                 )),
                 bottomNavigationBar: BottomAppBar(
+                  color: themMode(context, ColorCode.modeColor.name),
                   child: SizedBox(
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,12 +175,31 @@ class _StoryDetailState extends State<StoryDetail> {
                             SizedBox(
                                 child: IconButton(
                                     onPressed: () {},
-                                    icon:
-                                        const Icon(Icons.headphones_outlined))),
+                                    icon: Icon(
+                                      Icons.headphones_outlined,
+                                      color: themMode(
+                                          context, ColorCode.textColor.name),
+                                    ))),
                             SizedBox(
                               child: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.download_outlined)),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StoriesDownloadPage(
+                                                  storyName:
+                                                      storyInfo.storyTitle,
+                                                  storyId: storyInfo.id,
+                                                  totalChapter:
+                                                      storyInfo.totalChapter,
+                                                )));
+                                  },
+                                  icon: Icon(
+                                    Icons.download_outlined,
+                                    color: themMode(
+                                        context, ColorCode.textColor.name),
+                                  )),
                             ),
                             SizedBox(
                               child: IconButton(
@@ -179,14 +209,17 @@ class _StoryDetailState extends State<StoryDetail> {
                                             .bookmarkStory(storyInfo.id);
                                     setState(() {
                                       _colorBookmark = isBookmarked
-                                          ? ColorDefaults.mainColor
+                                          ? themMode(
+                                              context, ColorCode.mainColor.name)
                                           : null;
                                       _isFirstLoad = false;
                                     });
                                   },
                                   icon: Icon(
                                     Icons.bookmark_add_outlined,
-                                    color: _colorBookmark,
+                                    color: _colorBookmark ??
+                                        themMode(
+                                            context, ColorCode.textColor.name),
                                   )),
                             ),
                           ],
@@ -210,14 +243,17 @@ class _StoryDetailState extends State<StoryDetail> {
                                 lastChapterId: storyInfo.lastChapterId,
                                 firstChapterId: storyInfo.firstChapterId,
                               ),
-                              textStyle: FontsDefault.h5.copyWith(
-                                  color: ColorDefaults.thirdMainColor,
+                              textStyle: FontsDefault.h5(context).copyWith(
+                                  color: themMode(
+                                      context, ColorCode.textColor.name),
                                   fontWeight: FontWeight.w500),
-                              color: ColorDefaults.mainColor,
-                              borderColor: ColorDefaults.mainColor,
+                              color:
+                                  themMode(context, ColorCode.mainColor.name),
+                              borderColor:
+                                  themMode(context, ColorCode.mainColor.name),
                               widthBorder: 2,
                               textDisplay:
-                                  '${L(ViCode.chapterNumberTextInfo.toString())} ${_chapterNumber == 0 ? 1 : _chapterNumber}'),
+                                  '${L(context, ViCode.chapterNumberTextInfo.toString())} ${_chapterNumber == 0 ? 1 : _chapterNumber}'),
                         ),
                       )
                     ],

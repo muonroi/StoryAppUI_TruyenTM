@@ -5,10 +5,12 @@ import 'package:muonroi/core/SignalR/signalr.hub.dart';
 import 'package:muonroi/core/SignalR/signalr.hub.stream.name.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/core/models/signalr/widget.notification.dart';
+import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
+import 'package:muonroi/features/stories/data/models/models.single.story.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.menu.bottom.shared.dart';
 import 'package:muonroi/features/homes/presentation/widgets/routes.items.home.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -20,6 +22,7 @@ import 'package:muonroi/features/homes/presentation/pages/pages.stories.free.dar
 import 'package:muonroi/features/homes/presentation/pages/pages.user.info.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 import 'package:muonroi/features/stories/presentation/pages/widget.static.model.stories.search.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signalr_netcore/hub_connection.dart';
 import 'package:signalr_netcore/hub_connection_builder.dart';
 
@@ -48,8 +51,12 @@ class _MainPageState extends State<MainPage> {
         .withUrl(SignalrCentral.notificationListen,
             options: SignalrCentral.httpConnectionOptions)
         .build();
-    hubConnection.onclose(({error}) =>
-        print("Connection ${SignalrCentral.notificationListen} Closed!"));
+    hubConnection.onclose(({error}) async {
+      print("Connection ${SignalrCentral.notificationListen} Closed!");
+      await hubConnection.onreconnecting(({error}) {
+        print("Re-Connecting ${SignalrCentral.notificationListen}!");
+      });
+    });
     await hubConnection.start();
     if (hubConnection.state == HubConnectionState.Connected) {
       hubConnection.on(HubStream.ReceiveGlobalNotification.name, (arguments) {
@@ -59,8 +66,8 @@ class _MainPageState extends State<MainPage> {
             .toList()
             .first;
         NotificationPush.showNotification(
-            title: L(ViCode.notificationTextConfigTextInfo.toString()),
-            body: N(notifyInfo.type,
+            title: L(context, ViCode.notificationTextConfigTextInfo.toString()),
+            body: N(context, notifyInfo.type,
                 args: notifyInfo.notificationContent.split('-')),
             fln: flutterLocalNotificationsPlugin);
       });
@@ -71,8 +78,8 @@ class _MainPageState extends State<MainPage> {
             .toList()
             .first;
         NotificationPush.showNotification(
-            title: L(ViCode.notificationTextConfigTextInfo.toString()),
-            body: N(notifyInfo.type,
+            title: L(context, ViCode.notificationTextConfigTextInfo.toString()),
+            body: N(context, notifyInfo.type,
                 args: notifyInfo.notificationContent.split('-')),
             fln: flutterLocalNotificationsPlugin);
       });
@@ -85,7 +92,7 @@ class _MainPageState extends State<MainPage> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           brightness: Brightness.light,
-          primaryColor: ColorDefaults.mainColor,
+          primaryColor: themMode(context, ColorCode.mainColor.name),
           fontFamily: FontsDefault.inter),
       home: HomePage(
         storiesInit: widget.storiesInit,
@@ -121,6 +128,7 @@ class _HomePageState extends State<HomePage> {
     _pageStoriesCompleteController = PageController(viewportFraction: 0.9);
     _pageNewStoriesController = PageController(viewportFraction: 0.9);
     _pageBannerController = PageController(initialPage: 0);
+    _initSharedPreferences();
     super.initState();
   }
 
@@ -166,6 +174,7 @@ class _HomePageState extends State<HomePage> {
   late PageController _pageNewStoriesController;
   late PageController _pageStoriesCompleteController;
   late PageController _pageBannerController;
+  late BuildContext context;
   // #endregion
 
 // #region Define variables
@@ -176,9 +185,15 @@ class _HomePageState extends State<HomePage> {
   final _debouncer = Debouncer(const Duration(milliseconds: 100));
   final _throttle = Throttle(const Duration(milliseconds: 100));
   var _totalNotification = 0;
+  late SharedPreferences _sharedPreferences;
   // #endregion
 
 // #region Define methods
+
+  Future<void> _initSharedPreferences() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+  }
+
   void _onChangedSearch(String textInput) {
     setState(() {
       _isShowClearText = textInput.isNotEmpty;
@@ -203,6 +218,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // #region get components
     var itemsOfHome = _homePageItem.getHomePageItems(
+        context,
         _pageEditorChoiceController,
         widget.storiesEditorChoice,
         widget.storiesCommon,
@@ -223,11 +239,11 @@ class _HomePageState extends State<HomePage> {
     return DefaultTabController(
       length: 5,
       child: Scaffold(
-          backgroundColor: ColorDefaults.lightAppColor,
+          backgroundColor: themMode(context, ColorCode.modeColor.name),
           appBar: AppBar(
             automaticallyImplyLeading: false,
             leading: Image.asset(ImageDefault.mainLogo),
-            backgroundColor: ColorDefaults.lightAppColor,
+            backgroundColor: themMode(context, ColorCode.modeColor.name),
             elevation: 0,
             actions: [
               _currentIndex > 0
@@ -242,21 +258,21 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       },
-                      icon: const Icon(Icons.search,
-                          color: ColorDefaults.thirdMainColor))
-                  : const IconButton(
+                      icon: Icon(Icons.search,
+                          color: themMode(context, ColorCode.textColor.name)))
+                  : IconButton(
                       onPressed: null,
                       icon: Icon(Icons.search,
-                          color: Color.fromARGB(255, 255, 255, 255))),
+                          color: themMode(context, ColorCode.modeColor.name))),
               IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.chat_outlined,
-                      color: ColorDefaults.thirdMainColor)),
+                  icon: Icon(Icons.chat_outlined,
+                      color: themMode(context, ColorCode.textColor.name))),
               Stack(children: [
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.notifications_none,
-                      color: ColorDefaults.thirdMainColor),
+                  icon: Icon(Icons.notifications_none,
+                      color: themMode(context, ColorCode.textColor.name)),
                   splashRadius: 25,
                 ),
                 Positioned(
@@ -270,12 +286,12 @@ class _HomePageState extends State<HomePage> {
                               expectHeight: 20)
                           .height,
                       decoration: BoxDecoration(
-                          color: ColorDefaults.mainColor,
+                          color: themMode(context, ColorCode.mainColor.name),
                           borderRadius: BorderRadius.circular(100)),
                       child: Center(
                         child: Text(
                           '$_totalNotification+',
-                          style: FontsDefault.h6,
+                          style: FontsDefault.h6(context),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -308,8 +324,31 @@ class _HomePageState extends State<HomePage> {
                 UserInfo(userInfo: accountInfo),
               ]),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            backgroundColor: ColorDefaults.mainColor,
+            onPressed: () {
+              var storyInfoRecently =
+                  _sharedPreferences.getString("recently-story");
+              var chapterIdRecently =
+                  _sharedPreferences.getInt("recently-chapterId") ?? 0;
+              if (storyInfoRecently != null) {
+                var storyResult = singleStoryModelFromJson(storyInfoRecently);
+                var storyInfo = storyResult.result;
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Chapter(
+                    isLoadHistory: true,
+                    storyId: storyInfo.id,
+                    storyName: storyInfo.storyTitle,
+                    chapterId: chapterIdRecently == 0
+                        ? storyInfo.firstChapterId
+                        : chapterIdRecently,
+                    lastChapterId: storyInfo.lastChapterId,
+                    firstChapterId: storyInfo.firstChapterId,
+                  );
+                }));
+              } else {
+                _showTooltipNotification(context);
+              }
+            },
+            backgroundColor: themMode(context, ColorCode.mainColor.name),
             child: Icon(
               Icons.arrow_right,
               size: MainSetting.getPercentageOfDevice(context, expectWidth: 50)
@@ -319,6 +358,24 @@ class _HomePageState extends State<HomePage> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: TabBarCustom(context: context)),
+    );
+  }
+
+  void _showTooltipNotification(BuildContext context) {
+    final tooltip = Tooltip(
+        message: L(context, ViCode.recentlyStoryTextInfo.toString()),
+        child: Text(
+          L(context, ViCode.recentlyStoryTextInfo.toString()),
+          style: FontsDefault.h5(context),
+          textAlign: TextAlign.center,
+        ));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: tooltip,
+        duration: Duration(seconds: 2),
+        backgroundColor: themMode(context, ColorCode.disableColor.name),
+      ),
     );
   }
 }

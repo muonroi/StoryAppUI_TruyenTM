@@ -46,12 +46,14 @@ class Result {
   int fromId;
   int toId;
   int pageIndex;
+  int total;
   Result({
     required this.from,
     required this.to,
     required this.fromId,
     required this.toId,
     required this.pageIndex,
+    required this.total,
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -60,6 +62,7 @@ class Result {
         fromId: json["fromId"],
         toId: json["toId"],
         pageIndex: json["index"],
+        total: json["total"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -67,6 +70,7 @@ class Result {
         "to": to,
         "fromId": fromId,
         "toId": toId,
-        "index": pageIndex
+        "index": pageIndex,
+        "total": total
       };
 }

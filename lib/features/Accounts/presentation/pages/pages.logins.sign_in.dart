@@ -1,13 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
+import 'package:muonroi/features/accounts/presentation/pages/pages.forgot.password.dart';
+import 'package:muonroi/features/accounts/settings/enum/account.info.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.ladding.index.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
-import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_up.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,128 +22,266 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  @override
+  void initState() {
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+    _isShowLabelError = false;
+    _rememberMe = false;
+    _isVisibility = true;
+    _isLoading = false;
+    _initSharedPreferences().then((value) {
+      _usernameController.text =
+          _sharedPreferences.getString(AccountInfo.username.name) ?? "";
+      _passwordController.text =
+          _sharedPreferences.getString(AccountInfo.password.name) ?? "";
+      _rememberMe =
+          _sharedPreferences.getBool(AccountInfo.remember.name) ?? false;
+    });
+    super.initState();
+  }
+
+  Future<void> _initSharedPreferences() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  late SharedPreferences _sharedPreferences;
   late String username;
   late String password;
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  late bool isShowLabelError = false;
+  late TextEditingController _usernameController;
+  late TextEditingController _passwordController;
+  late bool _isShowLabelError;
+  late bool _rememberMe;
+  late bool _isVisibility;
+  late bool _isLoading;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            SizedBox(
-              height:
-                  MainSetting.getPercentageOfDevice(context, expectHeight: 100)
+        resizeToAvoidBottomInset: false,
+        body: Stack(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SizedBox(
+                height: MainSetting.getPercentageOfDevice(context,
+                        expectHeight: 100)
+                    .height,
+                child: Image.asset(
+                  ImageDefault.mainLogo,
+                  width: MainSetting.getPercentageOfDevice(context,
+                          expectWidth: 220)
+                      .width,
+                  height: MainSetting.getPercentageOfDevice(context,
+                          expectHeight: 60)
                       .height,
-              child: Image.asset(
-                ImageDefault.mainLogo,
-                width:
-                    MainSetting.getPercentageOfDevice(context, expectWidth: 220)
-                        .width,
-                height:
-                    MainSetting.getPercentageOfDevice(context, expectHeight: 60)
-                        .height,
+                ),
               ),
-            ),
-            isShowLabelError
-                ? Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    child: Text(
-                      L(ViCode.inValidAccountTextConfigTextInfo.toString()),
-                      style: FontsDefault.h5
-                          .copyWith(fontSize: 13, color: Colors.red),
-                    ),
-                  )
-                : Container(),
-            SizedBox(
-              height:
-                  MainSetting.getPercentageOfDevice(context, expectHeight: 100)
-                      .height,
-              child: Align(
+              _isShowLabelError
+                  ? Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      child: Text(
+                        L(context, ViCode.invalidAccountTextInfo.toString()),
+                        style: FontsDefault.h5(context)
+                            .copyWith(fontSize: 13, color: Colors.red),
+                      ),
+                    )
+                  : Container(),
+              SizedBox(
+                height: MainSetting.getPercentageOfDevice(context,
+                        expectHeight: 100)
+                    .height,
+                child: Align(
                   alignment: Alignment.bottomLeft,
                   child: TextFormFieldGlobal(
-                      obscureText: false,
-                      controller: usernameController,
-                      decoration: InputDecoration(
-                          icon: Icon(
-                            Icons.person,
-                            color: ColorDefaults.buttonColor,
-                          ),
-                          border: UnderlineInputBorder(),
-                          labelText: L(ViCode.inputUsernameTextConfigTextInfo
-                              .toString())))),
-            ),
-            SizedBox(
-              height:
-                  MainSetting.getPercentageOfDevice(context, expectHeight: 100)
-                      .height,
-              child: Align(
+                    obscureText: false,
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.person,
+                          color: themMode(context, ColorCode.mainColor.name),
+                        ),
+                        border: const UnderlineInputBorder(),
+                        labelText: L(context,
+                            ViCode.inputUsernameTextConfigTextInfo.toString())),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MainSetting.getPercentageOfDevice(context,
+                        expectHeight: 100)
+                    .height,
+                child: Align(
                   alignment: Alignment.bottomLeft,
                   child: TextFormFieldGlobal(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
+                    controller: _passwordController,
+                    obscureText: _isVisibility,
+                    decoration: InputDecoration(
                         icon: Icon(
                           Icons.lock,
-                          color: ColorDefaults.buttonColor,
+                          color: themMode(context, ColorCode.mainColor.name),
                         ),
-                        border: UnderlineInputBorder(),
-                        labelText: L(
+                        border: const UnderlineInputBorder(),
+                        labelText: L(context,
                             ViCode.inputPasswordTextConfigTextInfo.toString()),
-                        suffixIcon: const Icon(
-                          Icons.visibility,
-                          color: ColorDefaults.buttonColor,
-                        ),
-                      ))),
-            ),
-          ]),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 32.0),
-          child: RichText(
-            text: TextSpan(
-                text: L(ViCode.noHaveAccountTextConfigTextInfo.toString()),
-                style: FontsDefault.h5,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isVisibility = !_isVisibility;
+                            });
+                          },
+                          icon: Icon(
+                            _isVisibility
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: themMode(context, ColorCode.mainColor.name),
+                          ),
+                        )),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextSpan(
-                      text: " ${L(ViCode.signupConfigTextInfo.toString())}",
-                      style: FontsDefault.h5.copyWith(
-                          fontWeight: FontWeight.w900,
-                          color: ColorDefaults.mainColor),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignUpPage()));
-                        })
-                ]),
-            textAlign: TextAlign.center,
+                  SizedBox(
+                    height: MainSetting.getPercentageOfDevice(context,
+                            expectHeight: 70)
+                        .height,
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          value: _rememberMe,
+                          onChanged: (value) {
+                            setState(() {
+                              _rememberMe = value!;
+                            });
+                          },
+                        ),
+                        Text(
+                          L(context, ViCode.rememberTextInfo.toString()),
+                          style:
+                              FontsDefault.h5(context).copyWith(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MainSetting.getPercentageOfDevice(context,
+                            expectHeight: 70)
+                        .height,
+                    child: Row(
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPasswordPage()));
+                          },
+                          child: Text(
+                            L(context,
+                                ViCode.forgotPasswordTextInfo.toString()),
+                            style: FontsDefault.h5(context).copyWith(
+                              fontWeight: FontWeight.w900,
+                              color:
+                                  themMode(context, ColorCode.mainColor.name),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ]),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: ColorDefaults.mainColor,
-            onPressed: () async {
-              var sharedPreferences = await SharedPreferences.getInstance();
-              AccountRepository account = AccountRepository(
-                  usernameController.text, passwordController.text);
-              var accountInfo = await account.signIn();
-              if (accountInfo.statusCode == 400) {
+          _isLoading
+              ? Positioned.fill(
+                  child: Material(
+                  color: Color.fromARGB(50, 85, 78, 78),
+                  child: SpinKitWave(
+                    color: themMode(context, ColorCode.mainColor.name),
+                  ),
+                ))
+              : Container()
+        ]),
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(
+              bottom:
+                  MainSetting.getPercentageOfDevice(context, expectHeight: 100)
+                      .height!),
+          child: FloatingActionButton(
+              backgroundColor: themMode(context, ColorCode.mainColor.name),
+              onPressed: () async {
                 setState(() {
-                  isShowLabelError = true;
+                  _isLoading = true;
                 });
-              } else {
-                sharedPreferences.setString(
-                    KeyToken.accessToken.name, accountInfo.result!.jwtToken);
-                sharedPreferences.setString(KeyToken.refreshToken.name,
-                    accountInfo.result!.refreshToken);
-                isShowLabelError = false;
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => IndexPage()));
-              }
-            },
-            child: const Icon(Icons.login)));
+                var accountRepository = AccountRepository(
+                    _usernameController.text, _passwordController.text);
+                var accountInfo = await accountRepository.signIn();
+                if (accountInfo.result == null) {
+                  setState(() {
+                    _isShowLabelError = true;
+                    _isLoading = false;
+                  });
+                } else {
+                  if (_rememberMe) {
+                    _sharedPreferences.setString(
+                        AccountInfo.username.name, _usernameController.text);
+                    _sharedPreferences.setString(
+                        AccountInfo.password.name, _passwordController.text);
+                    _sharedPreferences.setBool(
+                        AccountInfo.remember.name, _rememberMe);
+                  }
+                  _sharedPreferences.setString(
+                      KeyToken.accessToken.name, accountInfo.result!.jwtToken);
+                  _sharedPreferences.setString(KeyToken.refreshToken.name,
+                      accountInfo.result!.refreshToken);
+                  _isShowLabelError = false;
+                  if (mounted) {
+                    _isLoading = false;
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const IndexPage()));
+                  }
+                }
+              },
+              child: Icon(
+                Icons.login,
+                color: themMode(context, ColorCode.modeColor.name),
+              )),
+        ),
+        bottomNavigationBar: !_isLoading
+            ? Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32.0),
+                child: RichText(
+                  text: TextSpan(
+                      text: L(context,
+                          ViCode.noHaveAccountTextConfigTextInfo.toString()),
+                      style: FontsDefault.h5(context),
+                      children: [
+                        TextSpan(
+                            text:
+                                " ${L(context, ViCode.signupConfigTextInfo.toString())}",
+                            style: FontsDefault.h5(context).copyWith(
+                              fontWeight: FontWeight.w900,
+                              color:
+                                  themMode(context, ColorCode.mainColor.name),
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Container()));
+                              })
+                      ]),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : null);
   }
 }

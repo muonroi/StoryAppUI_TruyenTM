@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_in.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.logins.valid_otp.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.password_input.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
 
@@ -57,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
         _pageController.hasClients &&
         _currentPage == _pageViewsSignUp.length - 1) {
       floatingActionButton = FloatingActionButton(
-          backgroundColor: ColorDefaults.buttonColor,
+          backgroundColor: themMode(context, ColorCode.mainColor.name),
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const OTPScreen()));
@@ -98,13 +99,13 @@ class _SignUpPageState extends State<SignUpPage> {
         child: RichText(
           text: TextSpan(
               text: 'Already have an account?',
-              style: FontsDefault.h5,
+              style: FontsDefault.h5(context),
               children: [
                 TextSpan(
                     text: ' Sign In',
-                    style: FontsDefault.h5.copyWith(
+                    style: FontsDefault.h5(context).copyWith(
                         fontWeight: FontWeight.w900,
-                        color: ColorDefaults.buttonColor),
+                        color: themMode(context, ColorCode.mainColor.name)),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         Navigator.push(
@@ -140,7 +141,8 @@ class _InputMoreInfoSignUpState extends State<InputMoreInfoSignUp> {
             child: SizedBox(
               child: Text(
                 'Please choose your gender',
-                style: FontsDefault.h3.copyWith(fontWeight: FontWeight.w300),
+                style: FontsDefault.h3(context)
+                    .copyWith(fontWeight: FontWeight.w300),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -161,7 +163,7 @@ class _InputMoreInfoSignUpState extends State<InputMoreInfoSignUp> {
                   },
                   child: Container(
                     color: _character == Gender.male
-                        ? ColorDefaults.buttonColor
+                        ? themMode(context, ColorCode.mainColor.name)
                         : null,
                     child: const ListTile(
                       title: Text('Male'),

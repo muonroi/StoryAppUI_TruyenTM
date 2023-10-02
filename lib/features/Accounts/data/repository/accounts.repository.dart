@@ -9,6 +9,7 @@ class AccountRepository {
   AccountRepository(this.username, this.password);
 
   Future<AccountSignInModel> signIn() => _provider.signIn(username, password);
+  Future<bool> forgotPassword() => _provider.forgotPassword(username);
 }
 
 class NetworkError extends Error {}

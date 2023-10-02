@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../settings/settings.colors.dart';
 
 class ButtonWidget {
   static Widget buttonNavigatorNextPreviewLanding(
       BuildContext context, Widget nextRoute,
       {String textDisplay = 'Next',
       TextStyle textStyle = const TextStyle(
-          fontFamily: "Inter",
-          fontSize: 16,
-          color: ColorDefaults.defaultTextColor),
-      Color color = ColorDefaults.mainColor,
-      Color borderColor = ColorDefaults.mainColor,
+          fontFamily: "Inter", fontSize: 16, color: const Color(0xFF2D2D2D)),
+      Color color = const Color(0xFFFFB800),
+      Color borderColor = const Color(0xFFFFB800),
       double widthBorder = 2}) {
     return ElevatedButton(
       onPressed: () {
@@ -35,20 +34,52 @@ class ButtonWidget {
     );
   }
 
-  static Widget buttonDisplayCurrentPage(Size value, bool isActive) {
+  static Widget buttonDisplayCurrentPage(
+      Size value, bool isActive, BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       height: isActive ? value.height * 1 / 59 : value.height * 1 / 59,
       width: isActive ? value.width * 1 / 7 : value.height * 1 / 59,
       decoration: BoxDecoration(
           shape: !isActive ? BoxShape.circle : BoxShape.rectangle,
-          border: Border.all(color: ColorDefaults.colorGrey200),
+          border:
+              Border.all(color: themMode(context, ColorCode.disableColor.name)),
           borderRadius: isActive
               ? const BorderRadius.vertical(
                   top: Radius.circular(20), bottom: Radius.circular(20))
               : null,
-          color:
-              isActive ? ColorDefaults.colorGrey200 : ColorDefaults.mainColor),
+          color: isActive
+              ? themMode(context, ColorCode.disableColor.name)
+              : themMode(context, ColorCode.mainColor.name)),
+    );
+  }
+}
+
+class ButtonGlobal extends StatefulWidget {
+  const ButtonGlobal(
+      {super.key,
+      required this.style,
+      required this.text,
+      required this.onPressed,
+      required this.textStyle});
+  final ButtonStyle style;
+  final TextStyle textStyle;
+  final String text;
+  final void Function() onPressed;
+  @override
+  State<ButtonGlobal> createState() => _ButtonGlobalState();
+}
+
+class _ButtonGlobalState extends State<ButtonGlobal> {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: widget.style,
+      onPressed: widget.onPressed,
+      child: Text(
+        widget.text,
+        style: widget.textStyle,
+      ),
     );
   }
 }
@@ -86,14 +117,17 @@ class _ToggleButtonState extends State<ToggleButton> {
     _initSharedPreferences();
     super.initState();
     xAlign = leftAlign;
-    leftColor = widget.selectedColor ?? ColorDefaults.lightAppColor;
-    rightColor = widget.normalColor ?? ColorDefaults.thirdMainColor;
+    leftColor =
+        widget.selectedColor ?? themMode(context, ColorCode.modeColor.name);
+    rightColor =
+        widget.normalColor ?? themMode(context, ColorCode.textColor.name);
   }
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      var _templateSettingData = getCurrentTemplate(_sharedPreferences);
+      var _templateSettingData =
+          getCurrentTemplate(_sharedPreferences, context);
       if (_templateSettingData.isHorizontal != null &&
           !_templateSettingData.isHorizontal!) {
         xAlign = leftAlign;
@@ -171,10 +205,11 @@ class _ToggleButtonState extends State<ToggleButton> {
                     leftColor = widget.selectedColor!;
                     rightColor = widget.normalColor!;
                     var currentTemplate =
-                        getCurrentTemplate(_sharedPreferences);
+                        getCurrentTemplate(_sharedPreferences, context);
                     currentTemplate.isHorizontal = false;
                     currentTemplate.fontSize = 16;
-                    setCurrentTemplate(_sharedPreferences, currentTemplate);
+                    setCurrentTemplate(
+                        _sharedPreferences, currentTemplate, context);
                     value.valueSetting = currentTemplate;
                   });
                 },
@@ -201,10 +236,11 @@ class _ToggleButtonState extends State<ToggleButton> {
                     rightColor = widget.selectedColor!;
                     leftColor = widget.normalColor!;
                     var currentTemplate =
-                        getCurrentTemplate(_sharedPreferences);
+                        getCurrentTemplate(_sharedPreferences, context);
                     currentTemplate.isHorizontal = true;
                     currentTemplate.fontSize = 25;
-                    setCurrentTemplate(_sharedPreferences, currentTemplate);
+                    setCurrentTemplate(
+                        _sharedPreferences, currentTemplate, context);
                     value.valueSetting = currentTemplate;
                   });
                 },

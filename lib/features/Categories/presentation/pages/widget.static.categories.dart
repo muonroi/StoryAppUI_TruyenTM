@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_flutter/icons_flutter.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/Categories/bloc/categories_all_bloc.dart';
 import 'package:muonroi/features/Categories/settings/settings.dart';
@@ -35,9 +35,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.pop(context),
-            color: ColorDefaults.thirdMainColor,
+            color: themMode(context, ColorCode.textColor.name),
           ),
-          backgroundColor: ColorDefaults.lightAppColor,
+          backgroundColor: themMode(context, ColorCode.modeColor.name),
           elevation: 0,
         ),
         body: BlocProvider(
@@ -72,7 +72,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                   WidgetSpan(
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          color: ColorDefaults.secondMainColor,
+                                          color: themMode(context,
+                                              ColorCode.modeColor.name),
                                           borderRadius:
                                               BorderRadius.circular(10.0)),
                                       child: Stack(children: [

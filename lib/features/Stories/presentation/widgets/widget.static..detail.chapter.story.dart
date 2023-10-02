@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.list.chapter.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -26,7 +26,8 @@ class ChapterOfStory extends StatefulWidget {
 class _ChapterOfStoryState extends State<ChapterOfStory> {
   @override
   void initState() {
-    colorOfRow = List<Color>.filled(5, Colors.white);
+    colorOfRow =
+        List<Color>.filled(5, themMode(context, ColorCode.modeColor.name));
     _latestChapterOfStoryBloc =
         LatestChapterOfStoryBloc(widget.storyId, true, 1, 5, 0);
     _latestChapterOfStoryBloc.add(GetLatestChapterOfStoryList());
@@ -61,8 +62,8 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                 children: [
                   SizedBox(
                     child: Text(
-                      L(ViCode.newChapterStoryTextInfo.toString()),
-                      style: FontsDefault.h4,
+                      L(context, ViCode.newChapterStoryTextInfo.toString()),
+                      style: FontsDefault.h4(context),
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -92,9 +93,13 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                         margin:
                                             const EdgeInsets.only(right: 8.0),
                                         child: Text(
-                                          "${L(ViCode.chapterNumberTextInfo.toString()).replaceRange(0, 1, L(ViCode.chapterNumberTextInfo.toString())[0].toUpperCase())} ${chapterItem.numberOfChapter.toString()}: ",
-                                          style: FontsDefault.h5.copyWith(
-                                              color: ColorDefaults.mainColor),
+                                          "${L(context, ViCode.chapterNumberTextInfo.toString()).replaceRange(0, 1, L(context, ViCode.chapterNumberTextInfo.toString())[0].toUpperCase())} ${chapterItem.numberOfChapter.toString()}: ",
+                                          style: FontsDefault.h5(context)
+                                              .copyWith(
+                                                  color: themMode(
+                                                      context,
+                                                      ColorCode
+                                                          .mainColor.name)),
                                         ),
                                       ),
                                       Container(
@@ -106,7 +111,7 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                                 .width,
                                         child: Text(
                                           chapterItem.chapterName.trim(),
-                                          style: FontsDefault.h5,
+                                          style: FontsDefault.h5(context),
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           textAlign: TextAlign.start,
@@ -114,9 +119,10 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                       ),
                                     ],
                                   ),
-                                  const Icon(
+                                  Icon(
                                     Icons.keyboard_arrow_right,
-                                    color: ColorDefaults.thirdMainColor,
+                                    color: themMode(
+                                        context, ColorCode.textColor.name),
                                   ),
                                 ],
                               ),
@@ -190,14 +196,16 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                               lastChapterId: widget.storyInfo.lastChapterId,
                               firstChapterId: widget.storyInfo.firstChapterId,
                             ),
-                            textStyle: FontsDefault.h5.copyWith(
-                                color: ColorDefaults.mainColor,
+                            textStyle: FontsDefault.h5(context).copyWith(
+                                color:
+                                    themMode(context, ColorCode.mainColor.name),
                                 fontWeight: FontWeight.w600),
-                            color: ColorDefaults.lightAppColor,
-                            borderColor: ColorDefaults.mainColor,
+                            color: themMode(context, ColorCode.modeColor.name),
+                            borderColor:
+                                themMode(context, ColorCode.mainColor.name),
                             widthBorder: 1,
-                            textDisplay:
-                                L(ViCode.listChapterStoryTextInfo.toString())),
+                            textDisplay: L(context,
+                                ViCode.listChapterStoryTextInfo.toString())),
                       ),
                     ),
                   )
