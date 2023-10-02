@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
@@ -48,8 +48,9 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text((index + 1).toString(),
-                                style: FontsDefault.h3
-                                    .copyWith(color: ColorDefaults.mainColor)),
+                                style: FontsDefault.h3(context).copyWith(
+                                    color: themMode(
+                                        context, ColorCode.mainColor.name))),
                             SizedBox(
                                 width: MainSetting.getPercentageOfDevice(
                                         context,
@@ -80,7 +81,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                   Text(
                                       widget
                                           .storiesCommonInfo[index].storyTitle,
-                                      style: FontsDefault.h5,
+                                      style: FontsDefault.h5(context),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1),
                                   Text(
@@ -88,7 +89,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                           .nameCategory,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
-                                      style: FontsDefault.h6),
+                                      style: FontsDefault.h6(context)),
                                 ],
                               ),
                             ),
@@ -102,9 +103,10 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.remove_red_eye_rounded,
-                              color: ColorDefaults.mainColor,
+                              color:
+                                  themMode(context, ColorCode.mainColor.name),
                             ),
                             Padding(
                               padding:
@@ -113,7 +115,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                 formatValueNumber(
                                     widget.storiesCommonInfo[index].totalView *
                                         1.0),
-                                style: FontsDefault.h6,
+                                style: FontsDefault.h6(context),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),

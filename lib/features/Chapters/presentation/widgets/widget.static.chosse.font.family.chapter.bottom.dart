@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -27,7 +27,7 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      _templateSettingData = getCurrentTemplate(_sharedPreferences);
+      _templateSettingData = getCurrentTemplate(_sharedPreferences, context);
       _chosseFontName = _templateSettingData.fontFamily ?? '';
     });
   }
@@ -38,19 +38,20 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorDefaults.lightAppColor,
+      backgroundColor: themMode(context, ColorCode.modeColor.name),
       appBar: AppBar(
         title: Title(
-            color: ColorDefaults.thirdMainColor,
+            color: themMode(context, ColorCode.textColor.name),
             child: Text(
-              L(ViCode.fontConfigDashboardTextInfo.toString()),
-              style: FontsDefault.h5,
+              L(context, ViCode.fontConfigDashboardTextInfo.toString()),
+              style: FontsDefault.h5(context),
             )),
-        backgroundColor: ColorDefaults.lightAppColor,
+        backgroundColor: themMode(context, ColorCode.modeColor.name),
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: IconButton(
-            onPressed: () => Navigator.pop(context), icon: backButtonCommon()),
+            onPressed: () => Navigator.pop(context),
+            icon: backButtonCommon(context)),
       ),
       body: Consumer<TemplateSetting>(
         builder: (context, templateValue, child) {
@@ -70,12 +71,14 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
                       Container(
                           padding: const EdgeInsets.all(12.0),
                           decoration: BoxDecoration(
-                              color: ColorDefaults.secondMainColor,
+                              color:
+                                  themMode(context, ColorCode.modeColor.name),
                               boxShadow: [
                                 _chosseFontName.toLowerCase() ==
                                         fontName.toLowerCase()
                                     ? BoxShadow(
-                                        color: ColorDefaults.mainColor,
+                                        color: themMode(
+                                            context, ColorCode.mainColor.name),
                                         spreadRadius: 2)
                                     : BoxShadow(),
                               ],
@@ -90,7 +93,7 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
                                       horizontal: 4.0),
                                   child: Text(
                                     fontName,
-                                    style: FontsDefault.h5,
+                                    style: FontsDefault.h5(context),
                                   )),
                             ],
                           )),
@@ -102,10 +105,10 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
                           borderRadius: BorderRadius.circular(20.0),
                           onTap: () {
                             var currentTemplate =
-                                getCurrentTemplate(_sharedPreferences);
+                                getCurrentTemplate(_sharedPreferences, context);
                             currentTemplate.fontFamily = fontName;
                             setCurrentTemplate(
-                                _sharedPreferences, currentTemplate);
+                                _sharedPreferences, currentTemplate, context);
                             templateValue.valueSetting = currentTemplate;
                             setState(() {
                               _chosseFontName = fontName;

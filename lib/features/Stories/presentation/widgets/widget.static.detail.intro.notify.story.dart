@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 
 class IntroAndNotificationStory extends StatefulWidget {
   final String name;
@@ -45,7 +47,7 @@ class _IntroAndNotificationStoryState extends State<IntroAndNotificationStory>
                 SizedBox(
                   child: Text(
                     widget.name,
-                    style: FontsDefault.h4,
+                    style: FontsDefault.h4(context),
                   ),
                 ),
                 Container(
@@ -57,6 +59,7 @@ class _IntroAndNotificationStoryState extends State<IntroAndNotificationStory>
                         fontSize: FontSize(15),
                         maxLines: 50,
                         textOverflow: TextOverflow.ellipsis,
+                        color: themMode(context, ColorCode.textColor.name),
                       ),
                     },
                   ),

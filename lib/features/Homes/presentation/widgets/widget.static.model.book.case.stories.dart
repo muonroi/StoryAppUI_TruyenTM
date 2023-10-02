@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -82,13 +82,13 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
       child: AnimatedContainer(
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-            color: ColorDefaults.lightAppColor,
+            color: themMode(context, ColorCode.disableColor.name),
             borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                  color: Color.fromARGB(255, 221, 219, 219),
+                  color: themMode(context, ColorCode.disableColor.name),
                   offset: Offset(-3, 3),
-                  blurRadius: 3.0)
+                  blurRadius: 0.5)
             ]),
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeOutSine,
@@ -98,7 +98,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
           1.0,
         ),
         child: Container(
-          color: ColorDefaults.secondMainColor,
+          color: themMode(context, ColorCode.disableColor.name),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -132,7 +132,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                       child: Stack(children: [
                         Text(
                           widget.storyInfo.storyTitle,
-                          style: FontsDefault.h4.copyWith(
+                          style: FontsDefault.h4(context).copyWith(
                               fontWeight: FontWeight.w700, fontSize: 18),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -142,7 +142,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                     ),
                     Text(
                       widget.storyInfo.authorName,
-                      style: FontsDefault.h5,
+                      style: FontsDefault.h5(context),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -188,20 +188,25 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                       : null,
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: buttonState
-                                          ? ColorDefaults.mainColor
-                                          : ColorDefaults.secondMainColor,
+                                          ? themMode(
+                                              context, ColorCode.mainColor.name)
+                                          : themMode(context,
+                                              ColorCode.modeColor.name),
                                       shape: const StadiumBorder(),
                                       side: BorderSide(
                                           color: buttonState
-                                              ? ColorDefaults.mainColor
-                                              : ColorDefaults.secondMainColor,
+                                              ? themMode(context,
+                                                  ColorCode.mainColor.name)
+                                              : themMode(context,
+                                                  ColorCode.modeColor.name),
                                           width: 2)),
                                   child: Text(
-                                    '${L(ViCode.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}',
-                                    style: const TextStyle(
+                                    '${L(context, ViCode.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}',
+                                    style: TextStyle(
                                         fontFamily: FontsDefault.inter,
                                         fontSize: 16,
-                                        color: ColorDefaults.defaultTextColor),
+                                        color: themMode(
+                                            context, ColorCode.textColor.name)),
                                   ),
                                 ))),
                         Padding(
@@ -213,7 +218,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                             child: Stack(children: [
                               Text(
                                 widget.storyInfo.updatedDateString,
-                                style: FontsDefault.h5.copyWith(
+                                style: FontsDefault.h5(context).copyWith(
                                     fontSize: 12, fontStyle: FontStyle.italic),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,

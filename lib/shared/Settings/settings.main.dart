@@ -5,16 +5,26 @@ import 'package:icons_flutter/icons_flutter.dart';
 import 'package:muonroi/core/SignalR/enum/enum.signalr.type.dart';
 import 'package:muonroi/core/localization/settings.languages.dart';
 import 'package:muonroi/core/models/settings/models.mainsettings.device.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/features/settings/provider/theme.mode.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
 import 'package:muonroi/core/localization/settings.localization.dart';
+import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:provider/provider.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-String L(String key, {String locate = Languages.vi}) {
+String L(BuildContext context, String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
 }
 
-String N(int type, {String locale = 'vi', List<String>? args}) {
+Color themMode(BuildContext context, String key, {String mode = Modes.light}) {
+  final themeProvider = context.watch<CustomThemeModeProvider>();
+  return ColorDefaults.themeMode(key, mode: themeProvider.mode);
+}
+
+String N(BuildContext context, int type,
+    {String locale = 'vi', List<String>? args}) {
   return LocalizationLib.N(type, locale: locale, args: args);
 }
 
@@ -43,9 +53,9 @@ Widget netWorkImage(String url, bool setCache) =>
       }
     });
 
-Icon backButtonCommon() => const Icon(
+Icon backButtonCommon(BuildContext context) => Icon(
       Icons.arrow_back_ios_sharp,
-      color: ColorDefaults.thirdMainColor,
+      color: themMode(context, ColorCode.textColor.name),
     );
 
 Widget showToolTip(String message) {

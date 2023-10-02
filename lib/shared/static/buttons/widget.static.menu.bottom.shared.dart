@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../settings/settings.colors.dart';
-import '../../settings/settings.images.dart';
-import '../../settings/settings.main.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/settings.images.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 
 class TabBarCustom extends StatefulWidget {
   final BuildContext context;
@@ -17,12 +16,13 @@ class _TabBarCustomState extends State<TabBarCustom> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      color: themMode(context, ColorCode.modeColor.name),
       shape: const CircularNotchedRectangle(),
       child: TabBar(
         isScrollable: false,
-        unselectedLabelColor: ColorDefaults.colorGrey200,
-        indicatorColor: ColorDefaults.mainColor,
-        labelColor: ColorDefaults.mainColor,
+        unselectedLabelColor: themMode(context, ColorCode.disableColor.name),
+        indicatorColor: themMode(context, ColorCode.mainColor.name),
+        labelColor: themMode(context, ColorCode.mainColor.name),
         onTap: (value) {
           setState(() {
             _currentIndex = value;
@@ -33,8 +33,8 @@ class _TabBarCustomState extends State<TabBarCustom> {
             icon: Icon(
               Icons.home,
               color: _currentIndex == 0
-                  ? ColorDefaults.mainColor
-                  : ColorDefaults.colorGrey200,
+                  ? themMode(context, ColorCode.mainColor.name)
+                  : themMode(context, ColorCode.textColor.name),
               size: MainSetting.getPercentageOfDevice(context, expectWidth: 26)
                   .width,
             ),
@@ -48,8 +48,8 @@ class _TabBarCustomState extends State<TabBarCustom> {
                       .width,
               child: Image.asset(ImageDefault.bookBookmark2x,
                   color: _currentIndex == 1
-                      ? ColorDefaults.mainColor
-                      : ColorDefaults.colorGrey200,
+                      ? themMode(context, ColorCode.mainColor.name)
+                      : themMode(context, ColorCode.textColor.name),
                   fit: BoxFit.cover),
             ),
           ),
@@ -68,8 +68,8 @@ class _TabBarCustomState extends State<TabBarCustom> {
               child: ColorFiltered(
                   colorFilter: ColorFilter.mode(
                       _currentIndex == 3
-                          ? ColorDefaults.mainColor
-                          : ColorDefaults.colorGrey200,
+                          ? themMode(context, ColorCode.mainColor.name)
+                          : themMode(context, ColorCode.textColor.name),
                       BlendMode.srcIn),
                   child: Image.asset(
                     ImageDefault.freeBook2x,
@@ -86,8 +86,8 @@ class _TabBarCustomState extends State<TabBarCustom> {
             child: ColorFiltered(
                 colorFilter: ColorFilter.mode(
                     _currentIndex == 4
-                        ? ColorDefaults.mainColor
-                        : ColorDefaults.colorGrey200,
+                        ? themMode(context, ColorCode.mainColor.name)
+                        : themMode(context, ColorCode.textColor.name),
                     BlendMode.srcIn),
                 child: Image.asset(
                   ImageDefault.userInfo2x,

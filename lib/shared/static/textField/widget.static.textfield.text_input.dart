@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 
 class RoundedInputField extends StatelessWidget {
   final TextEditingController? dateController;
@@ -30,7 +30,7 @@ class RoundedInputField extends StatelessWidget {
             hintText: hintText,
             icon: Icon(
               icon,
-              color: ColorDefaults.buttonColor,
+              color: themMode(context, ColorCode.mainColor.name),
             ),
             border: InputBorder.none),
       ),
@@ -73,9 +73,10 @@ class SearchBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 10),
       width: totalSize.width * 0.8,
       decoration: BoxDecoration(
-          color: ColorDefaults.secondMainColor,
+          color: themMode(context, ColorCode.modeColor.name),
           borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: ColorDefaults.colorGrey200)),
+          border: Border.all(
+              color: themMode(context, ColorCode.disableColor.name))),
       child: child,
     );
   }

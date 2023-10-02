@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/features/chapters/settings/settings.dashboard.available.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
@@ -26,10 +26,11 @@ class _CustomDashboardState extends State<CustomDashboard> {
     _selectedRadio = KeyChapterButtonScroll.none;
     _fontSetting = FontsDefault.inter;
     _isSelected = [false, false];
-    _templateAvailable = DashboardSettings.getDashboardAvailableSettings();
+    _templateAvailable =
+        DashboardSettings.getDashboardAvailableSettings(context);
     _templateSettingData = TemplateSetting();
-    _fontColor = ColorDefaults.thirdMainColor;
-    _backgroundColor = ColorDefaults.lightAppColor;
+    _fontColor = themMode(context, ColorCode.textColor.name);
+    _backgroundColor = themMode(context, ColorCode.modeColor.name);
     _fontSize = 15;
     _isChosseTemplate = -1;
     _initSharedPreferences();
@@ -39,15 +40,15 @@ class _CustomDashboardState extends State<CustomDashboard> {
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      _templateSettingData = getCurrentTemplate(_sharedPreferences);
+      _templateSettingData = getCurrentTemplate(_sharedPreferences, context);
       _selectedRadio =
           _templateSettingData.locationButton ?? KeyChapterButtonScroll.none;
       _fontSetting = _templateSettingData.fontFamily ?? FontsDefault.inter;
       _isSelected[_sharedPreferences.getInt('align_index') ?? 0] = true;
-      _fontColor =
-          _templateSettingData.fontColor ?? ColorDefaults.thirdMainColor;
-      _backgroundColor =
-          _templateSettingData.backgroundColor ?? ColorDefaults.lightAppColor;
+      _fontColor = _templateSettingData.fontColor ??
+          themMode(context, ColorCode.textColor.name);
+      _backgroundColor = _templateSettingData.backgroundColor ??
+          themMode(context, ColorCode.modeColor.name);
       _fontSize = _templateSettingData.fontSize ?? 15;
       _isChosseTemplate = _sharedPreferences.getInt('font_chosse_index') ?? -1;
     });
@@ -66,24 +67,25 @@ class _CustomDashboardState extends State<CustomDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorDefaults.secondMainColor,
+      backgroundColor: themMode(context, ColorCode.disableColor.name),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: ColorDefaults.secondMainColor,
+        backgroundColor: themMode(context, ColorCode.disableColor.name),
         title: Title(
-          color: ColorDefaults.thirdMainColor,
+          color: themMode(context, ColorCode.textColor.name),
           child: Text(
-            L(ViCode.customDashboardReadingTextInfo.toString()),
-            style: FontsDefault.h5,
+            L(context, ViCode.customDashboardReadingTextInfo.toString()),
+            style:
+                FontsDefault.h5(context).copyWith(fontWeight: FontWeight.w700),
           ),
         ),
         leading: IconButton(
             splashRadius: 25,
-            color: ColorDefaults.thirdMainColor,
+            color: themMode(context, ColorCode.textColor.name),
             onPressed: () {
               Navigator.maybePop(context, true);
             },
-            icon: backButtonCommon()),
+            icon: backButtonCommon(context)),
         elevation: 0,
       ),
       body: Consumer<TemplateSetting>(
@@ -98,9 +100,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
                   Container(
                     margin: const EdgeInsets.all(8.0),
                     child: Text(
-                      L(ViCode.defaultDashboardTextInfo.toString()),
-                      style:
-                          FontsDefault.h5.copyWith(fontWeight: FontWeight.w700),
+                      L(context, ViCode.defaultDashboardTextInfo.toString()),
+                      style: FontsDefault.h5(context)
+                          .copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),
                   // #region Chosse template
@@ -117,16 +119,17 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: CircleAvatar(
                               backgroundColor: _isChosseTemplate == index
-                                  ? ColorDefaults.mainColor
+                                  ? themMode(context, ColorCode.mainColor.name)
                                   : _templateAvailable[index].backgroundColor,
                               radius: 60.0,
                               child: InkWell(
-                                highlightColor: ColorDefaults.secondMainColor,
+                                highlightColor:
+                                    themMode(context, ColorCode.modeColor.name),
                                 onTap: () {
                                   templateValue.valueSetting =
                                       _templateAvailable[index];
                                   setCurrentTemplate(_sharedPreferences,
-                                      _templateAvailable[index]);
+                                      _templateAvailable[index], context);
                                   _isChosseTemplate = index;
                                   _sharedPreferences.setInt(
                                       'font_chosse_index', index);
@@ -150,9 +153,10 @@ class _CustomDashboardState extends State<CustomDashboard> {
                   Container(
                     margin: const EdgeInsets.all(12.0),
                     child: Text(
-                      L(ViCode.customAnotherDashboardTextInfo.toString()),
-                      style:
-                          FontsDefault.h5.copyWith(fontWeight: FontWeight.w700),
+                      L(context,
+                          ViCode.customAnotherDashboardTextInfo.toString()),
+                      style: FontsDefault.h5(context)
+                          .copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),
                   Container(
@@ -168,12 +172,17 @@ class _CustomDashboardState extends State<CustomDashboard> {
                               child: Row(
                                 children: [
                                   Container(
-                                      margin: const EdgeInsets.only(right: 4.0),
-                                      child: const Icon(Icons.swipe_outlined)),
+                                    margin: const EdgeInsets.only(right: 4.0),
+                                    child: Icon(Icons.swipe_outlined,
+                                        color: themMode(
+                                            context, ColorCode.textColor.name)),
+                                  ),
                                   Text(
-                                    L(ViCode.scrollConfigDashboardTextInfo
-                                        .toString()),
-                                    style: FontsDefault.h5,
+                                    L(
+                                        context,
+                                        ViCode.scrollConfigDashboardTextInfo
+                                            .toString()),
+                                    style: FontsDefault.h5(context),
                                   )
                                 ],
                               ),
@@ -185,17 +194,22 @@ class _CustomDashboardState extends State<CustomDashboard> {
                               height: MainSetting.getPercentageOfDevice(context,
                                       expectHeight: 40)
                                   .height,
-                              selectedColor: ColorDefaults.lightAppColor,
-                              normalColor: ColorDefaults.thirdMainColor,
-                              textLeft: L(ViCode
-                                  .scrollConfigVerticalDashboardTextInfo
-                                  .toString()),
-                              textRight: L(ViCode
-                                  .scrollConfigHorizontalDashboardTextInfo
-                                  .toString()),
-                              selectedBackgroundColor: ColorDefaults.mainColor,
+                              selectedColor:
+                                  themMode(context, ColorCode.modeColor.name),
+                              normalColor:
+                                  themMode(context, ColorCode.textColor.name),
+                              textLeft: L(
+                                  context,
+                                  ViCode.scrollConfigVerticalDashboardTextInfo
+                                      .toString()),
+                              textRight: L(
+                                  context,
+                                  ViCode.scrollConfigHorizontalDashboardTextInfo
+                                      .toString()),
+                              selectedBackgroundColor:
+                                  themMode(context, ColorCode.mainColor.name),
                               noneSelectedBackgroundColor:
-                                  ColorDefaults.secondMainColor,
+                                  themMode(context, ColorCode.modeColor.name),
                             ),
                           ],
                         ),
@@ -216,14 +230,19 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                           Container(
                                             margin: const EdgeInsets.only(
                                                 right: 4.0),
-                                            child: const Icon(Icons
-                                                .keyboard_double_arrow_down_outlined),
+                                            child: Icon(
+                                                Icons
+                                                    .keyboard_double_arrow_down_outlined,
+                                                color: themMode(context,
+                                                    ColorCode.textColor.name)),
                                           ),
                                           Text(
-                                            L(ViCode
-                                                .buttonScrollConfigDashboardTextInfo
-                                                .toString()),
-                                            style: FontsDefault.h5,
+                                            L(
+                                                context,
+                                                ViCode
+                                                    .buttonScrollConfigDashboardTextInfo
+                                                    .toString()),
+                                            style: FontsDefault.h5(context),
                                           )
                                         ],
                                       ),
@@ -248,7 +267,8 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                       setState(() {
                                                         var currentTemplate =
                                                             getCurrentTemplate(
-                                                                _sharedPreferences);
+                                                                _sharedPreferences,
+                                                                context);
 
                                                         currentTemplate
                                                                 .locationButton =
@@ -263,7 +283,8 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                                 .none;
                                                         setCurrentTemplate(
                                                             _sharedPreferences,
-                                                            currentTemplate);
+                                                            currentTemplate,
+                                                            context);
                                                         templateValue
                                                                 .valueSetting =
                                                             currentTemplate;
@@ -271,10 +292,13 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                     },
                                                   ),
                                                   Text(
-                                                      L(ViCode
-                                                          .buttonScrollConfigNoneDashboardTextInfo
-                                                          .toString()),
-                                                      style: FontsDefault.h5),
+                                                      L(
+                                                          context,
+                                                          ViCode
+                                                              .buttonScrollConfigNoneDashboardTextInfo
+                                                              .toString()),
+                                                      style: FontsDefault.h5(
+                                                          context)),
                                                 ],
                                               ),
                                             ),
@@ -290,7 +314,8 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                       setState(() {
                                                         var currentTempLate =
                                                             getCurrentTemplate(
-                                                                _sharedPreferences);
+                                                                _sharedPreferences,
+                                                                context);
 
                                                         currentTempLate
                                                                 .locationButton =
@@ -303,7 +328,8 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                                 .none;
                                                         setCurrentTemplate(
                                                             _sharedPreferences,
-                                                            currentTempLate);
+                                                            currentTempLate,
+                                                            context);
 
                                                         templateValue
                                                                 .valueSetting =
@@ -312,10 +338,13 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                     },
                                                   ),
                                                   Text(
-                                                      L(ViCode
-                                                          .buttonScrollConfigDisplayDashboardTextInfo
-                                                          .toString()),
-                                                      style: FontsDefault.h5),
+                                                      L(
+                                                          context,
+                                                          ViCode
+                                                              .buttonScrollConfigDisplayDashboardTextInfo
+                                                              .toString()),
+                                                      style: FontsDefault.h5(
+                                                          context)),
                                                 ],
                                               ),
                                             ),
@@ -338,12 +367,15 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 children: [
                                   Container(
                                       margin: const EdgeInsets.only(right: 4.0),
-                                      child: const Icon(
-                                          Icons.format_align_justify)),
+                                      child: Icon(Icons.format_align_justify,
+                                          color: themMode(context,
+                                              ColorCode.textColor.name))),
                                   Text(
-                                    L(ViCode.alignConfigDashboardTextInfo
-                                        .toString()),
-                                    style: FontsDefault.h5,
+                                    L(
+                                        context,
+                                        ViCode.alignConfigDashboardTextInfo
+                                            .toString()),
+                                    style: FontsDefault.h5(context),
                                   )
                                 ],
                               ),
@@ -357,10 +389,14 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                   .height,
                               child: ToggleButtons(
                                 isSelected: _isSelected,
-                                selectedColor: Colors.white,
-                                color: ColorDefaults.thirdMainColor,
-                                fillColor: ColorDefaults.mainColor,
-                                splashColor: ColorDefaults.mainColor,
+                                selectedColor:
+                                    themMode(context, ColorCode.modeColor.name),
+                                color:
+                                    themMode(context, ColorCode.textColor.name),
+                                fillColor:
+                                    themMode(context, ColorCode.mainColor.name),
+                                splashColor:
+                                    themMode(context, ColorCode.mainColor.name),
                                 highlightColor: Colors.orange,
                                 borderRadius: BorderRadius.circular(30),
                                 children: [
@@ -374,8 +410,11 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                             expectHeight: 20)
                                         .height,
                                     child: Text(
-                                      L(ViCode.alignConfigLeftDashboardTextInfo
-                                          .toString()),
+                                      L(
+                                          context,
+                                          ViCode
+                                              .alignConfigLeftDashboardTextInfo
+                                              .toString()),
                                       style: const TextStyle(
                                           fontFamily: FontsDefault.inter,
                                           fontWeight: FontWeight.w500),
@@ -392,9 +431,11 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                             expectHeight: 20)
                                         .height,
                                     child: Text(
-                                        L(ViCode
-                                            .alignConfigRegularDashboardTextInfo
-                                            .toString()),
+                                        L(
+                                            context,
+                                            ViCode
+                                                .alignConfigRegularDashboardTextInfo
+                                                .toString()),
                                         style: const TextStyle(
                                             fontFamily: FontsDefault.inter,
                                             fontWeight: FontWeight.w500),
@@ -409,11 +450,11 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                       if (index == newIndex) {
                                         var currentTempLate =
                                             getCurrentTemplate(
-                                                _sharedPreferences);
+                                                _sharedPreferences, context);
                                         currentTempLate.isLeftAlign = true;
                                         _isSelected[index] = true;
                                         setCurrentTemplate(_sharedPreferences,
-                                            currentTempLate);
+                                            currentTempLate, context);
                                         templateValue.valueSetting =
                                             currentTempLate;
                                         _sharedPreferences.setInt(
@@ -421,11 +462,11 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                       } else {
                                         var currentTempLate =
                                             getCurrentTemplate(
-                                                _sharedPreferences);
+                                                _sharedPreferences, context);
                                         currentTempLate.isLeftAlign = false;
                                         _isSelected[index] = false;
                                         setCurrentTemplate(_sharedPreferences,
-                                            currentTempLate);
+                                            currentTempLate, context);
                                         templateValue.valueSetting =
                                             currentTempLate;
                                         _sharedPreferences.setInt(
@@ -451,11 +492,15 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                     Container(
                                         margin:
                                             const EdgeInsets.only(right: 4.0),
-                                        child: const Icon(Icons.text_format)),
+                                        child: Icon(Icons.text_format,
+                                            color: themMode(context,
+                                                ColorCode.textColor.name))),
                                     Text(
-                                      L(ViCode.fontConfigDashboardTextInfo
-                                          .toString()),
-                                      style: FontsDefault.h5,
+                                      L(
+                                          context,
+                                          ViCode.fontConfigDashboardTextInfo
+                                              .toString()),
+                                      style: FontsDefault.h5(context),
                                     )
                                   ],
                                 ),
@@ -464,7 +509,8 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20.0),
-                                      color: ColorDefaults.colorGrey200,
+                                      color: themMode(
+                                          context, ColorCode.disableColor.name),
                                       boxShadow: [
                                         BoxShadow(
                                             color: Color.fromARGB(
@@ -483,7 +529,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                     alignment: Alignment.center,
                                     child: Text(
                                       templateValue.fontFamily ?? _fontSetting,
-                                      style: FontsDefault.h5,
+                                      style: FontsDefault.h5(context),
                                     ),
                                   ),
                                 ),
@@ -521,14 +567,16 @@ class _CustomDashboardState extends State<CustomDashboard> {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(right: 4.0),
-                                  child: const Icon(
-                                    Icons.text_fields_outlined,
-                                  ),
+                                  child: Icon(Icons.text_fields_outlined,
+                                      color: themMode(
+                                          context, ColorCode.textColor.name)),
                                 ),
                                 Text(
-                                  L(ViCode.fontSizeConfigDashboardTextInfo
-                                      .toString()),
-                                  style: FontsDefault.h5,
+                                  L(
+                                      context,
+                                      ViCode.fontSizeConfigDashboardTextInfo
+                                          .toString()),
+                                  style: FontsDefault.h5(context),
                                 ),
                               ],
                             ),
@@ -539,12 +587,12 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                     value: _fontSize,
                                     onChanged: (newValue) {
                                       var currentTemplate = getCurrentTemplate(
-                                          _sharedPreferences);
+                                          _sharedPreferences, context);
                                       currentTemplate.fontSize = newValue;
                                       templateValue.valueSetting =
                                           currentTemplate;
-                                      setCurrentTemplate(
-                                          _sharedPreferences, currentTemplate);
+                                      setCurrentTemplate(_sharedPreferences,
+                                          currentTemplate, context);
                                       _fontSize = newValue;
                                     })),
                             GestureDetector(
@@ -553,13 +601,18 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                       context: context,
                                       builder: (builder) {
                                         return AlertDialog(
+                                            backgroundColor: themMode(context,
+                                                ColorCode.modeColor.name),
                                             title: Text(
-                                              L(ViCode
-                                                  .limitFontSizeConfigTextInfo
-                                                  .toString()),
-                                              style: FontsDefault.h5,
+                                              L(
+                                                  context,
+                                                  ViCode
+                                                      .limitFontSizeConfigTextInfo
+                                                      .toString()),
+                                              style: FontsDefault.h5(context),
                                             ),
                                             content: TextField(
+                                              style: FontsDefault.h5(context),
                                               keyboardType:
                                                   TextInputType.number,
                                               inputFormatters: <TextInputFormatter>[
@@ -575,7 +628,8 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                             50) {
                                                       var currentTemplate =
                                                           getCurrentTemplate(
-                                                              _sharedPreferences);
+                                                              _sharedPreferences,
+                                                              context);
                                                       currentTemplate.fontSize =
                                                           double.parse(value);
                                                       templateValue
@@ -583,13 +637,15 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                           currentTemplate;
                                                       setCurrentTemplate(
                                                           _sharedPreferences,
-                                                          currentTemplate);
+                                                          currentTemplate,
+                                                          context);
                                                       _fontSize =
                                                           double.parse(value);
                                                     } else {
                                                       var currentTemplate =
                                                           getCurrentTemplate(
-                                                              _sharedPreferences);
+                                                              _sharedPreferences,
+                                                              context);
                                                       currentTemplate.fontSize =
                                                           15;
                                                       templateValue
@@ -597,19 +653,25 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                           currentTemplate;
                                                       setCurrentTemplate(
                                                           _sharedPreferences,
-                                                          currentTemplate);
+                                                          currentTemplate,
+                                                          context);
                                                       _fontSize = 15;
                                                     }
                                                   }
                                                 });
                                               },
                                               decoration: InputDecoration(
+                                                  hintStyle:
+                                                      FontsDefault.h5(context),
                                                   hintText:
                                                       '${_fontSize.ceil()}'),
                                             ));
                                       });
                                 },
-                                child: Text('${_fontSize.ceil()}'))
+                                child: Text(
+                                  '${_fontSize.ceil()}',
+                                  style: FontsDefault.h5(context),
+                                ))
                           ],
                         ),
                         // #endregion
@@ -628,15 +690,17 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                         Container(
                                           margin:
                                               const EdgeInsets.only(right: 4.0),
-                                          child: const Icon(
-                                            Icons.color_lens_outlined,
-                                          ),
+                                          child: Icon(Icons.color_lens_outlined,
+                                              color: themMode(context,
+                                                  ColorCode.textColor.name)),
                                         ),
                                         Text(
-                                          L(ViCode
-                                              .fontColorConfigDashboardTextInfo
-                                              .toString()),
-                                          style: FontsDefault.h5,
+                                          L(
+                                              context,
+                                              ViCode
+                                                  .fontColorConfigDashboardTextInfo
+                                                  .toString()),
+                                          style: FontsDefault.h5(context),
                                         ),
                                       ],
                                     ),
@@ -680,15 +744,17 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                         Container(
                                           margin:
                                               const EdgeInsets.only(right: 4.0),
-                                          child: const Icon(
-                                            Icons.colorize,
-                                          ),
+                                          child: Icon(Icons.colorize,
+                                              color: themMode(context,
+                                                  ColorCode.textColor.name)),
                                         ),
                                         Text(
-                                          L(ViCode
-                                              .backgroundConfigDashboardTextInfo
-                                              .toString()),
-                                          style: FontsDefault.h5,
+                                          L(
+                                              context,
+                                              ViCode
+                                                  .backgroundConfigDashboardTextInfo
+                                                  .toString()),
+                                          style: FontsDefault.h5(context),
                                         ),
                                       ],
                                     ),

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -34,7 +34,7 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
     _sharedPreferences = await SharedPreferences.getInstance();
 
     setState(() {
-      _templateSetting = getCurrentTemplate(_sharedPreferences);
+      _templateSetting = getCurrentTemplate(_sharedPreferences, context);
       switch (widget.colorType) {
         case KeyChapterColor.background:
           _pickerColor =
@@ -58,26 +58,28 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: ColorDefaults.secondMainColor,
+      backgroundColor: themMode(context, ColorCode.modeColor.name),
       appBar: AppBar(
         title: Title(
-            color: ColorDefaults.thirdMainColor,
+            color: themMode(context, ColorCode.textColor.name),
             child: Text(
-              L(ViCode.fontConfigDashboardTextInfo.toString()),
-              style: FontsDefault.h5,
+              L(context, ViCode.fontConfigDashboardTextInfo.toString()),
+              style: FontsDefault.h5(context),
             )),
-        backgroundColor: ColorDefaults.lightAppColor,
+        backgroundColor: themMode(context, ColorCode.modeColor.name),
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: IconButton(
-            onPressed: () => Navigator.pop(context), icon: backButtonCommon()),
+            onPressed: () => Navigator.pop(context),
+            icon: backButtonCommon(context)),
       ),
       body: Consumer<TemplateSetting>(
         builder: (context, templateValue, child) {
           return SingleChildScrollView(
             child: HueRingPicker(
               onColorChanged: (Color value) {
-                var currentTemplate = getCurrentTemplate(_sharedPreferences);
+                var currentTemplate =
+                    getCurrentTemplate(_sharedPreferences, context);
                 switch (widget.colorType) {
                   case KeyChapterColor.background:
                     currentTemplate.backgroundColor = value;
@@ -95,7 +97,8 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
                 setState(() {
                   _pickerColor = value;
                 });
-                setCurrentTemplate(_sharedPreferences, currentTemplate);
+                setCurrentTemplate(
+                    _sharedPreferences, currentTemplate, context);
               },
               pickerColor: _pickerColor,
             ),

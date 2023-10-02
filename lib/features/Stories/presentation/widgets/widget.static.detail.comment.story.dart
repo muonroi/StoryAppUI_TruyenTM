@@ -25,7 +25,7 @@
 //     return Column(
 //       children: [
 //         GroupCategoryTextInfo(
-//           titleText: L(ViCode.voteStoryTextInfo.toString()),
+//           titleText:L(context,ViCode.voteStoryTextInfo.toString()),
 //           nextRoute: const SignInPage(),
 //         ),
 //         SizedBox(
@@ -90,7 +90,7 @@
 //                                             horizontal: 4.0),
 //                                         child: Text(
 //                                           "${widget.widget.userComments?[index].fullName}",
-//                                           style: FontsDefault.h5.copyWith(
+//                                           style: FontsDefault.h5(context).copyWith(
 //                                               fontWeight: FontWeight.w600),
 //                                           textAlign: TextAlign.left,
 //                                           overflow: TextOverflow.ellipsis,
@@ -135,14 +135,14 @@
 //                                             icon: const Icon(
 //                                               Icons.thumb_up_alt_outlined,
 //                                               color:
-//                                                   ColorDefaults.thirdMainColor,
+//                                                   themMode(context,ColorCode.thirdMainColor.name),
 //                                             )),
 //                                         IconButton(
 //                                             onPressed: () {},
 //                                             icon: const Icon(
 //                                               Icons.thumb_down_alt_outlined,
 //                                               color:
-//                                                   ColorDefaults.thirdMainColor,
+//                                                   themMode(context,ColorCode.thirdMainColor.name),
 //                                             )),
 //                                         IconButton(
 //                                             onPressed: () {},
@@ -161,15 +161,15 @@
 //                                   .width,
 //                               child: Text(
 //                                 '${widget.widget.userComments?[index].voteContent}',
-//                                 style: FontsDefault.h5,
+//                                 style: FontsDefault.h5(context),
 //                                 overflow: TextOverflow.fade,
 //                                 maxLines: 2,
 //                               ),
 //                             ),
 //                             SizedBox(
 //                               child: Text(
-//                                 '${widget.widget.userComments?[index].createdDate} ${L(ViCode.passedNumberMinuteTextInfo.toString())}',
-//                                 style: FontsDefault.h6.copyWith(
+//                                 '${widget.widget.userComments?[index].createdDate} ${L(context,ViCode.passedNumberMinuteTextInfo.toString())}',
+//                                 style: FontsDefault.h6(context).copyWith(
 //                                     fontStyle: FontStyle.italic, fontSize: 12),
 //                               ),
 //                             )
@@ -193,13 +193,13 @@
 //                       .height,
 //               child: ButtonWidget.buttonNavigatorNextPreviewLanding(
 //                   context, const SignInPage(),
-//                   textStyle: FontsDefault.h5.copyWith(
-//                       color: ColorDefaults.mainColor,
+//                   textStyle: FontsDefault.h5(context).copyWith(
+//                       color: themMode(context,ColorCode.mainColor.name),
 //                       fontWeight: FontWeight.w600),
-//                   color: ColorDefaults.lightAppColor,
-//                   borderColor: ColorDefaults.mainColor,
+//                   color: themMode(context,ColorCode.lightAppColor.name),
+//                   borderColor: themMode(context,ColorCode.mainColor.name),
 //                   widthBorder: 2,
-//                   textDisplay: L(ViCode.writeCommentStoryTextInfo.toString())),
+//                   textDisplay:L(context,ViCode.writeCommentStoryTextInfo.toString())),
 //             ),
 //           ),
 //         )

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -45,6 +45,7 @@ class _HeaderState extends State<Header> {
                 ),
               ),
               RatingBar.builder(
+                unratedColor: themMode(context, ColorCode.textColor.name),
                 itemSize:
                     MainSetting.getPercentageOfDevice(context, expectWidth: 25)
                             .width ??
@@ -84,7 +85,7 @@ class _HeaderState extends State<Header> {
                     child: Stack(children: [
                       Text(
                         widget.infoStory.storyTitle,
-                        style: FontsDefault.h4.copyWith(fontSize: 20),
+                        style: FontsDefault.h4(context).copyWith(fontSize: 20),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       ),
@@ -94,10 +95,10 @@ class _HeaderState extends State<Header> {
                   SizedBox(
                     child: Text(
                       widget.infoStory.authorName,
-                      style: FontsDefault.h5.copyWith(
+                      style: FontsDefault.h5(context).copyWith(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
-                          color: ColorDefaults.mainColor),
+                          color: themMode(context, ColorCode.mainColor.name)),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -112,11 +113,12 @@ class _HeaderState extends State<Header> {
                         Container(
                           padding: const EdgeInsets.all(7),
                           decoration: BoxDecoration(
-                              color: ColorDefaults.secondMainColor,
+                              color:
+                                  themMode(context, ColorCode.modeColor.name),
                               borderRadius: BorderRadius.circular(10)),
                           child: Text(
                             widget.infoStory.nameCategory,
-                            style: FontsDefault.h5
+                            style: FontsDefault.h5(context)
                                 .copyWith(fontWeight: FontWeight.w400),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -132,16 +134,21 @@ class _HeaderState extends State<Header> {
                           .map((e) => e.toString())
                           .map((String item) {
                         return item.toLowerCase().trim() ==
-                                L(ViCode.tagCompleteTextInfo.toString().trim())
+                                L(
+                                    context,
+                                    ViCode.tagCompleteTextInfo
+                                        .toString()
+                                        .trim())
                             ? Text(
                                 '#$item ',
-                                style: FontsDefault.h6.copyWith(
+                                style: FontsDefault.h6(context).copyWith(
                                     fontStyle: FontStyle.italic,
                                     fontSize: 11,
-                                    backgroundColor: ColorDefaults.mainColor),
+                                    backgroundColor: themMode(
+                                        context, ColorCode.mainColor.name)),
                               )
                             : Text('#$item ',
-                                style: FontsDefault.h6.copyWith(
+                                style: FontsDefault.h6(context).copyWith(
                                     fontStyle: FontStyle.italic, fontSize: 11));
                       }).toList(),
                     ),
@@ -153,30 +160,36 @@ class _HeaderState extends State<Header> {
                           margin: const EdgeInsets.symmetric(vertical: 4.0),
                           child: RichText(
                             text: TextSpan(
-                                text: L(ViCode.voteStoryTextInfo.toString()),
+                                text: L(context,
+                                    ViCode.voteStoryTextInfo.toString()),
                                 children: [
                                   TextSpan(
                                       text:
                                           ' ${widget.infoStory.rating == 0.0 ? 0 : widget.infoStory.rating}/5 ',
-                                      style: FontsDefault.h6.copyWith(
+                                      style: FontsDefault.h6(context).copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,
-                                          color: ColorDefaults.mainColor)),
+                                          color: themMode(context,
+                                              ColorCode.mainColor.name))),
                                   TextSpan(
-                                      text: L(ViCode.voteStoryTotalTextInfo
-                                          .toString()),
-                                      style: FontsDefault.h6.copyWith(
+                                      text: L(
+                                          context,
+                                          ViCode.voteStoryTotalTextInfo
+                                              .toString()),
+                                      style: FontsDefault.h6(context).copyWith(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 15)),
                                   TextSpan(
                                       text:
-                                          '  ${widget.infoStory.totalVote} ${L(ViCode.voteStoryTextInfo.toString()).replaceRange(0, 1, L(ViCode.voteStoryTextInfo.toString())[0].toLowerCase())}',
-                                      style: FontsDefault.h6.copyWith(
+                                          '  ${widget.infoStory.totalVote} ${L(context, ViCode.voteStoryTextInfo.toString()).replaceRange(0, 1, L(context, ViCode.voteStoryTextInfo.toString())[0].toLowerCase())}',
+                                      style: FontsDefault.h6(context).copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,
-                                          color: ColorDefaults.mainColor))
+                                          color: themMode(context,
+                                              ColorCode.mainColor.name)))
                                 ],
-                                style: FontsDefault.h6.copyWith(fontSize: 15)),
+                                style: FontsDefault.h6(context)
+                                    .copyWith(fontSize: 15)),
                           ),
                         )
                       ],

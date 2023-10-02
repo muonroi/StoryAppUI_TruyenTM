@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/settings/settings.colors.dart';
-import '../../../../shared/settings/settings.fonts.dart';
-import '../../../../core/localization/settings.language_code.vi..dart';
-import '../../../../shared/settings/settings.main.dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'widget.static.stories.vertical.dart';
 
 class StoriesNewUpdate extends StatelessWidget {
@@ -20,16 +20,17 @@ class StoriesNewUpdate extends StatelessWidget {
               splashRadius:
                   MainSetting.getPercentageOfDevice(context, expectWidth: 25)
                       .width,
-              color: ColorDefaults.thirdMainColor,
+              color: themMode(context, ColorCode.textColor.name),
               highlightColor: const Color.fromARGB(255, 255, 175, 0),
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: backButtonCommon()),
-          backgroundColor: ColorDefaults.mainColor,
+              icon: backButtonCommon(context)),
+          backgroundColor: themMode(context, ColorCode.mainColor.name),
           title: Text(
-            L(ViCode.newUpdatedStoriesTextInfo.toString()),
-            style: FontsDefault.h5.copyWith(fontWeight: FontWeight.w600),
+            L(context, ViCode.newUpdatedStoriesTextInfo.toString()),
+            style:
+                FontsDefault.h5(context).copyWith(fontWeight: FontWeight.w600),
           )),
       body: StoriesVerticalData(
         isShowLabel: isShowLabel,

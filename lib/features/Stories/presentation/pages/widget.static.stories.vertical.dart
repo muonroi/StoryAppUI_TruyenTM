@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/bloc/freeData/free_bloc.dart';
@@ -128,20 +128,20 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorDefaults.lightAppColor,
+      backgroundColor: themMode(context, ColorCode.modeColor.name),
       appBar: widget.isShowIconBack
           ? AppBar(
-              backgroundColor: ColorDefaults.lightAppColor,
+              backgroundColor: themMode(context, ColorCode.modeColor.name),
               elevation: 0,
               leading: Align(
                 alignment: Alignment.centerLeft,
                 child: IconButton(
                     splashRadius: 25,
-                    color: ColorDefaults.thirdMainColor,
+                    color: themMode(context, ColorCode.textColor.name),
                     onPressed: () {
                       Navigator.maybePop(context, true);
                     },
-                    icon: backButtonCommon()),
+                    icon: backButtonCommon(context)),
               ),
             )
           : null,
@@ -167,14 +167,17 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
                   onLoading: _onLoading,
                   footer: ClassicFooter(
                     canLoadingIcon: const Icon(Icons.arrow_downward),
-                    canLoadingText: L(ViCode.nextChapterTextInfo.toString()),
-                    idleText: L(ViCode.loadingMoreTextInfo.toString()),
+                    canLoadingText:
+                        L(context, ViCode.nextChapterTextInfo.toString()),
+                    idleText: L(context, ViCode.loadingMoreTextInfo.toString()),
                   ),
                   header: ClassicHeader(
                     idleIcon: const Icon(Icons.arrow_upward),
-                    refreshingText: L(ViCode.loadingTextInfo.toString()),
-                    releaseText: L(ViCode.loadingTextInfo.toString()),
-                    idleText: L(ViCode.loadingPreviousTextInfo.toString()),
+                    refreshingText:
+                        L(context, ViCode.loadingTextInfo.toString()),
+                    releaseText: L(context, ViCode.loadingTextInfo.toString()),
+                    idleText:
+                        L(context, ViCode.loadingPreviousTextInfo.toString()),
                   ),
                   child: ListView.builder(
                       physics: const BouncingScrollPhysics(),

@@ -58,8 +58,8 @@ class _SimilarStoriesState extends State<SimilarStories> {
                   return Column(
                     children: [
                       GroupCategoryTextInfo(
-                          titleText:
-                              L(ViCode.similarStoriesTextInfo.toString()),
+                          titleText: L(context,
+                              ViCode.similarStoriesTextInfo.toString()),
                           nextRoute: StoriesVerticalData(
                             isShowBack: true,
                             isShowLabel: false,

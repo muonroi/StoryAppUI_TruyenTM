@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/settings/settings.colors.dart';
-import '../../../../shared/settings/settings.fonts.dart';
-import '../../../../core/localization/settings.language_code.vi..dart';
-import '../../../../shared/settings/settings.main.dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 import 'widget.static.stories.vertical.dart';
 
 class StoriesComplete extends StatelessWidget {
@@ -18,16 +18,17 @@ class StoriesComplete extends StatelessWidget {
           automaticallyImplyLeading: false,
           leading: IconButton(
               splashRadius: 25,
-              color: ColorDefaults.mainColor,
+              color: themMode(context, ColorCode.mainColor.name),
               highlightColor: const Color.fromARGB(255, 255, 175, 0),
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: backButtonCommon()),
-          backgroundColor: ColorDefaults.mainColor,
+              icon: backButtonCommon(context)),
+          backgroundColor: themMode(context, ColorCode.mainColor.name),
           title: Text(
-            L(ViCode.completeStoriesTextInfo.toString()),
-            style: FontsDefault.h5.copyWith(fontWeight: FontWeight.w600),
+            L(context, ViCode.completeStoriesTextInfo.toString()),
+            style:
+                FontsDefault.h5(context).copyWith(fontWeight: FontWeight.w600),
           )),
       body: StoriesVerticalData(
         isShowLabel: isShowLabel,

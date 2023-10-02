@@ -131,5 +131,7 @@ class StorySingleResult {
         "updatedDateString": updatedDateString,
         "slugAuthor": slugAuthor,
         "isBookmark": isBookmark,
+        "firstChapterId": firstChapterId,
+        "lastChapterId": lastChapterId
       };
 }

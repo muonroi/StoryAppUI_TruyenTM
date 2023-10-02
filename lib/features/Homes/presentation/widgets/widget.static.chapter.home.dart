@@ -104,7 +104,8 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                                       text: TextSpan(
                                                     text: chapterInfo
                                                         .chapterTitle,
-                                                    style: FontsDefault.h5,
+                                                    style: FontsDefault.h5(
+                                                        context),
                                                     children: <InlineSpan>[
                                                       const TextSpan(
                                                           text:
@@ -127,7 +128,7 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                                               ).toLocal(),
                                                             ),
                                                             style: FontsDefault
-                                                                .h6
+                                                                    .h6(context)
                                                                 .copyWith(
                                                                     fontSize:
                                                                         11,
@@ -156,8 +157,9 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                               TextButton(
                                                   onPressed: null,
                                                   child: Text(
-                                                    '${L(ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}',
-                                                    style: FontsDefault.h5,
+                                                    '${L(context, ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}',
+                                                    style: FontsDefault.h5(
+                                                        context),
                                                     textAlign: TextAlign.left,
                                                   )),
                                             ],

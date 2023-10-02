@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -19,11 +19,13 @@ class _StoriesFreeState extends State<StoriesFree> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: themMode(context, ColorCode.disableColor.name),
       appBar: AppBar(
-          backgroundColor: ColorDefaults.mainColor,
+          backgroundColor: themMode(context, ColorCode.mainColor.name),
           title: Text(
-            L(ViCode.freeStoriesTextInfo.toString()),
-            style: FontsDefault.h5.copyWith(fontWeight: FontWeight.w600),
+            L(context, ViCode.freeStoriesTextInfo.toString()),
+            style:
+                FontsDefault.h5(context).copyWith(fontWeight: FontWeight.w600),
           )),
       body: StoriesVerticalData(
         isShowLabel: widget.isShowLabel,

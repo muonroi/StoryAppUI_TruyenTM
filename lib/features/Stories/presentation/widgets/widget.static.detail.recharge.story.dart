@@ -19,7 +19,7 @@
 //     return SizedBox(
 //       child: Column(children: [
 //         GroupCategoryTextInfo(
-//             titleText: L(ViCode.coinStoryTextInfo.toString()),
+//             titleText:L(context,ViCode.coinstoryTextInfo.toString()),
 //             nextRoute: const SignInPage()),
 //         Container(
 //           margin: const EdgeInsets.symmetric(vertical: 12.0),
@@ -65,8 +65,8 @@
 //                             margin: const EdgeInsets.symmetric(horizontal: 8.0),
 //                             child: Text(
 //                               widget.userCoin?[index].fullName ??
-//                                   L(ViCode.notfoundTextInfo.toString()),
-//                               style: FontsDefault.h5,
+//                                   L(context,ViCode.notfoundTextInfo.toString()),
+//                               style: FontsDefault.h5(context),
 //                               overflow: TextOverflow.ellipsis,
 //                               maxLines: 1,
 //                             ),
@@ -75,8 +75,8 @@
 //                             margin: const EdgeInsets.symmetric(
 //                                 horizontal: 8.0, vertical: 4.0),
 //                             child: Text(
-//                               '${widget.userCoin?[index].createdDate.toString() ?? L(ViCode.notfoundTextInfo.toString())} ${L(ViCode.passedNumberMinuteTextInfo.toString())}',
-//                               style: FontsDefault.h5,
+//                               '${widget.userCoin?[index].createdDate.toString() ?? L(context,ViCode.notfoundTextInfo.toString())} ${L(context,ViCode.passedNumberMinuteTextInfo.toString())}',
+//                               style: FontsDefault.h5(context),
 //                               textAlign: TextAlign.left,
 //                               overflow: TextOverflow.ellipsis,
 //                               maxLines: 1,
@@ -91,15 +91,15 @@
 //                       children: [
 //                         SizedBox(
 //                           child: Image.asset(ImageDefault.coin2x,
-//                               color: ColorDefaults.mainColor),
+//                               color: themMode(context,ColorCode.mainColor.name)),
 //                         ),
 //                         Container(
 //                           margin: const EdgeInsets.symmetric(horizontal: 8.0),
 //                           child: Text(
 //                             formatValueNumber(
 //                                 widget.userCoin![index].coinValue * 1.0),
-//                             style: FontsDefault.h5.copyWith(
-//                                 color: ColorDefaults.mainColor,
+//                             style: FontsDefault.h5(context).copyWith(
+//                                 color: themMode(context,ColorCode.mainColor.name),
 //                                 fontWeight: FontWeight.w700),
 //                             overflow: TextOverflow.ellipsis,
 //                             maxLines: 1,
@@ -125,13 +125,13 @@
 //                       .height,
 //               child: ButtonWidget.buttonNavigatorNextPreviewLanding(
 //                   context, const SignInPage(),
-//                   textStyle: FontsDefault.h5.copyWith(
-//                       color: ColorDefaults.mainColor,
+//                   textStyle: FontsDefault.h5(context).copyWith(
+//                       color: themMode(context,ColorCode.mainColor.name),
 //                       fontWeight: FontWeight.w600),
-//                   color: ColorDefaults.lightAppColor,
-//                   borderColor: ColorDefaults.mainColor,
+//                   color: themMode(context,ColorCode.lightAppColor.name),
+//                   borderColor: themMode(context,ColorCode.mainColor.name),
 //                   widthBorder: 2,
-//                   textDisplay: L(ViCode.pushRechargeStoryTextInfo.toString())),
+//                   textDisplay:L(context,ViCode.pushRechargeStoryTextInfo.toString())),
 //             ),
 //           ),
 //         )

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../../settings/settings.colors.dart';
-import '../../settings/settings.fonts.dart';
-import '../../../core/localization/settings.language_code.vi..dart';
-import '../../settings/settings.main.dart';
+import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 
 class FilterByDateButton extends StatelessWidget {
   const FilterByDateButton({super.key});
@@ -25,13 +24,13 @@ class FilterByDateButton extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: ColorDefaults.mainColor,
+                      color: themMode(context, ColorCode.mainColor.name),
                     ),
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        L(ViCode.allCommonStoriesTextInfo.toString()),
-                        style: FontsDefault.h5.copyWith(
+                        L(context, ViCode.allCommonStoriesTextInfo.toString()),
+                        style: FontsDefault.h5(context).copyWith(
                             fontWeight: FontWeight.w500,
                             fontFamily: FontsDefault.inter),
                       ),
@@ -40,13 +39,14 @@ class FilterByDateButton extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: ColorDefaults.secondMainColor,
+                      color: themMode(context, ColorCode.modeColor.name),
                     ),
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        L(ViCode.commonStoriesOfDayTextInfo.toString()),
-                        style: FontsDefault.h5.copyWith(
+                        L(context,
+                            ViCode.commonStoriesOfDayTextInfo.toString()),
+                        style: FontsDefault.h5(context).copyWith(
                             fontWeight: FontWeight.w500,
                             fontFamily: FontsDefault.inter),
                       ),
@@ -55,13 +55,14 @@ class FilterByDateButton extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: ColorDefaults.secondMainColor,
+                      color: themMode(context, ColorCode.modeColor.name),
                     ),
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        L(ViCode.commonStoriesOfWeekTextInfo.toString()),
-                        style: FontsDefault.h5.copyWith(
+                        L(context,
+                            ViCode.commonStoriesOfWeekTextInfo.toString()),
+                        style: FontsDefault.h5(context).copyWith(
                             fontWeight: FontWeight.w500,
                             fontFamily: FontsDefault.inter),
                       ),
@@ -70,13 +71,14 @@ class FilterByDateButton extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: ColorDefaults.secondMainColor,
+                      color: themMode(context, ColorCode.modeColor.name),
                     ),
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        L(ViCode.commonStoriesOfMonthTextInfo.toString()),
-                        style: FontsDefault.h5.copyWith(
+                        L(context,
+                            ViCode.commonStoriesOfMonthTextInfo.toString()),
+                        style: FontsDefault.h5(context).copyWith(
                             fontWeight: FontWeight.w500,
                             fontFamily: FontsDefault.inter),
                       ),

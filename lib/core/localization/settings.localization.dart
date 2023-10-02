@@ -98,6 +98,49 @@ class LocalizationLib {
       ViCode.notificationTextConfigTextInfo.toString(): "Thông báo",
       ViCode.notificationByUserTextConfigTextInfo.toString():
           "Người dùng %s vừa theo dõi truyện %s của bạn",
+      ViCode.downloadedTextInfo.toString(): "Đã tải",
+      ViCode.ChaptersDownloadDeletedTextInfo.toString():
+          "Đã xoá chương %s khỏi bộ nhớ",
+      ViCode.ChaptersDownloadAddedTextInfo.toString():
+          "Tải xuống %s chương thành công",
+      ViCode.recentlyStoryTextInfo.toString(): "Không tìm thấy truyện gần đây",
+      ViCode.upgradeAccountTextInfo.toString(): "Nâng cấp tài khoản",
+      ViCode.buyNowTextInfo.toString(): "Mua ngay",
+      ViCode.monthTextInfo.toString(): "Tháng",
+      ViCode.customerBenefitsTextInfo.toString(): "Quyền lợi khách hàng",
+      ViCode.oneLawsUpgradeAccountTextInfo.toString():
+          "Sử dụng ứng dụng không có quảng cáo",
+      ViCode.logoutAccountTextInfo.toString(): "Đăng xuất",
+      ViCode.contactTextInfo.toString(): "Liên hệ & Hỗ trợ",
+      ViCode.contactToEmailTextInfo.toString(): "Liên hệ qua email",
+      ViCode.askCommonTextInfo.toString(): "Câu hỏi thường gặp",
+      ViCode.privacyTextInfo.toString(): "Quy định quyền riêng tư",
+      ViCode.privacyTermsTextInfo.toString(): "Điều khoản bảo mật",
+      ViCode.followUserTextInfo.toString(): "Theo dõi",
+      ViCode.inboxTextInfo.toString(): "Nhắn tin",
+      ViCode.gmailUserTextInfo.toString(): "Gmail",
+      ViCode.phoneNumberTextInfo.toString(): "Số điện thoại",
+      ViCode.birthdayUserTextInfo.toString(): "Ngày sinh",
+      ViCode.addressUserTextInfo.toString(): "Địa chỉ",
+      ViCode.themeModeTextInfo.toString(): "Giao diện",
+      ViCode.lightModeTextInfo.toString(): "Sáng",
+      ViCode.darkModeTextInfo.toString(): "Tối",
+      ViCode.forgotPasswordTextInfo.toString(): 'Quên mật khẩu',
+      ViCode.invalidAccountTextInfo.toString():
+          'Tên tài khoản hoặc mật khẩu không chính xác',
+      ViCode.rememberTextInfo.toString(): 'Ghi nhớ',
+      ViCode.forgotPasswordMoreInfoTextInfo.toString():
+          'Một liên kết đặt lại mật khẩu sẽ được gửi đến email của bạn để đặt lại mật khẩu. Nếu bạn không nhận được email trong vòng vài phút, vui lòng thử lại.',
+      ViCode.notificationTextInfo.toString(): 'Thông báo',
+      ViCode.sendTextInfo.toString(): 'Đã gửi',
+      ViCode.ignoreTextInfo.toString(): 'Đã hiểu',
+      ViCode.sendPasswordSuccessTextInfo.toString():
+          'Một liên kết đặt lại mật khẩu được gửi đến địa chỉ email của bạn. Vui lòng kiểm tra email của bạn.',
+      ViCode.backInfoTextInfo.toString(): 'Quay lại',
+      ViCode.submitTextInfo.toString(): 'Gửi',
+      ViCode.isSureTextInfo.toString(): 'Đồng ý',
+      ViCode.isNotSureTextInfo.toString(): 'Không',
+      ViCode.youSureLogoutTextInfo.toString(): 'Bạn có muốn đăng xuất không?',
     }
   };
   static String L(String key, {String locale = 'vi'}) {

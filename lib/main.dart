@@ -5,12 +5,12 @@ import 'package:muonroi/core/Authorization/enums/key.dart';
 import 'package:muonroi/core/Notification/widget.notification.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.ladding.index.dart';
+import 'package:muonroi/features/settings/provider/theme.mode.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'features/accounts/presentation/pages/pages.logins.sign_in.dart';
 import 'shared/settings/enums/enum.log.type.dart';
-import 'shared/settings/settings.colors.dart';
 
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
@@ -69,13 +69,10 @@ class _MainAppState extends State<MainApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TemplateSetting()),
+        ChangeNotifierProvider(create: (_) => CustomThemeModeProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: ColorDefaults.mainColor,
-        ),
-        darkTheme: ThemeData.dark(),
         home: _isSigninView ? const SignInPage() : const IndexPage(),
       ),
     );

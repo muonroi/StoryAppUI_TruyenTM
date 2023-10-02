@@ -21,13 +21,14 @@ class InfoDetailStory extends StatelessWidget {
               SizedBox(
                 child: Text(
                   formatNumberThouSand(value),
-                  style: FontsDefault.h4,
+                  style: FontsDefault.h4(context),
                 ),
               ),
               SizedBox(
                 child: Text(
                   text,
-                  style: FontsDefault.h5.copyWith(fontWeight: FontWeight.w300),
+                  style: FontsDefault.h5(context)
+                      .copyWith(fontWeight: FontWeight.w300),
                 ),
               )
             ]),
@@ -49,22 +50,22 @@ class MoreInfoStory extends StatelessWidget {
       children: [
         InfoDetailStory(
             value: infoStory.totalChapter.toDouble(),
-            text: L(ViCode.chapterNumberTextInfo.toString())),
+            text: L(context, ViCode.chapterNumberTextInfo.toString())),
         Text(
           '|',
-          style: FontsDefault.h4.copyWith(fontWeight: FontWeight.w300),
+          style: FontsDefault.h4(context).copyWith(fontWeight: FontWeight.w300),
         ),
         InfoDetailStory(
           value: infoStory.totalView * 1.0,
-          text: L(ViCode.totalViewStoryTextInfo.toString()),
+          text: L(context, ViCode.totalViewStoryTextInfo.toString()),
         ),
         Text(
           '|',
-          style: FontsDefault.h4.copyWith(fontWeight: FontWeight.w300),
+          style: FontsDefault.h4(context).copyWith(fontWeight: FontWeight.w300),
         ),
         InfoDetailStory(
           value: double.parse(infoStory.totalFavorite.toString()),
-          text: L(ViCode.totalFavoriteStoryTextInfo.toString()),
+          text: L(context, ViCode.totalFavoriteStoryTextInfo.toString()),
         ),
       ],
     );

@@ -13,6 +13,7 @@ class ApiNetwork {
 
 // #region Account endpoint
   static const String login = "users/login";
+  static const String forgotPassword = "users/forgot-password";
   static const String register = "users";
 // #endregion
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
@@ -32,15 +32,15 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         leading: IconButton(
             splashRadius: 25,
-            color: ColorDefaults.thirdMainColor,
+            color: themMode(context, ColorCode.textColor.name),
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: backButtonCommon()),
-        backgroundColor: ColorDefaults.lightAppColor,
+            icon: backButtonCommon(context)),
+        backgroundColor: themMode(context, ColorCode.modeColor.name),
         elevation: 0,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+        iconTheme: IconThemeData(
+          color: themMode(context, ColorCode.textColor.name),
         ),
         centerTitle: true,
         title: TextField(
@@ -58,12 +58,16 @@ class _SearchPageState extends State<SearchPage> {
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8.0),
               hintMaxLines: 1,
-              hintText: L(ViCode.searchTextInfo.toString()),
+              hintText: L(context, ViCode.searchTextInfo.toString()),
+              hintStyle:
+                  TextStyle(color: themMode(context, ColorCode.textColor.name)),
+              focusColor: themMode(context, ColorCode.textColor.name),
               suffixIcon: Visibility(
                 visible: isShowClearText,
                 child: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.clear,
+                    color: themMode(context, ColorCode.textColor.name),
                   ),
                   onPressed: () {
                     setState(() {
@@ -73,21 +77,24 @@ class _SearchPageState extends State<SearchPage> {
                   },
                 ),
               ),
-              prefixIcon: IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
+              prefixIcon: Icon(
+                Icons.search,
+                color: themMode(context, ColorCode.textColor.name),
               ),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
+          style: TextStyle(color: themMode(context, ColorCode.textColor.name)),
         ),
       ),
-      body: SizedBox(
+      body: Container(
+        color: themMode(context, ColorCode.modeColor.name),
         child: Column(
           children: [
             Expanded(
               child: ListView.builder(
                 itemCount: storiesSearch.length,
                 itemBuilder: (context, index) => Container(
+                  color: themMode(context, ColorCode.modeColor.name),
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   child: GestureDetector(
                     onTap: () {
@@ -113,7 +120,11 @@ class _SearchPageState extends State<SearchPage> {
                               netWorkImage(storiesSearch[index].imgUrl, true),
                         ),
                       ),
-                      title: Text(storiesSearch[index].storyTitle),
+                      title: Text(
+                        storiesSearch[index].storyTitle,
+                        style: TextStyle(
+                            color: themMode(context, ColorCode.textColor.name)),
+                      ),
                     ),
                   ),
                 ),

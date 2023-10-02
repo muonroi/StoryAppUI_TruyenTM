@@ -2,13 +2,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/settings.main.dart';
 
-TemplateSetting templateSettingFromJson(String str) =>
-    str == '' ? TemplateSetting() : TemplateSetting.fromJson(json.decode(str));
+TemplateSetting templateSettingFromJson(String str, BuildContext context) =>
+    str == ''
+        ? TemplateSetting()
+        : TemplateSetting.fromJson(context, json.decode(str));
 
-String templateSettingToJson(TemplateSetting data) =>
-    json.encode(data.toJson());
+String templateSettingToJson(TemplateSetting data, BuildContext context) =>
+    json.encode(data.toJson(context));
 
 class TemplateSetting with ChangeNotifier {
   String? fontFamily;
@@ -38,13 +41,14 @@ class TemplateSetting with ChangeNotifier {
     notifyListeners();
   }
 
-  factory TemplateSetting.fromJson(Map<String, dynamic> json) =>
+  factory TemplateSetting.fromJson(
+          BuildContext context, Map<String, dynamic> json) =>
       TemplateSetting(
         fontFamily: json["fontFamily"],
-        fontColor:
-            colorFromJson(json["fontColor"], ColorDefaults.thirdMainColor),
-        backgroundColor:
-            colorFromJson(json["backgroundColor"], ColorDefaults.lightAppColor),
+        fontColor: colorFromJson(json["fontColor"],
+            themMode(context, ColorCode.textColor.name), context),
+        backgroundColor: colorFromJson(json["backgroundColor"],
+            themMode(context, ColorCode.modeColor.name), context),
         fontSize: checkDouble(json["fontSize"]),
         isLeftAlign: json["isLeftAlign"] != "null"
             ? bool.parse(json["isLeftAlign"])
@@ -55,11 +59,12 @@ class TemplateSetting with ChangeNotifier {
             ? bool.parse(json["isHorizontal"])
             : bool.parse("false"),
       );
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson(BuildContext context) => {
         "fontFamily": fontFamily,
-        "fontColor": colorToJson(fontColor, ColorDefaults.thirdMainColor.value),
-        "backgroundColor":
-            colorToJson(backgroundColor, ColorDefaults.lightAppColor.value),
+        "fontColor": colorToJson(fontColor,
+            themMode(context, ColorCode.textColor.name).value, context),
+        "backgroundColor": colorToJson(backgroundColor,
+            themMode(context, ColorCode.modeColor.name).value, context),
         "fontSize": checkDouble(fontSize),
         "isLeftAlign": isLeftAlign.toString(),
         "locationButton": locationButton?.toJson(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/settings/settings.colors.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.model.book.case.stories.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
@@ -60,6 +61,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                 margin: const EdgeInsets.symmetric(
                                     horizontal: 10.0),
                                 child: TextField(
+                                  style: FontsDefault.h5(context),
                                   controller: widget.textSearchController,
                                   onChanged: (value) {
                                     if (context.mounted) {
@@ -75,19 +77,26 @@ class _StoriesItemsState extends State<StoriesItems> {
                                   decoration: InputDecoration(
                                       contentPadding: const EdgeInsets.all(8.0),
                                       hintMaxLines: 1,
-                                      hintText:
-                                          L(ViCode.searchTextInfo.toString()),
+                                      hintText: L(context,
+                                          ViCode.searchTextInfo.toString()),
+                                      hintStyle: FontsDefault.h5(context),
                                       suffixIcon: Visibility(
                                         visible: isShowClearText,
                                         child: IconButton(
-                                          icon: const Icon(Icons.clear),
+                                          icon: Icon(Icons.clear,
+                                              color: themMode(context,
+                                                  ColorCode.textColor.name)),
                                           onPressed: () {
                                             widget.textSearchController.clear();
                                           },
                                         ),
                                       ),
                                       prefixIcon: IconButton(
-                                        icon: const Icon(Icons.search),
+                                        icon: Icon(
+                                          Icons.search,
+                                          color: themMode(context,
+                                              ColorCode.textColor.name),
+                                        ),
                                         onPressed: () {},
                                       ),
                                       border: OutlineInputBorder(
@@ -110,7 +119,9 @@ class _StoriesItemsState extends State<StoriesItems> {
                                           widget.reload.forward(from: 0.0);
                                         });
                                       },
-                                      icon: const Icon(Icons.refresh_rounded)),
+                                      icon: Icon(Icons.refresh_rounded,
+                                          color: themMode(context,
+                                              ColorCode.textColor.name))),
                                 ),
                                 RotationTransition(
                                   turns: Tween(
@@ -136,9 +147,10 @@ class _StoriesItemsState extends State<StoriesItems> {
                                         }
                                         isShort = !isShort;
                                       },
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.sort,
-                                        color: ColorDefaults.thirdMainColor,
+                                        color: themMode(
+                                            context, ColorCode.textColor.name),
                                       )),
                                 )
                               ],
