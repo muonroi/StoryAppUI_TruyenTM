@@ -99,11 +99,11 @@ class _SignUpPageState extends State<SignUpPage> {
         child: RichText(
           text: TextSpan(
               text: 'Already have an account?',
-              style: FontsDefault.h5(context),
+              style: CustomFonts.h5(context),
               children: [
                 TextSpan(
                     text: ' Sign In',
-                    style: FontsDefault.h5(context).copyWith(
+                    style: CustomFonts.h5(context).copyWith(
                         fontWeight: FontWeight.w900,
                         color: themMode(context, ColorCode.mainColor.name)),
                     recognizer: TapGestureRecognizer()
@@ -141,7 +141,7 @@ class _InputMoreInfoSignUpState extends State<InputMoreInfoSignUp> {
             child: SizedBox(
               child: Text(
                 'Please choose your gender',
-                style: FontsDefault.h3(context)
+                style: CustomFonts.h3(context)
                     .copyWith(fontWeight: FontWeight.w300),
                 textAlign: TextAlign.center,
               ),

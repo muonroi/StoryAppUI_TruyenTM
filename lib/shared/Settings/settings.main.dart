@@ -2,7 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:icons_flutter/icons_flutter.dart';
-import 'package:muonroi/core/SignalR/enum/enum.signalr.type.dart';
+import 'package:muonroi/shared/models/signalR/enum/enum.signalr.type.dart';
 import 'package:muonroi/core/localization/settings.languages.dart';
 import 'package:muonroi/core/models/settings/models.mainsettings.device.dart';
 import 'package:muonroi/features/settings/provider/theme.mode.dart';
@@ -19,8 +19,9 @@ String L(BuildContext context, String key, {String locate = Languages.vi}) {
 }
 
 Color themMode(BuildContext context, String key, {String mode = Modes.light}) {
-  final themeProvider = context.watch<CustomThemeModeProvider>();
-  return ColorDefaults.themeMode(key, mode: themeProvider.mode);
+  final themePick = context.watch<CustomThemeModeProvider>();
+  return CustomColors.themeMode(key,
+      mode: themePick.mode == Modes.none ? mode : themePick.mode);
 }
 
 String N(BuildContext context, int type,

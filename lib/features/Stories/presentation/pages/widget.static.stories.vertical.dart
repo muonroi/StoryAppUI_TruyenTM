@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/bloc/freeData/free_bloc.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
@@ -167,17 +167,19 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
                   onLoading: _onLoading,
                   footer: ClassicFooter(
                     canLoadingIcon: const Icon(Icons.arrow_downward),
-                    canLoadingText:
-                        L(context, ViCode.nextChapterTextInfo.toString()),
-                    idleText: L(context, ViCode.loadingMoreTextInfo.toString()),
+                    canLoadingText: L(
+                        context, LanguageCodes.nextChapterTextInfo.toString()),
+                    idleText: L(
+                        context, LanguageCodes.loadingMoreTextInfo.toString()),
                   ),
                   header: ClassicHeader(
                     idleIcon: const Icon(Icons.arrow_upward),
                     refreshingText:
-                        L(context, ViCode.loadingTextInfo.toString()),
-                    releaseText: L(context, ViCode.loadingTextInfo.toString()),
-                    idleText:
-                        L(context, ViCode.loadingPreviousTextInfo.toString()),
+                        L(context, LanguageCodes.loadingTextInfo.toString()),
+                    releaseText:
+                        L(context, LanguageCodes.loadingTextInfo.toString()),
+                    idleText: L(context,
+                        LanguageCodes.loadingPreviousTextInfo.toString()),
                   ),
                   child: ListView.builder(
                       physics: const BouncingScrollPhysics(),

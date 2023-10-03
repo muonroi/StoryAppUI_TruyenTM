@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.forgot.password.dart';
 import 'package:muonroi/features/accounts/settings/enum/account.info.dart';
@@ -68,7 +68,7 @@ class _SignInPageState extends State<SignInPage> {
                         expectHeight: 100)
                     .height,
                 child: Image.asset(
-                  ImageDefault.mainLogo,
+                  CustomImages.mainLogo,
                   width: MainSetting.getPercentageOfDevice(context,
                           expectWidth: 220)
                       .width,
@@ -81,8 +81,9 @@ class _SignInPageState extends State<SignInPage> {
                   ? Container(
                       margin: const EdgeInsets.only(top: 30),
                       child: Text(
-                        L(context, ViCode.invalidAccountTextInfo.toString()),
-                        style: FontsDefault.h5(context)
+                        L(context,
+                            LanguageCodes.invalidAccountTextInfo.toString()),
+                        style: CustomFonts.h5(context)
                             .copyWith(fontSize: 13, color: Colors.red),
                       ),
                     )
@@ -102,8 +103,10 @@ class _SignInPageState extends State<SignInPage> {
                           color: themMode(context, ColorCode.mainColor.name),
                         ),
                         border: const UnderlineInputBorder(),
-                        labelText: L(context,
-                            ViCode.inputUsernameTextConfigTextInfo.toString())),
+                        labelText: L(
+                            context,
+                            LanguageCodes.inputUsernameTextConfigTextInfo
+                                .toString())),
                   ),
                 ),
               ),
@@ -122,8 +125,10 @@ class _SignInPageState extends State<SignInPage> {
                           color: themMode(context, ColorCode.mainColor.name),
                         ),
                         border: const UnderlineInputBorder(),
-                        labelText: L(context,
-                            ViCode.inputPasswordTextConfigTextInfo.toString()),
+                        labelText: L(
+                            context,
+                            LanguageCodes.inputPasswordTextConfigTextInfo
+                                .toString()),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -159,9 +164,8 @@ class _SignInPageState extends State<SignInPage> {
                           },
                         ),
                         Text(
-                          L(context, ViCode.rememberTextInfo.toString()),
-                          style:
-                              FontsDefault.h5(context).copyWith(fontSize: 16),
+                          L(context, LanguageCodes.rememberTextInfo.toString()),
+                          style: CustomFonts.h5(context).copyWith(fontSize: 16),
                         ),
                       ],
                     ),
@@ -181,9 +185,11 @@ class _SignInPageState extends State<SignInPage> {
                                         const ForgotPasswordPage()));
                           },
                           child: Text(
-                            L(context,
-                                ViCode.forgotPasswordTextInfo.toString()),
-                            style: FontsDefault.h5(context).copyWith(
+                            L(
+                                context,
+                                LanguageCodes.forgotPasswordTextInfo
+                                    .toString()),
+                            style: CustomFonts.h5(context).copyWith(
                               fontWeight: FontWeight.w900,
                               color:
                                   themMode(context, ColorCode.mainColor.name),
@@ -259,14 +265,16 @@ class _SignInPageState extends State<SignInPage> {
                 padding: const EdgeInsets.symmetric(vertical: 32.0),
                 child: RichText(
                   text: TextSpan(
-                      text: L(context,
-                          ViCode.noHaveAccountTextConfigTextInfo.toString()),
-                      style: FontsDefault.h5(context),
+                      text: L(
+                          context,
+                          LanguageCodes.noHaveAccountTextConfigTextInfo
+                              .toString()),
+                      style: CustomFonts.h5(context),
                       children: [
                         TextSpan(
                             text:
-                                " ${L(context, ViCode.signupConfigTextInfo.toString())}",
-                            style: FontsDefault.h5(context).copyWith(
+                                " ${L(context, LanguageCodes.signupConfigTextInfo.toString())}",
+                            style: CustomFonts.h5(context).copyWith(
                               fontWeight: FontWeight.w900,
                               color:
                                   themMode(context, ColorCode.mainColor.name),

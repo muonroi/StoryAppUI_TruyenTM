@@ -1,4 +1,4 @@
-class ImageDefault {
+class CustomImages {
   static const String imageAvatarDefault =
       "https://t3.ftcdn.net/jpg/02/09/37/00/240_F_209370065_JLXhrc5inEmGl52SyvSPeVB23hB6IjrR.jpg";
   static const String imageRootPath = 'assets/images/';

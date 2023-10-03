@@ -12,7 +12,7 @@ class DashboardSettings {
       TemplateSetting(
           backgroundColor: themMode(context, ColorCode.modeColor.name),
           fontColor: themMode(context, ColorCode.textColor.name),
-          fontFamily: FontsDefault.inter,
+          fontFamily: CustomFonts.inter,
           fontSize: 15.2,
           isLeftAlign: true,
           locationButton: KeyChapterButtonScroll.none,
@@ -20,7 +20,7 @@ class DashboardSettings {
       TemplateSetting(
           backgroundColor: themMode(context, ColorCode.textColor.name),
           fontColor: themMode(context, ColorCode.modeColor.name),
-          fontFamily: FontsDefault.inter,
+          fontFamily: CustomFonts.inter,
           fontSize: 15.2,
           isLeftAlign: true,
           locationButton: KeyChapterButtonScroll.none,
@@ -28,7 +28,7 @@ class DashboardSettings {
       TemplateSetting(
           backgroundColor: themMode(context, ColorCode.mainColor.name),
           fontColor: themMode(context, ColorCode.textColor.name),
-          fontFamily: FontsDefault.poppins,
+          fontFamily: CustomFonts.poppins,
           fontSize: 15.2,
           isLeftAlign: true,
           locationButton: KeyChapterButtonScroll.none,

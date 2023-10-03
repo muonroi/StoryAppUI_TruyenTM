@@ -14,7 +14,7 @@ import 'package:muonroi/features/stories/presentation/pages/widget.static.storie
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -275,8 +275,8 @@ class _ChapterState extends State<Chapter> {
             Center(
               child: Container(
                 child: Text(
-                  L(context, ViCode.chapterEndTextInfo.toString()),
-                  style: FontsDefault.h4(context),
+                  L(context, LanguageCodes.chapterEndTextInfo.toString()),
+                  style: CustomFonts.h4(context),
                 ),
               ),
             );
@@ -294,7 +294,7 @@ class _ChapterState extends State<Chapter> {
             _settingConfig.fontColor = _settingConfig.fontColor ??
                 themMode(context, ColorCode.textColor.name);
             _settingConfig.fontFamily =
-                _settingConfig.fontFamily ?? FontsDefault.inter;
+                _settingConfig.fontFamily ?? CustomFonts.inter;
             _settingConfig.fontSize = _settingConfig.fontSize ?? 15;
             _settingConfig.isLeftAlign = _settingConfig.isLeftAlign ?? true;
             _settingConfig.locationButton =
@@ -399,10 +399,10 @@ class _ChapterState extends State<Chapter> {
                                                     Text(
                                                       L(
                                                           context,
-                                                          ViCode
+                                                          LanguageCodes
                                                               .listChapterDetailConfigTextInfo
                                                               .toString()),
-                                                      style: FontsDefault.h6(
+                                                      style: CustomFonts.h6(
                                                           context),
                                                     )
                                                   ],
@@ -431,10 +431,10 @@ class _ChapterState extends State<Chapter> {
                                                     Text(
                                                       L(
                                                           context,
-                                                          ViCode
+                                                          LanguageCodes
                                                               .storyDetailConfigTextInfo
                                                               .toString()),
-                                                      style: FontsDefault.h6(
+                                                      style: CustomFonts.h6(
                                                           context),
                                                     )
                                                   ],
@@ -451,11 +451,11 @@ class _ChapterState extends State<Chapter> {
                                                   Text(
                                                     L(
                                                         context,
-                                                        ViCode
+                                                        LanguageCodes
                                                             .storyDownloadConfigTextInfo
                                                             .toString()),
-                                                    style: FontsDefault.h6(
-                                                        context),
+                                                    style:
+                                                        CustomFonts.h6(context),
                                                   )
                                                 ],
                                               )
@@ -483,11 +483,11 @@ class _ChapterState extends State<Chapter> {
                                                   Text(
                                                     L(
                                                         context,
-                                                        ViCode
+                                                        LanguageCodes
                                                             .storyPushCoinConfigTextInfo
                                                             .toString()),
-                                                    style: FontsDefault.h6(
-                                                        context),
+                                                    style:
+                                                        CustomFonts.h6(context),
                                                   )
                                                 ],
                                               ),
@@ -502,11 +502,11 @@ class _ChapterState extends State<Chapter> {
                                                   Text(
                                                     L(
                                                         context,
-                                                        ViCode
+                                                        LanguageCodes
                                                             .storyShareConfigTextInfo
                                                             .toString()),
-                                                    style: FontsDefault.h6(
-                                                        context),
+                                                    style:
+                                                        CustomFonts.h6(context),
                                                   )
                                                 ],
                                               ),
@@ -521,11 +521,11 @@ class _ChapterState extends State<Chapter> {
                                                   Text(
                                                     L(
                                                         context,
-                                                        ViCode
+                                                        LanguageCodes
                                                             .storyReportConfigTextInfo
                                                             .toString()),
-                                                    style: FontsDefault.h6(
-                                                        context),
+                                                    style:
+                                                        CustomFonts.h6(context),
                                                   )
                                                 ],
                                               )
@@ -550,7 +550,7 @@ class _ChapterState extends State<Chapter> {
                                 color: tempFontColor!,
                                 child: Text(
                                   widget.storyName,
-                                  style: FontsDefault.h5(context).copyWith(
+                                  style: CustomFonts.h5(context).copyWith(
                                       fontFamily: tempFontFamily,
                                       color: tempFontColor),
                                 )),
@@ -574,12 +574,12 @@ class _ChapterState extends State<Chapter> {
                           Icons.arrow_upward,
                           color: tempFontColor,
                         ),
-                        idleText: L(
-                            context, ViCode.previousChapterTextInfo.toString()),
-                        refreshingText:
-                            L(context, ViCode.loadingTextInfo.toString()),
-                        releaseText:
-                            L(context, ViCode.loadingTextInfo.toString()),
+                        idleText: L(context,
+                            LanguageCodes.previousChapterTextInfo.toString()),
+                        refreshingText: L(
+                            context, LanguageCodes.loadingTextInfo.toString()),
+                        releaseText: L(
+                            context, LanguageCodes.loadingTextInfo.toString()),
                       ),
                       controller: _refreshController,
                       onRefresh: () =>
@@ -591,10 +591,10 @@ class _ChapterState extends State<Chapter> {
                           Icons.arrow_downward,
                           color: tempFontColor,
                         ),
-                        idleText:
-                            L(context, ViCode.loadingMoreTextInfo.toString()),
-                        canLoadingText:
-                            L(context, ViCode.nextChapterTextInfo.toString()),
+                        idleText: L(context,
+                            LanguageCodes.loadingMoreTextInfo.toString()),
+                        canLoadingText: L(context,
+                            LanguageCodes.nextChapterTextInfo.toString()),
                       ),
                       child: tempIsHorizontal!
                           ? ListView.builder(
@@ -635,8 +635,8 @@ class _ChapterState extends State<Chapter> {
                                                                       96.75)
                                                           .width,
                                                       child: Text(
-                                                        "${L(context, ViCode.chapterNumberTextInfo.toString())} ${chapterInfo[_chapterIndex].numberOfChapter}",
-                                                        style: FontsDefault.h5(
+                                                        "${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterInfo[_chapterIndex].numberOfChapter}",
+                                                        style: CustomFonts.h5(
                                                                 context)
                                                             .copyWith(
                                                                 fontWeight:
@@ -671,7 +671,7 @@ class _ChapterState extends State<Chapter> {
                                                             .replaceAll(
                                                                 "\n", "")
                                                             .trim(),
-                                                        style: FontsDefault.h5(
+                                                        style: CustomFonts.h5(
                                                                 context)
                                                             .copyWith(
                                                                 fontWeight:
@@ -743,8 +743,8 @@ class _ChapterState extends State<Chapter> {
                                                           expectWidth: 96.75)
                                                   .width,
                                               child: Text(
-                                                "${L(context, ViCode.chapterNumberTextInfo.toString())} ${chapterInfo[_chapterIndex].numberOfChapter}",
-                                                style: FontsDefault.h5(context)
+                                                "${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterInfo[_chapterIndex].numberOfChapter}",
+                                                style: CustomFonts.h5(context)
                                                     .copyWith(
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -770,7 +770,7 @@ class _ChapterState extends State<Chapter> {
                                                         '')
                                                     .replaceAll("\n", "")
                                                     .trim(),
-                                                style: FontsDefault.h5(context)
+                                                style: CustomFonts.h5(context)
                                                     .copyWith(
                                                         fontWeight:
                                                             FontWeight.w600,

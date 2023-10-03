@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -26,9 +26,9 @@ class StoriesComplete extends StatelessWidget {
               icon: backButtonCommon(context)),
           backgroundColor: themMode(context, ColorCode.mainColor.name),
           title: Text(
-            L(context, ViCode.completeStoriesTextInfo.toString()),
+            L(context, LanguageCodes.completeStoriesTextInfo.toString()),
             style:
-                FontsDefault.h5(context).copyWith(fontWeight: FontWeight.w600),
+                CustomFonts.h5(context).copyWith(fontWeight: FontWeight.w600),
           )),
       body: StoriesVerticalData(
         isShowLabel: isShowLabel,

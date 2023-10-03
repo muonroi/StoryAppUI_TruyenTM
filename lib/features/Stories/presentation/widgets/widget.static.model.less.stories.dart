@@ -80,7 +80,7 @@ class _StoryLessModelWidgetState extends State<StoryLessModelWidget> {
                       .width,
                   child: Text(
                     widget.storyName,
-                    style: FontsDefault.h5(context),
+                    style: CustomFonts.h5(context),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,

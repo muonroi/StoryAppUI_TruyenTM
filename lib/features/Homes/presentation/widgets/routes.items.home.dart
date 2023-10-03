@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.button.search.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.filter.home.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.banner.home.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.categories.home.dart';
@@ -55,7 +55,7 @@ class HomePageItems {
         child: MainCategories(),
       ),
       GroupCategoryTextInfo(
-          titleText: L(context, ViCode.editorChoiceTextInfo.toString()),
+          titleText: L(context, LanguageCodes.editorChoiceTextInfo.toString()),
           nextRoute:
               const EditorStories(isShowLabel: false, isShowBack: false)),
       StoriesOfCategoriesData(
@@ -65,7 +65,8 @@ class HomePageItems {
       ),
 
       GroupCategoryTextInfo(
-          titleText: L(context, ViCode.newUpdatedStoriesTextInfo.toString()),
+          titleText:
+              L(context, LanguageCodes.newUpdatedStoriesTextInfo.toString()),
           nextRoute: const StoriesNewUpdate(
             isShowLabel: false,
             isShowBack: false,
@@ -73,7 +74,8 @@ class HomePageItems {
       StoriesNewUpdatedData(data: listStoriesNewUpdatedFirstRow),
 
       GroupCategoryTextInfo(
-          titleText: L(context, ViCode.commonOfStoriesTextInfo.toString()),
+          titleText:
+              L(context, LanguageCodes.commonOfStoriesTextInfo.toString()),
           nextRoute: const StoriesCommon(
             isShowLabel: true,
             isShowBack: false,
@@ -84,7 +86,7 @@ class HomePageItems {
       ),
 
       GroupCategoryTextInfo(
-          titleText: L(context, ViCode.newStoriesTextInfo.toString()),
+          titleText: L(context, LanguageCodes.newStoriesTextInfo.toString()),
           nextRoute: const StoriesNew(
             isShowLabel: false,
             isShowBack: false,
@@ -95,7 +97,8 @@ class HomePageItems {
           padding: 8.0),
 
       GroupCategoryTextInfo(
-          titleText: L(context, ViCode.completeStoriesTextInfo.toString()),
+          titleText:
+              L(context, LanguageCodes.completeStoriesTextInfo.toString()),
           nextRoute: const StoriesComplete(
             isShowLabel: false,
             isShowBack: false,
@@ -108,7 +111,8 @@ class HomePageItems {
 
       // #region Footer
       OnlyTitleTextInfo(
-        textInfo: L(context, ViCode.newChapterUpdatedTextInfo.toString()),
+        textInfo:
+            L(context, LanguageCodes.newChapterUpdatedTextInfo.toString()),
       ),
       const ListNewChapter(),
       // #endregion

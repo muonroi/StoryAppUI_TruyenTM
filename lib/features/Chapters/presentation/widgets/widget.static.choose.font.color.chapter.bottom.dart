@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 
 class ChooseFontColor extends StatefulWidget {
@@ -63,8 +63,8 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
         title: Title(
             color: themMode(context, ColorCode.textColor.name),
             child: Text(
-              L(context, ViCode.fontConfigDashboardTextInfo.toString()),
-              style: FontsDefault.h5(context),
+              L(context, LanguageCodes.fontConfigDashboardTextInfo.toString()),
+              style: CustomFonts.h5(context),
             )),
         backgroundColor: themMode(context, ColorCode.modeColor.name),
         elevation: 0,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.user.info.items.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
@@ -20,21 +20,21 @@ class ContactPage extends StatelessWidget {
         ),
         backgroundColor: themMode(context, ColorCode.mainColor.name),
         elevation: 0,
-        title: Text(L(context, ViCode.contactTextInfo.toString())),
+        title: Text(L(context, LanguageCodes.contactTextInfo.toString())),
       ),
       body: Container(
           child: Column(
         children: [
           SettingItems(
             onPressed: () {},
-            text: L(context, ViCode.contactToEmailTextInfo.toString()),
-            image: ImageDefault.email2x,
+            text: L(context, LanguageCodes.contactToEmailTextInfo.toString()),
+            image: CustomImages.email2x,
             colorIcon: themMode(context, ColorCode.textColor.name),
           ),
           SettingItems(
             onPressed: () {},
-            text: L(context, ViCode.askCommonTextInfo.toString()),
-            image: ImageDefault.user2x,
+            text: L(context, LanguageCodes.askCommonTextInfo.toString()),
+            image: CustomImages.user2x,
             colorIcon: themMode(context, ColorCode.textColor.name),
           ),
           Container(
@@ -46,14 +46,14 @@ class ContactPage extends StatelessWidget {
           ),
           SettingItems(
             onPressed: () {},
-            text: L(context, ViCode.privacyTextInfo.toString()),
-            image: ImageDefault.privacy2x,
+            text: L(context, LanguageCodes.privacyTextInfo.toString()),
+            image: CustomImages.privacy2x,
             colorIcon: themMode(context, ColorCode.textColor.name),
           ),
           SettingItems(
             onPressed: () {},
-            text: L(context, ViCode.privacyTermsTextInfo.toString()),
-            image: ImageDefault.privacy_terms2x,
+            text: L(context, LanguageCodes.privacyTermsTextInfo.toString()),
+            image: CustomImages.privacy_terms2x,
             colorIcon: themMode(context, ColorCode.textColor.name),
           ),
         ],

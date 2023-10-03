@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.categories.home.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.category.stories.home.dart';
@@ -59,7 +59,7 @@ class _SimilarStoriesState extends State<SimilarStories> {
                     children: [
                       GroupCategoryTextInfo(
                           titleText: L(context,
-                              ViCode.similarStoriesTextInfo.toString()),
+                              LanguageCodes.similarStoriesTextInfo.toString()),
                           nextRoute: StoriesVerticalData(
                             isShowBack: true,
                             isShowLabel: false,

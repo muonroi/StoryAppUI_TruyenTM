@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
 
-class ColorDefaults {
+class CustomColors {
   static final Map<String, Map<String, Color>> _themeSetting = {
     Modes.dark: {
       ColorCode.mainColor.name: Color(0xFFFFB800),

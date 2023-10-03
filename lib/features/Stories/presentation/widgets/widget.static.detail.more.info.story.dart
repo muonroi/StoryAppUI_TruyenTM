@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/data/models/models.single.story.dart';
 import 'package:muonroi/features/stories/settings/settings.dart';
@@ -21,13 +21,13 @@ class InfoDetailStory extends StatelessWidget {
               SizedBox(
                 child: Text(
                   formatNumberThouSand(value),
-                  style: FontsDefault.h4(context),
+                  style: CustomFonts.h4(context),
                 ),
               ),
               SizedBox(
                 child: Text(
                   text,
-                  style: FontsDefault.h5(context)
+                  style: CustomFonts.h5(context)
                       .copyWith(fontWeight: FontWeight.w300),
                 ),
               )
@@ -50,22 +50,22 @@ class MoreInfoStory extends StatelessWidget {
       children: [
         InfoDetailStory(
             value: infoStory.totalChapter.toDouble(),
-            text: L(context, ViCode.chapterNumberTextInfo.toString())),
+            text: L(context, LanguageCodes.chapterNumberTextInfo.toString())),
         Text(
           '|',
-          style: FontsDefault.h4(context).copyWith(fontWeight: FontWeight.w300),
+          style: CustomFonts.h4(context).copyWith(fontWeight: FontWeight.w300),
         ),
         InfoDetailStory(
           value: infoStory.totalView * 1.0,
-          text: L(context, ViCode.totalViewStoryTextInfo.toString()),
+          text: L(context, LanguageCodes.totalViewStoryTextInfo.toString()),
         ),
         Text(
           '|',
-          style: FontsDefault.h4(context).copyWith(fontWeight: FontWeight.w300),
+          style: CustomFonts.h4(context).copyWith(fontWeight: FontWeight.w300),
         ),
         InfoDetailStory(
           value: double.parse(infoStory.totalFavorite.toString()),
-          text: L(context, ViCode.totalFavoriteStoryTextInfo.toString()),
+          text: L(context, LanguageCodes.totalFavoriteStoryTextInfo.toString()),
         ),
       ],
     );

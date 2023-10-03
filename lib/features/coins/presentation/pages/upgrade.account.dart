@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_in.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
@@ -27,7 +27,8 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
         ),
         backgroundColor: themMode(context, ColorCode.mainColor.name),
         elevation: 0,
-        title: Text(L(context, ViCode.upgradeAccountTextInfo.toString())),
+        title:
+            Text(L(context, LanguageCodes.upgradeAccountTextInfo.toString())),
       ),
       body: Center(
         child: Column(
@@ -57,30 +58,31 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                             expectHeight: 50)
                         .height,
                     child: Image.asset(
-                      ImageDefault.crown2x,
+                      CustomImages.crown2x,
                       fit: BoxFit.cover,
                       color: themMode(context, ColorCode.mainColor.name),
                     ),
                   ),
                   SizedBox(
                     child: Text(
-                      L(context, ViCode.upgradeAccountTextInfo.toString()),
-                      style: FontsDefault.h4(context).copyWith(
+                      L(context,
+                          LanguageCodes.upgradeAccountTextInfo.toString()),
+                      style: CustomFonts.h4(context).copyWith(
                           color: themMode(context, ColorCode.mainColor.name)),
                     ),
                   ),
                   SizedBox(
                     child: Text(
-                      '45.000đ/${L(context, ViCode.monthTextInfo.toString())}',
-                      style: FontsDefault.h4(context),
+                      '45.000đ/${L(context, LanguageCodes.monthTextInfo.toString())}',
+                      style: CustomFonts.h4(context),
                     ),
                   ),
                   SizedBox(
                     child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                         context, SignInPage(),
                         textDisplay:
-                            L(context, ViCode.buyNowTextInfo.toString()),
-                        textStyle: FontsDefault.h5(context).copyWith(
+                            L(context, LanguageCodes.buyNowTextInfo.toString()),
+                        textStyle: CustomFonts.h5(context).copyWith(
                             color:
                                 themMode(context, ColorCode.modeColor.name))),
                   ),
@@ -98,8 +100,8 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                             expectWidth: 500)
                         .width,
                     child: Text(
-                      'I. ${L(context, ViCode.customerBenefitsTextInfo.toString())}',
-                      style: FontsDefault.h4(context),
+                      'I. ${L(context, LanguageCodes.customerBenefitsTextInfo.toString())}',
+                      style: CustomFonts.h4(context),
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -110,8 +112,8 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                             expectWidth: 500)
                         .width,
                     child: Text(
-                      '1. ${L(context, ViCode.oneLawsUpgradeAccountTextInfo.toString())}',
-                      style: FontsDefault.h5(context),
+                      '1. ${L(context, LanguageCodes.oneLawsUpgradeAccountTextInfo.toString())}',
+                      style: CustomFonts.h5(context),
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                     ),

@@ -1,4 +1,4 @@
-enum ViCode {
+enum LanguageCodes {
 // #region Info
 
 //Search detail text

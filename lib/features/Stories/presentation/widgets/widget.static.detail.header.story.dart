@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/data/models/models.single.story.dart';
 import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
@@ -85,7 +85,7 @@ class _HeaderState extends State<Header> {
                     child: Stack(children: [
                       Text(
                         widget.infoStory.storyTitle,
-                        style: FontsDefault.h4(context).copyWith(fontSize: 20),
+                        style: CustomFonts.h4(context).copyWith(fontSize: 20),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       ),
@@ -95,7 +95,7 @@ class _HeaderState extends State<Header> {
                   SizedBox(
                     child: Text(
                       widget.infoStory.authorName,
-                      style: FontsDefault.h5(context).copyWith(
+                      style: CustomFonts.h5(context).copyWith(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
                           color: themMode(context, ColorCode.mainColor.name)),
@@ -118,7 +118,7 @@ class _HeaderState extends State<Header> {
                               borderRadius: BorderRadius.circular(10)),
                           child: Text(
                             widget.infoStory.nameCategory,
-                            style: FontsDefault.h5(context)
+                            style: CustomFonts.h5(context)
                                 .copyWith(fontWeight: FontWeight.w400),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -136,19 +136,19 @@ class _HeaderState extends State<Header> {
                         return item.toLowerCase().trim() ==
                                 L(
                                     context,
-                                    ViCode.tagCompleteTextInfo
+                                    LanguageCodes.tagCompleteTextInfo
                                         .toString()
                                         .trim())
                             ? Text(
                                 '#$item ',
-                                style: FontsDefault.h6(context).copyWith(
+                                style: CustomFonts.h6(context).copyWith(
                                     fontStyle: FontStyle.italic,
                                     fontSize: 11,
                                     backgroundColor: themMode(
                                         context, ColorCode.mainColor.name)),
                               )
                             : Text('#$item ',
-                                style: FontsDefault.h6(context).copyWith(
+                                style: CustomFonts.h6(context).copyWith(
                                     fontStyle: FontStyle.italic, fontSize: 11));
                       }).toList(),
                     ),
@@ -161,12 +161,12 @@ class _HeaderState extends State<Header> {
                           child: RichText(
                             text: TextSpan(
                                 text: L(context,
-                                    ViCode.voteStoryTextInfo.toString()),
+                                    LanguageCodes.voteStoryTextInfo.toString()),
                                 children: [
                                   TextSpan(
                                       text:
                                           ' ${widget.infoStory.rating == 0.0 ? 0 : widget.infoStory.rating}/5 ',
-                                      style: FontsDefault.h6(context).copyWith(
+                                      style: CustomFonts.h6(context).copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,
                                           color: themMode(context,
@@ -174,21 +174,21 @@ class _HeaderState extends State<Header> {
                                   TextSpan(
                                       text: L(
                                           context,
-                                          ViCode.voteStoryTotalTextInfo
+                                          LanguageCodes.voteStoryTotalTextInfo
                                               .toString()),
-                                      style: FontsDefault.h6(context).copyWith(
+                                      style: CustomFonts.h6(context).copyWith(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 15)),
                                   TextSpan(
                                       text:
-                                          '  ${widget.infoStory.totalVote} ${L(context, ViCode.voteStoryTextInfo.toString()).replaceRange(0, 1, L(context, ViCode.voteStoryTextInfo.toString())[0].toLowerCase())}',
-                                      style: FontsDefault.h6(context).copyWith(
+                                          '  ${widget.infoStory.totalVote} ${L(context, LanguageCodes.voteStoryTextInfo.toString()).replaceRange(0, 1, L(context, LanguageCodes.voteStoryTextInfo.toString())[0].toLowerCase())}',
+                                      style: CustomFonts.h6(context).copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,
                                           color: themMode(context,
                                               ColorCode.mainColor.name)))
                                 ],
-                                style: FontsDefault.h6(context)
+                                style: CustomFonts.h6(context)
                                     .copyWith(fontSize: 15)),
                           ),
                         )

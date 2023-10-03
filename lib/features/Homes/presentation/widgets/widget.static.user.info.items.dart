@@ -51,7 +51,7 @@ class SettingItems extends StatelessWidget {
                       .height,
                   child: Text(
                     text,
-                    style: FontsDefault.h5(context),
+                    style: CustomFonts.h5(context),
                   ),
                 ),
                 SizedBox(

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/chapters/bloc/group_bloc/group_chapters_of_story_bloc.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
@@ -77,14 +77,15 @@ class _ChapterListPageState extends State<ChapterListPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    L(context, ViCode.listChapterStoryTextInfo.toString()),
-                    style: FontsDefault.h5(context)
+                    L(context,
+                        LanguageCodes.listChapterStoryTextInfo.toString()),
+                    style: CustomFonts.h5(context)
                         .copyWith(fontWeight: FontWeight.w600),
                   ),
                   Stack(children: [
                     Text(
                       widget.storyTitle,
-                      style: FontsDefault.h6(context).copyWith(fontSize: 13),
+                      style: CustomFonts.h6(context).copyWith(fontSize: 13),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -334,7 +335,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                                                   .replaceAll(
                                                       RegExp(r'chương \d+: '),
                                                       ''),
-                                              style: FontsDefault.h5(context),
+                                              style: CustomFonts.h5(context),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               textAlign: TextAlign.left,

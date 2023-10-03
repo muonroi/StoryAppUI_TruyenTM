@@ -83,7 +83,7 @@ Widget _homeLoading() => Padding(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(flex: 2, child: Image.asset(ImageDefault.laddingLogo))
+          Expanded(flex: 2, child: Image.asset(CustomImages.laddingLogo))
         ],
       ),
     );

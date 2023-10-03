@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.circle.button.icon.dart';
-import 'package:muonroi/shared/static/shared/widget.divider.dart';
+import 'package:muonroi/shared/static/items/widget.divider.dart';
 
 class UserInfoPage extends StatelessWidget {
   const UserInfoPage({super.key});
@@ -22,7 +22,7 @@ class UserInfoPage extends StatelessWidget {
         ),
         backgroundColor: themMode(context, ColorCode.mainColor.name),
         elevation: 0,
-        title: Text(L(context, ViCode.userInfoTextInfo.toString())),
+        title: Text(L(context, LanguageCodes.userInfoTextInfo.toString())),
       ),
       body: Container(
         child: Column(
@@ -48,18 +48,18 @@ class UserInfoPage extends StatelessWidget {
                                       expectHeight: 70)
                                   .height,
                               child: netWorkImage(
-                                  ImageDefault.imageAvatarDefault, true),
+                                  CustomImages.imageAvatarDefault, true),
                             ),
                           ),
                           Container(
                             child: Text(
                               'John jerry',
-                              style: FontsDefault.h5(context),
+                              style: CustomFonts.h5(context),
                             ),
                           ),
                           Text(
                             'Viewer',
-                            style: FontsDefault.h6(context),
+                            style: CustomFonts.h6(context),
                           )
                         ],
                       ),
@@ -98,7 +98,8 @@ class UserInfoPage extends StatelessWidget {
                     ),
                     borderSize: 16.0,
                     action: () {},
-                    tooltip: L(context, ViCode.followUserTextInfo.toString()),
+                    tooltip:
+                        L(context, LanguageCodes.followUserTextInfo.toString()),
                   ),
                   CircleButtonIcon(
                     icon: Icon(
@@ -107,7 +108,8 @@ class UserInfoPage extends StatelessWidget {
                     ),
                     borderSize: 16.0,
                     action: () {},
-                    tooltip: L(context, ViCode.followUserTextInfo.toString()),
+                    tooltip:
+                        L(context, LanguageCodes.followUserTextInfo.toString()),
                   ),
                   CircleButtonIcon(
                     icon: Icon(
@@ -116,7 +118,7 @@ class UserInfoPage extends StatelessWidget {
                     ),
                     borderSize: 16.0,
                     action: () {},
-                    tooltip: L(context, ViCode.inboxTextInfo.toString()),
+                    tooltip: L(context, LanguageCodes.inboxTextInfo.toString()),
                   )
                 ],
               ),
@@ -152,11 +154,11 @@ class UserInfoPage extends StatelessWidget {
                             Icons.email_outlined,
                             color: themMode(context, ColorCode.textColor.name),
                           ),
-                          labelText:
-                              L(context, ViCode.gmailUserTextInfo.toString()),
-                          labelStyle: FontsDefault.h5(context),
+                          labelText: L(context,
+                              LanguageCodes.gmailUserTextInfo.toString()),
+                          labelStyle: CustomFonts.h5(context),
                         ),
-                        style: FontsDefault.h5(context),
+                        style: CustomFonts.h5(context),
                       ),
                     ),
                   ),
@@ -186,11 +188,11 @@ class UserInfoPage extends StatelessWidget {
                             Icons.phone_outlined,
                             color: themMode(context, ColorCode.textColor.name),
                           ),
-                          labelText:
-                              L(context, ViCode.phoneNumberTextInfo.toString()),
-                          labelStyle: FontsDefault.h5(context),
+                          labelText: L(context,
+                              LanguageCodes.phoneNumberTextInfo.toString()),
+                          labelStyle: CustomFonts.h5(context),
                         ),
-                        style: FontsDefault.h5(context),
+                        style: CustomFonts.h5(context),
                       ),
                     ),
                   ),
@@ -227,11 +229,11 @@ class UserInfoPage extends StatelessWidget {
                             Icons.calendar_month,
                             color: themMode(context, ColorCode.textColor.name),
                           ),
-                          labelText: L(
-                              context, ViCode.birthdayUserTextInfo.toString()),
-                          labelStyle: FontsDefault.h5(context),
+                          labelText: L(context,
+                              LanguageCodes.birthdayUserTextInfo.toString()),
+                          labelStyle: CustomFonts.h5(context),
                         ),
-                        style: FontsDefault.h5(context),
+                        style: CustomFonts.h5(context),
                       ),
                     ),
                   ),
@@ -261,11 +263,11 @@ class UserInfoPage extends StatelessWidget {
                             Icons.info_outline,
                             color: themMode(context, ColorCode.textColor.name),
                           ),
-                          labelText:
-                              L(context, ViCode.addressUserTextInfo.toString()),
-                          labelStyle: FontsDefault.h5(context),
+                          labelText: L(context,
+                              LanguageCodes.addressUserTextInfo.toString()),
+                          labelStyle: CustomFonts.h5(context),
                         ),
-                        style: FontsDefault.h5(context),
+                        style: CustomFonts.h5(context),
                       ),
                     ),
                   ),

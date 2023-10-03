@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
@@ -86,11 +86,11 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                   child: widget.isShowRank
                       ? Banner(
                           message:
-                              '${L(context, ViCode.rankTextInfo.toString())} ${widget.storiesItem.rankNumber}',
+                              '${L(context, LanguageCodes.rankTextInfo.toString())} ${widget.storiesItem.rankNumber}',
                           color: widget.storiesItem.rankNumber == 1
                               ? themMode(context, ColorCode.mainColor.name)
                               : themMode(context, ColorCode.modeColor.name),
-                          textStyle: FontsDefault.h6(context)
+                          textStyle: CustomFonts.h6(context)
                               .copyWith(fontWeight: FontWeight.w700),
                           location: BannerLocation.topEnd,
                           child: netWorkImage(widget.storiesItem.imgUrl, true),
@@ -113,7 +113,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                         .width,
                     child: Text(
                       widget.storiesItem.authorName,
-                      style: FontsDefault.h5(context).copyWith(
+                      style: CustomFonts.h5(context).copyWith(
                           fontWeight: FontWeight.w600,
                           color: themMode(context, ColorCode.mainColor.name)),
                       maxLines: 1,
@@ -126,7 +126,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                         .width,
                     child: Text(
                       widget.storiesItem.storyTitle,
-                      style: FontsDefault.h5(context)
+                      style: CustomFonts.h5(context)
                           .copyWith(fontWeight: FontWeight.w700),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -139,7 +139,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
                           widget.storiesItem.nameCategory,
-                          style: FontsDefault.h5(context),
+                          style: CustomFonts.h5(context),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -147,8 +147,8 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
-                          '${formatNumberThouSand(widget.storiesItem.totalChapter.toDouble())} ${L(context, ViCode.chapterNumberTextInfo.toString())}',
-                          style: FontsDefault.h5(context),
+                          '${formatNumberThouSand(widget.storiesItem.totalChapter.toDouble())} ${L(context, LanguageCodes.chapterNumberTextInfo.toString())}',
+                          style: CustomFonts.h5(context),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -161,7 +161,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                               padding: const EdgeInsets.only(right: 8.0),
                               child: Text(
                                 '#$item',
-                                style: FontsDefault.h6(context).copyWith(
+                                style: CustomFonts.h6(context).copyWith(
                                     fontSize: 12, fontStyle: FontStyle.italic),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
@@ -171,7 +171,7 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                   ),
                   Text(
                     widget.storiesItem.updatedDateString.toString(),
-                    style: FontsDefault.h6(context)
+                    style: CustomFonts.h6(context)
                         .copyWith(fontStyle: FontStyle.italic, fontSize: 12),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

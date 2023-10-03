@@ -47,7 +47,7 @@ class _IntroAndNotificationStoryState extends State<IntroAndNotificationStory>
                 SizedBox(
                   child: Text(
                     widget.name,
-                    style: FontsDefault.h4(context),
+                    style: CustomFonts.h4(context),
                   ),
                 ),
                 Container(

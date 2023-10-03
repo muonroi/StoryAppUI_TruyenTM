@@ -3,7 +3,7 @@ import 'package:muonroi/features/chapters/provider/models.chapter.template.setti
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,8 +43,8 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
         title: Title(
             color: themMode(context, ColorCode.textColor.name),
             child: Text(
-              L(context, ViCode.fontConfigDashboardTextInfo.toString()),
-              style: FontsDefault.h5(context),
+              L(context, LanguageCodes.fontConfigDashboardTextInfo.toString()),
+              style: CustomFonts.h5(context),
             )),
         backgroundColor: themMode(context, ColorCode.modeColor.name),
         elevation: 0,
@@ -61,8 +61,8 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
               shrinkWrap: true,
               crossAxisCount: 2,
               children: List.generate(
-                  FontsDefault.getFontsNameAvailable().length, (index) {
-                var fontName = FontsDefault.getFontsNameAvailable()[index];
+                  CustomFonts.getFontsNameAvailable().length, (index) {
+                var fontName = CustomFonts.getFontsNameAvailable()[index];
                 return Container(
                   padding: const EdgeInsets.all(8.0),
                   child: Align(
@@ -93,7 +93,7 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
                                       horizontal: 4.0),
                                   child: Text(
                                     fontName,
-                                    style: FontsDefault.h5(context),
+                                    style: CustomFonts.h5(context),
                                   )),
                             ],
                           )),

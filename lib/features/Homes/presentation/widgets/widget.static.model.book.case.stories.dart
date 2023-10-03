@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
@@ -132,7 +132,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                       child: Stack(children: [
                         Text(
                           widget.storyInfo.storyTitle,
-                          style: FontsDefault.h4(context).copyWith(
+                          style: CustomFonts.h4(context).copyWith(
                               fontWeight: FontWeight.w700, fontSize: 18),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -142,7 +142,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                     ),
                     Text(
                       widget.storyInfo.authorName,
-                      style: FontsDefault.h5(context),
+                      style: CustomFonts.h5(context),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -201,9 +201,9 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                   ColorCode.modeColor.name),
                                           width: 2)),
                                   child: Text(
-                                    '${L(context, ViCode.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}',
+                                    '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}',
                                     style: TextStyle(
-                                        fontFamily: FontsDefault.inter,
+                                        fontFamily: CustomFonts.inter,
                                         fontSize: 16,
                                         color: themMode(
                                             context, ColorCode.textColor.name)),
@@ -218,7 +218,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                             child: Stack(children: [
                               Text(
                                 widget.storyInfo.updatedDateString,
-                                style: FontsDefault.h5(context).copyWith(
+                                style: CustomFonts.h5(context).copyWith(
                                     fontSize: 12, fontStyle: FontStyle.italic),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,

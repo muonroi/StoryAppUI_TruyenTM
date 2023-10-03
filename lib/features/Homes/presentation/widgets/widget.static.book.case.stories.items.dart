@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.model.book.case.stories.dart';
@@ -61,7 +61,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                 margin: const EdgeInsets.symmetric(
                                     horizontal: 10.0),
                                 child: TextField(
-                                  style: FontsDefault.h5(context),
+                                  style: CustomFonts.h5(context),
                                   controller: widget.textSearchController,
                                   onChanged: (value) {
                                     if (context.mounted) {
@@ -77,9 +77,11 @@ class _StoriesItemsState extends State<StoriesItems> {
                                   decoration: InputDecoration(
                                       contentPadding: const EdgeInsets.all(8.0),
                                       hintMaxLines: 1,
-                                      hintText: L(context,
-                                          ViCode.searchTextInfo.toString()),
-                                      hintStyle: FontsDefault.h5(context),
+                                      hintText: L(
+                                          context,
+                                          LanguageCodes.searchTextInfo
+                                              .toString()),
+                                      hintStyle: CustomFonts.h5(context),
                                       suffixIcon: Visibility(
                                         visible: isShowClearText,
                                         child: IconButton(

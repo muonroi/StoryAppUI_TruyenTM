@@ -9,7 +9,7 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/bloc/DetailData/detail_bloc.dart';
 import 'package:muonroi/features/stories/presentation/widgets/widget.static..detail.chapter.story.dart';
@@ -147,7 +147,7 @@ class _StoryDetailState extends State<StoryDetail> {
                             MoreInfoStory(infoStory: storyInfo),
                             IntroAndNotificationStory(
                               name: L(context,
-                                  ViCode.introStoryTextInfo.toString()),
+                                  LanguageCodes.introStoryTextInfo.toString()),
                               value: storyInfo.storySynopsis,
                             ),
                             ChapterOfStory(
@@ -243,7 +243,7 @@ class _StoryDetailState extends State<StoryDetail> {
                                 lastChapterId: storyInfo.lastChapterId,
                                 firstChapterId: storyInfo.firstChapterId,
                               ),
-                              textStyle: FontsDefault.h5(context).copyWith(
+                              textStyle: CustomFonts.h5(context).copyWith(
                                   color: themMode(
                                       context, ColorCode.textColor.name),
                                   fontWeight: FontWeight.w500),
@@ -253,7 +253,7 @@ class _StoryDetailState extends State<StoryDetail> {
                                   themMode(context, ColorCode.mainColor.name),
                               widthBorder: 2,
                               textDisplay:
-                                  '${L(context, ViCode.chapterNumberTextInfo.toString())} ${_chapterNumber == 0 ? 1 : _chapterNumber}'),
+                                  '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${_chapterNumber == 0 ? 1 : _chapterNumber}'),
                         ),
                       )
                     ],

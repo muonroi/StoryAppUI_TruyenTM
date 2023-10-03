@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
@@ -58,7 +58,7 @@ class _SearchPageState extends State<SearchPage> {
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8.0),
               hintMaxLines: 1,
-              hintText: L(context, ViCode.searchTextInfo.toString()),
+              hintText: L(context, LanguageCodes.searchTextInfo.toString()),
               hintStyle:
                   TextStyle(color: themMode(context, ColorCode.textColor.name)),
               focusColor: themMode(context, ColorCode.textColor.name),

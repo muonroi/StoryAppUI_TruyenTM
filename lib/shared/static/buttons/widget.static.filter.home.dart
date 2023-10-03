@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -29,10 +29,11 @@ class FilterByDateButton extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        L(context, ViCode.allCommonStoriesTextInfo.toString()),
-                        style: FontsDefault.h5(context).copyWith(
+                        L(context,
+                            LanguageCodes.allCommonStoriesTextInfo.toString()),
+                        style: CustomFonts.h5(context).copyWith(
                             fontWeight: FontWeight.w500,
-                            fontFamily: FontsDefault.inter),
+                            fontFamily: CustomFonts.inter),
                       ),
                     ),
                   ),
@@ -44,11 +45,13 @@ class FilterByDateButton extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        L(context,
-                            ViCode.commonStoriesOfDayTextInfo.toString()),
-                        style: FontsDefault.h5(context).copyWith(
+                        L(
+                            context,
+                            LanguageCodes.commonStoriesOfDayTextInfo
+                                .toString()),
+                        style: CustomFonts.h5(context).copyWith(
                             fontWeight: FontWeight.w500,
-                            fontFamily: FontsDefault.inter),
+                            fontFamily: CustomFonts.inter),
                       ),
                     ),
                   ),
@@ -60,11 +63,13 @@ class FilterByDateButton extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        L(context,
-                            ViCode.commonStoriesOfWeekTextInfo.toString()),
-                        style: FontsDefault.h5(context).copyWith(
+                        L(
+                            context,
+                            LanguageCodes.commonStoriesOfWeekTextInfo
+                                .toString()),
+                        style: CustomFonts.h5(context).copyWith(
                             fontWeight: FontWeight.w500,
-                            fontFamily: FontsDefault.inter),
+                            fontFamily: CustomFonts.inter),
                       ),
                     ),
                   ),
@@ -76,11 +81,13 @@ class FilterByDateButton extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        L(context,
-                            ViCode.commonStoriesOfMonthTextInfo.toString()),
-                        style: FontsDefault.h5(context).copyWith(
+                        L(
+                            context,
+                            LanguageCodes.commonStoriesOfMonthTextInfo
+                                .toString()),
+                        style: CustomFonts.h5(context).copyWith(
                             fontWeight: FontWeight.w500,
-                            fontFamily: FontsDefault.inter),
+                            fontFamily: CustomFonts.inter),
                       ),
                     ),
                   ),

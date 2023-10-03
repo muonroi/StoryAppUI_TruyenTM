@@ -1,4 +1,4 @@
-import 'package:muonroi/core/services/api_chapter_provider.dart';
+import 'package:muonroi/features/chapters/data/service/api.chapter.provider.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.range.dart';

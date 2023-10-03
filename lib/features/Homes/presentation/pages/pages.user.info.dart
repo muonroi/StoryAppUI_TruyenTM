@@ -5,11 +5,11 @@ import 'package:muonroi/features/coins/presentation/pages/upgrade.account.dart';
 import 'package:muonroi/features/contacts/presentation/pages/contact.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.user.info.items.dart';
 import 'package:muonroi/features/settings/presentation/pages/setting.page.dart';
-import 'package:muonroi/features/user_info/presentation/pages/user.detail.dart';
+import 'package:muonroi/features/user/presentation/pages/user.detail.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
@@ -49,8 +49,8 @@ class _UserInfoState extends State<UserInfo> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(L(context, ViCode.myAccountTextInfo.toString()),
-                  style: FontsDefault.h4(context)),
+              Text(L(context, LanguageCodes.myAccountTextInfo.toString()),
+                  style: CustomFonts.h4(context)),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: SizedBox(
@@ -62,7 +62,7 @@ class _UserInfoState extends State<UserInfo> {
                       .height,
                   child: netWorkImage(
                       widget.userInfo.imageLink ??
-                          ImageDefault.imageAvatarDefault,
+                          CustomImages.imageAvatarDefault,
                       true),
                 ),
               ),
@@ -70,8 +70,8 @@ class _UserInfoState extends State<UserInfo> {
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
                   widget.userInfo.username ??
-                      L(context, ViCode.notfoundTextInfo.toString()),
-                  style: FontsDefault.h5(context),
+                      L(context, LanguageCodes.notfoundTextInfo.toString()),
+                  style: CustomFonts.h5(context),
                 ),
               ),
               Align(
@@ -87,7 +87,7 @@ class _UserInfoState extends State<UserInfo> {
                           Column(
                             children: [
                               Text(formatValueNumber(widget.userInfo.coin ?? 0),
-                                  style: FontsDefault.h5(context)),
+                                  style: CustomFonts.h5(context)),
                               SizedBox(
                                 width: MainSetting.getPercentageOfDevice(
                                         context,
@@ -98,9 +98,11 @@ class _UserInfoState extends State<UserInfo> {
                                         expectHeight: 25)
                                     .height,
                                 child: Text(
-                                  L(context,
-                                      ViCode.myAccountCoinTextInfo.toString()),
-                                  style: FontsDefault.h5(context),
+                                  L(
+                                      context,
+                                      LanguageCodes.myAccountCoinTextInfo
+                                          .toString()),
+                                  style: CustomFonts.h5(context),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -108,14 +110,14 @@ class _UserInfoState extends State<UserInfo> {
                           ),
                           Text(
                             '|',
-                            style: FontsDefault.h4(context)
+                            style: CustomFonts.h4(context)
                                 .copyWith(fontWeight: FontWeight.w300),
                           ),
                           Column(
                             children: [
                               Text(
                                 widget.userInfo.totalStoriesBought.toString(),
-                                style: FontsDefault.h5(context),
+                                style: CustomFonts.h5(context),
                               ),
                               SizedBox(
                                 width: MainSetting.getPercentageOfDevice(
@@ -127,9 +129,11 @@ class _UserInfoState extends State<UserInfo> {
                                         expectHeight: 25)
                                     .height,
                                 child: Text(
-                                  L(context,
-                                      ViCode.storiesBoughtTextInfo.toString()),
-                                  style: FontsDefault.h5(context),
+                                  L(
+                                      context,
+                                      LanguageCodes.storiesBoughtTextInfo
+                                          .toString()),
+                                  style: CustomFonts.h5(context),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -143,9 +147,9 @@ class _UserInfoState extends State<UserInfo> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => new UpgradeAccount())),
-                      text: L(
-                          context, ViCode.myAccountPremiumTextInfo.toString()),
-                      image: ImageDefault.crown2x,
+                      text: L(context,
+                          LanguageCodes.myAccountPremiumTextInfo.toString()),
+                      image: CustomImages.crown2x,
                       colorIcon: themMode(context, ColorCode.textColor.name),
                     ),
                     // SettingItems(
@@ -161,9 +165,11 @@ class _UserInfoState extends State<UserInfo> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => new ContactPage())),
-                      text: L(context,
-                          ViCode.myAccountContactAdminTextInfo.toString()),
-                      image: ImageDefault.contact2x,
+                      text: L(
+                          context,
+                          LanguageCodes.myAccountContactAdminTextInfo
+                              .toString()),
+                      image: CustomImages.contact2x,
                       colorIcon: themMode(context, ColorCode.textColor.name),
                     ),
                     SettingItems(
@@ -171,9 +177,9 @@ class _UserInfoState extends State<UserInfo> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserInfoPage())),
-                      text:
-                          L(context, ViCode.myAccountDetailTextInfo.toString()),
-                      image: ImageDefault.user2x,
+                      text: L(context,
+                          LanguageCodes.myAccountDetailTextInfo.toString()),
+                      image: CustomImages.user2x,
                       colorIcon: themMode(context, ColorCode.textColor.name),
                     ),
                     SettingItems(
@@ -181,9 +187,9 @@ class _UserInfoState extends State<UserInfo> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => SettingsPage())),
-                      text: L(
-                          context, ViCode.myAccountSettingTextInfo.toString()),
-                      image: ImageDefault.gear2x,
+                      text: L(context,
+                          LanguageCodes.myAccountSettingTextInfo.toString()),
+                      image: CustomImages.gear2x,
                       colorIcon: themMode(context, ColorCode.textColor.name),
                     ),
                     Container(
@@ -197,7 +203,8 @@ class _UserInfoState extends State<UserInfo> {
                       onPressed: () async {
                         var userChoice = await _showConfirmationDialog(
                             context,
-                            L(context, ViCode.youSureLogoutTextInfo.toString()),
+                            L(context,
+                                LanguageCodes.youSureLogoutTextInfo.toString()),
                             null);
                         userChoice = userChoice ?? false;
                         if (userChoice && mounted) {
@@ -211,8 +218,9 @@ class _UserInfoState extends State<UserInfo> {
                           }));
                         }
                       },
-                      text: L(context, ViCode.logoutAccountTextInfo.toString()),
-                      image: ImageDefault.logout2x,
+                      text: L(context,
+                          LanguageCodes.logoutAccountTextInfo.toString()),
+                      image: CustomImages.logout2x,
                       colorIcon: themMode(context, ColorCode.textColor.name),
                     ),
                   ],
@@ -233,12 +241,12 @@ class _UserInfoState extends State<UserInfo> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            L(context, ViCode.notificationTextInfo.toString()),
-            style: FontsDefault.h5(context),
+            L(context, LanguageCodes.notificationTextInfo.toString()),
+            style: CustomFonts.h5(context),
           ),
           content: Text(
             notification,
-            style: FontsDefault.h5(context),
+            style: CustomFonts.h5(context),
           ),
           actions: <Widget>[
             TextButton(
@@ -246,16 +254,17 @@ class _UserInfoState extends State<UserInfo> {
                   Navigator.of(context).pop(false);
                 },
                 child: Text(
-                  L(context, ViCode.isNotSureTextInfo.toString()),
-                  style: FontsDefault.h6(context),
+                  L(context, LanguageCodes.isNotSureTextInfo.toString()),
+                  style: CustomFonts.h6(context),
                 )),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
               child: Text(
-                actionName ?? L(context, ViCode.isSureTextInfo.toString()),
-                style: FontsDefault.h6(context),
+                actionName ??
+                    L(context, LanguageCodes.isSureTextInfo.toString()),
+                style: CustomFonts.h6(context),
               ),
             ),
           ],

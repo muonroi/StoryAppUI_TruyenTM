@@ -46,7 +46,7 @@ class _TabBarCustomState extends State<TabBarCustom> {
               height:
                   MainSetting.getPercentageOfDevice(context, expectWidth: 26)
                       .width,
-              child: Image.asset(ImageDefault.bookBookmark2x,
+              child: Image.asset(CustomImages.bookBookmark2x,
                   color: _currentIndex == 1
                       ? themMode(context, ColorCode.mainColor.name)
                       : themMode(context, ColorCode.textColor.name),
@@ -72,7 +72,7 @@ class _TabBarCustomState extends State<TabBarCustom> {
                           : themMode(context, ColorCode.textColor.name),
                       BlendMode.srcIn),
                   child: Image.asset(
-                    ImageDefault.freeBook2x,
+                    CustomImages.freeBook2x,
                     fit: BoxFit.cover,
                   )),
             ),
@@ -90,7 +90,7 @@ class _TabBarCustomState extends State<TabBarCustom> {
                         : themMode(context, ColorCode.textColor.name),
                     BlendMode.srcIn),
                 child: Image.asset(
-                  ImageDefault.userInfo2x,
+                  CustomImages.userInfo2x,
                   fit: BoxFit.cover,
                 )),
           )),

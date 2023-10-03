@@ -1,5 +1,5 @@
 import 'package:muonroi/features/Categories/data/models/models.stories.dart';
-import 'package:muonroi/core/services/api_category_provider.dart';
+import 'package:muonroi/features/categories/data/services/api.category.provider.dart';
 
 class CategoriesRepository {
   final int pageIndex;

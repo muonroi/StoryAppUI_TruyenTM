@@ -48,7 +48,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text((index + 1).toString(),
-                                style: FontsDefault.h3(context).copyWith(
+                                style: CustomFonts.h3(context).copyWith(
                                     color: themMode(
                                         context, ColorCode.mainColor.name))),
                             SizedBox(
@@ -81,7 +81,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                   Text(
                                       widget
                                           .storiesCommonInfo[index].storyTitle,
-                                      style: FontsDefault.h5(context),
+                                      style: CustomFonts.h5(context),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1),
                                   Text(
@@ -89,7 +89,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                           .nameCategory,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
-                                      style: FontsDefault.h6(context)),
+                                      style: CustomFonts.h6(context)),
                                 ],
                               ),
                             ),
@@ -115,7 +115,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                 formatValueNumber(
                                     widget.storiesCommonInfo[index].totalView *
                                         1.0),
-                                style: FontsDefault.h6(context),
+                                style: CustomFonts.h6(context),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
 import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
@@ -89,7 +89,7 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                                         expectWidth: 20)
                                                 .height,
                                             child: Image.asset(
-                                                ImageDefault.bookBookmark2x,
+                                                CustomImages.bookBookmark2x,
                                                 fit: BoxFit.cover),
                                           ),
                                           Column(
@@ -104,8 +104,8 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                                       text: TextSpan(
                                                     text: chapterInfo
                                                         .chapterTitle,
-                                                    style: FontsDefault.h5(
-                                                        context),
+                                                    style:
+                                                        CustomFonts.h5(context),
                                                     children: <InlineSpan>[
                                                       const TextSpan(
                                                           text:
@@ -127,7 +127,7 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                                                     1000,
                                                               ).toLocal(),
                                                             ),
-                                                            style: FontsDefault
+                                                            style: CustomFonts
                                                                     .h6(context)
                                                                 .copyWith(
                                                                     fontSize:
@@ -157,9 +157,9 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                               TextButton(
                                                   onPressed: null,
                                                   child: Text(
-                                                    '${L(context, ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}',
-                                                    style: FontsDefault.h5(
-                                                        context),
+                                                    '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}',
+                                                    style:
+                                                        CustomFonts.h5(context),
                                                     textAlign: TextAlign.left,
                                                   )),
                                             ],

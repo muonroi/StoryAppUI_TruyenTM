@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/Notification/widget.notification.dart';
-import 'package:muonroi/core/SignalR/signalr.hub.dart';
-import 'package:muonroi/core/SignalR/signalr.hub.stream.name.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
-import 'package:muonroi/core/models/signalr/widget.notification.dart';
+import 'package:muonroi/shared/models/signalR/signalr.hub.dart';
+import 'package:muonroi/shared/models/signalR/signalr.hub.stream.name.dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/shared/models/signalR/widget.notification.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/features/stories/data/models/models.single.story.dart';
@@ -66,7 +66,8 @@ class _MainPageState extends State<MainPage> {
             .toList()
             .first;
         NotificationPush.showNotification(
-            title: L(context, ViCode.notificationTextConfigTextInfo.toString()),
+            title: L(context,
+                LanguageCodes.notificationTextConfigTextInfo.toString()),
             body: N(context, notifyInfo.type,
                 args: notifyInfo.notificationContent.split('-')),
             fln: flutterLocalNotificationsPlugin);
@@ -78,7 +79,8 @@ class _MainPageState extends State<MainPage> {
             .toList()
             .first;
         NotificationPush.showNotification(
-            title: L(context, ViCode.notificationTextConfigTextInfo.toString()),
+            title: L(context,
+                LanguageCodes.notificationTextConfigTextInfo.toString()),
             body: N(context, notifyInfo.type,
                 args: notifyInfo.notificationContent.split('-')),
             fln: flutterLocalNotificationsPlugin);
@@ -93,7 +95,7 @@ class _MainPageState extends State<MainPage> {
       theme: ThemeData(
           brightness: Brightness.light,
           primaryColor: themMode(context, ColorCode.mainColor.name),
-          fontFamily: FontsDefault.inter),
+          fontFamily: CustomFonts.inter),
       home: HomePage(
         storiesInit: widget.storiesInit,
         storiesCommon: widget.storiesCommon,
@@ -242,7 +244,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: themMode(context, ColorCode.modeColor.name),
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            leading: Image.asset(ImageDefault.mainLogo),
+            leading: Image.asset(CustomImages.mainLogo),
             backgroundColor: themMode(context, ColorCode.modeColor.name),
             elevation: 0,
             actions: [
@@ -291,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                       child: Center(
                         child: Text(
                           '$_totalNotification+',
-                          style: FontsDefault.h6(context),
+                          style: CustomFonts.h6(context),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -363,10 +365,10 @@ class _HomePageState extends State<HomePage> {
 
   void _showTooltipNotification(BuildContext context) {
     final tooltip = Tooltip(
-        message: L(context, ViCode.recentlyStoryTextInfo.toString()),
+        message: L(context, LanguageCodes.recentlyStoryTextInfo.toString()),
         child: Text(
-          L(context, ViCode.recentlyStoryTextInfo.toString()),
-          style: FontsDefault.h5(context),
+          L(context, LanguageCodes.recentlyStoryTextInfo.toString()),
+          style: CustomFonts.h5(context),
           textAlign: TextAlign.center,
         ));
 

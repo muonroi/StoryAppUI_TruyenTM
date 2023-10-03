@@ -4,7 +4,7 @@ import 'package:muonroi/features/stories/data/models/models.single.story.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 import 'package:muonroi/features/stories/settings/settings.dart';
 import 'package:sprintf/sprintf.dart';
-import 'api_route.dart';
+import '../../../../core/services/api_route.dart';
 
 class StoryProvider {
   Future<StoriesModel> getStoriesDataList(

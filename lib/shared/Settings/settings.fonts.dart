@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 
-class FontsDefault {
+class CustomFonts {
   static List<String> getFontsNameAvailable() => [inter, poppins];
   // Fonts setting
   static const String inter = 'Inter';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
@@ -35,15 +35,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 30.0),
                   child: Text(
-                    L(context, ViCode.forgotPasswordTextInfo.toString()),
-                    style: FontsDefault.h4(context),
+                    L(context, LanguageCodes.forgotPasswordTextInfo.toString()),
+                    style: CustomFonts.h4(context),
                   ),
                 ),
               ),
               SizedBox(
                 child: Text(
-                  L(context, ViCode.forgotPasswordMoreInfoTextInfo.toString()),
-                  style: FontsDefault.h6(context),
+                  L(context,
+                      LanguageCodes.forgotPasswordMoreInfoTextInfo.toString()),
+                  style: CustomFonts.h6(context),
                 ),
               ),
               SizedBox(
@@ -55,8 +56,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         color: themMode(context, ColorCode.mainColor.name),
                       ),
                       border: const UnderlineInputBorder(),
-                      labelText: L(context,
-                          ViCode.inputUsernameTextConfigTextInfo.toString())),
+                      labelText: L(
+                          context,
+                          LanguageCodes.inputUsernameTextConfigTextInfo
+                              .toString())),
                 ),
               ),
               Row(
@@ -75,8 +78,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         backgroundColor:
                             themMode(context, ColorCode.modeColor.name),
                       ),
-                      text: L(context, ViCode.backInfoTextInfo.toString()),
-                      textStyle: FontsDefault.h5(context).copyWith(
+                      text:
+                          L(context, LanguageCodes.backInfoTextInfo.toString()),
+                      textStyle: CustomFonts.h5(context).copyWith(
                         color: themMode(context, ColorCode.textColor.name),
                       ),
                     ),
@@ -100,16 +104,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     title: Text(
                                       L(
                                           context,
-                                          ViCode.notificationTextInfo
+                                          LanguageCodes.notificationTextInfo
                                               .toString()),
-                                      style: FontsDefault.h3(context),
+                                      style: CustomFonts.h3(context),
                                     ),
                                     content: Text(
                                       L(
                                           context,
-                                          ViCode.sendPasswordSuccessTextInfo
+                                          LanguageCodes
+                                              .sendPasswordSuccessTextInfo
                                               .toString()),
-                                      style: FontsDefault.h5(context),
+                                      style: CustomFonts.h5(context),
                                     ),
                                     actions: <Widget>[
                                       TextButton(
@@ -128,9 +133,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                           child: Text(
                                               L(
                                                   context,
-                                                  ViCode.ignoreTextInfo
+                                                  LanguageCodes.ignoreTextInfo
                                                       .toString()),
-                                              style: FontsDefault.h5(context)
+                                              style: CustomFonts.h5(context)
                                                   .copyWith(
                                                       color: themMode(
                                                           context,
@@ -151,8 +156,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         backgroundColor:
                             themMode(context, ColorCode.mainColor.name),
                       ),
-                      text: L(context, ViCode.submitTextInfo.toString()),
-                      textStyle: FontsDefault.h5(context).copyWith(
+                      text: L(context, LanguageCodes.submitTextInfo.toString()),
+                      textStyle: CustomFonts.h5(context).copyWith(
                           color: themMode(context, ColorCode.modeColor.name)),
                     ),
                   ),

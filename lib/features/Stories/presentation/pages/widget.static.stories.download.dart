@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/core/Notification/widget.notification.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/chapters/bloc/group_bloc/group_chapters_of_story_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/data/repositories/chapter_repository.dart';
@@ -73,7 +73,7 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
         ),
         title: Text(
           widget.storyName,
-          style: FontsDefault.h5(context).copyWith(fontWeight: FontWeight.w500),
+          style: CustomFonts.h5(context).copyWith(fontWeight: FontWeight.w500),
           textAlign: TextAlign.start,
           maxLines: 1,
         ),
@@ -87,12 +87,12 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
               margin: const EdgeInsets.symmetric(vertical: 16.0),
               child: RichText(
                 text: TextSpan(
-                  text: L(context, ViCode.downloadedTextInfo.toString()),
-                  style: FontsDefault.h5(context),
+                  text: L(context, LanguageCodes.downloadedTextInfo.toString()),
+                  style: CustomFonts.h5(context),
                   children: <TextSpan>[
                     TextSpan(
                       text: ': $_currentTotal/${widget.totalChapter}',
-                      style: FontsDefault.h5(context),
+                      style: CustomFonts.h5(context),
                     ),
                   ],
                 ),
@@ -136,7 +136,7 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                       Text(
                                         "${chapterIndex.from}-${chapterIndex.to}",
                                         overflow: TextOverflow.ellipsis,
-                                        style: FontsDefault.h5(context),
+                                        style: CustomFonts.h5(context),
                                         textAlign: TextAlign.center,
                                       ),
                                       Padding(
@@ -176,13 +176,14 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                         NotificationPush.showNotification(
                                             title: L(
                                                 context,
-                                                ViCode
+                                                LanguageCodes
                                                     .notificationTextConfigTextInfo
                                                     .toString()),
                                             body: sprintf(
                                                 L(
                                                     context,
-                                                    ViCode.ChaptersDownloadDeletedTextInfo
+                                                    LanguageCodes
+                                                            .ChaptersDownloadDeletedTextInfo
                                                         .toString()),
                                                 [
                                                   "${chapterIndex.from}-${chapterIndex.to}"
@@ -246,13 +247,14 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                           NotificationPush.showNotification(
                                               title: L(
                                                   context,
-                                                  ViCode
+                                                  LanguageCodes
                                                       .notificationTextConfigTextInfo
                                                       .toString()),
                                               body: sprintf(
                                                   L(
                                                       context,
-                                                      ViCode.ChaptersDownloadAddedTextInfo
+                                                      LanguageCodes
+                                                              .ChaptersDownloadAddedTextInfo
                                                           .toString()),
                                                   [
                                                     "${chapterIndex.from}-${chapterIndex.to}"

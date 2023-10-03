@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
-import 'package:muonroi/core/services/api_story_provider.dart';
+import 'package:muonroi/features/stories/data/services/api.story.provider.dart';
 import 'package:muonroi/features/stories/data/models/models.single.story.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
 

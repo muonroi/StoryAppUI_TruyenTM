@@ -1,90 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
-import 'package:muonroi/features/chapters/settings/settings.dart';
+import 'package:muonroi/features/settings/provider/theme.mode.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ButtonWidget {
-  static Widget buttonNavigatorNextPreviewLanding(
-      BuildContext context, Widget nextRoute,
-      {String textDisplay = 'Next',
-      TextStyle textStyle = const TextStyle(
-          fontFamily: "Inter", fontSize: 16, color: const Color(0xFF2D2D2D)),
-      Color color = const Color(0xFFFFB800),
-      Color borderColor = const Color(0xFFFFB800),
-      double widthBorder = 2}) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => nextRoute),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          shape: const StadiumBorder(),
-          side: BorderSide(color: borderColor, width: widthBorder)),
-      child: Text(
-        textDisplay,
-        style: textStyle,
-      ),
-    );
-  }
-
-  static Widget buttonDisplayCurrentPage(
-      Size value, bool isActive, BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      height: isActive ? value.height * 1 / 59 : value.height * 1 / 59,
-      width: isActive ? value.width * 1 / 7 : value.height * 1 / 59,
-      decoration: BoxDecoration(
-          shape: !isActive ? BoxShape.circle : BoxShape.rectangle,
-          border:
-              Border.all(color: themMode(context, ColorCode.disableColor.name)),
-          borderRadius: isActive
-              ? const BorderRadius.vertical(
-                  top: Radius.circular(20), bottom: Radius.circular(20))
-              : null,
-          color: isActive
-              ? themMode(context, ColorCode.disableColor.name)
-              : themMode(context, ColorCode.mainColor.name)),
-    );
-  }
-}
-
-class ButtonGlobal extends StatefulWidget {
-  const ButtonGlobal(
-      {super.key,
-      required this.style,
-      required this.text,
-      required this.onPressed,
-      required this.textStyle});
-  final ButtonStyle style;
-  final TextStyle textStyle;
-  final String text;
-  final void Function() onPressed;
-  @override
-  State<ButtonGlobal> createState() => _ButtonGlobalState();
-}
-
-class _ButtonGlobalState extends State<ButtonGlobal> {
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: widget.style,
-      onPressed: widget.onPressed,
-      child: Text(
-        widget.text,
-        style: widget.textStyle,
-      ),
-    );
-  }
-}
-
-class ToggleButton extends StatefulWidget {
+class ToggleButtonDarkMode extends StatefulWidget {
   final double? width;
   final double? height;
   final Color? selectedColor;
@@ -93,7 +16,7 @@ class ToggleButton extends StatefulWidget {
   final Color? normalColor;
   final String textLeft;
   final String textRight;
-  const ToggleButton(
+  const ToggleButtonDarkMode(
       {super.key,
       required this.width,
       required this.height,
@@ -105,13 +28,13 @@ class ToggleButton extends StatefulWidget {
       this.noneSelectedBackgroundColor});
 
   @override
-  State<ToggleButton> createState() => _ToggleButtonState();
+  State<ToggleButtonDarkMode> createState() => _ToggleButtonDarkModeState();
 }
 
 const double leftAlign = -1;
 const double rightAlign = 1;
 
-class _ToggleButtonState extends State<ToggleButton> {
+class _ToggleButtonDarkModeState extends State<ToggleButtonDarkMode> {
   @override
   void initState() {
     _initSharedPreferences();
@@ -127,14 +50,13 @@ class _ToggleButtonState extends State<ToggleButton> {
     _sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       var _templateSettingData =
-          getCurrentTemplate(_sharedPreferences, context);
-      if (_templateSettingData.isHorizontal != null &&
-          !_templateSettingData.isHorizontal!) {
+          _sharedPreferences.getString("currentTemplate");
+      if (_templateSettingData != null && _templateSettingData == Modes.light) {
         xAlign = leftAlign;
         leftColor = widget.selectedColor!;
         rightColor = widget.normalColor!;
-      } else if (_templateSettingData.isHorizontal != null &&
-          _templateSettingData.isHorizontal!) {
+      } else if (_templateSettingData != null &&
+          _templateSettingData == Modes.dark) {
         xAlign = rightAlign;
         rightColor = widget.selectedColor!;
         leftColor = widget.normalColor!;
@@ -154,13 +76,13 @@ class _ToggleButtonState extends State<ToggleButton> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Consumer<TemplateSetting>(builder:
-          (BuildContext context, TemplateSetting value, Widget? child) {
-        if (value.isHorizontal != null && !value.isHorizontal!) {
+      child: Consumer<CustomThemeModeProvider>(builder:
+          (BuildContext context, CustomThemeModeProvider value, Widget? child) {
+        if (value.mode == Modes.light) {
           xAlign = leftAlign;
           leftColor = widget.selectedColor!;
           rightColor = widget.normalColor!;
-        } else if (value.isHorizontal != null && value.isHorizontal!) {
+        } else if (value.mode == Modes.dark) {
           xAlign = rightAlign;
           rightColor = widget.selectedColor!;
           leftColor = widget.normalColor!;
@@ -204,14 +126,9 @@ class _ToggleButtonState extends State<ToggleButton> {
                     xAlign = leftAlign;
                     leftColor = widget.selectedColor!;
                     rightColor = widget.normalColor!;
-                    var currentTemplate =
-                        getCurrentTemplate(_sharedPreferences, context);
-                    currentTemplate.isHorizontal = false;
-                    currentTemplate.fontSize = 16;
-                    setCurrentTemplate(
-                        _sharedPreferences, currentTemplate, context);
-                    value.valueSetting = currentTemplate;
+                    value.changeMode = Modes.light;
                   });
+                  _sharedPreferences.setString("currentTemplate", Modes.light);
                 },
                 child: Align(
                   alignment: const Alignment(-1, 0),
@@ -235,14 +152,9 @@ class _ToggleButtonState extends State<ToggleButton> {
                     xAlign = rightAlign;
                     rightColor = widget.selectedColor!;
                     leftColor = widget.normalColor!;
-                    var currentTemplate =
-                        getCurrentTemplate(_sharedPreferences, context);
-                    currentTemplate.isHorizontal = true;
-                    currentTemplate.fontSize = 25;
-                    setCurrentTemplate(
-                        _sharedPreferences, currentTemplate, context);
-                    value.valueSetting = currentTemplate;
+                    value.changeMode = Modes.dark;
                   });
+                  _sharedPreferences.setString("currentTemplate", Modes.dark);
                 },
                 child: Align(
                   alignment: const Alignment(1, 0),

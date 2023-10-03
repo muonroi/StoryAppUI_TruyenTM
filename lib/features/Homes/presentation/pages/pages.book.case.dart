@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.book.case.stories.items.dart';
 import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
@@ -48,17 +48,20 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
         SizedBox(
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 70)
                 .width,
-            child: Tab(text: L(context, ViCode.bookCaseTextInfo.toString()))),
+            child: Tab(
+                text: L(context, LanguageCodes.bookCaseTextInfo.toString()))),
         SizedBox(
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 120)
                 .width,
-            child:
-                Tab(text: L(context, ViCode.storiesBoughtTextInfo.toString()))),
+            child: Tab(
+                text: L(
+                    context, LanguageCodes.storiesBoughtTextInfo.toString()))),
         SizedBox(
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 110)
                 .width,
-            child:
-                Tab(text: L(context, ViCode.storiesSavedTextInfo.toString())))
+            child: Tab(
+                text:
+                    L(context, LanguageCodes.storiesSavedTextInfo.toString())))
       ],
     );
     return DefaultTabController(

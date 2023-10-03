@@ -1,4 +1,4 @@
-import 'package:muonroi/core/services/api_account_provider.dart';
+import 'package:muonroi/features/accounts/data/services/api.account.provider.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 
 class AccountRepository {
