@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
@@ -89,8 +90,11 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                                         expectWidth: 20)
                                                 .height,
                                             child: Image.asset(
-                                                CustomImages.bookBookmark2x,
-                                                fit: BoxFit.cover),
+                                              CustomImages.bookBookmark2x,
+                                              fit: BoxFit.cover,
+                                              color: themMode(context,
+                                                  ColorCode.textColor.name),
+                                            ),
                                           ),
                                           Column(
                                             mainAxisAlignment:
