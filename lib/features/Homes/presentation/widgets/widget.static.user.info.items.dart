@@ -24,7 +24,7 @@ class SettingItems extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: themMode(context, ColorCode.disableColor.name),
+                color: themeMode(context, ColorCode.disableColor.name),
                 borderRadius: BorderRadius.circular(10)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -40,7 +40,7 @@ class SettingItems extends StatelessWidget {
                     child: Image.asset(
                       image,
                       fit: BoxFit.cover,
-                      color: colorIcon ?? null,
+                      color: colorIcon,
                     )),
                 SizedBox(
                   width: MainSetting.getPercentageOfDevice(context,
@@ -64,7 +64,7 @@ class SettingItems extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.center,
                     child: Icon(Icons.keyboard_arrow_right,
-                        color: themMode(context, ColorCode.textColor.name)),
+                        color: themeMode(context, ColorCode.textColor.name)),
                   ),
                 )
               ],

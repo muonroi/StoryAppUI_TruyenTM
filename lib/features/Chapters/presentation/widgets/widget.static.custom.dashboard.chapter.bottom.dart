@@ -29,8 +29,8 @@ class _CustomDashboardState extends State<CustomDashboard> {
     _templateAvailable =
         DashboardSettings.getDashboardAvailableSettings(context);
     _templateSettingData = TemplateSetting();
-    _fontColor = themMode(context, ColorCode.textColor.name);
-    _backgroundColor = themMode(context, ColorCode.modeColor.name);
+    _fontColor = themeMode(context, ColorCode.textColor.name);
+    _backgroundColor = themeMode(context, ColorCode.modeColor.name);
     _fontSize = 15;
     _isChosseTemplate = -1;
     _initSharedPreferences();
@@ -46,9 +46,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
       _fontSetting = _templateSettingData.fontFamily ?? CustomFonts.inter;
       _isSelected[_sharedPreferences.getInt('align_index') ?? 0] = true;
       _fontColor = _templateSettingData.fontColor ??
-          themMode(context, ColorCode.textColor.name);
+          themeMode(context, ColorCode.textColor.name);
       _backgroundColor = _templateSettingData.backgroundColor ??
-          themMode(context, ColorCode.modeColor.name);
+          themeMode(context, ColorCode.modeColor.name);
       _fontSize = _templateSettingData.fontSize ?? 15;
       _isChosseTemplate = _sharedPreferences.getInt('font_chosse_index') ?? -1;
     });
@@ -67,12 +67,12 @@ class _CustomDashboardState extends State<CustomDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: themMode(context, ColorCode.disableColor.name),
+      backgroundColor: themeMode(context, ColorCode.disableColor.name),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: themMode(context, ColorCode.disableColor.name),
+        backgroundColor: themeMode(context, ColorCode.disableColor.name),
         title: Title(
-          color: themMode(context, ColorCode.textColor.name),
+          color: themeMode(context, ColorCode.textColor.name),
           child: Text(
             L(context, LanguageCodes.customDashboardReadingTextInfo.toString()),
             style:
@@ -81,7 +81,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
         ),
         leading: IconButton(
             splashRadius: 25,
-            color: themMode(context, ColorCode.textColor.name),
+            color: themeMode(context, ColorCode.textColor.name),
             onPressed: () {
               Navigator.maybePop(context, true);
             },
@@ -120,12 +120,12 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: CircleAvatar(
                               backgroundColor: _isChosseTemplate == index
-                                  ? themMode(context, ColorCode.mainColor.name)
+                                  ? themeMode(context, ColorCode.mainColor.name)
                                   : _templateAvailable[index].backgroundColor,
                               radius: 60.0,
                               child: InkWell(
-                                highlightColor:
-                                    themMode(context, ColorCode.modeColor.name),
+                                highlightColor: themeMode(
+                                    context, ColorCode.modeColor.name),
                                 onTap: () {
                                   templateValue.valueSetting =
                                       _templateAvailable[index];
@@ -177,7 +177,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                   Container(
                                     margin: const EdgeInsets.only(right: 4.0),
                                     child: Icon(Icons.swipe_outlined,
-                                        color: themMode(
+                                        color: themeMode(
                                             context, ColorCode.textColor.name)),
                                   ),
                                   Text(
@@ -199,9 +199,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                       expectHeight: 40)
                                   .height,
                               selectedColor:
-                                  themMode(context, ColorCode.modeColor.name),
+                                  themeMode(context, ColorCode.modeColor.name),
                               normalColor:
-                                  themMode(context, ColorCode.textColor.name),
+                                  themeMode(context, ColorCode.textColor.name),
                               textLeft: L(
                                   context,
                                   LanguageCodes
@@ -213,9 +213,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                       .scrollConfigHorizontalDashboardTextInfo
                                       .toString()),
                               selectedBackgroundColor:
-                                  themMode(context, ColorCode.mainColor.name),
+                                  themeMode(context, ColorCode.mainColor.name),
                               noneSelectedBackgroundColor:
-                                  themMode(context, ColorCode.modeColor.name),
+                                  themeMode(context, ColorCode.modeColor.name),
                             ),
                           ],
                         ),
@@ -239,7 +239,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                             child: Icon(
                                                 Icons
                                                     .keyboard_double_arrow_down_outlined,
-                                                color: themMode(context,
+                                                color: themeMode(context,
                                                     ColorCode.textColor.name)),
                                           ),
                                           Text(
@@ -374,7 +374,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                   Container(
                                       margin: const EdgeInsets.only(right: 4.0),
                                       child: Icon(Icons.format_align_justify,
-                                          color: themMode(context,
+                                          color: themeMode(context,
                                               ColorCode.textColor.name))),
                                   Text(
                                     L(
@@ -396,14 +396,14 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                   .height,
                               child: ToggleButtons(
                                 isSelected: _isSelected,
-                                selectedColor:
-                                    themMode(context, ColorCode.modeColor.name),
-                                color:
-                                    themMode(context, ColorCode.textColor.name),
-                                fillColor:
-                                    themMode(context, ColorCode.mainColor.name),
-                                splashColor:
-                                    themMode(context, ColorCode.mainColor.name),
+                                selectedColor: themeMode(
+                                    context, ColorCode.modeColor.name),
+                                color: themeMode(
+                                    context, ColorCode.textColor.name),
+                                fillColor: themeMode(
+                                    context, ColorCode.mainColor.name),
+                                splashColor: themeMode(
+                                    context, ColorCode.mainColor.name),
                                 highlightColor: Colors.orange,
                                 borderRadius: BorderRadius.circular(30),
                                 children: [
@@ -500,7 +500,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                         margin:
                                             const EdgeInsets.only(right: 4.0),
                                         child: Icon(Icons.text_format,
-                                            color: themMode(context,
+                                            color: themeMode(context,
                                                 ColorCode.textColor.name))),
                                     Text(
                                       L(
@@ -517,9 +517,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20.0),
-                                      color: themMode(
+                                      color: themeMode(
                                           context, ColorCode.disableColor.name),
-                                      boxShadow: [
+                                      boxShadow: const [
                                         BoxShadow(
                                             color: Color.fromARGB(
                                                 181, 156, 154, 154),
@@ -576,7 +576,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 Container(
                                   margin: const EdgeInsets.only(right: 4.0),
                                   child: Icon(Icons.text_fields_outlined,
-                                      color: themMode(
+                                      color: themeMode(
                                           context, ColorCode.textColor.name)),
                                 ),
                                 Text(
@@ -610,7 +610,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                       context: context,
                                       builder: (builder) {
                                         return AlertDialog(
-                                            backgroundColor: themMode(context,
+                                            backgroundColor: themeMode(context,
                                                 ColorCode.modeColor.name),
                                             title: Text(
                                               L(
@@ -700,7 +700,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                           margin:
                                               const EdgeInsets.only(right: 4.0),
                                           child: Icon(Icons.color_lens_outlined,
-                                              color: themMode(context,
+                                              color: themeMode(context,
                                                   ColorCode.textColor.name)),
                                         ),
                                         Text(
@@ -724,7 +724,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                             Clip.antiAliasWithSaveLayer,
                                         context: context,
                                         builder: (context) {
-                                          return ChooseFontColor(
+                                          return const ChooseFontColor(
                                             colorType: KeyChapterColor.font,
                                           );
                                         },
@@ -754,7 +754,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                           margin:
                                               const EdgeInsets.only(right: 4.0),
                                           child: Icon(Icons.colorize,
-                                              color: themMode(context,
+                                              color: themeMode(context,
                                                   ColorCode.textColor.name)),
                                         ),
                                         Text(
@@ -778,7 +778,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                             Clip.antiAliasWithSaveLayer,
                                         context: context,
                                         builder: (context) {
-                                          return ChooseFontColor(
+                                          return const ChooseFontColor(
                                             colorType:
                                                 KeyChapterColor.background,
                                           );

@@ -12,36 +12,36 @@ class CustomFonts {
   static TextStyle h1(BuildContext context) => TextStyle(
         fontFamily: inter,
         fontSize: 109.66,
-        color: themMode(context, ColorCode.textColor.name),
+        color: themeMode(context, ColorCode.textColor.name),
       );
 
   static TextStyle h2(BuildContext context) => TextStyle(
         fontFamily: inter,
         fontSize: 67.77,
-        color: themMode(context, ColorCode.textColor.name),
+        color: themeMode(context, ColorCode.textColor.name),
       );
 
   static TextStyle h3(BuildContext context) => TextStyle(
         fontFamily: inter,
         fontSize: 41.89,
-        color: themMode(context, ColorCode.textColor.name),
+        color: themeMode(context, ColorCode.textColor.name),
       );
 
   static TextStyle h4(BuildContext context) => TextStyle(
         fontFamily: inter,
         fontSize: 25.89,
-        color: themMode(context, ColorCode.textColor.name),
+        color: themeMode(context, ColorCode.textColor.name),
       );
 
   static TextStyle h5(BuildContext context) => TextStyle(
         fontFamily: inter,
         fontSize: 16,
-        color: themMode(context, ColorCode.textColor.name),
+        color: themeMode(context, ColorCode.textColor.name),
       );
 
   static TextStyle h6(BuildContext context) => TextStyle(
         fontFamily: inter,
         fontSize: 9.89,
-        color: themMode(context, ColorCode.textColor.name),
+        color: themeMode(context, ColorCode.textColor.name),
       );
 }

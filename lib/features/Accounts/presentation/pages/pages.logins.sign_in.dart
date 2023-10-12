@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.forgot.password.dart';
 import 'package:muonroi/features/accounts/settings/enum/account.info.dart';
@@ -100,7 +101,7 @@ class _SignInPageState extends State<SignInPage> {
                     decoration: InputDecoration(
                         icon: Icon(
                           Icons.person,
-                          color: themMode(context, ColorCode.mainColor.name),
+                          color: themeMode(context, ColorCode.mainColor.name),
                         ),
                         border: const UnderlineInputBorder(),
                         labelText: L(
@@ -122,7 +123,7 @@ class _SignInPageState extends State<SignInPage> {
                     decoration: InputDecoration(
                         icon: Icon(
                           Icons.lock,
-                          color: themMode(context, ColorCode.mainColor.name),
+                          color: themeMode(context, ColorCode.mainColor.name),
                         ),
                         border: const UnderlineInputBorder(),
                         labelText: L(
@@ -139,7 +140,7 @@ class _SignInPageState extends State<SignInPage> {
                             _isVisibility
                                 ? Icons.visibility
                                 : Icons.visibility_off,
-                            color: themMode(context, ColorCode.mainColor.name),
+                            color: themeMode(context, ColorCode.mainColor.name),
                           ),
                         )),
                   ),
@@ -192,7 +193,7 @@ class _SignInPageState extends State<SignInPage> {
                             style: CustomFonts.h5(context).copyWith(
                               fontWeight: FontWeight.w900,
                               color:
-                                  themMode(context, ColorCode.mainColor.name),
+                                  themeMode(context, ColorCode.mainColor.name),
                             ),
                           ),
                         )
@@ -206,9 +207,9 @@ class _SignInPageState extends State<SignInPage> {
           _isLoading
               ? Positioned.fill(
                   child: Material(
-                  color: Color.fromARGB(50, 85, 78, 78),
+                  color: const Color.fromARGB(50, 85, 78, 78),
                   child: SpinKitWave(
-                    color: themMode(context, ColorCode.mainColor.name),
+                    color: themeMode(context, ColorCode.mainColor.name),
                   ),
                 ))
               : Container()
@@ -219,7 +220,7 @@ class _SignInPageState extends State<SignInPage> {
                   MainSetting.getPercentageOfDevice(context, expectHeight: 100)
                       .height!),
           child: FloatingActionButton(
-              backgroundColor: themMode(context, ColorCode.mainColor.name),
+              backgroundColor: themeMode(context, ColorCode.mainColor.name),
               onPressed: () async {
                 setState(() {
                   _isLoading = true;
@@ -246,18 +247,22 @@ class _SignInPageState extends State<SignInPage> {
                   _sharedPreferences.setString(KeyToken.refreshToken.name,
                       accountInfo.result!.refreshToken);
                   _isShowLabelError = false;
+                  _sharedPreferences.setString(
+                      'userLogin', accountSignInToJson(accountInfo));
                   if (mounted) {
                     _isLoading = false;
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const IndexPage()));
+                            builder: (context) => IndexPage(
+                                  accountResult: accountInfo.result!,
+                                )));
                   }
                 }
               },
               child: Icon(
                 Icons.login,
-                color: themMode(context, ColorCode.modeColor.name),
+                color: themeMode(context, ColorCode.modeColor.name),
               )),
         ),
         bottomNavigationBar: !_isLoading
@@ -277,7 +282,7 @@ class _SignInPageState extends State<SignInPage> {
                             style: CustomFonts.h5(context).copyWith(
                               fontWeight: FontWeight.w900,
                               color:
-                                  themMode(context, ColorCode.mainColor.name),
+                                  themeMode(context, ColorCode.mainColor.name),
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {

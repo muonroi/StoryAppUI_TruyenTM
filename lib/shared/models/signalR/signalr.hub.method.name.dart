@@ -1,1 +1,1 @@
-enum HubMethod { JoinGroup }
+enum HubMethod { joinGroup }

@@ -42,5 +42,5 @@ class CustomImages {
   static const String logout2x = '${imagePath2x}logout.png';
   static const String email2x = '${imagePath2x}email.png';
   static const String privacy2x = '${imagePath2x}privacy.png';
-  static const String privacy_terms2x = '${imagePath2x}privacy_terms.png';
+  static const String privacyTerms2x = '${imagePath2x}privacy_terms.png';
 }

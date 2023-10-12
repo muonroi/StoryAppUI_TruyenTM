@@ -22,10 +22,10 @@ class RoundedPasswordField extends StatelessWidget {
           hintText: hintText,
           border: InputBorder.none,
           icon: Icon(Icons.lock,
-              color: themMode(context, ColorCode.mainColor.name)),
+              color: themeMode(context, ColorCode.mainColor.name)),
           suffixIcon: Icon(
             Icons.visibility,
-            color: themMode(context, ColorCode.mainColor.name),
+            color: themeMode(context, ColorCode.mainColor.name),
           ),
         ),
       ),

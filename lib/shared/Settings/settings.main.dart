@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:icons_flutter/icons_flutter.dart';
 import 'package:muonroi/shared/models/signalR/enum/enum.signalr.type.dart';
 import 'package:muonroi/core/localization/settings.languages.dart';
 import 'package:muonroi/core/models/settings/models.mainsettings.device.dart';
-import 'package:muonroi/features/settings/provider/theme.mode.dart';
+import 'package:muonroi/features/system/provider/theme.mode.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
 import 'package:muonroi/core/localization/settings.localization.dart';
@@ -18,7 +21,7 @@ String L(BuildContext context, String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
 }
 
-Color themMode(BuildContext context, String key, {String mode = Modes.light}) {
+Color themeMode(BuildContext context, String key, {String mode = Modes.light}) {
   final themePick = context.watch<CustomThemeModeProvider>();
   return CustomColors.themeMode(key,
       mode: themePick.mode == Modes.none ? mode : themePick.mode);
@@ -56,7 +59,7 @@ Widget netWorkImage(String url, bool setCache) =>
 
 Icon backButtonCommon(BuildContext context) => Icon(
       Icons.arrow_back_ios_sharp,
-      color: themMode(context, ColorCode.textColor.name),
+      color: themeMode(context, ColorCode.textColor.name),
     );
 
 Widget showToolTip(String message) {
@@ -88,4 +91,11 @@ class MainSetting {
         width: (((expectWidth / baseWidth) * 100) / 100) * baseWidth,
         height: (((expectHeight / baseHeight) * 100) / 100) * baseHeight);
   }
+}
+
+Future<XFile?> compressImage(File file, String targetPath) async {
+  var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path, targetPath,
+      quality: 88, rotate: 180);
+  return result;
 }

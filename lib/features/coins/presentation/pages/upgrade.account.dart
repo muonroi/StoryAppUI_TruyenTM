@@ -18,17 +18,19 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: themMode(context, ColorCode.modeColor.name),
+      backgroundColor: themeMode(context, ColorCode.modeColor.name),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pop(context),
-          color: themMode(context, ColorCode.modeColor.name),
+          color: themeMode(context, ColorCode.textColor.name),
         ),
-        backgroundColor: themMode(context, ColorCode.mainColor.name),
+        backgroundColor: themeMode(context, ColorCode.mainColor.name),
         elevation: 0,
-        title:
-            Text(L(context, LanguageCodes.upgradeAccountTextInfo.toString())),
+        title: Text(
+          L(context, LanguageCodes.upgradeAccountTextInfo.toString()),
+          style: CustomFonts.h4(context),
+        ),
       ),
       body: Center(
         child: Column(
@@ -43,8 +45,8 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                       .height,
               decoration: BoxDecoration(
                   border: Border.all(
-                      color: themMode(context, ColorCode.mainColor.name)),
-                  color: themMode(context, ColorCode.disableColor.name),
+                      color: themeMode(context, ColorCode.mainColor.name)),
+                  color: themeMode(context, ColorCode.disableColor.name),
                   borderRadius: BorderRadius.circular(32.0)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,7 +62,7 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                     child: Image.asset(
                       CustomImages.crown2x,
                       fit: BoxFit.cover,
-                      color: themMode(context, ColorCode.mainColor.name),
+                      color: themeMode(context, ColorCode.mainColor.name),
                     ),
                   ),
                   SizedBox(
@@ -68,7 +70,7 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                       L(context,
                           LanguageCodes.upgradeAccountTextInfo.toString()),
                       style: CustomFonts.h4(context).copyWith(
-                          color: themMode(context, ColorCode.mainColor.name)),
+                          color: themeMode(context, ColorCode.mainColor.name)),
                     ),
                   ),
                   SizedBox(
@@ -79,47 +81,45 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                   ),
                   SizedBox(
                     child: ButtonWidget.buttonNavigatorNextPreviewLanding(
-                        context, SignInPage(),
+                        context, const SignInPage(),
                         textDisplay:
                             L(context, LanguageCodes.buyNowTextInfo.toString()),
                         textStyle: CustomFonts.h5(context).copyWith(
                             color:
-                                themMode(context, ColorCode.modeColor.name))),
+                                themeMode(context, ColorCode.modeColor.name))),
                   ),
                 ],
               ),
             ),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    width: MainSetting.getPercentageOfDevice(context,
-                            expectWidth: 500)
-                        .width,
-                    child: Text(
-                      'I. ${L(context, LanguageCodes.customerBenefitsTextInfo.toString())}',
-                      style: CustomFonts.h4(context),
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  width: MainSetting.getPercentageOfDevice(context,
+                          expectWidth: 500)
+                      .width,
+                  child: Text(
+                    'I. ${L(context, LanguageCodes.customerBenefitsTextInfo.toString())}',
+                    style: CustomFonts.h4(context),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(20.0),
-                    width: MainSetting.getPercentageOfDevice(context,
-                            expectWidth: 500)
-                        .width,
-                    child: Text(
-                      '1. ${L(context, LanguageCodes.oneLawsUpgradeAccountTextInfo.toString())}',
-                      style: CustomFonts.h5(context),
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
-              ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(20.0),
+                  width: MainSetting.getPercentageOfDevice(context,
+                          expectWidth: 500)
+                      .width,
+                  child: Text(
+                    '1. ${L(context, LanguageCodes.oneLawsUpgradeAccountTextInfo.toString())}',
+                    style: CustomFonts.h5(context),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
+              ],
             )
           ],
         ),

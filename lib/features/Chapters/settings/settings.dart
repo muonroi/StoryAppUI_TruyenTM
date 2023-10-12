@@ -7,26 +7,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Color colorFromJson(jsonColor, Color colorDefault, BuildContext context) {
   if (jsonColor == null) {
-    return themMode(context, ColorCode.textColor.name);
+    return themeMode(context, ColorCode.textColor.name);
   }
   return Color(jsonColor);
 }
 
 int colorToJson(Color? color, int colorDefault, BuildContext context) {
-  return color?.value ?? themMode(context, ColorCode.textColor.name).value;
+  return color?.value ?? themeMode(context, ColorCode.textColor.name).value;
 }
 
 TemplateSetting getCurrentTemplate(
-        SharedPreferences _sharedPreferences, BuildContext context) =>
+        SharedPreferences sharedPreferences, BuildContext context) =>
     templateSettingFromJson(
-        _sharedPreferences
+        sharedPreferences
                 .getString(KeyChapterTemplate.chapterConfig.toString()) ??
             '',
         context);
 
-void setCurrentTemplate(SharedPreferences _sharedPreferences,
+void setCurrentTemplate(SharedPreferences sharedPreferences,
         TemplateSetting value, BuildContext context) =>
-    _sharedPreferences.setString(KeyChapterTemplate.chapterConfig.toString(),
+    sharedPreferences.setString(KeyChapterTemplate.chapterConfig.toString(),
         templateSettingToJson(value, context));
 int calculatePageCount(int itemCount) {
   return (itemCount / 1).ceil();

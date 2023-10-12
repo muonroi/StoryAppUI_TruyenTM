@@ -81,7 +81,7 @@ class BodyChapter extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: 400,
                   child: Html(
                     data: chapterInfo.bodyChunk[index]

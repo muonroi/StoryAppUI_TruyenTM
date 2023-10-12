@@ -8,7 +8,7 @@ import 'package:muonroi/shared/settings/settings.images.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
-import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
+import 'package:muonroi/features/story/data/repositories/story_repository.dart';
 
 class ListNewChapter extends StatefulWidget {
   const ListNewChapter({
@@ -92,7 +92,7 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                             child: Image.asset(
                                               CustomImages.bookBookmark2x,
                                               fit: BoxFit.cover,
-                                              color: themMode(context,
+                                              color: themeMode(context,
                                                   ColorCode.textColor.name),
                                             ),
                                           ),

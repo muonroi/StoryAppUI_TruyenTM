@@ -10,7 +10,7 @@ import 'package:muonroi/features/chapters/presentation/widgets/widget.static.but
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.detail.chapter.bottom.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.stories.detail.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
@@ -94,7 +94,9 @@ class _ChapterState extends State<Chapter> {
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
-    _settingConfig = getCurrentTemplate(_sharedPreferences, context);
+    if (context.mounted) {
+      _settingConfig = getCurrentTemplate(_sharedPreferences, context);
+    }
   }
 
   void _saveScrollPosition() {
@@ -209,26 +211,20 @@ class _ChapterState extends State<Chapter> {
   }
 
   void _reNewValueInSettingTemplate(TemplateSetting newValue) {
-    _settingConfig.backgroundColor = newValue.backgroundColor == null
-        ? _settingConfig.backgroundColor
-        : newValue.backgroundColor;
+    _settingConfig.backgroundColor =
+        newValue.backgroundColor ?? _settingConfig.backgroundColor;
     _settingConfig.fontColor = newValue.fontColor == null
         ? _settingConfig.fontColor
         : newValue.backgroundColor;
-    _settingConfig.fontSize =
-        newValue.fontSize == null ? _settingConfig.fontSize : newValue.fontSize;
-    _settingConfig.fontFamily = newValue.fontFamily == null
-        ? _settingConfig.fontFamily
-        : newValue.fontFamily;
-    _settingConfig.isLeftAlign = newValue.isLeftAlign == null
-        ? _settingConfig.isLeftAlign
-        : newValue.isLeftAlign;
-    _settingConfig.locationButton = newValue.locationButton == null
-        ? _settingConfig.locationButton
-        : newValue.locationButton;
-    _settingConfig.isHorizontal = newValue.isHorizontal == null
-        ? _settingConfig.isHorizontal
-        : newValue.isHorizontal;
+    _settingConfig.fontSize = newValue.fontSize ?? _settingConfig.fontSize;
+    _settingConfig.fontFamily =
+        newValue.fontFamily ?? _settingConfig.fontFamily;
+    _settingConfig.isLeftAlign =
+        newValue.isLeftAlign ?? _settingConfig.isLeftAlign;
+    _settingConfig.locationButton =
+        newValue.locationButton ?? _settingConfig.locationButton;
+    _settingConfig.isHorizontal =
+        newValue.isHorizontal ?? _settingConfig.isHorizontal;
   }
 // #endregion
 
@@ -273,11 +269,9 @@ class _ChapterState extends State<Chapter> {
         builder: (context, state) {
           if (state is GroupChapterNoDataState) {
             Center(
-              child: Container(
-                child: Text(
-                  L(context, LanguageCodes.chapterEndTextInfo.toString()),
-                  style: CustomFonts.h4(context),
-                ),
+              child: Text(
+                L(context, LanguageCodes.chapterEndTextInfo.toString()),
+                style: CustomFonts.h4(context),
               ),
             );
           }
@@ -290,9 +284,9 @@ class _ChapterState extends State<Chapter> {
             _loadSavedScrollPosition();
             _groupChapterItems = state.chapter;
             _settingConfig.backgroundColor = _settingConfig.backgroundColor ??
-                themMode(context, ColorCode.modeColor.name);
+                themeMode(context, ColorCode.modeColor.name);
             _settingConfig.fontColor = _settingConfig.fontColor ??
-                themMode(context, ColorCode.textColor.name);
+                themeMode(context, ColorCode.textColor.name);
             _settingConfig.fontFamily =
                 _settingConfig.fontFamily ?? CustomFonts.inter;
             _settingConfig.fontSize = _settingConfig.fontSize ?? 15;
@@ -388,12 +382,11 @@ class _ChapterState extends State<Chapter> {
                                                             ))),
                                                 child: Row(
                                                   children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 4.0,
-                                                              right: 4.0,
-                                                              top: 4.0),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          bottom: 4.0,
+                                                          right: 4.0,
+                                                          top: 4.0),
                                                       child: Icon(Icons.list),
                                                     ),
                                                     Text(
@@ -422,10 +415,9 @@ class _ChapterState extends State<Chapter> {
                                                             ))),
                                                 child: Row(
                                                   children: [
-                                                    Padding(
+                                                    const Padding(
                                                       padding:
-                                                          const EdgeInsets.all(
-                                                              4.0),
+                                                          EdgeInsets.all(4.0),
                                                       child: Icon(Icons.book),
                                                     ),
                                                     Text(
@@ -442,10 +434,9 @@ class _ChapterState extends State<Chapter> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Padding(
+                                                  const Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
+                                                        EdgeInsets.all(4.0),
                                                     child: Icon(Icons.download),
                                                   ),
                                                   Text(
@@ -471,12 +462,11 @@ class _ChapterState extends State<Chapter> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 4.0,
-                                                            right: 4.0,
-                                                            top: 4.0),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: 4.0,
+                                                        right: 4.0,
+                                                        top: 4.0),
                                                     child: Icon(
                                                         Icons.publish_sharp),
                                                   ),
@@ -493,10 +483,9 @@ class _ChapterState extends State<Chapter> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Padding(
+                                                  const Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
+                                                        EdgeInsets.all(4.0),
                                                     child: Icon(Icons.share),
                                                   ),
                                                   Text(
@@ -512,10 +501,9 @@ class _ChapterState extends State<Chapter> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Padding(
+                                                  const Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
+                                                        EdgeInsets.all(4.0),
                                                     child: Icon(Icons.error),
                                                   ),
                                                   Text(
@@ -785,7 +773,7 @@ class _ChapterState extends State<Chapter> {
                                         ),
                                       ),
                                     ),
-                                    Container(
+                                    SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: Html(
                                         data: chapterInfo[_chapterIndex]

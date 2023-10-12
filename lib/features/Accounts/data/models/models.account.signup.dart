@@ -1,23 +1,21 @@
 class AccountInfo {
-  String? fullName;
-  String? username;
-  String? password;
-  String? email;
-  String? phoneNumber;
-  bool? gender;
-  DateTime? birthDate;
-  String? imageLink;
+  String userGuid;
+  String fullName;
+  String username;
+  String email;
+  String phoneNumber;
+  DateTime birthDate;
+  String avatar;
   int? totalStoriesBought;
   double? coin;
   AccountInfo(
-      {this.fullName,
-      this.username,
-      this.password,
-      this.email,
-      this.phoneNumber,
-      this.gender,
-      this.birthDate,
-      this.imageLink,
+      {required this.userGuid,
+      required this.fullName,
+      required this.username,
+      required this.email,
+      required this.phoneNumber,
+      required this.birthDate,
+      required this.avatar,
       this.totalStoriesBought,
       this.coin});
 }

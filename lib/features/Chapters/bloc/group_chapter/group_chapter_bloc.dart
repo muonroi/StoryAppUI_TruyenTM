@@ -1,6 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/data/repositories/chapter_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,15 +22,15 @@ class GroupChapterBloc
     on<GroupChapter>((event, emit) async {
       try {
         emit(GroupChapterLoadingState());
-        final _sharedPreferences = await SharedPreferences.getInstance();
+        final sharedPreferences = await SharedPreferences.getInstance();
         var mList = await chapterRepository.fetchGroupChapters(
             storyId, event.pageIndex);
-        await _sharedPreferences.setString(
+        await sharedPreferences.setString(
             "story-$storyId-current-group-chapter", groupChaptersToJson(mList));
-        if (mList.result.items.length > 0) {
+        if (mList.result.items.isNotEmpty) {
           emit(GroupChapterLoadedState(mList));
         } else {
-          emit(GroupChapterNoDataState());
+          emit(const GroupChapterNoDataState());
         }
         if (!mList.isOk) {
           emit(GroupChapterErrorState(

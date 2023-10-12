@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/Notification/widget.notification.dart';
+import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
+import 'package:muonroi/features/notification/presentation/pages/notification.dart';
 import 'package:muonroi/shared/models/signalR/signalr.hub.dart';
 import 'package:muonroi/shared/models/signalR/signalr.hub.stream.name.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/models/signalR/widget.notification.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
-import 'package:muonroi/features/stories/data/models/models.single.story.dart';
+import 'package:muonroi/features/story/data/models/models.single.story.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.menu.bottom.shared.dart';
 import 'package:muonroi/features/homes/presentation/widgets/routes.items.home.dart';
@@ -20,8 +22,8 @@ import 'package:muonroi/features/homes/presentation/pages/pages.book.case.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.home.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.stories.free.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.user.info.dart';
-import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.model.stories.search.dart';
+import 'package:muonroi/features/story/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.model.stories.search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signalr_netcore/hub_connection.dart';
 import 'package:signalr_netcore/hub_connection_builder.dart';
@@ -31,10 +33,12 @@ class MainPage extends StatefulWidget {
       {super.key,
       required this.storiesInit,
       required this.storiesEditorChoice,
-      required this.storiesCommon});
+      required this.storiesCommon,
+      required this.accountResult});
   final List<StoryItems> storiesInit;
   final List<Widget> storiesEditorChoice;
   final List<Widget> storiesCommon;
+  final AccountResult accountResult;
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -52,15 +56,15 @@ class _MainPageState extends State<MainPage> {
             options: SignalrCentral.httpConnectionOptions)
         .build();
     hubConnection.onclose(({error}) async {
-      print("Connection ${SignalrCentral.notificationListen} Closed!");
+      debugPrint("Connection ${SignalrCentral.notificationListen} Closed!");
       await hubConnection.onreconnecting(({error}) {
-        print("Re-Connecting ${SignalrCentral.notificationListen}!");
+        debugPrint("Re-Connecting ${SignalrCentral.notificationListen}!");
       });
     });
     await hubConnection.start();
     if (hubConnection.state == HubConnectionState.Connected) {
-      hubConnection.on(HubStream.ReceiveGlobalNotification.name, (arguments) {
-        print(arguments);
+      hubConnection.on(HubStream.receiveGlobalNotification.name, (arguments) {
+        debugPrint(arguments.toString());
         var notifyInfo = (json.decode(arguments.toString()) as List)
             .map((data) => NotificationSignalr.fromJson(data))
             .toList()
@@ -72,8 +76,8 @@ class _MainPageState extends State<MainPage> {
                 args: notifyInfo.notificationContent.split('-')),
             fln: flutterLocalNotificationsPlugin);
       });
-      hubConnection.on(HubStream.ReceiveNotificationByUser.name, (arguments) {
-        print(arguments);
+      hubConnection.on(HubStream.receiveNotificationByUser.name, (arguments) {
+        debugPrint(arguments.toString());
         var notifyInfo = (json.decode(arguments.toString()) as List)
             .map((data) => NotificationSignalr.fromJson(data))
             .toList()
@@ -94,12 +98,13 @@ class _MainPageState extends State<MainPage> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           brightness: Brightness.light,
-          primaryColor: themMode(context, ColorCode.mainColor.name),
+          primaryColor: themeMode(context, ColorCode.mainColor.name),
           fontFamily: CustomFonts.inter),
       home: HomePage(
         storiesInit: widget.storiesInit,
         storiesCommon: widget.storiesCommon,
         storiesEditorChoice: widget.storiesEditorChoice,
+        accountResult: widget.accountResult,
       ),
     );
   }
@@ -109,11 +114,14 @@ class HomePage extends StatefulWidget {
   final List<StoryItems> storiesInit;
   final List<Widget> storiesEditorChoice;
   final List<Widget> storiesCommon;
+  final AccountResult accountResult;
+
   const HomePage(
       {super.key,
       required this.storiesInit,
       required this.storiesEditorChoice,
-      required this.storiesCommon});
+      required this.storiesCommon,
+      required this.accountResult});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -156,17 +164,6 @@ class _HomePageState extends State<HomePage> {
     Image.asset('assets/images/2x/Banner_3.png')
   ];
   final List<ChapterInfo> chapterList = [];
-  final AccountInfo accountInfo = AccountInfo(
-      fullName: "John Wick",
-      username: "muonroi",
-      password: "12345678Az*",
-      email: "contact.admin@muonroi.com",
-      phoneNumber: "093.310.5367",
-      gender: false,
-      birthDate: DateTime(2002, 17, 06),
-      imageLink: null,
-      totalStoriesBought: 12,
-      coin: 99);
   // #endregion
 
 // #region Define controller
@@ -176,7 +173,6 @@ class _HomePageState extends State<HomePage> {
   late PageController _pageNewStoriesController;
   late PageController _pageStoriesCompleteController;
   late PageController _pageBannerController;
-  late BuildContext context;
   // #endregion
 
 // #region Define variables
@@ -186,7 +182,7 @@ class _HomePageState extends State<HomePage> {
   final _homePageItem = HomePageItems();
   final _debouncer = Debouncer(const Duration(milliseconds: 100));
   final _throttle = Throttle(const Duration(milliseconds: 100));
-  var _totalNotification = 0;
+  final _totalNotification = 0;
   late SharedPreferences _sharedPreferences;
   // #endregion
 
@@ -241,15 +237,16 @@ class _HomePageState extends State<HomePage> {
     return DefaultTabController(
       length: 5,
       child: Scaffold(
-          backgroundColor: themMode(context, ColorCode.modeColor.name),
+          backgroundColor: themeMode(context, ColorCode.modeColor.name),
           appBar: AppBar(
             automaticallyImplyLeading: false,
             leading: Image.asset(CustomImages.mainLogo),
-            backgroundColor: themMode(context, ColorCode.modeColor.name),
+            backgroundColor: themeMode(context, ColorCode.modeColor.name),
             elevation: 0,
             actions: [
               _currentIndex > 0
                   ? IconButton(
+                      splashRadius: 25.0,
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -261,21 +258,25 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       icon: Icon(Icons.search,
-                          color: themMode(context, ColorCode.textColor.name)))
+                          color: themeMode(context, ColorCode.textColor.name)))
                   : IconButton(
                       onPressed: null,
                       icon: Icon(Icons.search,
-                          color: themMode(context, ColorCode.modeColor.name))),
+                          color: themeMode(context, ColorCode.modeColor.name))),
               IconButton(
+                  splashRadius: 25.0,
                   onPressed: () {},
                   icon: Icon(Icons.chat_outlined,
-                      color: themMode(context, ColorCode.textColor.name))),
+                      color: themeMode(context, ColorCode.textColor.name))),
               Stack(children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => const NotificationPage())),
                   icon: Icon(Icons.notifications_none,
-                      color: themMode(context, ColorCode.textColor.name)),
-                  splashRadius: 25,
+                      color: themeMode(context, ColorCode.textColor.name)),
+                  splashRadius: 22.0,
                 ),
                 Positioned(
                     top: 0,
@@ -288,7 +289,7 @@ class _HomePageState extends State<HomePage> {
                               expectHeight: 20)
                           .height,
                       decoration: BoxDecoration(
-                          color: themMode(context, ColorCode.mainColor.name),
+                          color: themeMode(context, ColorCode.mainColor.name),
                           borderRadius: BorderRadius.circular(100)),
                       child: Center(
                         child: Text(
@@ -314,7 +315,6 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 // #endregion
-
                 BookCase(
                   storiesData: widget.storiesInit,
                 ),
@@ -323,7 +323,18 @@ class _HomePageState extends State<HomePage> {
                   isShowLabel: false,
                   isShowBack: false,
                 ),
-                UserInfo(userInfo: accountInfo),
+                UserInfo(
+                    userInfo: AccountInfo(
+                        userGuid: widget.accountResult.id,
+                        fullName:
+                            '${widget.accountResult.surname}${widget.accountResult.name}',
+                        username: widget.accountResult.username,
+                        email: widget.accountResult.email,
+                        phoneNumber: widget.accountResult.phoneNumber,
+                        birthDate: widget.accountResult.birthDate,
+                        avatar: widget.accountResult.avatar,
+                        totalStoriesBought: 12,
+                        coin: 99)),
               ]),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -350,8 +361,9 @@ class _HomePageState extends State<HomePage> {
                 _showTooltipNotification(context);
               }
             },
-            backgroundColor: themMode(context, ColorCode.mainColor.name),
+            backgroundColor: themeMode(context, ColorCode.mainColor.name),
             child: Icon(
+              color: themeMode(context, ColorCode.textColor.name),
               Icons.arrow_right,
               size: MainSetting.getPercentageOfDevice(context, expectWidth: 50)
                   .width,
@@ -375,8 +387,8 @@ class _HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: tooltip,
-        duration: Duration(seconds: 2),
-        backgroundColor: themMode(context, ColorCode.disableColor.name),
+        duration: const Duration(seconds: 2),
+        backgroundColor: themeMode(context, ColorCode.disableColor.name),
       ),
     );
   }

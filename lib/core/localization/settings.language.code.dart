@@ -145,8 +145,8 @@ enum LanguageCodes {
   notificationTextConfigTextInfo,
   notificationByUserTextConfigTextInfo,
   downloadedTextInfo,
-  ChaptersDownloadDeletedTextInfo,
-  ChaptersDownloadAddedTextInfo,
+  chaptersDownloadDeletedTextInfo,
+  chaptersDownloadAddedTextInfo,
   recentlyStoryTextInfo,
   upgradeAccountTextInfo,
   buyNowTextInfo,
@@ -181,5 +181,8 @@ enum LanguageCodes {
   isSureTextInfo,
   isNotSureTextInfo,
   youSureLogoutTextInfo,
+  invalidEmailTextInfo,
+  invalidPhoneNumberTextInfo,
+  changeNameTextInfo,
 // #endregion
 }

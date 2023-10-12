@@ -35,9 +35,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.pop(context),
-            color: themMode(context, ColorCode.textColor.name),
+            color: themeMode(context, ColorCode.textColor.name),
           ),
-          backgroundColor: themMode(context, ColorCode.modeColor.name),
+          backgroundColor: themeMode(context, ColorCode.modeColor.name),
           elevation: 0,
         ),
         body: BlocProvider(
@@ -63,6 +63,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         var iconData =
                             _getIconDataFromApiResponse(categoryInfo.iconName);
                         return Container(
+                          color: themeMode(context, ColorCode.modeColor.name),
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                             alignment: Alignment.center,
@@ -72,8 +73,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                   WidgetSpan(
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          color: themMode(context,
-                                              ColorCode.modeColor.name),
+                                          color: themeMode(context,
+                                              ColorCode.textColor.name),
                                           borderRadius:
                                               BorderRadius.circular(10.0)),
                                       child: Stack(children: [

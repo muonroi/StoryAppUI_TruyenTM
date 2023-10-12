@@ -30,7 +30,7 @@ class RoundedInputField extends StatelessWidget {
             hintText: hintText,
             icon: Icon(
               icon,
-              color: themMode(context, ColorCode.mainColor.name),
+              color: themeMode(context, ColorCode.mainColor.name),
             ),
             border: InputBorder.none),
       ),
@@ -73,10 +73,10 @@ class SearchBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 10),
       width: totalSize.width * 0.8,
       decoration: BoxDecoration(
-          color: themMode(context, ColorCode.modeColor.name),
+          color: themeMode(context, ColorCode.modeColor.name),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-              color: themMode(context, ColorCode.disableColor.name))),
+              color: themeMode(context, ColorCode.disableColor.name))),
       child: child,
     );
   }

@@ -4,7 +4,7 @@ import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.model.book.case.stories.dart';
-import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/data/models/models.stories.story.dart';
 
 class StoriesItems extends StatefulWidget {
   final List<StoryItems> storiesData;
@@ -86,7 +86,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                         visible: isShowClearText,
                                         child: IconButton(
                                           icon: Icon(Icons.clear,
-                                              color: themMode(context,
+                                              color: themeMode(context,
                                                   ColorCode.textColor.name)),
                                           onPressed: () {
                                             widget.textSearchController.clear();
@@ -96,7 +96,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                       prefixIcon: IconButton(
                                         icon: Icon(
                                           Icons.search,
-                                          color: themMode(context,
+                                          color: themeMode(context,
                                               ColorCode.textColor.name),
                                         ),
                                         onPressed: () {},
@@ -122,7 +122,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                         });
                                       },
                                       icon: Icon(Icons.refresh_rounded,
-                                          color: themMode(context,
+                                          color: themeMode(context,
                                               ColorCode.textColor.name))),
                                 ),
                                 RotationTransition(
@@ -151,7 +151,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                       },
                                       icon: Icon(
                                         Icons.sort,
-                                        color: themMode(
+                                        color: themeMode(
                                             context, ColorCode.textColor.name),
                                       )),
                                 )

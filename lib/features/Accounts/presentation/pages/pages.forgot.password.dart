@@ -53,7 +53,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   decoration: InputDecoration(
                       icon: Icon(
                         Icons.person,
-                        color: themMode(context, ColorCode.mainColor.name),
+                        color: themeMode(context, ColorCode.mainColor.name),
                       ),
                       border: const UnderlineInputBorder(),
                       labelText: L(
@@ -76,12 +76,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            themMode(context, ColorCode.modeColor.name),
+                            themeMode(context, ColorCode.modeColor.name),
                       ),
                       text:
                           L(context, LanguageCodes.backInfoTextInfo.toString()),
                       textStyle: CustomFonts.h5(context).copyWith(
-                        color: themMode(context, ColorCode.textColor.name),
+                        color: themeMode(context, ColorCode.textColor.name),
                       ),
                     ),
                   ),
@@ -126,7 +126,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                         child: Container(
                                           padding: const EdgeInsets.all(8.0),
                                           decoration: BoxDecoration(
-                                              color: themMode(context,
+                                              color: themeMode(context,
                                                   ColorCode.mainColor.name),
                                               borderRadius:
                                                   BorderRadius.circular(30.0)),
@@ -137,7 +137,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                                       .toString()),
                                               style: CustomFonts.h5(context)
                                                   .copyWith(
-                                                      color: themMode(
+                                                      color: themeMode(
                                                           context,
                                                           ColorCode.modeColor
                                                               .name))),
@@ -154,11 +154,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            themMode(context, ColorCode.mainColor.name),
+                            themeMode(context, ColorCode.mainColor.name),
                       ),
                       text: L(context, LanguageCodes.submitTextInfo.toString()),
                       textStyle: CustomFonts.h5(context).copyWith(
-                          color: themMode(context, ColorCode.modeColor.name)),
+                          color: themeMode(context, ColorCode.modeColor.name)),
                     ),
                   ),
                 ],

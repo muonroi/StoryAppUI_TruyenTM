@@ -4,9 +4,9 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
-import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/features/story/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/data/repositories/story_repository.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.stories.detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StoriesBookCaseModelWidget extends StatefulWidget {
@@ -82,12 +82,12 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
       child: AnimatedContainer(
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-            color: themMode(context, ColorCode.disableColor.name),
+            color: themeMode(context, ColorCode.disableColor.name),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                  color: themMode(context, ColorCode.disableColor.name),
-                  offset: Offset(-3, 3),
+                  color: themeMode(context, ColorCode.disableColor.name),
+                  offset: const Offset(-3, 3),
                   blurRadius: 0.5)
             ]),
         duration: const Duration(milliseconds: 500),
@@ -98,7 +98,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
           1.0,
         ),
         child: Container(
-          color: themMode(context, ColorCode.disableColor.name),
+          color: themeMode(context, ColorCode.disableColor.name),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -188,16 +188,16 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                       : null,
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: buttonState
-                                          ? themMode(
+                                          ? themeMode(
                                               context, ColorCode.mainColor.name)
-                                          : themMode(context,
+                                          : themeMode(context,
                                               ColorCode.modeColor.name),
                                       shape: const StadiumBorder(),
                                       side: BorderSide(
                                           color: buttonState
-                                              ? themMode(context,
+                                              ? themeMode(context,
                                                   ColorCode.mainColor.name)
-                                              : themMode(context,
+                                              : themeMode(context,
                                                   ColorCode.modeColor.name),
                                           width: 2)),
                                   child: Text(
@@ -205,7 +205,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                     style: TextStyle(
                                         fontFamily: CustomFonts.inter,
                                         fontSize: 16,
-                                        color: themMode(
+                                        color: themeMode(
                                             context, ColorCode.textColor.name)),
                                   ),
                                 ))),

@@ -3,7 +3,7 @@ import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.model.stories.search.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.model.stories.search.dart';
 
 class SearchContainer extends StatelessWidget {
   final TextEditingController searchController;
@@ -36,7 +36,7 @@ class SearchContainer extends StatelessWidget {
                 visible: isShowClearText,
                 child: IconButton(
                   icon: Icon(Icons.clear,
-                      color: themMode(context, ColorCode.textColor.name)),
+                      color: themeMode(context, ColorCode.textColor.name)),
                   onPressed: () {
                     searchController.clear();
                   },
@@ -45,7 +45,7 @@ class SearchContainer extends StatelessWidget {
               prefixIcon: IconButton(
                 icon: Icon(
                   Icons.search,
-                  color: themMode(context, ColorCode.textColor.name),
+                  color: themeMode(context, ColorCode.textColor.name),
                 ),
                 onPressed: () {},
               ),

@@ -3,7 +3,7 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.vertical.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.stories.vertical.dart';
 
 class StoriesFree extends StatefulWidget {
   final bool isShowLabel;
@@ -19,9 +19,9 @@ class _StoriesFreeState extends State<StoriesFree> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: themMode(context, ColorCode.disableColor.name),
+      backgroundColor: themeMode(context, ColorCode.disableColor.name),
       appBar: AppBar(
-          backgroundColor: themMode(context, ColorCode.mainColor.name),
+          backgroundColor: themeMode(context, ColorCode.mainColor.name),
           title: Text(
             L(context, LanguageCodes.freeStoriesTextInfo.toString()),
             style:

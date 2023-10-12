@@ -1,10 +1,10 @@
-import 'package:muonroi/features/accounts/data/services/api.account.provider.dart';
+import 'package:muonroi/features/accounts/data/services/api.account.service.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 
 class AccountRepository {
   final String username;
   final String password;
-  final _provider = AccountsProvider();
+  final _provider = AccountsService();
 
   AccountRepository(this.username, this.password);
 

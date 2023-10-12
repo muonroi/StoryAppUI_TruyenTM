@@ -12,9 +12,16 @@ class ApiNetwork {
   // #endregion
 
 // #region Account endpoint
+  static const String logout = "tokens/logout";
+// #endregion
+
+// #region User endpoint
+  static const String userInfoByUsername = "users/single/username?username=%s";
   static const String login = "users/login";
   static const String forgotPassword = "users/forgot-password";
   static const String register = "users";
+  static const String updateInfo = "users/profile";
+  static const String uploadAvatar = "users/update-avatar";
 // #endregion
 
   // #region Stories endpoint

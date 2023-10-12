@@ -4,7 +4,7 @@ import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_i
 import 'package:muonroi/features/coins/presentation/pages/upgrade.account.dart';
 import 'package:muonroi/features/contacts/presentation/pages/contact.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.user.info.items.dart';
-import 'package:muonroi/features/settings/presentation/pages/setting.page.dart';
+import 'package:muonroi/features/system/presentation/pages/setting.page.dart';
 import 'package:muonroi/features/user/presentation/pages/user.detail.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
@@ -41,7 +41,7 @@ class _UserInfoState extends State<UserInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: themMode(context, ColorCode.modeColor.name),
+      backgroundColor: themeMode(context, ColorCode.modeColor.name),
       body: Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: Align(
@@ -60,17 +60,13 @@ class _UserInfoState extends State<UserInfo> {
                   height: MainSetting.getPercentageOfDevice(context,
                           expectHeight: 70)
                       .height,
-                  child: netWorkImage(
-                      widget.userInfo.imageLink ??
-                          CustomImages.imageAvatarDefault,
-                      true),
+                  child: netWorkImage(widget.userInfo.avatar, true),
                 ),
               ),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
-                  widget.userInfo.username ??
-                      L(context, LanguageCodes.notfoundTextInfo.toString()),
+                  widget.userInfo.username,
                   style: CustomFonts.h5(context),
                 ),
               ),
@@ -146,11 +142,11 @@ class _UserInfoState extends State<UserInfo> {
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => new UpgradeAccount())),
+                              builder: (context) => const UpgradeAccount())),
                       text: L(context,
                           LanguageCodes.myAccountPremiumTextInfo.toString()),
                       image: CustomImages.crown2x,
-                      colorIcon: themMode(context, ColorCode.textColor.name),
+                      colorIcon: themeMode(context, ColorCode.textColor.name),
                     ),
                     // SettingItems(
                     //     onPressed: () {},
@@ -164,38 +160,42 @@ class _UserInfoState extends State<UserInfo> {
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => new ContactPage())),
+                              builder: (context) => const ContactPage())),
                       text: L(
                           context,
                           LanguageCodes.myAccountContactAdminTextInfo
                               .toString()),
                       image: CustomImages.contact2x,
-                      colorIcon: themMode(context, ColorCode.textColor.name),
+                      colorIcon: themeMode(context, ColorCode.textColor.name),
                     ),
                     SettingItems(
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => UserInfoPage())),
+                              builder: (context) => UserInfoPage(
+                                    userGuid: widget.userInfo.userGuid,
+                                    username: widget.userInfo.username,
+                                    avatar: widget.userInfo.avatar,
+                                  ))),
                       text: L(context,
                           LanguageCodes.myAccountDetailTextInfo.toString()),
                       image: CustomImages.user2x,
-                      colorIcon: themMode(context, ColorCode.textColor.name),
+                      colorIcon: themeMode(context, ColorCode.textColor.name),
                     ),
                     SettingItems(
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SettingsPage())),
+                              builder: (context) => const SettingsPage())),
                       text: L(context,
                           LanguageCodes.myAccountSettingTextInfo.toString()),
                       image: CustomImages.gear2x,
-                      colorIcon: themMode(context, ColorCode.textColor.name),
+                      colorIcon: themeMode(context, ColorCode.textColor.name),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 50.0),
                       child: Divider(
-                        color: themMode(context, ColorCode.disableColor.name),
+                        color: themeMode(context, ColorCode.disableColor.name),
                         thickness: 3,
                       ),
                     ),
@@ -221,7 +221,7 @@ class _UserInfoState extends State<UserInfo> {
                       text: L(context,
                           LanguageCodes.logoutAccountTextInfo.toString()),
                       image: CustomImages.logout2x,
-                      colorIcon: themMode(context, ColorCode.textColor.name),
+                      colorIcon: themeMode(context, ColorCode.textColor.name),
                     ),
                   ],
                 ),

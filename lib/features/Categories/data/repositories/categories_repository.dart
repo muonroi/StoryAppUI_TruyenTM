@@ -1,10 +1,10 @@
 import 'package:muonroi/features/Categories/data/models/models.stories.dart';
-import 'package:muonroi/features/categories/data/services/api.category.provider.dart';
+import 'package:muonroi/features/categories/data/services/api.category.service.dart';
 
 class CategoriesRepository {
   final int pageIndex;
   final int pageSize;
-  final _provider = CategoriesProvider();
+  final _provider = CategoriesService();
 
   CategoriesRepository(this.pageIndex, this.pageSize);
 

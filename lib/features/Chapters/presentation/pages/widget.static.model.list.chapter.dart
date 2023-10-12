@@ -62,17 +62,17 @@ class _ChapterListPageState extends State<ChapterListPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: themMode(context, ColorCode.modeColor.name),
+        backgroundColor: themeMode(context, ColorCode.modeColor.name),
         appBar: AppBar(
-          backgroundColor: themMode(context, ColorCode.modeColor.name),
+          backgroundColor: themeMode(context, ColorCode.modeColor.name),
           elevation: 0,
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back_ios),
-            color: themMode(context, ColorCode.textColor.name),
+            color: themeMode(context, ColorCode.textColor.name),
           ),
           title: Title(
-              color: themMode(context, ColorCode.modeColor.name),
+              color: themeMode(context, ColorCode.modeColor.name),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -97,7 +97,7 @@ class _ChapterListPageState extends State<ChapterListPage>
         body: Column(
           children: [
             Container(
-              color: themMode(context, ColorCode.modeColor.name),
+              color: themeMode(context, ColorCode.modeColor.name),
               height:
                   MainSetting.getPercentageOfDevice(context, expectHeight: 50)
                       .height,
@@ -121,7 +121,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                           },
                           icon: Icon(
                             Icons.sort,
-                            color: themMode(context, ColorCode.textColor.name),
+                            color: themeMode(context, ColorCode.textColor.name),
                           )),
                     )),
                 BlocProvider(
@@ -160,9 +160,9 @@ class _ChapterListPageState extends State<ChapterListPage>
                                     var chapterPagingInfo =
                                         state.chapter.result[index];
                                     return InkWell(
-                                      hoverColor: themMode(
+                                      hoverColor: themeMode(
                                           context, ColorCode.textColor.name),
-                                      splashColor: themMode(
+                                      splashColor: themeMode(
                                               context, ColorCode.mainColor.name)
                                           .withOpacity(0.5),
                                       onTap: () async {
@@ -197,7 +197,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                                                   ? Text(
                                                       '${chapterPagingInfo.from}-${chapterPagingInfo.to}',
                                                       style: TextStyle(
-                                                          color: themMode(
+                                                          color: themeMode(
                                                               context,
                                                               ColorCode
                                                                   .mainColor
@@ -209,6 +209,12 @@ class _ChapterListPageState extends State<ChapterListPage>
                                                       '${chapterPagingInfo.from}-${chapterPagingInfo.to}',
                                                       textAlign:
                                                           TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: themeMode(
+                                                              context,
+                                                              ColorCode
+                                                                  .textColor
+                                                                  .name)),
                                                     ))
                                         ],
                                       ),
@@ -255,7 +261,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                           var chapterInfo = state.chapter.result[index];
 
                           return Container(
-                            color: themMode(context, ColorCode.modeColor.name),
+                            color: themeMode(context, ColorCode.modeColor.name),
                             margin:
                                 const EdgeInsets.symmetric(horizontal: 15.0),
                             child: Column(
@@ -278,19 +284,21 @@ class _ChapterListPageState extends State<ChapterListPage>
                                     sharePreferences.setInt(
                                         "story-${widget.storyId}-current-chapter",
                                         chapterInfo.numberOfChapter);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Chapter(
-                                              isLoadHistory: false,
-                                              storyId: chapterInfo.storyId,
-                                              storyName: widget.storyTitle,
-                                              chapterId: chapterInfo.id,
-                                              lastChapterId:
-                                                  widget.lastChapterId,
-                                              firstChapterId:
-                                                  widget.firstChapterId),
-                                        ));
+                                    if (context.mounted) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Chapter(
+                                                isLoadHistory: false,
+                                                storyId: chapterInfo.storyId,
+                                                storyName: widget.storyTitle,
+                                                chapterId: chapterInfo.id,
+                                                lastChapterId:
+                                                    widget.lastChapterId,
+                                                firstChapterId:
+                                                    widget.firstChapterId),
+                                          ));
+                                    }
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(
@@ -314,7 +322,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                                             child: Text(
                                               '${chapterInfo.numberOfChapter}',
                                               style: TextStyle(
-                                                color: themMode(context,
+                                                color: themeMode(context,
                                                     ColorCode.textColor.name),
                                               ),
                                             ),
@@ -345,7 +353,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                                             child: Icon(
                                               size: 15,
                                               Icons.arrow_forward_ios,
-                                              color: themMode(context,
+                                              color: themeMode(context,
                                                   ColorCode.textColor.name),
                                             ),
                                           )

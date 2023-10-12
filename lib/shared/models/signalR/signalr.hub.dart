@@ -6,8 +6,8 @@ import 'package:signalr_netcore/http_connection_options.dart';
 class SignalrCentral {
   static final httpConnectionOptions = HttpConnectionOptions(
     accessTokenFactory: () async {
-      var _sharedPreferences = await SharedPreferences.getInstance();
-      return _sharedPreferences.getString(KeyToken.accessToken.name)!;
+      var sharedPreferences = await SharedPreferences.getInstance();
+      return sharedPreferences.getString(KeyToken.accessToken.name)!;
     },
   );
   static const String notificationListen =

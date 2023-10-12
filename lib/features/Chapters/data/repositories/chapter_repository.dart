@@ -1,4 +1,4 @@
-import 'package:muonroi/features/chapters/data/service/api.chapter.provider.dart';
+import 'package:muonroi/features/chapters/data/service/api.chapter.service.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.range.dart';
@@ -12,7 +12,7 @@ class ChapterRepository {
   final bool isLatest;
   final int pageIndex;
   final int pageSize;
-  final _provider = ChapterProvider();
+  final _provider = ChapterService();
 
   ChapterRepository(this.pageIndex, this.pageSize, this.chapterId,
       {required this.storyId, required this.isLatest});

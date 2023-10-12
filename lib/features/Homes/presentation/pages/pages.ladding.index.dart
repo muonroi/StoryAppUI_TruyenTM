@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/homes/bloc/homeData/story_bloc.dart';
 import 'package:muonroi/features/homes/presentation/pages/controller.main.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.list.stories.image.dart';
-import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/data/models/models.stories.story.dart';
 
 class IndexPage extends StatefulWidget {
-  const IndexPage({super.key});
+  final AccountResult accountResult;
+  const IndexPage({super.key, required this.accountResult});
 
   @override
   State<IndexPage> createState() => _IndexPageState();
@@ -46,7 +48,7 @@ class _IndexPageState extends State<IndexPage> {
               return _homeLoading();
             }
             if (state is StoryLoadedState) {
-              return _homePage(context, state.story);
+              return _homePage(context, state.story, widget.accountResult);
             }
             return _homeLoading();
           },
@@ -56,9 +58,11 @@ class _IndexPageState extends State<IndexPage> {
   }
 }
 
-Widget _homePage(BuildContext context, StoriesModel storyItems) {
+Widget _homePage(BuildContext context, StoriesModel storyItems,
+    AccountResult accountResult) {
   return MainPage(
     storiesInit: storyItems.result.items,
+    accountResult: accountResult,
     storiesCommon: storyItems.result.items
         .map((e) => StoriesImageIncludeSizeBox(
               storyId: e.id,

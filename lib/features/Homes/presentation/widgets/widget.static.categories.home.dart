@@ -23,7 +23,8 @@ class MainCategories extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: themMode(context, ColorCode.disableColor.name),
+                backgroundColor:
+                    themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
                   onPressed: () {
                     Navigator.push(
@@ -34,7 +35,7 @@ class MainCategories extends StatelessWidget {
                   },
                   icon: Image.asset(
                     CustomImages.gridFour2x,
-                    color: themMode(context, ColorCode.textColor.name),
+                    color: themeMode(context, ColorCode.textColor.name),
                   ),
                 ),
               ),
@@ -48,12 +49,13 @@ class MainCategories extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: themMode(context, ColorCode.disableColor.name),
+                backgroundColor:
+                    themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
                   onPressed: () {},
                   icon: Image.asset(
                     CustomImages.translate2x,
-                    color: themMode(context, ColorCode.textColor.name),
+                    color: themeMode(context, ColorCode.textColor.name),
                   ),
                 ),
               ),
@@ -67,12 +69,13 @@ class MainCategories extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: themMode(context, ColorCode.disableColor.name),
+                backgroundColor:
+                    themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
                   onPressed: () {},
                   icon: Image.asset(
                     CustomImages.bookOpenText2x,
-                    color: themMode(context, ColorCode.textColor.name),
+                    color: themeMode(context, ColorCode.textColor.name),
                   ),
                 ),
               ),
@@ -86,12 +89,13 @@ class MainCategories extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: themMode(context, ColorCode.disableColor.name),
+                backgroundColor:
+                    themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
                   onPressed: () {},
                   icon: Image.asset(
                     CustomImages.vector2x,
-                    color: themMode(context, ColorCode.textColor.name),
+                    color: themeMode(context, ColorCode.textColor.name),
                   ),
                 ),
               ),
@@ -135,7 +139,7 @@ class GroupCategoryTextInfo extends StatelessWidget {
                     LanguageCodes.viewAllTextInfo.toString(),
                   ),
                   style: CustomFonts.h5(context).copyWith(
-                      color: themMode(context, ColorCode.mainColor.name)),
+                      color: themeMode(context, ColorCode.mainColor.name)),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       Navigator.push(context,

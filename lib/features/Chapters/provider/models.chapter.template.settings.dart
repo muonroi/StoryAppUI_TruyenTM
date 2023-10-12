@@ -46,9 +46,9 @@ class TemplateSetting with ChangeNotifier {
       TemplateSetting(
         fontFamily: json["fontFamily"],
         fontColor: colorFromJson(json["fontColor"],
-            themMode(context, ColorCode.textColor.name), context),
+            themeMode(context, ColorCode.textColor.name), context),
         backgroundColor: colorFromJson(json["backgroundColor"],
-            themMode(context, ColorCode.modeColor.name), context),
+            themeMode(context, ColorCode.modeColor.name), context),
         fontSize: checkDouble(json["fontSize"]),
         isLeftAlign: json["isLeftAlign"] != "null"
             ? bool.parse(json["isLeftAlign"])
@@ -62,9 +62,9 @@ class TemplateSetting with ChangeNotifier {
   Map<String, dynamic> toJson(BuildContext context) => {
         "fontFamily": fontFamily,
         "fontColor": colorToJson(fontColor,
-            themMode(context, ColorCode.textColor.name).value, context),
+            themeMode(context, ColorCode.textColor.name).value, context),
         "backgroundColor": colorToJson(backgroundColor,
-            themMode(context, ColorCode.modeColor.name).value, context),
+            themeMode(context, ColorCode.modeColor.name).value, context),
         "fontSize": checkDouble(fontSize),
         "isLeftAlign": isLeftAlign.toString(),
         "locationButton": locationButton?.toJson(),

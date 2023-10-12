@@ -1,5 +1,5 @@
 enum HubStream {
-  ReceiveNotificationFromFavorite,
-  ReceiveGlobalNotification,
-  ReceiveNotificationByUser
+  receiveNotificationFromFavorite,
+  receiveGlobalNotification,
+  receiveNotificationByUser
 }

@@ -12,7 +12,7 @@ class ButtonWidget {
       BuildContext context, Widget nextRoute,
       {String textDisplay = 'Next',
       TextStyle textStyle = const TextStyle(
-          fontFamily: "Inter", fontSize: 16, color: const Color(0xFF2D2D2D)),
+          fontFamily: "Inter", fontSize: 16, color: Color(0xFF2D2D2D)),
       Color color = const Color(0xFFFFB800),
       Color borderColor = const Color(0xFFFFB800),
       double widthBorder = 2}) {
@@ -42,15 +42,15 @@ class ButtonWidget {
       width: isActive ? value.width * 1 / 7 : value.height * 1 / 59,
       decoration: BoxDecoration(
           shape: !isActive ? BoxShape.circle : BoxShape.rectangle,
-          border:
-              Border.all(color: themMode(context, ColorCode.disableColor.name)),
+          border: Border.all(
+              color: themeMode(context, ColorCode.disableColor.name)),
           borderRadius: isActive
               ? const BorderRadius.vertical(
                   top: Radius.circular(20), bottom: Radius.circular(20))
               : null,
           color: isActive
-              ? themMode(context, ColorCode.disableColor.name)
-              : themMode(context, ColorCode.mainColor.name)),
+              ? themeMode(context, ColorCode.disableColor.name)
+              : themeMode(context, ColorCode.mainColor.name)),
     );
   }
 }
@@ -118,23 +118,22 @@ class _ToggleButtonState extends State<ToggleButton> {
     super.initState();
     xAlign = leftAlign;
     leftColor =
-        widget.selectedColor ?? themMode(context, ColorCode.modeColor.name);
+        widget.selectedColor ?? themeMode(context, ColorCode.modeColor.name);
     rightColor =
-        widget.normalColor ?? themMode(context, ColorCode.textColor.name);
+        widget.normalColor ?? themeMode(context, ColorCode.textColor.name);
   }
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      var _templateSettingData =
-          getCurrentTemplate(_sharedPreferences, context);
-      if (_templateSettingData.isHorizontal != null &&
-          !_templateSettingData.isHorizontal!) {
+      var templateSettingData = getCurrentTemplate(_sharedPreferences, context);
+      if (templateSettingData.isHorizontal != null &&
+          !templateSettingData.isHorizontal!) {
         xAlign = leftAlign;
         leftColor = widget.selectedColor!;
         rightColor = widget.normalColor!;
-      } else if (_templateSettingData.isHorizontal != null &&
-          _templateSettingData.isHorizontal!) {
+      } else if (templateSettingData.isHorizontal != null &&
+          templateSettingData.isHorizontal!) {
         xAlign = rightAlign;
         rightColor = widget.selectedColor!;
         leftColor = widget.normalColor!;
@@ -177,7 +176,7 @@ class _ToggleButtonState extends State<ToggleButton> {
               borderRadius: const BorderRadius.all(
                 Radius.circular(50.0),
               ),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                     color: Color.fromARGB(181, 156, 154, 154),
                     spreadRadius: 0.5)

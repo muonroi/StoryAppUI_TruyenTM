@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_logs/flutter_logs.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
 import 'package:muonroi/core/Notification/widget.notification.dart';
+import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.ladding.index.dart';
-import 'package:muonroi/features/settings/provider/theme.mode.dart';
+import 'package:muonroi/features/system/provider/theme.mode.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,9 +49,11 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  @override
   void initState() {
     NotificationPush.initialize(flutterLocalNotificationsPlugin);
     initLocalStored();
+    accountResult = null;
     super.initState();
   }
 
@@ -58,12 +61,17 @@ class _MainAppState extends State<MainApp> {
     await SharedPreferences.getInstance().then((value) {
       setState(() {
         _isSigninView = value.getString(KeyToken.accessToken.name) == null;
+        if (!_isSigninView) {
+          accountResult =
+              accountSignInFromJson(value.getString('userLogin')!).result!;
+        }
       });
       return value;
     });
   }
 
   late bool _isSigninView = false;
+  late AccountResult? accountResult;
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -73,7 +81,11 @@ class _MainAppState extends State<MainApp> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: _isSigninView ? const SignInPage() : const IndexPage(),
+        home: _isSigninView
+            ? const SignInPage()
+            : IndexPage(
+                accountResult: accountResult!,
+              ),
       ),
     );
   }

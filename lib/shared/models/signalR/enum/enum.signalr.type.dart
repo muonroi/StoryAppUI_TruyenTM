@@ -1,6 +1,6 @@
 enum TypeSignalr {
-  Global,
-  StoryFavorite,
-  VoteStory,
-  BookmarkStory,
+  global,
+  storyFavorite,
+  voteStory,
+  bookmarkStory,
 }

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // To parse this JSON data, do
 //
 //     final accountSignIn = accountSignInFromJson(jsonString);
@@ -32,6 +33,7 @@ class AccountSignInModel {
       );
 
   Map<String, dynamic> toJson() => {
+        // ignore: prefer_null_aware_operators
         "result": result != null ? result?.toJson() : null,
         "errorMessages": List<dynamic>.from(errorMessages.map((x) => x)),
         "isOK": isOk,
@@ -48,7 +50,6 @@ class AccountResult {
   String surname;
   String id;
   String username;
-  String passwordHash;
   String email;
   String address;
   bool emailConfirmed;
@@ -64,7 +65,7 @@ class AccountResult {
   DateTime birthDate;
   String roleName;
   String groupName;
-
+  String phoneNumber;
   AccountResult({
     required this.isDeleted,
     required this.jwtToken,
@@ -74,7 +75,6 @@ class AccountResult {
     required this.surname,
     required this.id,
     required this.username,
-    required this.passwordHash,
     required this.email,
     required this.address,
     required this.emailConfirmed,
@@ -90,18 +90,18 @@ class AccountResult {
     required this.birthDate,
     required this.roleName,
     required this.groupName,
+    required this.phoneNumber,
   });
 
   factory AccountResult.fromJson(Map<String, dynamic> json) => AccountResult(
         isDeleted: json["isDeleted"],
         jwtToken: json["jwtToken"],
         refreshToken: json["refreshToken"],
-        locationUserLogin: json["locationUserLogin"],
+        locationUserLogin: json["locationUserLogin"] ?? "",
         name: json["name"],
         surname: json["surname"],
         id: json["id"],
         username: json["username"],
-        passwordHash: json["passwordHash"],
         email: json["email"],
         address: json["address"],
         emailConfirmed: json["emailConfirmed"],
@@ -109,14 +109,15 @@ class AccountResult {
         avatar: json["avatar"],
         status: json["status"],
         accountStatus: json["accountStatus"],
-        note: json["note"],
-        lockReason: json["lockReason"],
+        note: json["note"] ?? "",
+        lockReason: json["lockReason"] ?? "",
         groupId: json["groupId"],
         createDate: DateTime.parse(json["createDate"]),
         updateDate: DateTime.parse(json["updateDate"]),
         birthDate: DateTime.parse(json["birthDate"]),
         roleName: json["roleName"],
         groupName: json["groupName"],
+        phoneNumber: json["phoneNumber"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -128,7 +129,6 @@ class AccountResult {
         "surname": surname,
         "id": id,
         "username": username,
-        "passwordHash": passwordHash,
         "email": email,
         "address": address,
         "emailConfirmed": emailConfirmed,
@@ -144,5 +144,6 @@ class AccountResult {
         "birthDate": birthDate.toIso8601String(),
         "roleName": roleName,
         "groupName": groupName,
+        "phoneNumber": phoneNumber,
       };
 }

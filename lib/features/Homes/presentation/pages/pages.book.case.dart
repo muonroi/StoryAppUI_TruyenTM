@@ -3,7 +3,7 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.book.case.stories.items.dart';
-import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/data/models/models.stories.story.dart';
 
 class BookCase extends StatefulWidget {
   const BookCase({super.key, required this.storiesData});
@@ -42,8 +42,8 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     TabBar tabBar = TabBar(
-      unselectedLabelColor: themMode(context, ColorCode.modeColor.name),
-      indicatorColor: themMode(context, ColorCode.textColor.name),
+      unselectedLabelColor: themeMode(context, ColorCode.modeColor.name),
+      indicatorColor: themeMode(context, ColorCode.textColor.name),
       tabs: [
         SizedBox(
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 70)
@@ -67,13 +67,13 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: themMode(context, ColorCode.modeColor.name),
+        backgroundColor: themeMode(context, ColorCode.modeColor.name),
         appBar: AppBar(
-          backgroundColor: themMode(context, ColorCode.mainColor.name),
+          backgroundColor: themeMode(context, ColorCode.mainColor.name),
           bottom: PreferredSize(
               preferredSize: const Size.fromHeight(0.0),
               child: Material(
-                color: themMode(context, ColorCode.mainColor.name),
+                color: themeMode(context, ColorCode.mainColor.name),
                 child: tabBar,
               )),
         ),

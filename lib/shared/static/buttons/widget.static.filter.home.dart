@@ -24,7 +24,7 @@ class FilterByDateButton extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: themMode(context, ColorCode.mainColor.name),
+                      color: themeMode(context, ColorCode.mainColor.name),
                     ),
                     child: TextButton(
                       onPressed: () {},
@@ -40,7 +40,7 @@ class FilterByDateButton extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: themMode(context, ColorCode.modeColor.name),
+                      color: themeMode(context, ColorCode.modeColor.name),
                     ),
                     child: TextButton(
                       onPressed: () {},
@@ -58,7 +58,7 @@ class FilterByDateButton extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: themMode(context, ColorCode.modeColor.name),
+                      color: themeMode(context, ColorCode.modeColor.name),
                     ),
                     child: TextButton(
                       onPressed: () {},
@@ -76,7 +76,7 @@ class FilterByDateButton extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
-                      color: themMode(context, ColorCode.modeColor.name),
+                      color: themeMode(context, ColorCode.modeColor.name),
                     ),
                     child: TextButton(
                       onPressed: () {},

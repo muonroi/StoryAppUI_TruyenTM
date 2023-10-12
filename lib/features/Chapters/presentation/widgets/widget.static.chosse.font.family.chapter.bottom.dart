@@ -38,15 +38,15 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: themMode(context, ColorCode.modeColor.name),
+      backgroundColor: themeMode(context, ColorCode.modeColor.name),
       appBar: AppBar(
         title: Title(
-            color: themMode(context, ColorCode.textColor.name),
+            color: themeMode(context, ColorCode.textColor.name),
             child: Text(
               L(context, LanguageCodes.fontConfigDashboardTextInfo.toString()),
               style: CustomFonts.h5(context),
             )),
-        backgroundColor: themMode(context, ColorCode.modeColor.name),
+        backgroundColor: themeMode(context, ColorCode.modeColor.name),
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: IconButton(
@@ -72,15 +72,15 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
                           padding: const EdgeInsets.all(12.0),
                           decoration: BoxDecoration(
                               color:
-                                  themMode(context, ColorCode.modeColor.name),
+                                  themeMode(context, ColorCode.modeColor.name),
                               boxShadow: [
                                 _chosseFontName.toLowerCase() ==
                                         fontName.toLowerCase()
                                     ? BoxShadow(
-                                        color: themMode(
+                                        color: themeMode(
                                             context, ColorCode.mainColor.name),
                                         spreadRadius: 2)
-                                    : BoxShadow(),
+                                    : const BoxShadow(),
                               ],
                               borderRadius: BorderRadius.circular(20.0)),
                           child: Row(

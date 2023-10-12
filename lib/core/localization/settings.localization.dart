@@ -105,9 +105,9 @@ class LocalizationLib {
       LanguageCodes.notificationByUserTextConfigTextInfo.toString():
           "Người dùng %s vừa theo dõi truyện %s của bạn",
       LanguageCodes.downloadedTextInfo.toString(): "Đã tải",
-      LanguageCodes.ChaptersDownloadDeletedTextInfo.toString():
+      LanguageCodes.chaptersDownloadDeletedTextInfo.toString():
           "Đã xoá chương %s khỏi bộ nhớ",
-      LanguageCodes.ChaptersDownloadAddedTextInfo.toString():
+      LanguageCodes.chaptersDownloadAddedTextInfo.toString():
           "Tải xuống %s chương thành công",
       LanguageCodes.recentlyStoryTextInfo.toString():
           "Không tìm thấy truyện gần đây",
@@ -149,6 +149,10 @@ class LocalizationLib {
       LanguageCodes.isNotSureTextInfo.toString(): 'Không',
       LanguageCodes.youSureLogoutTextInfo.toString():
           'Bạn có muốn đăng xuất không?',
+      LanguageCodes.invalidEmailTextInfo.toString(): 'Email không hợp lệ',
+      LanguageCodes.invalidPhoneNumberTextInfo.toString():
+          'Không đúng định dạng',
+      LanguageCodes.changeNameTextInfo.toString(): 'Thay đổi tên của bạn',
     }
   };
   static String L(String key, {String locale = 'vi'}) {
@@ -160,18 +164,18 @@ class LocalizationLib {
     String key = LanguageCodes.notfoundTextInfo.toString();
     String textResult = '';
     switch (intToEnum(type)) {
-      case TypeSignalr.Global:
+      case TypeSignalr.global:
         key = LanguageCodes.notfoundTextInfo.toString();
         break;
-      case TypeSignalr.StoryFavorite:
+      case TypeSignalr.storyFavorite:
         key = LanguageCodes.publishStoryTextConfigTextInfo.toString();
         var textInfo = L(key);
         textResult = sprintf(textInfo, args);
         break;
-      case TypeSignalr.VoteStory:
+      case TypeSignalr.voteStory:
         key = LanguageCodes.notfoundTextInfo.toString();
         break;
-      case TypeSignalr.BookmarkStory:
+      case TypeSignalr.bookmarkStory:
         key = LanguageCodes.notificationByUserTextConfigTextInfo.toString();
         var textInfo = L(key);
         textResult = sprintf(textInfo, args);

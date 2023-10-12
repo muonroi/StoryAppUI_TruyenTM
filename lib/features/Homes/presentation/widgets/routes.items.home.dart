@@ -9,12 +9,12 @@ import 'package:muonroi/features/homes/presentation/widgets/widget.static.catego
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.category.stories.home.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.chapter.home.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.common.stories.home.dart';
-import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.editor.choose.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.common.items.home.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.complete.items.home.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.new.items.home.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.new.update.items.home.dart';
+import 'package:muonroi/features/story/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.editor.choose.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.stories.common.items.home.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.stories.complete.items.home.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.stories.new.items.home.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.stories.new.update.items.home.dart';
 
 class HomePageItems {
   List<Widget> getHomePageItems(

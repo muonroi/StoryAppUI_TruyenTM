@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
-import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
+import 'package:muonroi/features/story/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/data/repositories/story_repository.dart';
 part 'free_event.dart';
 part 'free_state.dart';
 

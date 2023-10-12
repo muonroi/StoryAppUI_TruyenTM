@@ -3,8 +3,8 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
-import 'package:muonroi/features/stories/data/models/models.stories.story.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/features/story/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.stories.detail.dart';
 
 class CommonTopStoriesData extends StatefulWidget {
   final List<StoryItems> storiesCommonInfo;
@@ -49,7 +49,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                           children: [
                             Text((index + 1).toString(),
                                 style: CustomFonts.h3(context).copyWith(
-                                    color: themMode(
+                                    color: themeMode(
                                         context, ColorCode.mainColor.name))),
                             SizedBox(
                                 width: MainSetting.getPercentageOfDevice(
@@ -106,7 +106,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                             Icon(
                               Icons.remove_red_eye_rounded,
                               color:
-                                  themMode(context, ColorCode.mainColor.name),
+                                  themeMode(context, ColorCode.mainColor.name),
                             ),
                             Padding(
                               padding:
