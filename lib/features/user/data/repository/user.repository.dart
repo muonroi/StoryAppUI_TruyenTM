@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:muonroi/features/user/data/models/user.info.model.dart';
 import 'package:muonroi/features/user/data/models/user.single.detail.model.dart';
 import 'package:muonroi/features/user/data/services/user.service.dart';
@@ -9,8 +7,8 @@ class UserRepository {
   UserRepository();
   Future<UserInfoResponseModel> fetchUserInfoData(String username) =>
       _provider.getUserInfo(username);
-  Future<UserInfoResponseModel> uploadAvatarUser(File image, String userGuid) =>
-      _provider.uploadAvatarUser(image, userGuid);
+  // Future<UserInfoResponseModel> uploadAvatarUser(File image, String userGuid) =>
+  //     _provider.uploadAvatarUser(image, userGuid);
   Future<UserInfoResponseModel> uploadInfoUser(SingleUserDetail request) =>
       _provider.updateUserInfo(request);
 }

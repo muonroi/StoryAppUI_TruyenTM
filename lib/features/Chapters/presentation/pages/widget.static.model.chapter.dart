@@ -77,7 +77,6 @@ class _ChapterState extends State<Chapter> {
     _scrollController.addListener(_saveScrollPosition);
     _isVisible = false;
     _isLoad = true;
-
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 

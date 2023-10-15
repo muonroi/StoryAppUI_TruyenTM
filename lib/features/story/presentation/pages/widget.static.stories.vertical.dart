@@ -181,22 +181,24 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
                     idleText: L(context,
                         LanguageCodes.loadingPreviousTextInfo.toString()),
                   ),
-                  child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      controller: _scrollController,
-                      itemCount: storiesInfo.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        var storySingleInfo = storiesInfo[index];
-                        return Column(
-                          children: [
-                            StoriesFullModelWidget(
-                              isShowRank: widget.isShowLabel,
-                              storiesItem: storySingleInfo,
-                            )
-                          ],
-                        );
-                      }),
+                  child: storiesInfo.isNotEmpty
+                      ? ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          controller: _scrollController,
+                          itemCount: storiesInfo.length,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            var storySingleInfo = storiesInfo[index];
+                            return Column(
+                              children: [
+                                StoriesFullModelWidget(
+                                  isShowRank: widget.isShowLabel,
+                                  storiesItem: storySingleInfo,
+                                )
+                              ],
+                            );
+                          })
+                      : getEmptyData(context),
                 );
               }
               return const Center(child: CircularProgressIndicator());

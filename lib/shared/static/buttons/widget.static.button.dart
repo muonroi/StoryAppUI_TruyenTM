@@ -114,13 +114,8 @@ const double rightAlign = 1;
 class _ToggleButtonState extends State<ToggleButton> {
   @override
   void initState() {
-    _initSharedPreferences();
     super.initState();
     xAlign = leftAlign;
-    leftColor =
-        widget.selectedColor ?? themeMode(context, ColorCode.modeColor.name);
-    rightColor =
-        widget.normalColor ?? themeMode(context, ColorCode.textColor.name);
   }
 
   Future<void> _initSharedPreferences() async {
@@ -143,6 +138,16 @@ class _ToggleButtonState extends State<ToggleButton> {
         rightColor = widget.normalColor!;
       }
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initSharedPreferences();
+    leftColor =
+        widget.selectedColor ?? themeMode(context, ColorCode.modeColor.name);
+    rightColor =
+        widget.normalColor ?? themeMode(context, ColorCode.textColor.name);
   }
 
   late double xAlign;

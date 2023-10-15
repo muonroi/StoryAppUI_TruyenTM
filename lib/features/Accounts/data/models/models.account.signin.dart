@@ -66,6 +66,7 @@ class AccountResult {
   String roleName;
   String groupName;
   String phoneNumber;
+  int notificationNumber;
   AccountResult({
     required this.isDeleted,
     required this.jwtToken,
@@ -91,34 +92,35 @@ class AccountResult {
     required this.roleName,
     required this.groupName,
     required this.phoneNumber,
+    required this.notificationNumber,
   });
 
   factory AccountResult.fromJson(Map<String, dynamic> json) => AccountResult(
-        isDeleted: json["isDeleted"],
-        jwtToken: json["jwtToken"],
-        refreshToken: json["refreshToken"],
-        locationUserLogin: json["locationUserLogin"] ?? "",
-        name: json["name"],
-        surname: json["surname"],
-        id: json["id"],
-        username: json["username"],
-        email: json["email"],
-        address: json["address"],
-        emailConfirmed: json["emailConfirmed"],
-        lastLogin: DateTime.parse(json["lastLogin"]),
-        avatar: json["avatar"],
-        status: json["status"],
-        accountStatus: json["accountStatus"],
-        note: json["note"] ?? "",
-        lockReason: json["lockReason"] ?? "",
-        groupId: json["groupId"],
-        createDate: DateTime.parse(json["createDate"]),
-        updateDate: DateTime.parse(json["updateDate"]),
-        birthDate: DateTime.parse(json["birthDate"]),
-        roleName: json["roleName"],
-        groupName: json["groupName"],
-        phoneNumber: json["phoneNumber"],
-      );
+      isDeleted: json["isDeleted"],
+      jwtToken: json["jwtToken"],
+      refreshToken: json["refreshToken"],
+      locationUserLogin: json["locationUserLogin"] ?? "",
+      name: json["name"],
+      surname: json["surname"],
+      id: json["id"],
+      username: json["username"],
+      email: json["email"],
+      address: json["address"],
+      emailConfirmed: json["emailConfirmed"],
+      lastLogin: DateTime.parse(json["lastLogin"]),
+      avatar: json["avatar"],
+      status: json["status"],
+      accountStatus: json["accountStatus"],
+      note: json["note"] ?? "",
+      lockReason: json["lockReason"] ?? "",
+      groupId: json["groupId"],
+      createDate: DateTime.parse(json["createDate"]),
+      updateDate: DateTime.parse(json["updateDate"]),
+      birthDate: DateTime.parse(json["birthDate"]),
+      roleName: json["roleName"],
+      groupName: json["groupName"],
+      phoneNumber: json["phoneNumber"],
+      notificationNumber: json["notificationNumber"]);
 
   Map<String, dynamic> toJson() => {
         "isDeleted": isDeleted,
@@ -145,5 +147,6 @@ class AccountResult {
         "roleName": roleName,
         "groupName": groupName,
         "phoneNumber": phoneNumber,
+        "notificationNumber": notificationNumber
       };
 }

@@ -25,6 +25,7 @@
         "notificationcontent",
         "nullsafety",
         "onclose",
+        "onreconnected",
         "onreconnecting",
         "ontap",
         "pagekey",

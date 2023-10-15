@@ -6,6 +6,7 @@ import 'package:muonroi/core/notification/widget.notification.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.ladding.index.dart';
+import 'package:muonroi/features/notification/provider/notification.provider.dart';
 import 'package:muonroi/features/system/provider/theme.mode.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
@@ -51,9 +52,9 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   @override
   void initState() {
+    accountResult = null;
     NotificationPush.initialize(flutterLocalNotificationsPlugin);
     initLocalStored();
-    accountResult = null;
     super.initState();
   }
 
@@ -78,14 +79,17 @@ class _MainAppState extends State<MainApp> {
       providers: [
         ChangeNotifierProvider(create: (_) => TemplateSetting()),
         ChangeNotifierProvider(create: (_) => CustomThemeModeProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: _isSigninView
-            ? const SignInPage()
-            : IndexPage(
-                accountResult: accountResult!,
-              ),
+        home: accountResult != null
+            ? _isSigninView
+                ? const SignInPage()
+                : IndexPage(
+                    accountResult: accountResult!,
+                  )
+            : const SignInPage(),
       ),
     );
   }

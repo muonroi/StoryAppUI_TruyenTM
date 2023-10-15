@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_flutter/icons_flutter.dart';
+import 'package:muonroi/shared/Settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/Categories/bloc/categories_all_bloc.dart';
@@ -63,7 +64,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         var iconData =
                             _getIconDataFromApiResponse(categoryInfo.iconName);
                         return Container(
-                          color: themeMode(context, ColorCode.modeColor.name),
+                          color:
+                              themeMode(context, ColorCode.disableColor.name),
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                             alignment: Alignment.center,
@@ -74,7 +76,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                     child: Container(
                                       decoration: BoxDecoration(
                                           color: themeMode(context,
-                                              ColorCode.textColor.name),
+                                              ColorCode.modeColor.name),
                                           borderRadius:
                                               BorderRadius.circular(10.0)),
                                       child: Stack(children: [
@@ -90,8 +92,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                                 margin:
                                                     const EdgeInsets.symmetric(
                                                         horizontal: 4.0),
-                                                child:
-                                                    Icon(iconData, size: 34)),
+                                                child: Icon(
+                                                  iconData,
+                                                  size: 34,
+                                                  color: themeMode(context,
+                                                      ColorCode.textColor.name),
+                                                )),
                                             Container(
                                               width: MainSetting
                                                       .getPercentageOfDevice(
@@ -106,6 +112,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                               child: Text(
                                                 categoryInfo.nameCategory,
                                                 overflow: TextOverflow.ellipsis,
+                                                style: CustomFonts.h5(context),
                                               ),
                                             ),
                                           ],

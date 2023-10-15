@@ -1,10 +1,11 @@
 import 'dart:io';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:icons_flutter/icons_flutter.dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/models/signalR/enum/enum.signalr.type.dart';
 import 'package:muonroi/core/localization/settings.languages.dart';
 import 'package:muonroi/core/models/settings/models.mainsettings.device.dart';
@@ -22,7 +23,10 @@ String L(BuildContext context, String key, {String locate = Languages.vi}) {
 }
 
 Color themeMode(BuildContext context, String key, {String mode = Modes.light}) {
-  final themePick = context.watch<CustomThemeModeProvider>();
+  CustomThemeModeProvider themePick = CustomThemeModeProvider();
+  if (context.mounted) {
+    themePick = context.watch<CustomThemeModeProvider>();
+  }
   return CustomColors.themeMode(key,
       mode: themePick.mode == Modes.none ? mode : themePick.mode);
 }
@@ -98,4 +102,15 @@ Future<XFile?> compressImage(File file, String targetPath) async {
       file.absolute.path, targetPath,
       quality: 88, rotate: 180);
   return result;
+}
+
+Widget getEmptyData(BuildContext context) {
+  return SizedBox(
+    child: Center(
+      child: Text(
+        L(context, LanguageCodes.noDataTextInfo.toString()),
+        style: CustomFonts.h5(context),
+      ),
+    ),
+  );
 }

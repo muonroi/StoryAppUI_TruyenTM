@@ -7,7 +7,7 @@ class ApiNetwork {
   static const String baseSearchStory = "stories/search?";
   // #endregion
 
-  // #region Signlr
+  // #region Signalr
   static const String notification = "hubs/noti-hub";
   // #endregion
 
@@ -31,7 +31,10 @@ class ApiNetwork {
   static const String getDetailStory = "stories/single?storyId=%s";
   static const String voteStory = "stories/vote";
   static const String bookmarkStory = "stories/bookmark";
-
+  static const String storiesNotificationUser =
+      "stories/notification/user?pageIndex=%s&pageSize=%s";
+  static const String viewAllNotificationUser = "stories/notification/all";
+  static const String viewSingleNotificationUser = "stories/notification";
   // #endregion
 
   // #region Chapters endpoint

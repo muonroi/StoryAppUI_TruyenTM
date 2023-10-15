@@ -26,14 +26,9 @@ class _CustomDashboardState extends State<CustomDashboard> {
     _selectedRadio = KeyChapterButtonScroll.none;
     _fontSetting = CustomFonts.inter;
     _isSelected = [false, false];
-    _templateAvailable =
-        DashboardSettings.getDashboardAvailableSettings(context);
     _templateSettingData = TemplateSetting();
-    _fontColor = themeMode(context, ColorCode.textColor.name);
-    _backgroundColor = themeMode(context, ColorCode.modeColor.name);
     _fontSize = 15;
     _isChosseTemplate = -1;
-    _initSharedPreferences();
     super.initState();
   }
 
@@ -52,6 +47,16 @@ class _CustomDashboardState extends State<CustomDashboard> {
       _fontSize = _templateSettingData.fontSize ?? 15;
       _isChosseTemplate = _sharedPreferences.getInt('font_chosse_index') ?? -1;
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initSharedPreferences();
+    _fontColor = themeMode(context, ColorCode.textColor.name);
+    _backgroundColor = themeMode(context, ColorCode.modeColor.name);
+    _templateAvailable =
+        DashboardSettings.getDashboardAvailableSettings(context);
   }
 
   late TemplateSetting _templateSettingData;

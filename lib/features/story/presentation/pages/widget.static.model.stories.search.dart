@@ -91,45 +91,50 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: storiesSearch.length,
-                itemBuilder: (context, index) => Container(
-                  color: themeMode(context, ColorCode.modeColor.name),
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => StoryDetail(
-                                    storyId: storiesSearch[index].id,
-                                    storyTitle: storiesSearch[index].storyTitle,
-                                  )));
-                    },
-                    child: ListTile(
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: SizedBox(
-                          width: MainSetting.getPercentageOfDevice(context,
-                                  expectWidth: 40)
-                              .width,
-                          height: MainSetting.getPercentageOfDevice(context,
-                                  expectHeight: 100)
-                              .height,
-                          child:
-                              netWorkImage(storiesSearch[index].imgUrl, true),
+              child: storiesSearch.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: storiesSearch.length,
+                      itemBuilder: (context, index) => Container(
+                        color: themeMode(context, ColorCode.modeColor.name),
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StoryDetail(
+                                          storyId: storiesSearch[index].id,
+                                          storyTitle:
+                                              storiesSearch[index].storyTitle,
+                                        )));
+                          },
+                          child: ListTile(
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: SizedBox(
+                                width: MainSetting.getPercentageOfDevice(
+                                        context,
+                                        expectWidth: 40)
+                                    .width,
+                                height: MainSetting.getPercentageOfDevice(
+                                        context,
+                                        expectHeight: 100)
+                                    .height,
+                                child: netWorkImage(
+                                    storiesSearch[index].imgUrl, true),
+                              ),
+                            ),
+                            title: Text(
+                              storiesSearch[index].storyTitle,
+                              style: TextStyle(
+                                  color: themeMode(
+                                      context, ColorCode.textColor.name)),
+                            ),
+                          ),
                         ),
                       ),
-                      title: Text(
-                        storiesSearch[index].storyTitle,
-                        style: TextStyle(
-                            color:
-                                themeMode(context, ColorCode.textColor.name)),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+                    )
+                  : getEmptyData(context),
             )
           ],
         ),

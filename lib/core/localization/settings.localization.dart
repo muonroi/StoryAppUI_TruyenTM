@@ -153,6 +153,12 @@ class LocalizationLib {
       LanguageCodes.invalidPhoneNumberTextInfo.toString():
           'Không đúng định dạng',
       LanguageCodes.changeNameTextInfo.toString(): 'Thay đổi tên của bạn',
+      LanguageCodes.changeUserInfoTextInfo.toString():
+          'Thay đổi thông tin thành công',
+      LanguageCodes.viewNotificationAllTextInfo.toString(): 'Xem tất cả',
+      LanguageCodes.successTextInfo.toString(): 'Thành công',
+      LanguageCodes.unSuccessTextInfo.toString(): 'Thất bại',
+      LanguageCodes.noDataTextInfo.toString(): 'Không có dữ liệu',
     }
   };
   static String L(String key, {String locale = 'vi'}) {

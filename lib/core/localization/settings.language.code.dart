@@ -184,5 +184,10 @@ enum LanguageCodes {
   invalidEmailTextInfo,
   invalidPhoneNumberTextInfo,
   changeNameTextInfo,
+  changeUserInfoTextInfo,
+  viewNotificationAllTextInfo,
+  successTextInfo,
+  unSuccessTextInfo,
+  noDataTextInfo,
 // #endregion
 }

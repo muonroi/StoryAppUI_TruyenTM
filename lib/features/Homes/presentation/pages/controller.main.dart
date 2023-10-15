@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:muonroi/core/Notification/widget.notification.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/notification/presentation/pages/notification.dart';
+import 'package:muonroi/features/notification/provider/notification.provider.dart';
 import 'package:muonroi/shared/models/signalR/signalr.hub.dart';
 import 'package:muonroi/shared/models/signalR/signalr.hub.stream.name.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
@@ -24,6 +25,7 @@ import 'package:muonroi/features/homes/presentation/pages/pages.stories.free.dar
 import 'package:muonroi/features/homes/presentation/pages/pages.user.info.dart';
 import 'package:muonroi/features/story/data/models/models.stories.story.dart';
 import 'package:muonroi/features/story/presentation/pages/widget.static.model.stories.search.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signalr_netcore/hub_connection.dart';
 import 'package:signalr_netcore/hub_connection_builder.dart';
@@ -46,50 +48,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   void initState() {
-    initHubAndListenGlobalNotification();
     super.initState();
-  }
-
-  Future<void> initHubAndListenGlobalNotification() async {
-    final hubConnection = HubConnectionBuilder()
-        .withUrl(SignalrCentral.notificationListen,
-            options: SignalrCentral.httpConnectionOptions)
-        .build();
-    hubConnection.onclose(({error}) async {
-      debugPrint("Connection ${SignalrCentral.notificationListen} Closed!");
-      await hubConnection.onreconnecting(({error}) {
-        debugPrint("Re-Connecting ${SignalrCentral.notificationListen}!");
-      });
-    });
-    await hubConnection.start();
-    if (hubConnection.state == HubConnectionState.Connected) {
-      hubConnection.on(HubStream.receiveGlobalNotification.name, (arguments) {
-        debugPrint(arguments.toString());
-        var notifyInfo = (json.decode(arguments.toString()) as List)
-            .map((data) => NotificationSignalr.fromJson(data))
-            .toList()
-            .first;
-        NotificationPush.showNotification(
-            title: L(context,
-                LanguageCodes.notificationTextConfigTextInfo.toString()),
-            body: N(context, notifyInfo.type,
-                args: notifyInfo.notificationContent.split('-')),
-            fln: flutterLocalNotificationsPlugin);
-      });
-      hubConnection.on(HubStream.receiveNotificationByUser.name, (arguments) {
-        debugPrint(arguments.toString());
-        var notifyInfo = (json.decode(arguments.toString()) as List)
-            .map((data) => NotificationSignalr.fromJson(data))
-            .toList()
-            .first;
-        NotificationPush.showNotification(
-            title: L(context,
-                LanguageCodes.notificationTextConfigTextInfo.toString()),
-            body: N(context, notifyInfo.type,
-                args: notifyInfo.notificationContent.split('-')),
-            fln: flutterLocalNotificationsPlugin);
-      });
-    }
   }
 
   @override
@@ -139,6 +98,7 @@ class _HomePageState extends State<HomePage> {
     _pageNewStoriesController = PageController(viewportFraction: 0.9);
     _pageBannerController = PageController(initialPage: 0);
     _initSharedPreferences();
+    initHubAndListenGlobalNotification();
     super.initState();
   }
 
@@ -156,6 +116,73 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  Future<void> startHub() async {
+    await _hubConnection.start();
+  }
+
+  Future<void> initHubAndListenGlobalNotification() async {
+    _hubConnection = HubConnectionBuilder()
+        .withUrl(SignalrCentral.notificationListen,
+            options: SignalrCentral.httpConnectionOptions)
+        .withAutomaticReconnect(retryDelays: [30000]).build();
+    _hubConnection.onclose(({error}) async {
+      debugPrint("Connection ${SignalrCentral.notificationListen} Closed!");
+      await _hubConnection.onreconnecting(({error}) {
+        debugPrint("Re-Connecting ${SignalrCentral.notificationListen}!");
+      });
+      await _hubConnection.onreconnected(({connectionId}) {});
+    });
+    await startHub();
+    if (_hubConnection.state == HubConnectionState.Connected) {
+      _hubConnection.on(HubStream.receiveGlobalNotification.name, (arguments) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            _totalNotification =
+                _sharedPreferences.getInt('totalNotification') ?? 0;
+            _totalNotification++;
+            context.read<NotificationProvider>().setTotalView =
+                _totalNotification;
+            _sharedPreferences.setInt('totalNotification', _totalNotification);
+            var notifyInfo = (json.decode(arguments.toString()) as List)
+                .map((data) => NotificationSignalr.fromJson(data))
+                .toList()
+                .first;
+            NotificationPush.showNotification(
+                title: L(context,
+                    LanguageCodes.notificationTextConfigTextInfo.toString()),
+                body: N(context, notifyInfo.type,
+                    args: notifyInfo.notificationContent.split('-')),
+                fln: flutterLocalNotificationsPlugin);
+          });
+        });
+      });
+      _hubConnection.on(HubStream.receiveNotificationByUser.name, (arguments) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            _totalNotification =
+                _sharedPreferences.getInt('totalNotification') ?? 0;
+            _totalNotification++;
+
+            context.read<NotificationProvider>().setTotalView =
+                _totalNotification;
+            _sharedPreferences.setInt('totalNotification', _totalNotification);
+            var notifyInfo = (json.decode(arguments.toString()) as List)
+                .map((data) => NotificationSignalr.fromJson(data))
+                .toList()
+                .first;
+            NotificationPush.showNotification(
+                title: L(context,
+                    LanguageCodes.notificationTextConfigTextInfo.toString()),
+                body: N(context, notifyInfo.type,
+                    args: notifyInfo.notificationContent.split('-')),
+                fln: flutterLocalNotificationsPlugin);
+          });
+        });
+      });
+    } else if (_hubConnection.state == HubConnectionState.Disconnected) {
+      startHub();
+    }
+  }
 // #region Define data test
 
   final List<Widget> imageBanners = [
@@ -182,14 +209,16 @@ class _HomePageState extends State<HomePage> {
   final _homePageItem = HomePageItems();
   final _debouncer = Debouncer(const Duration(milliseconds: 100));
   final _throttle = Throttle(const Duration(milliseconds: 100));
-  final _totalNotification = 0;
+  late int _totalNotification = 0;
   late SharedPreferences _sharedPreferences;
+  late HubConnection _hubConnection;
   // #endregion
 
 // #region Define methods
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
+    _totalNotification = _sharedPreferences.getInt('totalNotification') ?? 0;
   }
 
   void _onChangedSearch(String textInput) {
@@ -263,11 +292,6 @@ class _HomePageState extends State<HomePage> {
                       onPressed: null,
                       icon: Icon(Icons.search,
                           color: themeMode(context, ColorCode.modeColor.name))),
-              IconButton(
-                  splashRadius: 25.0,
-                  onPressed: () {},
-                  icon: Icon(Icons.chat_outlined,
-                      color: themeMode(context, ColorCode.textColor.name))),
               Stack(children: [
                 IconButton(
                   onPressed: () => Navigator.push(
@@ -278,27 +302,36 @@ class _HomePageState extends State<HomePage> {
                       color: themeMode(context, ColorCode.textColor.name)),
                   splashRadius: 22.0,
                 ),
-                Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      width: MainSetting.getPercentageOfDevice(context,
-                              expectWidth: 20)
-                          .width,
-                      height: MainSetting.getPercentageOfDevice(context,
-                              expectHeight: 20)
-                          .height,
-                      decoration: BoxDecoration(
-                          color: themeMode(context, ColorCode.mainColor.name),
-                          borderRadius: BorderRadius.circular(100)),
-                      child: Center(
-                        child: Text(
-                          '$_totalNotification+',
-                          style: CustomFonts.h6(context),
-                          textAlign: TextAlign.center,
+                Consumer<NotificationProvider>(
+                  builder: (_, value, __) {
+                    _totalNotification = value.totalNotification;
+
+                    return Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Container(
+                        width: MainSetting.getPercentageOfDevice(context,
+                                expectWidth: 20)
+                            .width,
+                        height: MainSetting.getPercentageOfDevice(context,
+                                expectHeight: 20)
+                            .height,
+                        decoration: BoxDecoration(
+                            color: themeMode(context, ColorCode.mainColor.name),
+                            borderRadius: BorderRadius.circular(100)),
+                        child: Center(
+                          child: Text(
+                            _totalNotification <= 9
+                                ? '$_totalNotification'
+                                : '$_totalNotification+',
+                            style: CustomFonts.h6(context),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
-                    ))
+                    );
+                  },
+                )
               ]),
             ],
           ),

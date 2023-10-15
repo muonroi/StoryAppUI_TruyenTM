@@ -15,7 +15,6 @@ class SingleUserDetail {
   String address;
   DateTime birthDate;
   int gender;
-  String? avatarTemp;
   String? newSalf;
   String? newPassword;
   int accountStatus;
@@ -30,7 +29,6 @@ class SingleUserDetail {
     required this.address,
     required this.birthDate,
     required this.gender,
-    required this.avatarTemp,
     this.newSalf,
     this.newPassword,
     required this.accountStatus,
@@ -47,7 +45,6 @@ class SingleUserDetail {
         address: json["address"],
         birthDate: DateTime.parse(json["birthDate"]),
         gender: json["gender"],
-        avatarTemp: json["avatarTemp"],
         newSalf: json["newSalf"],
         newPassword: json["newPassword"],
         accountStatus: json["accountStatus"],
@@ -63,7 +60,6 @@ class SingleUserDetail {
         "address": address,
         "birthDate": birthDate.toIso8601String(),
         "gender": gender,
-        "avatarTemp": avatarTemp,
         "newSalf": newSalf,
         "newPassword": newPassword,
         "accountStatus": accountStatus,
