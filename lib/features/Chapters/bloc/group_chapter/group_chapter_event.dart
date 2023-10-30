@@ -13,3 +13,8 @@ class GroupChapter extends GroupChapterBlocEvent {
   final int pageIndex;
   const GroupChapter(this.storyId, this.pageIndex);
 }
+
+class SingleChapter extends GroupChapterBlocEvent {
+  final int chapterId;
+  const SingleChapter(this.chapterId);
+}

@@ -58,7 +58,7 @@ class LatestChapterOfStoryBloc
       try {
         emit(FromToChapterOfStoryLoadingState());
         var mList = await chapterRepository.fetchFromToChapterOfStory(
-            storyId, event.fromChapterId, event.toChapterId);
+            storyId, event.pageIndex, event.fromChapterId, event.toChapterId);
         emit(FromToChapterOfStoryLoadedState(mList));
         if (!mList.isOk) {
           emit(FromToChapterOfStoryErrorState(

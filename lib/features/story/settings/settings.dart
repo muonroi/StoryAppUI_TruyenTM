@@ -23,7 +23,8 @@ StorySingleResult storySingleDefaultData() {
       firstChapterId: 0,
       lastChapterId: 0,
       slugAuthor: "",
-      isBookmark: false);
+      isBookmark: false,
+      totalPageIndex: 0);
 }
 
 String formatNumberThouSand(double value) {

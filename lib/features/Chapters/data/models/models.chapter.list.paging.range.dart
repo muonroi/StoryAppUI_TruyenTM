@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:path/path.dart';
+
 ListPagingRangeChapters listPagingRangeChaptersFromJson(String str) =>
     ListPagingRangeChapters.fromJson(json.decode(str));
 
@@ -49,6 +51,7 @@ class Result {
   String createdUserName;
   String updatedUserName;
   int pageIndex;
+  int groupIndex;
   Result({
     required this.id,
     required this.chapterTitle,
@@ -62,6 +65,7 @@ class Result {
     required this.createdUserName,
     required this.updatedUserName,
     required this.pageIndex,
+    required this.groupIndex,
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -76,7 +80,8 @@ class Result {
       updatedDateTs: json["updatedDateTS"],
       createdUserName: json["createdUserName"],
       updatedUserName: json["updatedUserName"],
-      pageIndex: json["index"]);
+      pageIndex: json["index"],
+      groupIndex: json["groupIndex"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -90,6 +95,7 @@ class Result {
         "updatedDateTS": updatedDateTs,
         "createdUserName": createdUserName,
         "updatedUserName": updatedUserName,
-        "index": pageIndex
+        "index": pageIndex,
+        "current_group_index": groupIndex
       };
 }

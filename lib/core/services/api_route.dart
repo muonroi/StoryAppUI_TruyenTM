@@ -1,7 +1,7 @@
 class ApiNetwork {
   static const String apiVersion = "1.0";
   // #region Base api
-  static const String baseUrl = "https://muonroi.online/";
+  static const String baseUrl = "https://10.0.2.2:8080/";
   static const String baseApi = "${baseUrl}api/v$apiVersion/";
   static const String renewToken = "tokens/access-token";
   static const String baseSearchStory = "stories/search?";
@@ -50,7 +50,7 @@ class ApiNetwork {
   static const String getListChapterPaging =
       "chapters/paging-chapter?storyId=%s";
   static const String getFromToChapterPaging =
-      "chapters/group?storyId=%s&fromChapterId=%s&toChapterId=%s";
+      "chapters/group?storyId=%s&pageIndex=%s&fromChapterId=%s&toChapterId=%s";
   static const String getGroupChapters =
       "chapters/group-chapter?storyId=%s&pageIndex=%s&pageSize=%s";
   // #endregion

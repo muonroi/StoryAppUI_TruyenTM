@@ -58,6 +58,7 @@ class StorySingleResult {
   int lastChapterId;
   String slugAuthor;
   bool isBookmark;
+  int totalPageIndex;
 
   StorySingleResult({
     required this.rankNumber,
@@ -82,6 +83,7 @@ class StorySingleResult {
     required this.lastChapterId,
     required this.slugAuthor,
     required this.isBookmark,
+    required this.totalPageIndex,
   });
 
   factory StorySingleResult.fromJson(Map<String, dynamic> json) =>
@@ -108,6 +110,7 @@ class StorySingleResult {
         lastChapterId: json["lastChapterId"],
         slugAuthor: json["slugAuthor"],
         isBookmark: json["isBookmark"],
+        totalPageIndex: json["totalPageIndex"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -132,6 +135,7 @@ class StorySingleResult {
         "slugAuthor": slugAuthor,
         "isBookmark": isBookmark,
         "firstChapterId": firstChapterId,
-        "lastChapterId": lastChapterId
+        "lastChapterId": lastChapterId,
+        "totalPageIndex": totalPageIndex
       };
 }

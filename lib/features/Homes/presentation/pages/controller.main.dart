@@ -380,6 +380,8 @@ class _HomePageState extends State<HomePage> {
                 var storyInfo = storyResult.result;
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Chapter(
+                    pageIndex: 1,
+                    loadSingleChapter: false,
                     isLoadHistory: true,
                     storyId: storyInfo.id,
                     storyName: storyInfo.storyTitle,

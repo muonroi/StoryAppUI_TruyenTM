@@ -14,7 +14,9 @@ class GetAnyLatestChapterList extends LatestChapterOfStoryEvent {}
 class GetFromToChapterOfStoryList extends LatestChapterOfStoryEvent {
   final int fromChapterId;
   final int toChapterId;
-
+  final int pageIndex;
   const GetFromToChapterOfStoryList(
-      {required this.fromChapterId, required this.toChapterId});
+      {required this.pageIndex,
+      required this.fromChapterId,
+      required this.toChapterId});
 }

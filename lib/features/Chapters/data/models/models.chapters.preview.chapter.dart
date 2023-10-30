@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-ChapterPreviewModel chapterPreviewModelFromJson(String str) =>
-    ChapterPreviewModel.fromJson(json.decode(str));
+ChapterPreviewModel chapterPreviewModelFromJson(String str, int pageIndex) =>
+    ChapterPreviewModel.fromJson(json.decode(str), pageIndex);
 
 String chapterPreviewModelToJson(ChapterPreviewModel data) =>
     json.encode(data.toJson());
@@ -11,21 +11,25 @@ class ChapterPreviewModel {
   List<dynamic> errorMessages;
   bool isOk;
   int statusCode;
+  int pageIndex;
 
   ChapterPreviewModel({
     required this.result,
     required this.errorMessages,
     required this.isOk,
     required this.statusCode,
+    required this.pageIndex,
   });
 
-  factory ChapterPreviewModel.fromJson(Map<String, dynamic> json) =>
+  factory ChapterPreviewModel.fromJson(
+          Map<String, dynamic> json, int pageIndex) =>
       ChapterPreviewModel(
-        result: Result.fromJson(json["result"]),
-        errorMessages: List<dynamic>.from(json["errorMessages"].map((x) => x)),
-        isOk: json["isOK"],
-        statusCode: json["statusCode"],
-      );
+          result: Result.fromJson(json["result"]),
+          errorMessages:
+              List<dynamic>.from(json["errorMessages"].map((x) => x)),
+          isOk: json["isOK"],
+          statusCode: json["statusCode"],
+          pageIndex: pageIndex);
 
   Map<String, dynamic> toJson() => {
         "result": result.toJson(),
@@ -60,25 +64,28 @@ class Item {
   int numberOfChapter;
   String chapterName;
   int pageIndex;
+  int totalChapterAtLastChunk;
   Item({
     required this.chapterId,
     required this.numberOfChapter,
     required this.chapterName,
     required this.pageIndex,
+    required this.totalChapterAtLastChunk,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-        chapterId: json["chapterId"],
-        numberOfChapter: json["numberOfChapter"],
-        chapterName: json["chapterName"],
-        pageIndex: json["index"],
-      );
+      chapterId: json["chapterId"],
+      numberOfChapter: json["numberOfChapter"],
+      chapterName: json["chapterName"],
+      pageIndex: json["index"],
+      totalChapterAtLastChunk: json["totalChapterAtLastChunk"]);
 
   Map<String, dynamic> toJson() => {
         "chapterId": chapterId,
         "numberOfChapter": numberOfChapter,
         "chapterName": chapterName,
-        "index": pageIndex
+        "index": pageIndex,
+        "totalChapterAtLastChunk": totalChapterAtLastChunk
       };
 }
 

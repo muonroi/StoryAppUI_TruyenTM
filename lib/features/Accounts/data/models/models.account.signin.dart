@@ -108,7 +108,7 @@ class AccountResult {
       address: json["address"],
       emailConfirmed: json["emailConfirmed"],
       lastLogin: DateTime.parse(json["lastLogin"]),
-      avatar: json["avatar"],
+      avatar: json["avatar"] ?? "",
       status: json["status"],
       accountStatus: json["accountStatus"],
       note: json["note"] ?? "",

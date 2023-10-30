@@ -168,6 +168,8 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) => Chapter(
+                                                      pageIndex: 1,
+                                                      loadSingleChapter: false,
                                                       isLoadHistory: true,
                                                       storyId:
                                                           storyInfo.result.id,

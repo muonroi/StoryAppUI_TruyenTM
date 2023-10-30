@@ -131,24 +131,36 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                     var sharePreferences =
                                         await SharedPreferences.getInstance();
                                     sharePreferences.setInt(
-                                        "story-${widget.storyId}-current-page-index",
-                                        chapterItem.pageIndex == 0
-                                            ? 1
-                                            : chapterItem.pageIndex);
-                                    sharePreferences.setInt(
                                         "story-${widget.storyId}-current-chapter-index",
-                                        99 - (index + 1));
+                                        state
+                                                    .chapter
+                                                    .result
+                                                    .items[state.chapter.result
+                                                            .items.length -
+                                                        1]
+                                                    .numberOfChapter >
+                                                100
+                                            ? chapterItem
+                                                    .totalChapterAtLastChunk -
+                                                (index + 1)
+                                            : chapterItem.numberOfChapter - 1);
                                     sharePreferences.setInt(
                                         "story-${widget.storyId}-current-chapter-id",
                                         chapterItem.chapterId);
                                     sharePreferences.setInt(
                                         "story-${widget.storyId}-current-chapter",
                                         chapterItem.numberOfChapter);
+                                    sharePreferences.setInt(
+                                        "story-${widget.storyId}-current-page-index",
+                                        widget.storyInfo.totalPageIndex);
                                     if (context.mounted) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => Chapter(
+                                            pageIndex:
+                                                widget.storyInfo.totalPageIndex,
+                                            loadSingleChapter: true,
                                             isLoadHistory: true,
                                             storyId: widget.storyId,
                                             storyName:

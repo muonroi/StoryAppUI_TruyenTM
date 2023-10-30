@@ -21,12 +21,14 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Chapter extends StatefulWidget {
+  final bool loadSingleChapter;
   final int storyId;
   final String storyName;
   final int chapterId;
   final int lastChapterId;
   final int firstChapterId;
   final bool isLoadHistory;
+  final int pageIndex;
   const Chapter(
       {super.key,
       required this.storyId,
@@ -34,7 +36,9 @@ class Chapter extends StatefulWidget {
       required this.chapterId,
       required this.lastChapterId,
       required this.firstChapterId,
-      required this.isLoadHistory});
+      required this.isLoadHistory,
+      required this.loadSingleChapter,
+      required this.pageIndex});
 
   @override
   State<Chapter> createState() => _ChapterState();
@@ -43,7 +47,7 @@ class Chapter extends StatefulWidget {
 class _ChapterState extends State<Chapter> {
   @override
   void initState() {
-    _pageIndex = 1;
+    _pageIndex = widget.pageIndex;
     _chapterIndex = 0;
     _initSharedPreferences().then((value) async {
       _pageIndex = _sharedPreferences
@@ -78,6 +82,24 @@ class _ChapterState extends State<Chapter> {
     _isVisible = false;
     _isLoad = true;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    if (widget.firstChapterId == widget.chapterId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _isDisablePreviousButton = true;
+        });
+      });
+    } else if (!_isLoading) {
+      _isLoading = true;
+    }
+    if (widget.lastChapterId == widget.chapterId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _isDisableNextButton = true;
+        });
+      });
+    } else if (!_isLoading) {
+      _isLoading = true;
+    }
   }
 
   @override
@@ -167,6 +189,14 @@ class _ChapterState extends State<Chapter> {
       if (_scrollController.hasClients) {
         _scrollController.jumpTo(0);
       }
+    } else if (widget.firstChapterId == chapterId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _isDisablePreviousButton = true;
+        });
+      });
+    } else if (!_isLoading) {
+      _isLoading = true;
     }
     _refreshController.refreshCompleted();
   }

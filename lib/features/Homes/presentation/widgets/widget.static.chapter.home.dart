@@ -186,6 +186,8 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => Chapter(
+                                                  pageIndex: 1,
+                                                  loadSingleChapter: false,
                                                   isLoadHistory: true,
                                                   storyId: chapterInfo.storyId,
                                                   storyName: storyInfo

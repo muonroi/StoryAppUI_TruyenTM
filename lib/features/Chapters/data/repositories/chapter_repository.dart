@@ -35,8 +35,8 @@ class ChapterRepository {
           pageIndex: pageIndex, pageSize: pageSize);
 
   Future<ListPagingRangeChapters> fetchFromToChapterOfStory(
-          int storyId, int from, int to) =>
-      _provider.getFromToChaptersDataDetail(storyId, from, to);
+          int storyId, int pageIndex, int from, int to) =>
+      _provider.getFromToChaptersDataDetail(storyId, pageIndex, from, to);
 
   Future<GroupChapters> fetchGroupChapters(int storyId, int pageIndex,
           {int pageSize = 100}) =>

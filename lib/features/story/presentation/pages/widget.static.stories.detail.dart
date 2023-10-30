@@ -234,6 +234,8 @@ class _StoryDetailState extends State<StoryDetail> {
                           child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                               context,
                               Chapter(
+                                pageIndex: 1,
+                                loadSingleChapter: false,
                                 isLoadHistory: true,
                                 storyId: widget.storyId,
                                 storyName: widget.storyTitle,

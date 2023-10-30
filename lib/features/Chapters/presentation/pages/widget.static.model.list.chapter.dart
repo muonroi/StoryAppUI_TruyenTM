@@ -39,7 +39,7 @@ class _ChapterListPageState extends State<ChapterListPage>
     _latestChapterOfStoryBloc =
         LatestChapterOfStoryBloc(widget.storyId, false, 1, 100, 0);
     _latestChapterOfStoryBloc.add(GetFromToChapterOfStoryList(
-        fromChapterId: fromChapterId, toChapterId: toChapterId));
+        pageIndex: 0, fromChapterId: fromChapterId, toChapterId: toChapterId));
     super.initState();
   }
 
@@ -172,6 +172,8 @@ class _ChapterListPageState extends State<ChapterListPage>
                                             selectedItemIndex = index;
                                             _latestChapterOfStoryBloc.add(
                                                 GetFromToChapterOfStoryList(
+                                                    pageIndex: chapterPagingInfo
+                                                        .pageIndex,
                                                     fromChapterId:
                                                         chapterPagingInfo
                                                             .fromId,
@@ -246,6 +248,8 @@ class _ChapterListPageState extends State<ChapterListPage>
                       );
                     }
                     if (state is FromToChapterOfStoryLoadedState) {
+                      List<int> originalIndices = List.generate(
+                          state.chapter.result.length, (index) => index);
                       return Expanded(
                           child: ListView.builder(
                         itemCount: state.chapter.result.length,
@@ -272,12 +276,14 @@ class _ChapterListPageState extends State<ChapterListPage>
                                         await SharedPreferences.getInstance();
                                     sharePreferences.setInt(
                                         "story-${widget.storyId}-current-page-index",
-                                        chapterInfo.pageIndex == 0
+                                        chapterInfo.groupIndex == 0
                                             ? 1
-                                            : chapterInfo.pageIndex);
+                                            : chapterInfo.groupIndex);
                                     sharePreferences.setInt(
                                         "story-${widget.storyId}-current-chapter-index",
-                                        index);
+                                        isShort
+                                            ? originalIndices.length - 1 - index
+                                            : index);
                                     sharePreferences.setInt(
                                         "story-${widget.storyId}-current-chapter-id",
                                         chapterInfo.id);
@@ -289,14 +295,17 @@ class _ChapterListPageState extends State<ChapterListPage>
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => Chapter(
-                                                isLoadHistory: false,
-                                                storyId: chapterInfo.storyId,
-                                                storyName: widget.storyTitle,
-                                                chapterId: chapterInfo.id,
-                                                lastChapterId:
-                                                    widget.lastChapterId,
-                                                firstChapterId:
-                                                    widget.firstChapterId),
+                                              pageIndex: chapterInfo.groupIndex,
+                                              isLoadHistory: false,
+                                              storyId: chapterInfo.storyId,
+                                              storyName: widget.storyTitle,
+                                              chapterId: chapterInfo.id,
+                                              lastChapterId:
+                                                  widget.lastChapterId,
+                                              firstChapterId:
+                                                  widget.firstChapterId,
+                                              loadSingleChapter: true,
+                                            ),
                                           ));
                                     }
                                   },

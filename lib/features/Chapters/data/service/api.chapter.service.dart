@@ -18,7 +18,7 @@ class ChapterService {
           ApiNetwork.getChapterPaging,
           ["$storyId", "$pageIndex", "100", "$isLatest"]));
       if (response.statusCode == 200) {
-        return chapterPreviewModelFromJson(response.data.toString());
+        return chapterPreviewModelFromJson(response.data.toString(), pageIndex);
       } else {
         throw Exception("Failed to load chapter");
       }
@@ -95,11 +95,12 @@ class ChapterService {
   }
 
   Future<ListPagingRangeChapters> getFromToChaptersDataDetail(
-      int storyId, int from, int to) async {
+      int storyId, int pageIndex, int from, int to) async {
     try {
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(sprintf(
-          ApiNetwork.getFromToChapterPaging, ["$storyId", "$from", "$to"]));
+          ApiNetwork.getFromToChapterPaging,
+          ["$storyId", "$pageIndex", "$from", "$to"]));
       if (response.statusCode == 200) {
         return listPagingRangeChaptersFromJson(response.data.toString());
       } else {
@@ -122,6 +123,10 @@ class ChapterService {
             ApiNetwork.getGroupChapters,
             ["$storyId", "$pageIndex", "$pageSize"]));
         if (response.statusCode == 200) {
+          sharedPreferences.setString(
+              "story-$storyId-current-group-chapter-$pageIndex",
+              groupChaptersToJson(
+                  groupChaptersFromJson(response.data.toString())));
           return groupChaptersFromJson(response.data.toString());
         } else {
           throw Exception("Failed to load chapter");
