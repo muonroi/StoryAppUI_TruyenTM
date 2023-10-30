@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:path/path.dart';
-
 ListPagingRangeChapters listPagingRangeChaptersFromJson(String str) =>
     ListPagingRangeChapters.fromJson(json.decode(str));
 
