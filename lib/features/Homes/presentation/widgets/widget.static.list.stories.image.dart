@@ -15,7 +15,7 @@ class StoriesImageIncludeSizeBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: netWorkImage(imageLink, true),
+      child: netWorkImage(context, imageLink, true, isHome: true),
     );
   }
 }

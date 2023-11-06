@@ -34,7 +34,7 @@ class LatestChapterOfStoryBloc
           emit(LatestChapterOfStoryErrorState(
               mList.errorMessages.map((e) => e.toString()).toList().join(',')));
         }
-      } on NetworkError {
+      } on NetworkChapterError {
         emit(const LatestChapterOfStoryErrorState(
             "Failed to fetch data. is your device online?"));
       }
@@ -49,7 +49,7 @@ class LatestChapterOfStoryBloc
           emit(AnyLatestChapterOfStoryErrorState(
               mList.errorMessages.map((e) => e.toString()).toList().join(',')));
         }
-      } on NetworkError {
+      } on NetworkChapterError {
         emit(const AnyLatestChapterOfStoryErrorState(
             "Failed to fetch data. is your device online?"));
       }
@@ -64,7 +64,7 @@ class LatestChapterOfStoryBloc
           emit(FromToChapterOfStoryErrorState(
               mList.errorMessages.map((e) => e.toString()).toList().join(',')));
         }
-      } on NetworkError {
+      } on NetworkChapterError {
         emit(const FromToChapterOfStoryErrorState(
             "Failed to fetch data. is your device online?"));
       }

@@ -96,7 +96,7 @@ class StoryItems {
         nameTag: List<dynamic>.from(json["nameTag"].map((x) => x)),
         updatedDateTs: json["updatedDateTs"],
         updatedDateString: json["updatedDateString"],
-        slugAuthor: json["slugAuthor"],
+        slugAuthor: json["slugAuthor"] ?? "",
       );
 
   String authorName;
@@ -109,7 +109,7 @@ class StoryItems {
   int rankNumber;
   double rating;
   String slug;
-  String slugAuthor;
+  String? slugAuthor;
   String storySynopsis;
   String storyTitle;
   int totalChapter;
@@ -137,7 +137,7 @@ class StoryItems {
         "nameTag": List<dynamic>.from(nameTag.map((x) => x)),
         "updatedDateTs": updatedDateTs,
         "updatedDateString": updatedDateString,
-        "slugAuthor": slugAuthor,
+        "slugAuthor": slugAuthor ?? "",
       };
 }
 

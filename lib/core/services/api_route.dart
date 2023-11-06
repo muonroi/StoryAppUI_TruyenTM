@@ -1,7 +1,7 @@
 class ApiNetwork {
   static const String apiVersion = "1.0";
   // #region Base api
-  static const String baseUrl = "https://10.0.2.2:8080/";
+  static const String baseUrl = "https://10.0.2.2:5001/";
   static const String baseApi = "${baseUrl}api/v$apiVersion/";
   static const String renewToken = "tokens/access-token";
   static const String baseSearchStory = "stories/search?";
@@ -35,6 +35,10 @@ class ApiNetwork {
       "stories/notification/user?pageIndex=%s&pageSize=%s";
   static const String viewAllNotificationUser = "stories/notification/all";
   static const String viewSingleNotificationUser = "stories/notification";
+  static const String createStoryForUser = "stories/for/user";
+  static const String deleteStoryForUser = "stories/for/user";
+  static const String getStoriesForUser =
+      "stories/for/user?type=%s&pageIndex=%s&pageSize=%s";
   // #endregion
 
   // #region Chapters endpoint
@@ -54,6 +58,7 @@ class ApiNetwork {
   static const String getGroupChapters =
       "chapters/group-chapter?storyId=%s&pageIndex=%s&pageSize=%s";
   // #endregion
+
   // #region Categories endpoint
   static const String getCategoriesPaging =
       "categories?pageSize=%s&pageIndex=%s";

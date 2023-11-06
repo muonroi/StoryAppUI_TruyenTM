@@ -5,6 +5,8 @@ import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/chapters/bloc/group_bloc/group_chapters_of_story_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/data/repositories/chapter_repository.dart';
+import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
+import 'package:muonroi/features/story/data/repositories/story_repository.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -173,7 +175,15 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                         var isDelete = _sharedPreferences.getBool(
                                                 "story-${widget.storyId}-download-group-chapter-$index") ??
                                             false;
-
+                                        if (!isDelete) {
+                                          final storyRepository =
+                                              StoryRepository();
+                                          await storyRepository
+                                              .createStoryForUser(
+                                                  widget.storyId,
+                                                  StoryForUserType
+                                                      .download.index);
+                                        }
                                         if (isDelete) {
                                           _sharedPreferences.remove(
                                               "story-${widget.storyId}-download-group-chapter-$index");

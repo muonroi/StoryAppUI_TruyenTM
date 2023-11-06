@@ -96,55 +96,64 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                                   ColorCode.textColor.name),
                                             ),
                                           ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              TextButton(
-                                                  onPressed: null,
-                                                  child: RichText(
-                                                      text: TextSpan(
-                                                    text: chapterInfo
-                                                        .chapterTitle,
-                                                    style:
-                                                        CustomFonts.h5(context),
-                                                    children: <InlineSpan>[
-                                                      const TextSpan(
-                                                          text:
-                                                              '\n'), // Add a line break
-                                                      WidgetSpan(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 8.0),
-                                                          child: Text(
-                                                            DateFormat(
-                                                                    'dd/MM - HH:mm')
-                                                                .format(
-                                                              DateTime
-                                                                  .fromMillisecondsSinceEpoch(
-                                                                chapterInfo
-                                                                        .updatedDateTs *
-                                                                    1000,
-                                                              ).toLocal(),
+                                          SizedBox(
+                                            width: MainSetting
+                                                    .getPercentageOfDevice(
+                                                        context,
+                                                        expectWidth: 180)
+                                                .width,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                TextButton(
+                                                    onPressed: null,
+                                                    child: RichText(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        text: TextSpan(
+                                                          text: chapterInfo
+                                                              .chapterTitle,
+                                                          style: CustomFonts.h5(
+                                                              context),
+                                                          children: <InlineSpan>[
+                                                            const TextSpan(
+                                                                text:
+                                                                    '\n'), // Add a line break
+                                                            WidgetSpan(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        left:
+                                                                            8.0),
+                                                                child: Text(
+                                                                  DateFormat(
+                                                                          'dd/MM - HH:mm')
+                                                                      .format(
+                                                                    DateTime
+                                                                        .fromMillisecondsSinceEpoch(
+                                                                      chapterInfo
+                                                                              .updatedDateTs *
+                                                                          1000,
+                                                                    ).toLocal(),
+                                                                  ),
+                                                                  style: CustomFonts.h6(
+                                                                          context)
+                                                                      .copyWith(
+                                                                          fontSize:
+                                                                              11,
+                                                                          fontStyle:
+                                                                              FontStyle.italic),
+                                                                ),
+                                                              ),
                                                             ),
-                                                            style: CustomFonts
-                                                                    .h6(context)
-                                                                .copyWith(
-                                                                    fontSize:
-                                                                        11,
-                                                                    fontStyle:
-                                                                        FontStyle
-                                                                            .italic),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ))),
-                                            ],
+                                                          ],
+                                                        ))),
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),

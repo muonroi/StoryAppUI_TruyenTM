@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
 import 'package:muonroi/features/story/data/models/models.single.story.dart';
 import 'package:muonroi/features/story/data/repositories/story_repository.dart';
 import 'package:muonroi/features/story/presentation/pages/widget.static.stories.download.dart';
@@ -207,6 +208,9 @@ class _StoryDetailState extends State<StoryDetail> {
                                     final bool isBookmarked =
                                         await _storyRepository
                                             .bookmarkStory(storyInfo.id);
+                                    await _storyRepository.createStoryForUser(
+                                        storyInfo.id,
+                                        StoryForUserType.bookmark.index);
                                     setState(() {
                                       _colorBookmark = isBookmarked
                                           ? themeMode(

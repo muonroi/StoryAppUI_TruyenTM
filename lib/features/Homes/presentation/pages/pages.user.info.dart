@@ -60,7 +60,7 @@ class _UserInfoState extends State<UserInfo> {
                   height: MainSetting.getPercentageOfDevice(context,
                           expectHeight: 70)
                       .height,
-                  child: netWorkImage(widget.userInfo.avatar, true),
+                  child: netWorkImage(context, widget.userInfo.avatar, true),
                 ),
               ),
               Container(

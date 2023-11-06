@@ -27,7 +27,7 @@ class GroupChapterOfStoryBloc
           emit(GroupChapterOfStoryErrorState(
               mList.errorMessages.map((e) => e.toString()).toList().join(',')));
         }
-      } on NetworkError {
+      } on NetworkChapterError {
         emit(const GroupChapterOfStoryErrorState(
             "Failed to fetch data. is your device online?"));
       }

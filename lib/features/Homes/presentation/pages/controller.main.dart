@@ -348,9 +348,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 // #endregion
-                BookCase(
-                  storiesData: widget.storiesInit,
-                ),
+                const BookCase(),
                 Container(),
                 const StoriesFree(
                   isShowLabel: false,

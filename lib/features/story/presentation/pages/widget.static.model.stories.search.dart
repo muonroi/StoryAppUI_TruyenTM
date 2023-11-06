@@ -121,7 +121,7 @@ class _SearchPageState extends State<SearchPage> {
                                         expectHeight: 100)
                                     .height,
                                 child: netWorkImage(
-                                    storiesSearch[index].imgUrl, true),
+                                    context, storiesSearch[index].imgUrl, true),
                               ),
                             ),
                             title: Text(

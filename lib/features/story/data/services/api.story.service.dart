@@ -162,4 +162,59 @@ class StoryService {
       throw Exception("Failed to bookmark story - $e");
     }
   }
+
+  Future<bool> createStoryForUser(int storyId, int type) async {
+    try {
+      Map<String, dynamic> data = {'storyId': storyId, 'storyType': type};
+      var baseEndpoint = await endPoint();
+      final response =
+          await baseEndpoint.post(ApiNetwork.createStoryForUser, data: data);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception("Failed to create story for user - $e");
+    }
+  }
+
+  Future<bool> deleteStoryForUser(int storyId) async {
+    try {
+      Map<String, dynamic> data = {'storyId': 0, 'storyType': 0, 'id': storyId};
+      var baseEndpoint = await endPoint();
+      final response =
+          await baseEndpoint.delete(ApiNetwork.deleteStoryForUser, data: data);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception("Failed to delete story for user - $e");
+    }
+  }
+
+  Future<StoriesModel> getStoriesForUser(
+      int pageIndex, int pageSize, int type) async {
+    try {
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint.get(
+          sprintf(ApiNetwork.getStoriesForUser, [type, pageIndex, pageSize]));
+      if (response.statusCode == 200) {
+        return storiesFromJson(response.data.toString());
+      } else {
+        return StoriesModel(
+          errorMessages: [],
+          result: Result(
+              items: [],
+              pagingInfo: PagingInfo(pageSize: 0, page: 0, totalItems: 0)),
+          isOk: false,
+          statusCode: 400,
+        );
+      }
+    } catch (e) {
+      throw Exception("Failed to get story for user - $e");
+    }
+  }
 }

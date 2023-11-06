@@ -27,6 +27,7 @@ class SearchContainer extends StatelessWidget {
           onChanged: onChanged,
           maxLines: 1,
           minLines: 1,
+          style: CustomFonts.h5(context),
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8.0),
               hintMaxLines: 1,

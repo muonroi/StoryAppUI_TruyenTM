@@ -14,7 +14,7 @@ class StoriesListHorizontal extends StatelessWidget {
             .height,
         child: GestureDetector(
           onTap: () {},
-          child: netWorkImage(imageUrl, true),
+          child: netWorkImage(context, imageUrl, true),
         ));
   }
 }

@@ -10,6 +10,8 @@ import 'package:muonroi/features/chapters/presentation/widgets/widget.static.but
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.detail.chapter.bottom.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
+import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
+import 'package:muonroi/features/story/data/repositories/story_repository.dart';
 import 'package:muonroi/features/story/presentation/pages/widget.static.stories.detail.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
@@ -115,6 +117,9 @@ class _ChapterState extends State<Chapter> {
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
+    _storyRepository = StoryRepository();
+    await _storyRepository.createStoryForUser(
+        widget.storyId, StoryForUserType.recent.index);
     if (context.mounted) {
       _settingConfig = getCurrentTemplate(_sharedPreferences, context);
     }
@@ -278,7 +283,7 @@ class _ChapterState extends State<Chapter> {
   late RefreshController _refreshController;
   late String _scrollPositionKey;
   late TemplateSetting _settingConfig;
-
+  late StoryRepository _storyRepository;
   // #endregion
 
   @override

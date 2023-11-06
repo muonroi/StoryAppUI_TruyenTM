@@ -26,14 +26,14 @@ class LocalizationLib {
       LanguageCodes.completeStoriesTextInfo.toString(): 'Truyện đã hoàn thành',
       LanguageCodes.newChapterUpdatedTextInfo.toString(): 'Chương mới cập nhật',
       LanguageCodes.homePageTextInfo.toString(): 'Trang chủ',
-      LanguageCodes.bookCaseTextInfo.toString(): 'Tủ sách',
+      LanguageCodes.bookCaseTextInfo.toString(): 'Gần đây',
       LanguageCodes.freeStoriesTextInfo.toString(): 'Truyện miễn phí',
       LanguageCodes.userInfoTextInfo.toString(): 'Cá nhân',
       LanguageCodes.passedNumberMinuteTextInfo.toString(): 'phút trước',
       LanguageCodes.chapterNumberTextInfo.toString(): 'Chương',
       LanguageCodes.rankTextInfo.toString(): 'Top',
-      LanguageCodes.storiesBoughtTextInfo.toString(): 'Đã mua',
-      LanguageCodes.storiesSavedTextInfo.toString(): 'Truyện đã tải',
+      LanguageCodes.storiesBoughtTextInfo.toString(): 'Đã tải',
+      LanguageCodes.storiesSavedTextInfo.toString(): 'Tủ sách',
       LanguageCodes.storiesContinueChapterTextInfo.toString(): 'Đọc tiếp',
       LanguageCodes.myAccountTextInfo.toString(): 'Tài khoản của tôi',
       LanguageCodes.myAccountCoinTextInfo.toString(): 'Ngân lượng',
@@ -159,6 +159,8 @@ class LocalizationLib {
       LanguageCodes.successTextInfo.toString(): 'Thành công',
       LanguageCodes.unSuccessTextInfo.toString(): 'Thất bại',
       LanguageCodes.noDataTextInfo.toString(): 'Không có dữ liệu',
+      LanguageCodes.viewNextNotificationTextInfo.toString(): 'Xem tiếp',
+      LanguageCodes.viewPreviousNotificationTextInfo.toString(): 'Lùi về',
     }
   };
   static String L(String key, {String locale = 'vi'}) {

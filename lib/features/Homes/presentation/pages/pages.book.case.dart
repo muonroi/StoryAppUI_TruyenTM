@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.book.case.stories.items.dart';
-import 'package:muonroi/features/story/data/models/models.stories.story.dart';
 
 class BookCase extends StatefulWidget {
-  const BookCase({super.key, required this.storiesData});
-  final List<StoryItems> storiesData;
+  const BookCase({super.key});
   @override
   State<BookCase> createState() => _BookCaseState();
 }
@@ -79,22 +78,22 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
         ),
         body: TabBarView(children: [
           StoriesItems(
-            storiesData: widget.storiesData,
             reload: _animationReloadController,
             sort: _animationSortController,
             textSearchController: _textSearchController,
+            storiesTypes: StoryForUserType.recent,
           ),
           StoriesItems(
-            storiesData: widget.storiesData,
             reload: _animationReloadController,
             sort: _animationSortController,
             textSearchController: _textSearchController,
+            storiesTypes: StoryForUserType.download,
           ),
           StoriesItems(
-            storiesData: widget.storiesData,
             reload: _animationReloadController,
             sort: _animationSortController,
             textSearchController: _textSearchController,
+            storiesTypes: StoryForUserType.bookmark,
           ),
         ]),
       ),

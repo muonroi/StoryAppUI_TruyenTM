@@ -34,7 +34,7 @@ class GroupChapterBloc
                 .toList()
                 .join(',')));
           }
-        } on NetworkError {
+        } on NetworkChapterError {
           emit(const GroupChapterErrorState(
               "Failed to fetch data. is your device online?"));
         }
@@ -59,7 +59,7 @@ class GroupChapterBloc
                 .toList()
                 .join(',')));
           }
-        } on NetworkError {
+        } on NetworkChapterError {
           emit(const GroupChapterErrorState(
               "Failed to fetch data. is your device online?"));
         }

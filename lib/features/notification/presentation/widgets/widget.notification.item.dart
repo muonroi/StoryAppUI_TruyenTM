@@ -111,7 +111,7 @@ class _NotificationItemState extends State<NotificationItem> {
                     height: MainSetting.getPercentageOfDevice(context,
                             expectHeight: 100)
                         .height,
-                    child: netWorkImage(widget.imageUrl, true),
+                    child: netWorkImage(context, widget.imageUrl, true),
                   ),
                 ),
                 title: Text(

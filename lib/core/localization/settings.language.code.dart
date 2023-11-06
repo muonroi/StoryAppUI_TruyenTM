@@ -189,5 +189,7 @@ enum LanguageCodes {
   successTextInfo,
   unSuccessTextInfo,
   noDataTextInfo,
+  viewNextNotificationTextInfo,
+  viewPreviousNotificationTextInfo,
 // #endregion
 }

@@ -70,7 +70,7 @@ class _StoryLessModelWidgetState extends State<StoryLessModelWidget> {
                     height: MainSetting.getPercentageOfDevice(context,
                             expectHeight: 100)
                         .height,
-                    child: netWorkImage(widget.networkImageUrl, true),
+                    child: netWorkImage(context, widget.networkImageUrl, true),
                   ),
                 ),
                 Container(

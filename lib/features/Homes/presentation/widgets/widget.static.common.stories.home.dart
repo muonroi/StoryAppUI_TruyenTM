@@ -62,6 +62,7 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                                     .height,
                                 child: SizedBox(
                                   child: netWorkImage(
+                                      context,
                                       widget.storiesCommonInfo[index].imgUrl,
                                       true),
                                 )),

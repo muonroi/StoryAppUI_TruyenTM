@@ -41,7 +41,7 @@ class _HeaderState extends State<Header> {
                     .height,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: netWorkImage(widget.infoStory.imgUrl, true),
+                  child: netWorkImage(context, widget.infoStory.imgUrl, true),
                 ),
               ),
               RatingBar.builder(

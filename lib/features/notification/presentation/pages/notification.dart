@@ -157,19 +157,29 @@ class _NotificationPageState extends State<NotificationPage> {
                       onLoading: _onLoading,
                       footer: ClassicFooter(
                         canLoadingIcon: const Icon(Icons.arrow_downward),
-                        canLoadingText: L(context,
-                            LanguageCodes.nextChapterTextInfo.toString()),
-                        idleText: L(context,
-                            LanguageCodes.loadingMoreTextInfo.toString()),
+                        canLoadingText: L(
+                            context,
+                            LanguageCodes.viewNextNotificationTextInfo
+                                .toString()),
+                        idleText: L(
+                            context,
+                            LanguageCodes.viewNextNotificationTextInfo
+                                .toString()),
                       ),
                       header: ClassicHeader(
                         idleIcon: const Icon(Icons.arrow_upward),
                         refreshingText: L(
-                            context, LanguageCodes.loadingTextInfo.toString()),
+                            context,
+                            LanguageCodes.viewPreviousNotificationTextInfo
+                                .toString()),
                         releaseText: L(
-                            context, LanguageCodes.loadingTextInfo.toString()),
-                        idleText: L(context,
-                            LanguageCodes.loadingPreviousTextInfo.toString()),
+                            context,
+                            LanguageCodes.viewPreviousNotificationTextInfo
+                                .toString()),
+                        idleText: L(
+                            context,
+                            LanguageCodes.viewPreviousNotificationTextInfo
+                                .toString()),
                       ),
                       child: Column(
                         children: [
@@ -177,27 +187,29 @@ class _NotificationPageState extends State<NotificationPage> {
                             child: Row(
                               children: [
                                 IconButton(
-                                    splashRadius: 25,
-                                    tooltip: L(
-                                        context,
-                                        LanguageCodes
-                                            .viewNotificationAllTextInfo
-                                            .toString()),
-                                    onPressed: () async {
-                                      await _notificationRepository
-                                          .viewAllNotificationUser();
-                                      if (context.mounted) {
-                                        context
-                                            .read<NotificationProvider>()
-                                            .setViewAll = true;
-                                        context
-                                            .read<NotificationProvider>()
-                                            .setTotalView = 0;
-                                        _sharedPreferences.setInt(
-                                            'totalNotification', 0);
-                                      }
-                                    },
-                                    icon: const Icon(Icons.clear_all_outlined))
+                                  splashRadius: 25,
+                                  tooltip: L(
+                                      context,
+                                      LanguageCodes.viewNotificationAllTextInfo
+                                          .toString()),
+                                  onPressed: () async {
+                                    await _notificationRepository
+                                        .viewAllNotificationUser();
+                                    if (context.mounted) {
+                                      context
+                                          .read<NotificationProvider>()
+                                          .setViewAll = true;
+                                      context
+                                          .read<NotificationProvider>()
+                                          .setTotalView = 0;
+                                      _sharedPreferences.setInt(
+                                          'totalNotification', 0);
+                                    }
+                                  },
+                                  icon: const Icon(Icons.clear_all_outlined),
+                                  color: themeMode(
+                                      context, ColorCode.textColor.name),
+                                )
                               ],
                             ),
                           ),

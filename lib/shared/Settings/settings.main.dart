@@ -40,9 +40,19 @@ T? enumFromString<T>(Iterable<T> values, String value) {
   return values.firstWhere((type) => type.toString().split(".").last == value);
 }
 
-Widget netWorkImage(String url, bool setCache) =>
-    ExtendedImage.network(url, fit: BoxFit.cover, cache: setCache,
-        loadStateChanged: (state) {
+Widget netWorkImage(BuildContext context, String url, bool setCache,
+        {bool isHome = false}) =>
+    ExtendedImage.network(url,
+        height: isHome
+            ? MainSetting.getPercentageOfDevice(context, expectHeight: 145)
+                .height
+            : null,
+        width: isHome
+            ? MainSetting.getPercentageOfDevice(context, expectHeight: 90)
+                .height
+            : null,
+        fit: BoxFit.cover,
+        cache: setCache, loadStateChanged: (state) {
       switch (state.extendedImageLoadState) {
         case LoadState.loading:
           return const Center(child: CircularProgressIndicator());

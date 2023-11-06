@@ -47,7 +47,7 @@ class _HeaderInfoState extends State<HeaderInfo> {
                         height: MainSetting.getPercentageOfDevice(context,
                                 expectHeight: 70)
                             .height,
-                        child: netWorkImage(widget.url, true),
+                        child: netWorkImage(context, widget.url, true),
                       ),
                     ),
                   ),

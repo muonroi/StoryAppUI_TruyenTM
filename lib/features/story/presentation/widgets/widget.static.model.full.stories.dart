@@ -93,9 +93,10 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
                           textStyle: CustomFonts.h6(context)
                               .copyWith(fontWeight: FontWeight.w700),
                           location: BannerLocation.topEnd,
-                          child: netWorkImage(widget.storiesItem.imgUrl, true),
+                          child: netWorkImage(
+                              context, widget.storiesItem.imgUrl, true),
                         )
-                      : netWorkImage(widget.storiesItem.imgUrl, true),
+                      : netWorkImage(context, widget.storiesItem.imgUrl, true),
                 ),
               ),
             ),

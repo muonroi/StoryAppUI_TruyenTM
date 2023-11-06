@@ -113,7 +113,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                       .height,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: netWorkImage(widget.storyInfo.imgUrl, true),
+                    child: netWorkImage(context, widget.storyInfo.imgUrl, true),
                   ),
                 ),
               ),

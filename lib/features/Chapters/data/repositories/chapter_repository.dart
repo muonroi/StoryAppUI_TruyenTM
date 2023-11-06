@@ -43,4 +43,4 @@ class ChapterRepository {
       _provider.getGroupChapters(storyId, pageIndex, pageSize: pageSize);
 }
 
-class NetworkError extends Error {}
+class NetworkChapterError extends Error {}
