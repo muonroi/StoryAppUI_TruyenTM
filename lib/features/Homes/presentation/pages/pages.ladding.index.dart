@@ -71,7 +71,7 @@ Widget _homePage(BuildContext context, StoriesModel storyItems,
             ))
         .take(6)
         .toList(),
-    storiesEditorChoice: storyItems.result.items
+    storiesEditorChoice: storyItems.result.items.reversed
         .map((e) => StoriesImageIncludeSizeBox(
               storyId: e.id,
               nameStory: e.storyTitle,

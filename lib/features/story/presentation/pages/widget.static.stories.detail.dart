@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/story/bloc/detail/detail_bloc.dart';
 import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
 import 'package:muonroi/features/story/data/models/models.single.story.dart';
 import 'package:muonroi/features/story/data/repositories/story_repository.dart';
@@ -12,7 +13,6 @@ import 'package:muonroi/features/chapters/presentation/pages/widget.static.model
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
-import 'package:muonroi/features/story/bloc/DetailData/detail_bloc.dart';
 import 'package:muonroi/features/story/presentation/widgets/widget.static.detail.chapter.story.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/widget.static.detail.header.story.dart';
@@ -258,8 +258,13 @@ class _StoryDetailState extends State<StoryDetail> {
                               borderColor:
                                   themeMode(context, ColorCode.mainColor.name),
                               widthBorder: 2,
-                              textDisplay:
-                                  '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${_chapterNumber == 0 ? 1 : _chapterNumber}'),
+                              isDisable: storyInfo.totalChapter == 0,
+                              textDisplay: !(storyInfo.totalChapter == 0)
+                                  ? '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${_chapterNumber == 0 ? 1 : _chapterNumber}'
+                                  : L(
+                                      context,
+                                      LanguageCodes.emptyChapterTextInfo
+                                          .toString())),
                         ),
                       )
                     ],

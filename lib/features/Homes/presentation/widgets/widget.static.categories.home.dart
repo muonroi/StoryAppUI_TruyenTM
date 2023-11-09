@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/features/Categories/presentation/pages/widget.static.categories.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.editor.choose.dart';
+import 'package:muonroi/features/story/settings/enums/enum.stories.special.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
@@ -52,7 +54,16 @@ class MainCategories extends StatelessWidget {
                 backgroundColor:
                     themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => RegularStories(
+                                nameTypeRegularStories: L(
+                                    context,
+                                    LanguageCodes.trendStoriesTextInfo
+                                        .toString()),
+                                type: EnumStoriesSpecial.storiesAll,
+                              ))),
                   icon: Image.asset(
                     CustomImages.translate2x,
                     color: themeMode(context, ColorCode.textColor.name),
@@ -60,7 +71,7 @@ class MainCategories extends StatelessWidget {
                 ),
               ),
               Text(
-                L(context, LanguageCodes.translateStrTextInfo.toString()),
+                L(context, LanguageCodes.hotStoriesTextInfo.toString()),
                 style: CustomFonts.h5(context),
               )
             ],
@@ -72,7 +83,16 @@ class MainCategories extends StatelessWidget {
                 backgroundColor:
                     themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => RegularStories(
+                                nameTypeRegularStories: L(
+                                    context,
+                                    LanguageCodes.trendStoriesTextInfo
+                                        .toString()),
+                                type: EnumStoriesSpecial.storiesNew,
+                              ))),
                   icon: Image.asset(
                     CustomImages.bookOpenText2x,
                     color: themeMode(context, ColorCode.textColor.name),
@@ -80,7 +100,7 @@ class MainCategories extends StatelessWidget {
                 ),
               ),
               Text(
-                L(context, LanguageCodes.fullStrTextInfo.toString()),
+                L(context, LanguageCodes.newStoriesHomeTextInfo.toString()),
                 style: CustomFonts.h5(context),
               )
             ],
@@ -92,7 +112,16 @@ class MainCategories extends StatelessWidget {
                 backgroundColor:
                     themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => RegularStories(
+                                nameTypeRegularStories: L(
+                                    context,
+                                    LanguageCodes.trendStoriesTextInfo
+                                        .toString()),
+                                type: EnumStoriesSpecial.storiesComplete,
+                              ))),
                   icon: Image.asset(
                     CustomImages.vector2x,
                     color: themeMode(context, ColorCode.textColor.name),
@@ -100,7 +129,8 @@ class MainCategories extends StatelessWidget {
                 ),
               ),
               Text(
-                L(context, LanguageCodes.creationStrTextInfo.toString()),
+                L(context,
+                    LanguageCodes.completeStoriesHomeTextInfo.toString()),
                 style: CustomFonts.h5(context),
               )
             ],

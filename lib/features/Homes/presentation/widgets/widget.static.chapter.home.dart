@@ -115,7 +115,8 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                                             .ellipsis,
                                                         text: TextSpan(
                                                           text: chapterInfo
-                                                              .chapterTitle,
+                                                              .chapterTitle
+                                                              .capitalize(),
                                                           style: CustomFonts.h5(
                                                               context),
                                                           children: <InlineSpan>[

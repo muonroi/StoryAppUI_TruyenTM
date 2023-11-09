@@ -75,6 +75,7 @@ class StoryItems {
     required this.updatedDateTs,
     required this.updatedDateString,
     required this.slugAuthor,
+    required this.idForUser,
   });
 
   factory StoryItems.fromJson(Map<String, dynamic> json) => StoryItems(
@@ -97,6 +98,7 @@ class StoryItems {
         updatedDateTs: json["updatedDateTs"],
         updatedDateString: json["updatedDateString"],
         slugAuthor: json["slugAuthor"] ?? "",
+        idForUser: json["idForUser"] ?? 0,
       );
 
   String authorName;
@@ -118,7 +120,7 @@ class StoryItems {
   int totalVote;
   String updatedDateString;
   int updatedDateTs;
-
+  int? idForUser;
   Map<String, dynamic> toJson() => {
         "rankNumber": rankNumber,
         "totalChapter": totalChapter,
@@ -138,6 +140,7 @@ class StoryItems {
         "updatedDateTs": updatedDateTs,
         "updatedDateString": updatedDateString,
         "slugAuthor": slugAuthor ?? "",
+        "idForUser": idForUser
       };
 }
 

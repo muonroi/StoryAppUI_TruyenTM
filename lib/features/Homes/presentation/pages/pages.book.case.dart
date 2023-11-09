@@ -48,19 +48,20 @@ class _BookCaseState extends State<BookCase> with TickerProviderStateMixin {
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 70)
                 .width,
             child: Tab(
-                text: L(context, LanguageCodes.bookCaseTextInfo.toString()))),
+                text: L(
+                    context, LanguageCodes.recentStoriesTextInfo.toString()))),
         SizedBox(
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 120)
                 .width,
             child: Tab(
-                text: L(
-                    context, LanguageCodes.storiesBoughtTextInfo.toString()))),
+                text:
+                    L(context, LanguageCodes.savedStoriesTextInfo.toString()))),
         SizedBox(
             width: MainSetting.getPercentageOfDevice(context, expectWidth: 110)
                 .width,
             child: Tab(
-                text:
-                    L(context, LanguageCodes.storiesSavedTextInfo.toString())))
+                text: L(
+                    context, LanguageCodes.bookmarkStoriesTextInfo.toString())))
       ],
     );
     return DefaultTabController(

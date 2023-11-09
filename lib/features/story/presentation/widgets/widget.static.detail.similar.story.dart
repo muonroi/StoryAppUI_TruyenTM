@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/features/story/bloc/recommend/recommend_bloc.dart';
+import 'package:muonroi/features/story/presentation/widgets/widget.static.model.less.stories.dart';
+import 'package:muonroi/features/story/settings/enums/enum.stories.special.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.categories.home.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.category.stories.home.dart';
-import 'package:muonroi/features/story/bloc/RecommendData/recommend_bloc.dart';
 import 'package:muonroi/features/story/data/models/models.single.story.dart';
 import 'package:muonroi/features/story/presentation/pages/widget.static.stories.vertical.dart';
-import 'package:muonroi/features/story/presentation/widgets/widget.static.model.less.stories.dart';
 
 class SimilarStories extends StatefulWidget {
   final StorySingleResult infoStory;
@@ -73,6 +74,10 @@ class _SimilarStoriesState extends State<SimilarStories> {
                                 expectHeight: 190)
                             .height,
                         child: StoriesOfCategoriesData(
+                          type: EnumStoriesSpecial.storiesSimilar,
+                          pageEditorController: controller,
+                          padding: 0,
+                          isHaveData: true,
                           data: storyInfo
                               .map((e) => StoryLessModelWidget(
                                     networkImageUrl: e.imgUrl,
@@ -80,8 +85,6 @@ class _SimilarStoriesState extends State<SimilarStories> {
                                     storyId: e.id,
                                   ))
                               .toList(),
-                          pageEditorController: controller,
-                          padding: 0,
                         ),
                       )
                     ],

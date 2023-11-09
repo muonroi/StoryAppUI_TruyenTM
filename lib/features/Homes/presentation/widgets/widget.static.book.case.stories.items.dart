@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/features/story/bloc/storiesForUser/stories_for_user_bloc.dart';
+import 'package:muonroi/features/story/bloc/user/stories_for_user_bloc.dart';
 import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
+import 'package:muonroi/features/story/data/repositories/story_repository.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
@@ -29,15 +30,17 @@ class StoriesItems extends StatefulWidget {
 class _StoriesItemsState extends State<StoriesItems> {
   @override
   void initState() {
+    _selectedIndex = -1;
     pageIndex = 1;
-    pageSize = 15;
+    pageSize = 5;
     _isPrevious = false;
+    _isSelected = false;
     _refreshController = RefreshController(initialRefresh: false);
     _storiesForUserBloc = StoriesForUserBloc(
         pageIndex: pageIndex,
         pageSize: pageSize,
         storyForUserType: widget.storiesTypes);
-    _storiesForUserBloc.add(StoriesForUserList(false, isPrevious: _isPrevious));
+    _storiesForUserBloc.add(StoriesForUserList(true, isPrevious: _isPrevious));
     super.initState();
   }
 
@@ -63,12 +66,17 @@ class _StoriesItemsState extends State<StoriesItems> {
     Future.delayed(const Duration(milliseconds: 1000));
     if (mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
+        setState(() {
+          _storiesForUserBloc
+              .add(const StoriesForUserList(false, isPrevious: false));
+        });
       });
     }
     _refreshController.loadComplete();
   }
 
+  late int _selectedIndex;
+  late bool _isSelected;
   late bool _isPrevious;
   late RefreshController _refreshController;
   var isShort = false;
@@ -92,7 +100,6 @@ class _StoriesItemsState extends State<StoriesItems> {
             }
             if (state is StoriesForUserLoadedState) {
               var storiesItem = state.stories.result.items;
-              storiesSearch = storiesItem;
               return SmartRefresher(
                 enablePullDown: true,
                 enablePullUp: true,
@@ -122,7 +129,9 @@ class _StoriesItemsState extends State<StoriesItems> {
                           .toString()),
                 ),
                 child: ListView.builder(
-                    itemCount: storiesSearch.length,
+                    itemCount: storiesSearch.isNotEmpty
+                        ? storiesSearch.length
+                        : storiesItem.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return Column(
@@ -160,7 +169,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                                       .addPostFrameCallback(
                                                           (_) {
                                                     _handleSearch(
-                                                        value, storiesSearch);
+                                                        value, storiesItem);
                                                   });
                                                 }
                                               },
@@ -220,6 +229,8 @@ class _StoriesItemsState extends State<StoriesItems> {
                                               child: IconButton(
                                                   onPressed: () {
                                                     setState(() {
+                                                      _storiesForUserBloc.add(
+                                                          const OnRefresh());
                                                       widget.reload
                                                           .reverse(from: 1.0);
                                                       widget.reload
@@ -242,7 +253,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                                   onPressed: () {
                                                     if (isShort) {
                                                       setState(() {
-                                                        storiesSearch.sort(
+                                                        storiesItem.sort(
                                                             (a, b) => a
                                                                 .storyTitle
                                                                 .compareTo(b
@@ -252,7 +263,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                                           .reverse(from: 0.5);
                                                     } else {
                                                       setState(() {
-                                                        storiesSearch.sort(
+                                                        storiesItem.sort(
                                                             (a, b) => b
                                                                 .storyTitle
                                                                 .compareTo(a
@@ -278,12 +289,69 @@ class _StoriesItemsState extends State<StoriesItems> {
                                   ),
                                 )
                               : Container(),
-                          index > storiesSearch.length - 1
+                          index > storiesItem.length - 1
                               ? Container()
-                              : StoriesBookCaseModelWidget(
-                                  storyInfo: storiesSearch.isNotEmpty
-                                      ? storiesSearch[index]
-                                      : storiesSearch[index])
+                              : GestureDetector(
+                                  onLongPress: () => {
+                                    setState(() {
+                                      _selectedIndex = index;
+                                      _isSelected = true;
+                                    }),
+                                    showModalBottomSheet(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      builder: (context) {
+                                        return SizedBox(
+                                            height: MainSetting
+                                                    .getPercentageOfDevice(
+                                                        context,
+                                                        expectHeight: 50)
+                                                .height,
+                                            child: Column(children: [
+                                              IconButton(
+                                                  onPressed: () async {
+                                                    final storiesRepository =
+                                                        StoryRepository();
+                                                    var result =
+                                                        await storiesRepository
+                                                            .deleteStoryForUser(
+                                                                storiesItem[
+                                                                        index]
+                                                                    .idForUser!);
+                                                    if (result) {
+                                                      setState(() {
+                                                        storiesItem.remove(
+                                                            storiesItem[index]);
+                                                        _isSelected = false;
+                                                        _selectedIndex = -1;
+                                                      });
+                                                    }
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                  ))
+                                            ]));
+                                      },
+                                      context: context,
+                                    ).then((value) {
+                                      if (_isSelected) {
+                                        setState(() {
+                                          _isSelected = false;
+                                          _selectedIndex = -1;
+                                        });
+                                      }
+                                    })
+                                  },
+                                  child: StoriesBookCaseModelWidget(
+                                    storyInfo: storiesSearch.isNotEmpty
+                                        ? storiesSearch[index]
+                                        : storiesItem[index],
+                                    isSelected:
+                                        _isSelected && _selectedIndex == index,
+                                  ),
+                                )
                         ],
                       );
                     }),

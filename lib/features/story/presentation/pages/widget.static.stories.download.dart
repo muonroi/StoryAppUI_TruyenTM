@@ -184,12 +184,10 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                                   StoryForUserType
                                                       .download.index);
                                         }
-                                        if (isDelete) {
+                                        if (context.mounted && isDelete) {
                                           _sharedPreferences.remove(
                                               "story-${widget.storyId}-download-group-chapter-$index");
-
                                           // #region notification
-
                                           NotificationPush.showNotification(
                                               title: L(
                                                   context,

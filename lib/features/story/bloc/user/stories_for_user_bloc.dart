@@ -23,12 +23,30 @@ class StoriesForUserBloc
         emit(StoriesForUserLoadingState());
         if (event.isPrevious && !event.onRefresh) {
           pageIndex--;
-        } else if (!event.isPrevious && pageIndex > 1 && !event.onRefresh) {
+        } else if (!event.isPrevious && pageIndex >= 1 && !event.onRefresh) {
           pageIndex++;
         }
         pageIndex = pageIndex < 1 ? 1 : pageIndex;
         final mList = await storyRepository.getStoryForUser(
             storyForUserType.index, pageIndex, pageSize);
+        emit(mList.result.items.isEmpty
+            ? StoriesForUserNoDataState()
+            : StoriesForUserLoadedState(mList));
+        if (!mList.isOk) {
+          emit(StoriesForUserErrorState(
+              mList.errorMessages.map((e) => e.toString()).toList().join(',')));
+        }
+      } on NetworkError {
+        emit(const StoriesForUserErrorState(
+            "Failed to fetch data. is your device online?"));
+      }
+    });
+
+    on<OnRefresh>((event, emit) async {
+      try {
+        emit(StoriesForUserLoadingState());
+        final mList = await storyRepository.getStoryForUser(
+            storyForUserType.index, 1, pageSize);
         emit(mList.result.items.isEmpty
             ? StoriesForUserNoDataState()
             : StoriesForUserLoadedState(mList));

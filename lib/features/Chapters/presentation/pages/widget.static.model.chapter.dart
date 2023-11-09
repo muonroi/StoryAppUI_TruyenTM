@@ -49,6 +49,7 @@ class Chapter extends StatefulWidget {
 class _ChapterState extends State<Chapter> {
   @override
   void initState() {
+    _chapterName = "";
     _pageIndex = widget.pageIndex;
     _chapterIndex = 0;
     _initSharedPreferences().then((value) async {
@@ -168,9 +169,16 @@ class _ChapterState extends State<Chapter> {
   }
 
   void _onRefresh(int chapterId) async {
-    if (mounted && widget.firstChapterId != chapterId) {
+    if (widget.firstChapterId == chapterId) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
+          _isDisablePreviousButton = true;
+        });
+      });
+    } else if (mounted && widget.firstChapterId != chapterId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _isLoading = false;
           _isDisableNextButton = false;
           if (_pageIndex > 1 && _chapterIndex == 0) {
             _sharedPreferences
@@ -189,20 +197,15 @@ class _ChapterState extends State<Chapter> {
               _isDisablePreviousButton = true;
             }
           }
+          _chapterNumber--;
+          _saveScrollPosition();
         });
       });
       if (_scrollController.hasClients) {
         _scrollController.jumpTo(0);
       }
-    } else if (widget.firstChapterId == chapterId) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          _isDisablePreviousButton = true;
-        });
-      });
-    } else if (!_isLoading) {
-      _isLoading = true;
     }
+    _saveScrollPosition();
     _refreshController.refreshCompleted();
   }
 
@@ -210,9 +213,19 @@ class _ChapterState extends State<Chapter> {
     if (!isCheckShow) {
       _isLoading = true;
     }
-    if (mounted && widget.lastChapterId != chapterId && _isLoading) {
+    if (widget.lastChapterId == chapterId) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
+          _isDisableNextButton = true;
+        });
+      });
+    } else if (mounted && _isLoading ||
+        widget.lastChapterId != chapterId &&
+            _scrollController.offset >
+                _scrollController.position.maxScrollExtent + 350) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _isLoading = false;
           _isDisablePreviousButton = false;
           _chapterIndex =
               _chapterIndex < _pageSize ? ++_chapterIndex : _pageSize + 1;
@@ -226,17 +239,12 @@ class _ChapterState extends State<Chapter> {
             _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
             _chapterIndex = 0;
           }
-          _isLoading = false;
           if (_scrollController.hasClients) {
             _scrollController.jumpTo(0);
           }
         });
-      });
-    } else if (widget.lastChapterId == chapterId) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          _isDisableNextButton = true;
-        });
+        _chapterNumber++;
+        _saveScrollPosition();
       });
     } else if (!_isLoading) {
       _isLoading = true;
@@ -284,6 +292,7 @@ class _ChapterState extends State<Chapter> {
   late String _scrollPositionKey;
   late TemplateSetting _settingConfig;
   late StoryRepository _storyRepository;
+  late String _chapterName;
   // #endregion
 
   @override
@@ -333,6 +342,13 @@ class _ChapterState extends State<Chapter> {
             _chapterNumber = chapterInfo[_chapterIndex].numberOfChapter;
             _pageSize =
                 chapterInfo.length < _pageSize ? chapterInfo.length : _pageSize;
+            _chapterName =
+                "${L(context, LanguageCodes.chapterNumberTextInfo.toString())}: ${chapterInfo[_chapterIndex].numberOfChapter} - ${chapterInfo[_chapterIndex].chapterTitle} ";
+            if (context.mounted) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {});
+              });
+            }
             return Consumer<TemplateSetting>(
               builder: (context, templateValue, child) {
                 _reNewValueInSettingTemplate(templateValue);
@@ -558,25 +574,34 @@ class _ChapterState extends State<Chapter> {
                                     ),
                                   ))
                               : null,
-                          title: GestureDetector(
-                            onDoubleTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => StoryDetail(
-                                            storyId: widget.storyId,
-                                            storyTitle: widget.storyName,
-                                          )));
-                            },
-                            child: Title(
-                                color: tempFontColor!,
-                                child: Text(
-                                  widget.storyName,
-                                  style: CustomFonts.h5(context).copyWith(
-                                      fontFamily: tempFontFamily,
-                                      color: tempFontColor),
-                                )),
-                          ),
+                          title: Stack(children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Title(
+                                  color: tempFontColor!,
+                                  child: Text(
+                                    _chapterName.isEmpty
+                                        ? widget.storyName
+                                        : _chapterName
+                                            .replaceAll(
+                                                RegExp(r'Chương \d+:'), '')
+                                            .replaceAll("\n", "")
+                                            .replaceAll('.', "")
+                                            .trim(),
+                                    style: CustomFonts.h5(context).copyWith(
+                                        fontFamily: tempFontFamily,
+                                        color: tempFontColor,
+                                        fontSize: 14),
+                                  )),
+                            ),
+                            showToolTip(_chapterName.isEmpty
+                                ? widget.storyName
+                                : _chapterName
+                                    .replaceAll(RegExp(r'Chương \d+:'), '')
+                                    .replaceAll("\n", "")
+                                    .trim())
+                          ]),
                         )
                       : PreferredSize(
                           preferredSize: Size.zero, child: Container()),
@@ -633,87 +658,6 @@ class _ChapterState extends State<Chapter> {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    index == 0
-                                        ? Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 8.0),
-                                            child: Align(
-                                              alignment: Alignment.center,
-                                              child: SizedBox(
-                                                width: MainSetting
-                                                        .getPercentageOfDevice(
-                                                            context,
-                                                            expectWidth: 387)
-                                                    .width,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    SizedBox(
-                                                      width: MainSetting
-                                                              .getPercentageOfDevice(
-                                                                  context,
-                                                                  expectWidth:
-                                                                      96.75)
-                                                          .width,
-                                                      child: Text(
-                                                        "${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterInfo[_chapterIndex].numberOfChapter}",
-                                                        style: CustomFonts.h5(
-                                                                context)
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontFamily:
-                                                                    tempFontFamily,
-                                                                color:
-                                                                    tempFontColor),
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .visible,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: MainSetting
-                                                              .getPercentageOfDevice(
-                                                                  context,
-                                                                  expectWidth:
-                                                                      290.25)
-                                                          .width,
-                                                      child: Text(
-                                                        chapterInfo[
-                                                                _chapterIndex]
-                                                            .chapterTitle
-                                                            .replaceAll(
-                                                                RegExp(
-                                                                    r'Chương \d+:'),
-                                                                '')
-                                                            .replaceAll(
-                                                                "\n", "")
-                                                            .trim(),
-                                                        style: CustomFonts.h5(
-                                                                context)
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontFamily:
-                                                                    tempFontFamily,
-                                                                color:
-                                                                    tempFontColor),
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        : Container(),
                                     Expanded(
                                       child: Container(
                                         padding: const EdgeInsets.all(12.0),
@@ -746,67 +690,6 @@ class _ChapterState extends State<Chapter> {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: SizedBox(
-                                        width:
-                                            MainSetting.getPercentageOfDevice(
-                                                    context,
-                                                    expectWidth: 387)
-                                                .width,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: MainSetting
-                                                      .getPercentageOfDevice(
-                                                          context,
-                                                          expectWidth: 96.75)
-                                                  .width,
-                                              child: Text(
-                                                "${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterInfo[_chapterIndex].numberOfChapter}",
-                                                style: CustomFonts.h5(context)
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontFamily:
-                                                            tempFontFamily,
-                                                        color: tempFontColor),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.visible,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: MainSetting
-                                                      .getPercentageOfDevice(
-                                                          context,
-                                                          expectWidth: 290.25)
-                                                  .width,
-                                              child: Text(
-                                                chapterInfo[_chapterIndex]
-                                                    .chapterTitle
-                                                    .replaceAll(
-                                                        RegExp(r'Chương \d+:'),
-                                                        '')
-                                                    .replaceAll("\n", "")
-                                                    .trim(),
-                                                style: CustomFonts.h5(context)
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontFamily:
-                                                            tempFontFamily,
-                                                        color: tempFontColor),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: Html(
@@ -843,7 +726,9 @@ class _ChapterState extends State<Chapter> {
                           curve: Curves.linearToEaseOut,
                           child: BottomChapterDetail(
                               isDisablePreviousButton: _isDisablePreviousButton,
-                              isDisableNextButton: _isDisableNextButton,
+                              isDisableNextButton: _isDisableNextButton ||
+                                  chapterInfo[_chapterIndex].id ==
+                                      widget.lastChapterId,
                               fontColor: tempFontColor,
                               backgroundColor: tempBackground,
                               chapterId: chapterInfo[_chapterIndex].id,

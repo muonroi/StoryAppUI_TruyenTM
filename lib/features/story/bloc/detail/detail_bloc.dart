@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
 import 'package:muonroi/features/story/data/models/models.single.story.dart';
 import 'package:muonroi/features/story/data/repositories/story_repository.dart';
 part 'detail_event.dart';

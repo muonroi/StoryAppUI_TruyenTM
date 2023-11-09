@@ -5,7 +5,7 @@ import 'package:sprintf/sprintf.dart';
 
 class CategoriesService {
   Future<CategoriesModel> getCategoriesDataList(
-      [int pageIndex = 1, int pageSize = 15]) async {
+      [int pageIndex = 1, int pageSize = 30]) async {
     try {
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(

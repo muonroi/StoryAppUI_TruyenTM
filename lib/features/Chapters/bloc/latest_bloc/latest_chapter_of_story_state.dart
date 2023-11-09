@@ -11,6 +11,8 @@ class LatestChapterOfStoryInitial extends LatestChapterOfStoryState {}
 
 class LatestChapterOfStoryLoadingState extends LatestChapterOfStoryState {}
 
+class LatestChapterOfStoryNoDataState extends LatestChapterOfStoryState {}
+
 class LatestChapterOfStoryLoadedState extends LatestChapterOfStoryState {
   final ChapterPreviewModel chapter;
   const LatestChapterOfStoryLoadedState(this.chapter);

@@ -1,99 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/features/homes/presentation/widgets/widget.static.common.stories.home.dart';
+import 'package:muonroi/features/story/settings/enums/enum.stories.common.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 
 class FilterByDateButton extends StatelessWidget {
-  const FilterByDateButton({super.key});
+  const FilterByDateButton({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: SizedBox(
-        height:
-            MainSetting.getPercentageOfDevice(context, expectHeight: 40).height,
-        child: PageView.builder(
-            itemCount: 1,
-            itemBuilder: (context, index) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: themeMode(context, ColorCode.mainColor.name),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        L(context,
-                            LanguageCodes.allCommonStoriesTextInfo.toString()),
-                        style: CustomFonts.h5(context).copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontFamily: CustomFonts.inter),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: themeMode(context, ColorCode.modeColor.name),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        L(
-                            context,
-                            LanguageCodes.commonStoriesOfDayTextInfo
-                                .toString()),
-                        style: CustomFonts.h5(context).copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontFamily: CustomFonts.inter),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: themeMode(context, ColorCode.modeColor.name),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        L(
-                            context,
-                            LanguageCodes.commonStoriesOfWeekTextInfo
-                                .toString()),
-                        style: CustomFonts.h5(context).copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontFamily: CustomFonts.inter),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: themeMode(context, ColorCode.modeColor.name),
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        L(
-                            context,
-                            LanguageCodes.commonStoriesOfMonthTextInfo
-                                .toString()),
-                        style: CustomFonts.h5(context).copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontFamily: CustomFonts.inter),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }),
+    TabBar tabBar = TabBar(
+      unselectedLabelColor: themeMode(context, ColorCode.modeColor.name),
+      indicatorColor: themeMode(context, ColorCode.textColor.name),
+      tabs: [
+        SizedBox(
+            width: MainSetting.getPercentageOfDevice(context, expectWidth: 120)
+                .width,
+            child: Tab(
+                text: L(context,
+                    LanguageCodes.commonStoriesOfDayTextInfo.toString()))),
+        SizedBox(
+            width: MainSetting.getPercentageOfDevice(context, expectWidth: 110)
+                .width,
+            child: Tab(
+                text: L(context,
+                    LanguageCodes.commonStoriesOfWeekTextInfo.toString()))),
+        SizedBox(
+            width: MainSetting.getPercentageOfDevice(context, expectWidth: 110)
+                .width,
+            child: Tab(
+                text: L(context,
+                    LanguageCodes.commonStoriesOfMonthTextInfo.toString())))
+      ],
+    );
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        backgroundColor: themeMode(context, ColorCode.modeColor.name),
+        appBar: AppBar(
+          backgroundColor: themeMode(context, ColorCode.mainColor.name),
+          bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(0.0),
+              child: Material(
+                color: themeMode(context, ColorCode.mainColor.name),
+                child: tabBar,
+              )),
+        ),
+        body: const TabBarView(children: [
+          CommonTopStoriesData(type: EnumStoriesCommon.day),
+          CommonTopStoriesData(type: EnumStoriesCommon.week),
+          CommonTopStoriesData(type: EnumStoriesCommon.month),
+        ]),
       ),
     );
   }

@@ -6,13 +6,13 @@ enum LanguageCodes {
 //Genre of stories
   genreOfStrTextInfo,
 //translate of stories
-  translateStrTextInfo,
+  hotStoriesTextInfo,
 //Stories was full or complete
   fullStrTextInfo,
 //Stories creation
-  creationStrTextInfo,
+  newStoriesTextInfo,
 //Editor's choice
-  editorChoiceTextInfo,
+  trendStoriesTextInfo,
 //View all
   viewAllTextInfo,
 //New stories updated
@@ -28,7 +28,7 @@ enum LanguageCodes {
 //Common stories of the week
   commonStoriesOfWeekTextInfo,
 //New stories
-  newStoriesTextInfo,
+  newStoriesHomeTextInfo,
 //Stories complete
   completeStoriesTextInfo,
 //Chapters updated
@@ -36,7 +36,7 @@ enum LanguageCodes {
 //Home page
   homePageTextInfo,
 //Book case
-  bookCaseTextInfo,
+  recentStoriesTextInfo,
 //Free stories
   freeStoriesTextInfo,
 //User info
@@ -48,9 +48,9 @@ enum LanguageCodes {
 //Rank of story
   rankTextInfo,
 //Stories bought
-  storiesBoughtTextInfo,
+  savedStoriesTextInfo,
 //Stories saved
-  storiesSavedTextInfo,
+  bookmarkStoriesTextInfo,
 //Continue reading
   storiesContinueChapterTextInfo,
 //My account
@@ -191,5 +191,7 @@ enum LanguageCodes {
   noDataTextInfo,
   viewNextNotificationTextInfo,
   viewPreviousNotificationTextInfo,
+  emptyChapterTextInfo,
+  completeStoriesHomeTextInfo,
 // #endregion
 }

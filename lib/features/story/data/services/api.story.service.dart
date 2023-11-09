@@ -181,7 +181,7 @@ class StoryService {
 
   Future<bool> deleteStoryForUser(int storyId) async {
     try {
-      Map<String, dynamic> data = {'storyId': 0, 'storyType': 0, 'id': storyId};
+      Map<String, dynamic> data = {'id': storyId};
       var baseEndpoint = await endPoint();
       final response =
           await baseEndpoint.delete(ApiNetwork.deleteStoryForUser, data: data);
@@ -201,6 +201,52 @@ class StoryService {
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(
           sprintf(ApiNetwork.getStoriesForUser, [type, pageIndex, pageSize]));
+      if (response.statusCode == 200) {
+        return storiesFromJson(response.data.toString());
+      } else {
+        return StoriesModel(
+          errorMessages: [],
+          result: Result(
+              items: [],
+              pagingInfo: PagingInfo(pageSize: 0, page: 0, totalItems: 0)),
+          isOk: false,
+          statusCode: 400,
+        );
+      }
+    } catch (e) {
+      throw Exception("Failed to get story for user - $e");
+    }
+  }
+
+  Future<StoriesModel> getStoriesCommon(
+      int pageIndex, int pageSize, int type) async {
+    try {
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint.get(
+          sprintf(ApiNetwork.getStoriesCommon, [type, pageIndex, pageSize]));
+      if (response.statusCode == 200) {
+        return storiesFromJson(response.data.toString());
+      } else {
+        return StoriesModel(
+          errorMessages: [],
+          result: Result(
+              items: [],
+              pagingInfo: PagingInfo(pageSize: 0, page: 0, totalItems: 0)),
+          isOk: false,
+          statusCode: 400,
+        );
+      }
+    } catch (e) {
+      throw Exception("Failed to get story for user - $e");
+    }
+  }
+
+  Future<StoriesModel> getStoriesByType(
+      int pageIndex, int pageSize, int type) async {
+    try {
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint
+          .get(sprintf(ApiNetwork.getStoriesType, [type, pageIndex, pageSize]));
       if (response.statusCode == 200) {
         return storiesFromJson(response.data.toString());
       } else {

@@ -1,7 +1,7 @@
 class ApiNetwork {
   static const String apiVersion = "1.0";
   // #region Base api
-  static const String baseUrl = "https://10.0.2.2:5001/";
+  static const String baseUrl = "https://muonroi.online/";
   static const String baseApi = "${baseUrl}api/v$apiVersion/";
   static const String renewToken = "tokens/access-token";
   static const String baseSearchStory = "stories/search?";
@@ -39,6 +39,10 @@ class ApiNetwork {
   static const String deleteStoryForUser = "stories/for/user";
   static const String getStoriesForUser =
       "stories/for/user?type=%s&pageIndex=%s&pageSize=%s";
+  static const String getStoriesCommon =
+      "stories/common?type=%s&pageIndex=%s&pageSize=%s";
+  static const String getStoriesType =
+      "stories/type?type=%s&pageIndex=%s&pageSize=%s";
   // #endregion
 
   // #region Chapters endpoint

@@ -11,9 +11,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StoriesBookCaseModelWidget extends StatefulWidget {
   final StoryItems storyInfo;
+  final bool isSelected;
   const StoriesBookCaseModelWidget({
     super.key,
     required this.storyInfo,
+    required this.isSelected,
   });
 
   @override
@@ -97,146 +99,167 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
           widgetScale,
           1.0,
         ),
-        child: Container(
-          color: themeMode(context, ColorCode.disableColor.name),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: MainSetting.getPercentageOfDevice(context,
-                          expectWidth: 80)
-                      .width,
+        child: Stack(children: [
+          Container(
+            color: themeMode(context, ColorCode.disableColor.name),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: MainSetting.getPercentageOfDevice(context,
+                            expectWidth: 80)
+                        .width,
+                    height: MainSetting.getPercentageOfDevice(context,
+                            expectHeight: 120)
+                        .height,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child:
+                          netWorkImage(context, widget.storyInfo.imgUrl, true),
+                    ),
+                  ),
+                ),
+                SizedBox(
                   height: MainSetting.getPercentageOfDevice(context,
                           expectHeight: 120)
                       .height,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: netWorkImage(context, widget.storyInfo.imgUrl, true),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: MainSetting.getPercentageOfDevice(context,
-                        expectHeight: 120)
-                    .height,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: MainSetting.getPercentageOfDevice(context,
-                              expectWidth: 250)
-                          .width,
-                      child: Stack(children: [
-                        Text(
-                          widget.storyInfo.storyTitle,
-                          style: CustomFonts.h4(context).copyWith(
-                              fontWeight: FontWeight.w700, fontSize: 18),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        showToolTip(widget.storyInfo.storyTitle)
-                      ]),
-                    ),
-                    Text(
-                      widget.storyInfo.authorName,
-                      style: CustomFonts.h5(context),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MainSetting.getPercentageOfDevice(context,
+                                expectWidth: 250)
+                            .width,
+                        child: Stack(children: [
+                          Text(
+                            widget.storyInfo.storyTitle,
+                            style: CustomFonts.h4(context).copyWith(
+                                fontWeight: FontWeight.w700, fontSize: 18),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          showToolTip(widget.storyInfo.storyTitle)
+                        ]),
+                      ),
+                      Text(
+                        widget.storyInfo.authorName,
+                        style: CustomFonts.h5(context),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: SizedBox(
+                                  width: MainSetting.getPercentageOfDevice(
+                                          context,
+                                          expectWidth: 170)
+                                      .width,
+                                  child: ElevatedButton(
+                                    onPressed: buttonState
+                                        ? () async {
+                                            buttonState = false;
+                                            var storyInfo =
+                                                await storyRepository
+                                                    .fetchDetailStory(
+                                                        widget.storyInfo.id);
+                                            if (context.mounted) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => Chapter(
+                                                        pageIndex: 1,
+                                                        loadSingleChapter:
+                                                            false,
+                                                        isLoadHistory: true,
+                                                        storyId:
+                                                            storyInfo.result.id,
+                                                        storyName: storyInfo
+                                                            .result.storyTitle,
+                                                        chapterId: chapterId ==
+                                                                0
+                                                            ? storyInfo.result
+                                                                .firstChapterId
+                                                            : chapterId,
+                                                        lastChapterId: storyInfo
+                                                            .result
+                                                            .lastChapterId,
+                                                        firstChapterId: storyInfo
+                                                            .result
+                                                            .firstChapterId)),
+                                              );
+                                            }
+                                          }
+                                        : null,
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: buttonState
+                                            ? themeMode(context,
+                                                ColorCode.mainColor.name)
+                                            : themeMode(context,
+                                                ColorCode.modeColor.name),
+                                        shape: const StadiumBorder(),
+                                        side: BorderSide(
+                                            color: buttonState
+                                                ? themeMode(context,
+                                                    ColorCode.mainColor.name)
+                                                : themeMode(context,
+                                                    ColorCode.modeColor.name),
+                                            width: 2)),
+                                    child: Text(
+                                      '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}',
+                                      style: TextStyle(
+                                          fontFamily: CustomFonts.inter,
+                                          fontSize: 16,
+                                          color: themeMode(context,
+                                              ColorCode.textColor.name)),
+                                    ),
+                                  ))),
+                          Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: SizedBox(
-                                width: MainSetting.getPercentageOfDevice(
-                                        context,
-                                        expectWidth: 170)
-                                    .width,
-                                child: ElevatedButton(
-                                  onPressed: buttonState
-                                      ? () async {
-                                          buttonState = false;
-                                          var storyInfo = await storyRepository
-                                              .fetchDetailStory(
-                                                  widget.storyInfo.id);
-                                          if (context.mounted) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => Chapter(
-                                                      pageIndex: 1,
-                                                      loadSingleChapter: false,
-                                                      isLoadHistory: true,
-                                                      storyId:
-                                                          storyInfo.result.id,
-                                                      storyName: storyInfo
-                                                          .result.storyTitle,
-                                                      chapterId: chapterId == 0
-                                                          ? storyInfo.result
-                                                              .firstChapterId
-                                                          : chapterId,
-                                                      lastChapterId: storyInfo
-                                                          .result.lastChapterId,
-                                                      firstChapterId: storyInfo
-                                                          .result
-                                                          .firstChapterId)),
-                                            );
-                                          }
-                                        }
-                                      : null,
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: buttonState
-                                          ? themeMode(
-                                              context, ColorCode.mainColor.name)
-                                          : themeMode(context,
-                                              ColorCode.modeColor.name),
-                                      shape: const StadiumBorder(),
-                                      side: BorderSide(
-                                          color: buttonState
-                                              ? themeMode(context,
-                                                  ColorCode.mainColor.name)
-                                              : themeMode(context,
-                                                  ColorCode.modeColor.name),
-                                          width: 2)),
-                                  child: Text(
-                                    '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}',
-                                    style: TextStyle(
-                                        fontFamily: CustomFonts.inter,
-                                        fontSize: 16,
-                                        color: themeMode(
-                                            context, ColorCode.textColor.name)),
-                                  ),
-                                ))),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: SizedBox(
-                            width: MainSetting.getPercentageOfDevice(context,
-                                    expectWidth: 100)
-                                .width,
-                            child: Stack(children: [
-                              Text(
-                                widget.storyInfo.updatedDateString,
-                                style: CustomFonts.h5(context).copyWith(
-                                    fontSize: 12, fontStyle: FontStyle.italic),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              showToolTip(widget.storyInfo.updatedDateString)
-                            ]),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
+                              width: MainSetting.getPercentageOfDevice(context,
+                                      expectWidth: 100)
+                                  .width,
+                              child: Stack(children: [
+                                Text(
+                                  widget.storyInfo.updatedDateString,
+                                  style: CustomFonts.h5(context).copyWith(
+                                      fontSize: 12,
+                                      fontStyle: FontStyle.italic),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                showToolTip(widget.storyInfo.updatedDateString)
+                              ]),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
+          widget.isSelected
+              ? Positioned(
+                  right: 0,
+                  child: ClipRect(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.check_box,
+                        color: themeMode(context, ColorCode.mainColor.name),
+                      ),
+                    ),
+                  ))
+              : const SizedBox()
+        ]),
       ),
     );
   }

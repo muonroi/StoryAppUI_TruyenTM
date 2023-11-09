@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:muonroi/shared/settings/settings.images.dart';
+
 UserInfoResponseModel userInfoResponseModelFromJson(String str) =>
     UserInfoResponseModel.fromJson(json.decode(str));
 
@@ -48,7 +50,7 @@ class Result {
   String address;
   bool emailConfirmed;
   DateTime lastLogin;
-  String avatar;
+  String? avatar;
   int status;
   int accountStatus;
   dynamic note;
@@ -92,7 +94,7 @@ class Result {
         address: json["address"],
         emailConfirmed: json["emailConfirmed"],
         lastLogin: DateTime.parse(json["lastLogin"]),
-        avatar: json["avatar"],
+        avatar: json["avatar"] ?? CustomImages.imageAvatarDefault,
         status: json["status"],
         accountStatus: json["accountStatus"],
         note: json["note"],

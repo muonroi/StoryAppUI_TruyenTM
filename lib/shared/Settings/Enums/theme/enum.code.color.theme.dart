@@ -1,1 +1,1 @@
-enum ColorCode { mainColor, textColor, modeColor, disableColor }
+enum ColorCode { mainColor, textColor, modeColor, disableColor, selectedColor }

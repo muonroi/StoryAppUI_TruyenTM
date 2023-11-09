@@ -15,18 +15,25 @@ class ButtonWidget {
           fontFamily: "Inter", fontSize: 16, color: Color(0xFF2D2D2D)),
       Color color = const Color(0xFFFFB800),
       Color borderColor = const Color(0xFFFFB800),
-      double widthBorder = 2}) {
+      double widthBorder = 2,
+      bool isDisable = false}) {
     return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => nextRoute),
-        );
-      },
+      onPressed: !isDisable
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => nextRoute),
+              );
+            }
+          : null,
       style: ElevatedButton.styleFrom(
-          backgroundColor: color,
+          backgroundColor: !isDisable
+              ? color
+              : themeMode(context, ColorCode.disableColor.name),
           shape: const StadiumBorder(),
-          side: BorderSide(color: borderColor, width: widthBorder)),
+          side: !isDisable
+              ? BorderSide(color: borderColor, width: widthBorder)
+              : null),
       child: Text(
         textDisplay,
         style: textStyle,

@@ -224,6 +224,9 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                 ],
               );
             }
+            if (state is LatestChapterOfStoryNoDataState) {
+              return Container();
+            }
             return const CircularProgressIndicator();
           },
         ),

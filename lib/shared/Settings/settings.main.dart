@@ -22,6 +22,12 @@ String L(BuildContext context, String key, {String locate = Languages.vi}) {
   return LocalizationLib.L(key, locale: locate);
 }
 
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
+}
+
 Color themeMode(BuildContext context, String key, {String mode = Modes.light}) {
   CustomThemeModeProvider themePick = CustomThemeModeProvider();
   if (context.mounted) {
@@ -48,8 +54,7 @@ Widget netWorkImage(BuildContext context, String url, bool setCache,
                 .height
             : null,
         width: isHome
-            ? MainSetting.getPercentageOfDevice(context, expectHeight: 90)
-                .height
+            ? MainSetting.getPercentageOfDevice(context, expectWidth: 90).width
             : null,
         fit: BoxFit.cover,
         cache: setCache, loadStateChanged: (state) {

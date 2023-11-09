@@ -50,7 +50,9 @@ class Result {
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
-        pagingInfo: PagingInfo.fromJson(json["pagingInfo"]),
+        pagingInfo: json["pagingInfo"] != null
+            ? PagingInfo.fromJson(json["pagingInfo"])
+            : PagingInfo(pageSize: 0, page: 0, totalItems: 0),
       );
 
   Map<String, dynamic> toJson() => {

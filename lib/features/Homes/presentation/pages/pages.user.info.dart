@@ -127,7 +127,7 @@ class _UserInfoState extends State<UserInfo> {
                                 child: Text(
                                   L(
                                       context,
-                                      LanguageCodes.storiesBoughtTextInfo
+                                      LanguageCodes.savedStoriesTextInfo
                                           .toString()),
                                   style: CustomFonts.h5(context),
                                   textAlign: TextAlign.center,

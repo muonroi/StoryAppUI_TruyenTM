@@ -247,20 +247,13 @@ class _HomePageState extends State<HomePage> {
     var itemsOfHome = _homePageItem.getHomePageItems(
         context,
         _pageEditorChoiceController,
-        widget.storiesEditorChoice,
-        widget.storiesCommon,
-        widget.storiesCommon,
         _pageNewStoriesController,
-        widget.storiesEditorChoice,
         _pageStoriesCompleteController,
-        widget.storiesEditorChoice,
         _textSearchController,
         _onChangedSearch,
         _isShowClearText,
         _pageBannerController,
         imageBanners,
-        chapterList,
-        widget.storiesInit,
         numberOfBanner: 3);
     // #endregion
     return DefaultTabController(
@@ -391,7 +384,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 }));
               } else {
-                _showTooltipNotification(context);
+                showTooltipNotification(context);
               }
             },
             backgroundColor: themeMode(context, ColorCode.mainColor.name),
@@ -405,24 +398,6 @@ class _HomePageState extends State<HomePage> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: TabBarCustom(context: context)),
-    );
-  }
-
-  void _showTooltipNotification(BuildContext context) {
-    final tooltip = Tooltip(
-        message: L(context, LanguageCodes.recentlyStoryTextInfo.toString()),
-        child: Text(
-          L(context, LanguageCodes.recentlyStoryTextInfo.toString()),
-          style: CustomFonts.h5(context),
-          textAlign: TextAlign.center,
-        ));
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: tooltip,
-        duration: const Duration(seconds: 2),
-        backgroundColor: themeMode(context, ColorCode.disableColor.name),
-      ),
     );
   }
 }

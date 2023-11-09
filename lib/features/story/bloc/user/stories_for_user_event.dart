@@ -12,3 +12,7 @@ class StoriesForUserList extends StoriesForUserEvent {
   final bool onRefresh;
   const StoriesForUserList(this.onRefresh, {required this.isPrevious});
 }
+
+class OnRefresh extends StoriesForUserEvent {
+  const OnRefresh();
+}

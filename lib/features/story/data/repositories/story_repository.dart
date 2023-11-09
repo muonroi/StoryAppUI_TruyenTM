@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
 import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
 import 'package:muonroi/features/story/data/services/api.story.service.dart';
 import 'package:muonroi/features/story/data/models/models.single.story.dart';
@@ -35,6 +34,13 @@ class StoryRepository {
 
   Future<StoriesModel> getStoryForUser(int type, int pageIndex, int pageSize) =>
       _provider.getStoriesForUser(pageIndex, pageSize, type);
+
+  Future<StoriesModel> getStoryCommon(int type, int pageIndex, int pageSize) =>
+      _provider.getStoriesCommon(pageIndex, pageSize, type);
+
+  Future<StoriesModel> getStoriesByType(
+          int type, int pageIndex, int pageSize) =>
+      _provider.getStoriesByType(pageIndex, pageSize, type);
 }
 
 class NetworkError extends Error {}

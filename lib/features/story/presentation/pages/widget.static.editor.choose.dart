@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/story/presentation/pages/widget.static.stories.vertical.dart';
+import 'package:muonroi/features/story/presentation/widgets/widget.static.stories.type.home.dart';
+import 'package:muonroi/features/story/settings/enums/enum.stories.special.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 
-class EditorStories extends StatelessWidget {
-  final bool isShowLabel;
-  final bool isShowBack;
-  const EditorStories(
-      {super.key, required this.isShowLabel, required this.isShowBack});
+class RegularStories extends StatelessWidget {
+  final EnumStoriesSpecial type;
+  final String nameTypeRegularStories;
+  const RegularStories(
+      {super.key, required this.type, required this.nameTypeRegularStories});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +27,12 @@ class EditorStories extends StatelessWidget {
               icon: backButtonCommon(context)),
           backgroundColor: themeMode(context, ColorCode.mainColor.name),
           title: Text(
-            L(context, LanguageCodes.editorChoiceTextInfo.toString()),
+            nameTypeRegularStories,
             style:
                 CustomFonts.h5(context).copyWith(fontWeight: FontWeight.w600),
           )),
-      body: StoriesVerticalData(
-        isShowLabel: isShowLabel,
-        isShowBack: isShowBack,
+      body: StoriesSpecial(
+        type: type,
       ),
     );
   }

@@ -59,7 +59,6 @@ class StorySingleResult {
   String slugAuthor;
   bool isBookmark;
   int totalPageIndex;
-
   StorySingleResult({
     required this.rankNumber,
     required this.totalChapter,
@@ -136,6 +135,6 @@ class StorySingleResult {
         "isBookmark": isBookmark,
         "firstChapterId": firstChapterId,
         "lastChapterId": lastChapterId,
-        "totalPageIndex": totalPageIndex
+        "totalPageIndex": totalPageIndex,
       };
 }

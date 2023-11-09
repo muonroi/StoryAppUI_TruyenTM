@@ -29,7 +29,9 @@ class LatestChapterOfStoryBloc
       try {
         emit(LatestChapterOfStoryLoadingState());
         final mList = await chapterRepository.fetchChaptersData();
-        emit(LatestChapterOfStoryLoadedState(mList));
+        emit(mList.result.items.isEmpty
+            ? LatestChapterOfStoryNoDataState()
+            : LatestChapterOfStoryLoadedState(mList));
         if (!mList.isOk) {
           emit(LatestChapterOfStoryErrorState(
               mList.errorMessages.map((e) => e.toString()).toList().join(',')));
