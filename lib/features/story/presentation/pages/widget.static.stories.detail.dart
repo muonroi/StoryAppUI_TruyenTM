@@ -116,9 +116,7 @@ class _StoryDetailState extends State<StoryDetail> {
             if (state is DetailStoryLoadedState) {
               var storyInfo = state.story.result;
               late bool isBookmarkColor = storyInfo.isBookmark;
-              _sharedPreferences.setString(
-                  "recently-story", singleStoryModelToJson(state.story));
-              _sharedPreferences.setInt("recently-chapterId", _chapterId);
+
               if (_isFirstLoad && isBookmarkColor) {
                 _colorBookmark = themeMode(context, ColorCode.mainColor.name);
               } else if (!_isFirstLoad) {
@@ -210,7 +208,11 @@ class _StoryDetailState extends State<StoryDetail> {
                                             .bookmarkStory(storyInfo.id);
                                     await _storyRepository.createStoryForUser(
                                         storyInfo.id,
-                                        StoryForUserType.bookmark.index);
+                                        StoryForUserType.bookmark.index,
+                                        0,
+                                        1,
+                                        1,
+                                        0);
                                     setState(() {
                                       _colorBookmark = isBookmarked
                                           ? themeMode(
@@ -238,6 +240,9 @@ class _StoryDetailState extends State<StoryDetail> {
                           child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                               context,
                               Chapter(
+                                chapterNumber:
+                                    _chapterNumber == 0 ? 1 : _chapterNumber,
+                                totalChapter: storyInfo.totalChapter,
                                 pageIndex: 1,
                                 loadSingleChapter: false,
                                 isLoadHistory: true,

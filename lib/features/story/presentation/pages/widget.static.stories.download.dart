@@ -182,7 +182,11 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                               .createStoryForUser(
                                                   widget.storyId,
                                                   StoryForUserType
-                                                      .download.index);
+                                                      .download.index,
+                                                  0,
+                                                  1,
+                                                  1,
+                                                  0);
                                         }
                                         if (context.mounted && isDelete) {
                                           _sharedPreferences.remove(

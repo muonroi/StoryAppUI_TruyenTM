@@ -8,6 +8,7 @@ import 'package:muonroi/features/chapters/provider/models.chapter.template.setti
 import 'package:muonroi/features/homes/presentation/pages/pages.ladding.index.dart';
 import 'package:muonroi/features/notification/provider/notification.provider.dart';
 import 'package:muonroi/features/system/provider/theme.mode.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,16 +82,24 @@ class _MainAppState extends State<MainApp> {
         ChangeNotifierProvider(create: (_) => CustomThemeModeProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider())
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: accountResult != null
-            ? _isSigninView
-                ? const SignInPage()
-                : IndexPage(
-                    accountResult: accountResult!,
-                  )
-            : const SignInPage(),
-      ),
+      child: Consumer<CustomThemeModeProvider>(builder:
+          (BuildContext context, CustomThemeModeProvider value, Widget? child) {
+        var themePick = value.mode == Modes.none ? Modes.light : value.mode;
+        return MaterialApp(
+          theme: ThemeData(
+              brightness:
+                  themePick == Modes.dark ? Brightness.dark : Brightness.light),
+          darkTheme: ThemeData(brightness: Brightness.dark),
+          debugShowCheckedModeBanner: false,
+          home: accountResult != null
+              ? _isSigninView
+                  ? const SignInPage()
+                  : IndexPage(
+                      accountResult: accountResult!,
+                    )
+              : const SignInPage(),
+        );
+      }),
     );
   }
 }

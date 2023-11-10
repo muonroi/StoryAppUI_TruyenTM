@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/features/story/bloc/special/special_bloc.dart';
 import 'package:muonroi/features/story/settings/enums/enum.stories.special.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -136,9 +137,7 @@ class _StoriesNewUpdatedDataState extends State<StoriesNewUpdatedData> {
                 ),
               );
             }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),
@@ -223,16 +222,30 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
             create: (context) => _specialStoriesBloc,
             child: BlocListener<SpecialStoriesBloc, SpecialStoriesState>(
               listener: (context, state) {
-                const Center(
-                  child: CircularProgressIndicator(),
-                );
+                buildLoadingListView(
+                    context,
+                    MainSetting.getPercentageOfDevice(context, expectWidth: 90)
+                        .width,
+                    MainSetting.getPercentageOfDevice(context,
+                            expectHeight: 145)
+                        .height,
+                    MainSetting.getPercentageOfDevice(context, expectWidth: 100)
+                        .width!);
               },
               child: BlocBuilder<SpecialStoriesBloc, SpecialStoriesState>(
                 builder: (context, state) {
                   if (state is SpecialStoriesLoadingState) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return buildLoadingListView(
+                        context,
+                        MainSetting.getPercentageOfDevice(context,
+                                expectWidth: 90)
+                            .width,
+                        MainSetting.getPercentageOfDevice(context,
+                                expectHeight: 145)
+                            .height,
+                        MainSetting.getPercentageOfDevice(context,
+                                expectWidth: 100)
+                            .width!);
                   }
                   if (state is SpecialStoriesNoDataState) {
                     return getEmptyData(context);
@@ -317,9 +330,17 @@ class _StoriesOfCategoriesDataState extends State<StoriesOfCategoriesData> {
                           }),
                     );
                   }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return buildLoadingListView(
+                      context,
+                      MainSetting.getPercentageOfDevice(context,
+                              expectWidth: 90)
+                          .width,
+                      MainSetting.getPercentageOfDevice(context,
+                              expectHeight: 145)
+                          .height,
+                      MainSetting.getPercentageOfDevice(context,
+                              expectWidth: 100)
+                          .width!);
                 },
               ),
             ),

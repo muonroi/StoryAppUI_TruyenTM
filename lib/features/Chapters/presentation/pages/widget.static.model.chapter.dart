@@ -11,8 +11,10 @@ import 'package:muonroi/features/chapters/provider/models.chapter.template.setti
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.detail.chapter.bottom.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
+import 'package:muonroi/features/story/data/models/models.recent.story.dart';
 import 'package:muonroi/features/story/data/repositories/story_repository.dart';
 import 'package:muonroi/features/story/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/features/story/presentation/pages/widget.static.stories.download.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
@@ -31,6 +33,8 @@ class Chapter extends StatefulWidget {
   final int firstChapterId;
   final bool isLoadHistory;
   final int pageIndex;
+  final int totalChapter;
+  final int chapterNumber;
   const Chapter(
       {super.key,
       required this.storyId,
@@ -40,7 +44,9 @@ class Chapter extends StatefulWidget {
       required this.firstChapterId,
       required this.isLoadHistory,
       required this.loadSingleChapter,
-      required this.pageIndex});
+      required this.pageIndex,
+      required this.totalChapter,
+      required this.chapterNumber});
 
   @override
   State<Chapter> createState() => _ChapterState();
@@ -49,6 +55,9 @@ class Chapter extends StatefulWidget {
 class _ChapterState extends State<Chapter> {
   @override
   void initState() {
+    currentPosition = 0;
+    _isLookNextChapter = true;
+    _maxScrollOffset = 0;
     _chapterName = "";
     _pageIndex = widget.pageIndex;
     _chapterIndex = 0;
@@ -106,35 +115,74 @@ class _ChapterState extends State<Chapter> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initSharedPreferences();
+  }
+
+  @override
   void dispose() {
     _groupChaptersBloc.close();
     _scrollController.removeListener(_saveScrollPosition);
     _scrollController.dispose();
     _refreshController.dispose();
     _isLoad = false;
+    _storyRepository.createStoryForUser(
+        widget.storyId,
+        StoryForUserType.recent.index,
+        _chapterIndex,
+        _pageIndex,
+        widget.chapterNumber,
+        currentPosition);
+    _sharedPreferences.setString(
+        "recently-story",
+        recentStoryModelToJson(StoryRecent(
+            storyId: widget.storyId,
+            storyName: widget.storyName,
+            chapterId: widget.chapterId,
+            lastChapterId: widget.lastChapterId,
+            firstChapterId: widget.firstChapterId,
+            isLoadHistory: widget.isLoadHistory,
+            loadSingleChapter: widget.loadSingleChapter,
+            pageIndex: widget.pageIndex,
+            totalChapter: widget.totalChapter,
+            chapterNumber: widget.chapterNumber)));
+    _sharedPreferences.setInt("recently-chapterId", _chapterIdOld);
     super.dispose();
   }
+
 // #region Methods
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
+    _pageIndex = _sharedPreferences
+                .getInt("story-${widget.storyId}-current-page-index") ==
+            null
+        ? 1
+        : _sharedPreferences
+            .getInt("story-${widget.storyId}-current-page-index")!;
+    _chapterIndex = _chapterIndex = _sharedPreferences
+            .getInt("story-${widget.storyId}-current-chapter-index") ??
+        0;
     _storyRepository = StoryRepository();
-    await _storyRepository.createStoryForUser(
-        widget.storyId, StoryForUserType.recent.index);
     if (context.mounted) {
       _settingConfig = getCurrentTemplate(_sharedPreferences, context);
     }
   }
 
   void _saveScrollPosition() {
+    if (_isFirstRefresh) {
+      _maxScrollOffset = _scrollController.position.maxScrollExtent;
+    }
     var groupData = _sharedPreferences
         .getString("story-${widget.storyId}-current-group-chapter");
-    if (_groupChapterItems == null && groupData == null) {
+    if (_groupChapterItems!.result.items.isEmpty && groupData == null) {
       _sharedPreferences.setString(
           "story-${widget.storyId}-current-group-chapter",
           groupChaptersToJson(_groupChapterItems!));
     }
     _sharedPreferences.setDouble(_scrollPositionKey, _scrollController.offset);
+    currentPosition = _scrollController.offset;
     _sharedPreferences.setInt("story-${widget.storyId}", widget.storyId);
     _sharedPreferences.setInt(
         "story-${widget.storyId}-current-chapter-id", _chapterIdOld);
@@ -210,6 +258,7 @@ class _ChapterState extends State<Chapter> {
   }
 
   void _onLoading(int chapterId, bool isCheckShow) async {
+    _isLoading = false;
     if (!isCheckShow) {
       _isLoading = true;
     }
@@ -221,10 +270,11 @@ class _ChapterState extends State<Chapter> {
       });
     } else if (mounted && _isLoading ||
         widget.lastChapterId != chapterId &&
-            _scrollController.offset >
-                _scrollController.position.maxScrollExtent + 350) {
+            _scrollController.offset > _maxScrollOffset + 50 &&
+            !_isLookNextChapter) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
+          _isLookNextChapter = true;
           _isLoading = false;
           _isDisablePreviousButton = false;
           _chapterIndex =
@@ -249,6 +299,9 @@ class _ChapterState extends State<Chapter> {
     } else if (!_isLoading) {
       _isLoading = true;
     }
+    if (_isLookNextChapter) {
+      _isLookNextChapter = false;
+    }
     _refreshController.loadComplete();
   }
 
@@ -271,6 +324,8 @@ class _ChapterState extends State<Chapter> {
 // #endregion
 
 // #region Variables
+  late double currentPosition;
+  late double _maxScrollOffset;
   late int _chapterIndex;
   late int _pageIndex;
   late int _pageSize;
@@ -293,6 +348,7 @@ class _ChapterState extends State<Chapter> {
   late TemplateSetting _settingConfig;
   late StoryRepository _storyRepository;
   late String _chapterName;
+  late bool _isLookNextChapter;
   // #endregion
 
   @override
@@ -324,6 +380,7 @@ class _ChapterState extends State<Chapter> {
             );
           }
           if (state is GroupChapterLoadedState) {
+            // #region Setting template
             _loadSavedScrollPosition();
             _groupChapterItems = state.chapter;
             _settingConfig.backgroundColor = _settingConfig.backgroundColor ??
@@ -344,13 +401,10 @@ class _ChapterState extends State<Chapter> {
                 chapterInfo.length < _pageSize ? chapterInfo.length : _pageSize;
             _chapterName =
                 "${L(context, LanguageCodes.chapterNumberTextInfo.toString())}: ${chapterInfo[_chapterIndex].numberOfChapter} - ${chapterInfo[_chapterIndex].chapterTitle} ";
-            if (context.mounted) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                setState(() {});
-              });
-            }
+            // #endregion
             return Consumer<TemplateSetting>(
               builder: (context, templateValue, child) {
+                // #region Setting old template
                 _reNewValueInSettingTemplate(templateValue);
                 var tempBackground = templateValue.backgroundColor ??
                     _settingConfig.backgroundColor;
@@ -366,6 +420,7 @@ class _ChapterState extends State<Chapter> {
                     _settingConfig.locationButton;
                 var tempIsHorizontal =
                     templateValue.isHorizontal ?? _settingConfig.isHorizontal;
+                // #endregion
                 return Scaffold(
                   resizeToAvoidBottomInset: false,
                   appBar: _isVisible
@@ -420,6 +475,8 @@ class _ChapterState extends State<Chapter> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             ChapterListPage(
+                                                              totalChapter: widget
+                                                                  .totalChapter,
                                                               storyId: chapterInfo[
                                                                       _chapterIndex]
                                                                   .storyId,
@@ -432,12 +489,16 @@ class _ChapterState extends State<Chapter> {
                                                             ))),
                                                 child: Row(
                                                   children: [
-                                                    const Padding(
-                                                      padding: EdgeInsets.only(
-                                                          bottom: 4.0,
-                                                          right: 4.0,
-                                                          top: 4.0),
-                                                      child: Icon(Icons.list),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 4.0,
+                                                              right: 4.0,
+                                                              top: 4.0),
+                                                      child: Icon(
+                                                        Icons.list,
+                                                        color: tempFontColor,
+                                                      ),
                                                     ),
                                                     Text(
                                                       L(
@@ -446,7 +507,10 @@ class _ChapterState extends State<Chapter> {
                                                               .listChapterDetailConfigTextInfo
                                                               .toString()),
                                                       style: CustomFonts.h6(
-                                                          context),
+                                                              context)
+                                                          .copyWith(
+                                                              color:
+                                                                  tempFontColor),
                                                     )
                                                   ],
                                                 ),
@@ -465,10 +529,14 @@ class _ChapterState extends State<Chapter> {
                                                             ))),
                                                 child: Row(
                                                   children: [
-                                                    const Padding(
+                                                    Padding(
                                                       padding:
-                                                          EdgeInsets.all(4.0),
-                                                      child: Icon(Icons.book),
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Icon(
+                                                        Icons.book,
+                                                        color: tempFontColor,
+                                                      ),
                                                     ),
                                                     Text(
                                                       L(
@@ -477,28 +545,53 @@ class _ChapterState extends State<Chapter> {
                                                               .storyDetailConfigTextInfo
                                                               .toString()),
                                                       style: CustomFonts.h6(
-                                                          context),
+                                                              context)
+                                                          .copyWith(
+                                                              color:
+                                                                  tempFontColor),
                                                     )
                                                   ],
                                                 ),
                                               ),
-                                              Row(
-                                                children: [
-                                                  const Padding(
-                                                    padding:
-                                                        EdgeInsets.all(4.0),
-                                                    child: Icon(Icons.download),
-                                                  ),
-                                                  Text(
-                                                    L(
-                                                        context,
-                                                        LanguageCodes
-                                                            .storyDownloadConfigTextInfo
-                                                            .toString()),
-                                                    style:
-                                                        CustomFonts.h6(context),
-                                                  )
-                                                ],
+                                              InkWell(
+                                                onTap: () => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            StoriesDownloadPage(
+                                                              storyId: chapterInfo[
+                                                                      _chapterIndex]
+                                                                  .storyId,
+                                                              storyName: widget
+                                                                  .storyName,
+                                                              totalChapter: widget
+                                                                  .totalChapter,
+                                                            ))),
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Icon(
+                                                        Icons.download,
+                                                        color: tempFontColor,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      L(
+                                                          context,
+                                                          LanguageCodes
+                                                              .storyDownloadConfigTextInfo
+                                                              .toString()),
+                                                      style: CustomFonts.h6(
+                                                              context)
+                                                          .copyWith(
+                                                              color:
+                                                                  tempFontColor),
+                                                    )
+                                                  ],
+                                                ),
                                               )
                                             ],
                                           ),
@@ -512,13 +605,15 @@ class _ChapterState extends State<Chapter> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 4.0,
-                                                        right: 4.0,
-                                                        top: 4.0),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 4.0,
+                                                            right: 4.0,
+                                                            top: 4.0),
                                                     child: Icon(
-                                                        Icons.publish_sharp),
+                                                        Icons.publish_sharp,
+                                                        color: tempFontColor),
                                                   ),
                                                   Text(
                                                     L(
@@ -526,17 +621,22 @@ class _ChapterState extends State<Chapter> {
                                                         LanguageCodes
                                                             .storyPushCoinConfigTextInfo
                                                             .toString()),
-                                                    style:
-                                                        CustomFonts.h6(context),
+                                                    style: CustomFonts.h6(
+                                                            context)
+                                                        .copyWith(
+                                                            color:
+                                                                tempFontColor),
                                                   )
                                                 ],
                                               ),
                                               Row(
                                                 children: [
-                                                  const Padding(
+                                                  Padding(
                                                     padding:
-                                                        EdgeInsets.all(4.0),
-                                                    child: Icon(Icons.share),
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Icon(Icons.share,
+                                                        color: tempFontColor),
                                                   ),
                                                   Text(
                                                     L(
@@ -544,17 +644,22 @@ class _ChapterState extends State<Chapter> {
                                                         LanguageCodes
                                                             .storyShareConfigTextInfo
                                                             .toString()),
-                                                    style:
-                                                        CustomFonts.h6(context),
+                                                    style: CustomFonts.h6(
+                                                            context)
+                                                        .copyWith(
+                                                            color:
+                                                                tempFontColor),
                                                   )
                                                 ],
                                               ),
                                               Row(
                                                 children: [
-                                                  const Padding(
+                                                  Padding(
                                                     padding:
-                                                        EdgeInsets.all(4.0),
-                                                    child: Icon(Icons.error),
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Icon(Icons.error,
+                                                        color: tempFontColor),
                                                   ),
                                                   Text(
                                                     L(
@@ -562,8 +667,11 @@ class _ChapterState extends State<Chapter> {
                                                         LanguageCodes
                                                             .storyReportConfigTextInfo
                                                             .toString()),
-                                                    style:
-                                                        CustomFonts.h6(context),
+                                                    style: CustomFonts.h6(
+                                                            context)
+                                                        .copyWith(
+                                                            color:
+                                                                tempFontColor),
                                                   )
                                                 ],
                                               )

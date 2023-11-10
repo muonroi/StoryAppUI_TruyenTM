@@ -26,8 +26,10 @@ class StoryRepository {
   Future<bool> bookmarkStory(int storyId) =>
       _provider.createBookmarkStory(storyId);
 
-  Future<bool> createStoryForUser(int storyId, int type) =>
-      _provider.createStoryForUser(storyId, type);
+  Future<bool> createStoryForUser(int storyId, int type, int currentIndex,
+          int pageIndex, int numberChapter, double locationChapter) =>
+      _provider.createStoryForUser(storyId, type, currentIndex, pageIndex,
+          numberChapter, locationChapter);
 
   Future<bool> deleteStoryForUser(int storyId) =>
       _provider.deleteStoryForUser(storyId);

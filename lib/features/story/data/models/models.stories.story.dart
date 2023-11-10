@@ -55,51 +55,58 @@ class Result {
 }
 
 class StoryItems {
-  StoryItems({
-    required this.rankNumber,
-    required this.totalChapter,
-    required this.totalVote,
-    required this.id,
-    required this.guid,
-    required this.storyTitle,
-    required this.storySynopsis,
-    required this.imgUrl,
-    required this.isShow,
-    required this.totalView,
-    required this.totalFavorite,
-    required this.rating,
-    required this.slug,
-    required this.nameCategory,
-    required this.authorName,
-    required this.nameTag,
-    required this.updatedDateTs,
-    required this.updatedDateString,
-    required this.slugAuthor,
-    required this.idForUser,
-  });
+  StoryItems(
+      {required this.rankNumber,
+      required this.totalChapter,
+      required this.totalVote,
+      required this.id,
+      required this.guid,
+      required this.storyTitle,
+      required this.storySynopsis,
+      required this.imgUrl,
+      required this.isShow,
+      required this.totalView,
+      required this.totalFavorite,
+      required this.rating,
+      required this.slug,
+      required this.nameCategory,
+      required this.authorName,
+      required this.nameTag,
+      required this.updatedDateTs,
+      required this.updatedDateString,
+      required this.slugAuthor,
+      required this.idForUser,
+      required this.currentIndex,
+      required this.pageCurrentIndex,
+      required this.numberOfChapter,
+      required this.chapterLatestLocation});
 
   factory StoryItems.fromJson(Map<String, dynamic> json) => StoryItems(
-        rankNumber: json["rankNumber"],
-        totalChapter: json["totalChapter"],
-        id: json["id"],
-        guid: json["guid"],
-        storyTitle: json["storyTitle"],
-        storySynopsis: json["storySynopsis"],
-        imgUrl: json["imgUrl"],
-        isShow: json["isShow"],
-        totalVote: json["totalVote"],
-        totalView: json["totalView"],
-        totalFavorite: json["totalFavorite"],
-        rating: double.parse(json["rating"].toString()),
-        slug: json["slug"],
-        nameCategory: json["nameCategory"],
-        authorName: json["authorName"],
-        nameTag: List<dynamic>.from(json["nameTag"].map((x) => x)),
-        updatedDateTs: json["updatedDateTs"],
-        updatedDateString: json["updatedDateString"],
-        slugAuthor: json["slugAuthor"] ?? "",
-        idForUser: json["idForUser"] ?? 0,
-      );
+      rankNumber: json["rankNumber"],
+      totalChapter: json["totalChapter"],
+      id: json["id"],
+      guid: json["guid"],
+      storyTitle: json["storyTitle"],
+      storySynopsis: json["storySynopsis"],
+      imgUrl: json["imgUrl"],
+      isShow: json["isShow"],
+      totalVote: json["totalVote"],
+      totalView: json["totalView"],
+      totalFavorite: json["totalFavorite"],
+      rating: double.parse(json["rating"].toString()),
+      slug: json["slug"],
+      nameCategory: json["nameCategory"],
+      authorName: json["authorName"],
+      nameTag: List<dynamic>.from(json["nameTag"].map((x) => x)),
+      updatedDateTs: json["updatedDateTs"],
+      updatedDateString: json["updatedDateString"],
+      slugAuthor: json["slugAuthor"] ?? "",
+      idForUser: json["idForUser"] ?? 0,
+      currentIndex: json["currentIndex"] ?? 0,
+      pageCurrentIndex: json["pageCurrentIndex"] ?? 0,
+      numberOfChapter: json["numberOfChapter"] ?? 0,
+      chapterLatestLocation:
+          double.parse(json["chapterLatestLocation"].toString()));
 
   String authorName;
   String guid;
@@ -121,6 +128,10 @@ class StoryItems {
   String updatedDateString;
   int updatedDateTs;
   int? idForUser;
+  int currentIndex;
+  int pageCurrentIndex;
+  int numberOfChapter;
+  double chapterLatestLocation;
   Map<String, dynamic> toJson() => {
         "rankNumber": rankNumber,
         "totalChapter": totalChapter,
@@ -140,7 +151,11 @@ class StoryItems {
         "updatedDateTs": updatedDateTs,
         "updatedDateString": updatedDateString,
         "slugAuthor": slugAuthor ?? "",
-        "idForUser": idForUser
+        "idForUser": idForUser,
+        "currentIndex": currentIndex,
+        "pageCurrentIndex": pageCurrentIndex,
+        "numberOfChapter": numberOfChapter,
+        "chapterLatestLocation": chapterLatestLocation,
       };
 }
 

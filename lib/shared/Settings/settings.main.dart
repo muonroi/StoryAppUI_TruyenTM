@@ -5,6 +5,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:icons_flutter/icons_flutter.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/models/signalR/enum/enum.signalr.type.dart';
 import 'package:muonroi/core/localization/settings.languages.dart';
@@ -60,7 +61,11 @@ Widget netWorkImage(BuildContext context, String url, bool setCache,
         cache: setCache, loadStateChanged: (state) {
       switch (state.extendedImageLoadState) {
         case LoadState.loading:
-          return const Center(child: CircularProgressIndicator());
+          return buildLoadingRow(
+              context,
+              MainSetting.getPercentageOfDevice(context, expectWidth: 90).width,
+              MainSetting.getPercentageOfDevice(context, expectHeight: 145)
+                  .height);
         case LoadState.completed:
           return state.completedWidget;
         case LoadState.failed:

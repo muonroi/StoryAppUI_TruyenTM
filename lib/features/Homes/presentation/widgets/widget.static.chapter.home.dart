@@ -9,6 +9,7 @@ import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
 import 'package:muonroi/features/story/data/repositories/story_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListNewChapter extends StatefulWidget {
   const ListNewChapter({
@@ -191,11 +192,34 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                               .fetchDetailStory(
                                             chapterInfo.storyId,
                                           );
+                                          var sharePreferences =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          sharePreferences.setInt(
+                                              "story-${storyInfo.result.id}-current-page-index",
+                                              storyInfo.result.totalPageIndex ==
+                                                      0
+                                                  ? 1
+                                                  : storyInfo
+                                                      .result.totalPageIndex);
+                                          sharePreferences.setInt(
+                                              "story-${storyInfo.result.id}-current-chapter-index",
+                                              index);
+                                          sharePreferences.setInt(
+                                              "story-${storyInfo.result.id}-current-chapter-id",
+                                              chapterInfo.id);
+                                          sharePreferences.setInt(
+                                              "story-${storyInfo.result.id}-current-chapter",
+                                              chapterInfo.numberOfChapter);
                                           if (context.mounted) {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => Chapter(
+                                                  totalChapter: storyInfo
+                                                      .result.totalChapter,
+                                                  chapterNumber: chapterInfo
+                                                      .numberOfChapter,
                                                   pageIndex: 1,
                                                   loadSingleChapter: false,
                                                   isLoadHistory: true,

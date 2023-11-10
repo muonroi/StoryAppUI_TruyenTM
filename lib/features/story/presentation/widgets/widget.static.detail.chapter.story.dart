@@ -158,6 +158,10 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => Chapter(
+                                            chapterNumber:
+                                                chapterItem.numberOfChapter,
+                                            totalChapter:
+                                                widget.storyInfo.totalChapter,
                                             pageIndex:
                                                 widget.storyInfo.totalPageIndex,
                                             loadSingleChapter: true,
@@ -201,6 +205,7 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                         child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                             context,
                             ChapterListPage(
+                              totalChapter: widget.storyInfo.totalChapter,
                               storyId: widget.storyId,
                               storyTitle: widget.storyInfo.storyTitle,
                               lastChapterId: widget.storyInfo.lastChapterId,

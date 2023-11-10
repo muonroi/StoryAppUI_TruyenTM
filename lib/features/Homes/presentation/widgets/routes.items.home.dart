@@ -8,7 +8,6 @@ import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.categories.home.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.category.stories.home.dart';
-import 'package:muonroi/features/homes/presentation/widgets/widget.static.chapter.home.dart';
 import 'package:muonroi/features/story/presentation/pages/widget.static.editor.choose.dart';
 import 'package:muonroi/features/story/presentation/pages/widget.static.stories.common.items.home.dart';
 
@@ -120,13 +119,13 @@ class HomePageItems {
 
       // #endregion
 
-      // #region Footer
-      OnlyTitleTextInfo(
-        textInfo:
-            L(context, LanguageCodes.newChapterUpdatedTextInfo.toString()),
-      ),
-      const ListNewChapter(),
-      // #endregion
+      // // #region Footer
+      // OnlyTitleTextInfo(
+      //   textInfo:
+      //       L(context, LanguageCodes.newChapterUpdatedTextInfo.toString()),
+      // ),
+      // const ListNewChapter(),
+      // // #endregion
     ];
     return components;
   }

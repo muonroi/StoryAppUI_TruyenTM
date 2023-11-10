@@ -163,9 +163,17 @@ class StoryService {
     }
   }
 
-  Future<bool> createStoryForUser(int storyId, int type) async {
+  Future<bool> createStoryForUser(int storyId, int type, int index,
+      int pageIndex, int numberChapter, double locationChapter) async {
     try {
-      Map<String, dynamic> data = {'storyId': storyId, 'storyType': type};
+      Map<String, dynamic> data = {
+        'storyId': storyId,
+        'storyType': type,
+        "chapterIndex": index,
+        "chapterPageIndex": pageIndex,
+        "chapterNumber": numberChapter,
+        "chapterLatestLocation": locationChapter,
+      };
       var baseEndpoint = await endPoint();
       final response =
           await baseEndpoint.post(ApiNetwork.createStoryForUser, data: data);

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:muonroi/features/story/data/models/models.single.story.dart';
 
 StorySingleResult storySingleDefaultData() {
@@ -39,3 +41,8 @@ String formatNumberThouSand(double value) {
     return value.toInt().toString();
   }
 }
+
+const Color primaryColor = Color(0xFF2967FF);
+const Color grayColor = Color(0xFF8D8D8E);
+
+const double defaultPadding = 16.0;

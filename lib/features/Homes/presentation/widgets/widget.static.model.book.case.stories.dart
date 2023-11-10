@@ -109,7 +109,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
                     width: MainSetting.getPercentageOfDevice(context,
-                            expectWidth: 80)
+                            expectWidth: 90)
                         .width,
                     height: MainSetting.getPercentageOfDevice(context,
                             expectHeight: 120)
@@ -173,6 +173,13 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) => Chapter(
+                                                        chapterNumber:
+                                                            chapterNumber == 0
+                                                                ? 1
+                                                                : chapterNumber,
+                                                        totalChapter: storyInfo
+                                                            .result
+                                                            .totalChapter,
                                                         pageIndex: 1,
                                                         loadSingleChapter:
                                                             false,
@@ -181,8 +188,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                             storyInfo.result.id,
                                                         storyName: storyInfo
                                                             .result.storyTitle,
-                                                        chapterId: chapterId ==
-                                                                0
+                                                        chapterId: chapterId == 0
                                                             ? storyInfo.result
                                                                 .firstChapterId
                                                             : chapterId,

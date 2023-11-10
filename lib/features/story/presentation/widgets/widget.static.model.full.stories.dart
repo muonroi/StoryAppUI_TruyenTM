@@ -72,11 +72,11 @@ class _StoriesFullModelWidgetState extends State<StoriesFullModelWidget> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
+            Container(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 width:
-                    MainSetting.getPercentageOfDevice(context, expectWidth: 80)
+                    MainSetting.getPercentageOfDevice(context, expectWidth: 100)
                         .width,
                 height: MainSetting.getPercentageOfDevice(context,
                         expectHeight: 120)

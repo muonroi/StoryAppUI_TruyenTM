@@ -14,12 +14,14 @@ class ChapterListPage extends StatefulWidget {
   final String storyTitle;
   final int lastChapterId;
   final int firstChapterId;
+  final int totalChapter;
   const ChapterListPage(
       {super.key,
       required this.storyId,
       required this.storyTitle,
       required this.lastChapterId,
-      required this.firstChapterId});
+      required this.firstChapterId,
+      required this.totalChapter});
 
   @override
   State<ChapterListPage> createState() => _ChapterListPageState();
@@ -295,6 +297,9 @@ class _ChapterListPageState extends State<ChapterListPage>
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => Chapter(
+                                              chapterNumber:
+                                                  chapterInfo.numberOfChapter,
+                                              totalChapter: widget.totalChapter,
                                               pageIndex: chapterInfo.groupIndex,
                                               isLoadHistory: false,
                                               storyId: chapterInfo.storyId,

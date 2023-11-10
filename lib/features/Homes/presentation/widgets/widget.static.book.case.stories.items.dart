@@ -10,6 +10,7 @@ import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.model.book.case.stories.dart';
 import 'package:muonroi/features/story/data/models/models.stories.story.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StoriesItems extends StatefulWidget {
   final AnimationController reload;
@@ -30,6 +31,8 @@ class StoriesItems extends StatefulWidget {
 class _StoriesItemsState extends State<StoriesItems> {
   @override
   void initState() {
+    _isFirstLoad = true;
+    _initSharedPreferences();
     _selectedIndex = -1;
     pageIndex = 1;
     pageSize = 5;
@@ -75,6 +78,11 @@ class _StoriesItemsState extends State<StoriesItems> {
     _refreshController.loadComplete();
   }
 
+  Future<void> _initSharedPreferences() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  late SharedPreferences _sharedPreferences;
   late int _selectedIndex;
   late bool _isSelected;
   late bool _isPrevious;
@@ -85,6 +93,7 @@ class _StoriesItemsState extends State<StoriesItems> {
   late StoriesForUserBloc _storiesForUserBloc;
   late int pageIndex;
   late int pageSize;
+  late bool _isFirstLoad;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -100,6 +109,7 @@ class _StoriesItemsState extends State<StoriesItems> {
             }
             if (state is StoriesForUserLoadedState) {
               var storiesItem = state.stories.result.items;
+
               return SmartRefresher(
                 enablePullDown: true,
                 enablePullUp: true,
@@ -134,6 +144,34 @@ class _StoriesItemsState extends State<StoriesItems> {
                         : storiesItem.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
+                      if (_isFirstLoad) {
+                        _sharedPreferences.setInt(
+                            "story-${storiesItem[index].id}-current-page-index",
+                            storiesItem[index].pageCurrentIndex == 0
+                                ? 1
+                                : storiesItem[index].pageCurrentIndex);
+
+                        _sharedPreferences.setInt(
+                            "story-${storiesItem[index].id}-current-chapter-index",
+                            storiesItem[index].currentIndex);
+
+                        _sharedPreferences.setInt(
+                            "story-${storiesItem[index].id}-current-chapter",
+                            storiesItem[index].numberOfChapter);
+
+                        _sharedPreferences.setDouble(
+                            "scrollPosition-${storiesItem[index].id}",
+                            storiesItem[index].chapterLatestLocation);
+                        if (context.mounted) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (context.mounted) {
+                              setState(() {
+                                _isFirstLoad = false;
+                              });
+                            }
+                          });
+                        }
+                      }
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,

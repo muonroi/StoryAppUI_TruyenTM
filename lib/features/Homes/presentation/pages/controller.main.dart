@@ -4,13 +4,13 @@ import 'package:muonroi/core/Notification/widget.notification.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/notification/presentation/pages/notification.dart';
 import 'package:muonroi/features/notification/provider/notification.provider.dart';
+import 'package:muonroi/features/story/data/models/models.recent.story.dart';
 import 'package:muonroi/shared/models/signalR/signalr.hub.dart';
 import 'package:muonroi/shared/models/signalR/signalr.hub.stream.name.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/models/signalR/widget.notification.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
-import 'package:muonroi/features/story/data/models/models.single.story.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.menu.bottom.shared.dart';
 import 'package:muonroi/features/homes/presentation/widgets/routes.items.home.dart';
@@ -366,16 +366,22 @@ class _HomePageState extends State<HomePage> {
                   _sharedPreferences.getString("recently-story");
               var chapterIdRecently =
                   _sharedPreferences.getInt("recently-chapterId") ?? 0;
+
               if (storyInfoRecently != null) {
-                var storyResult = singleStoryModelFromJson(storyInfoRecently);
-                var storyInfo = storyResult.result;
+                var storyResult = recentStoryModelFromJson(storyInfoRecently);
+                var storyInfo = storyResult;
+                var chapterNumber = _sharedPreferences
+                        .getInt("story-${storyInfo.storyId}-current-chapter") ??
+                    1;
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Chapter(
+                    chapterNumber: chapterNumber,
+                    totalChapter: storyInfo.totalChapter,
                     pageIndex: 1,
                     loadSingleChapter: false,
                     isLoadHistory: true,
-                    storyId: storyInfo.id,
-                    storyName: storyInfo.storyTitle,
+                    storyId: storyInfo.storyId,
+                    storyName: storyInfo.storyName,
                     chapterId: chapterIdRecently == 0
                         ? storyInfo.firstChapterId
                         : chapterIdRecently,

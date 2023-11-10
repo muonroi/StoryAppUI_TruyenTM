@@ -62,7 +62,8 @@ class _CommonTopStoriesDataState extends State<CommonTopStoriesData> {
                     .height,
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: ListView.builder(
-                  itemCount: 4,
+                  itemCount:
+                      result.length > 4 ? result.take(4).length : result.length,
                   itemExtent: 170,
                   itemBuilder: (context, index) {
                     return Padding(

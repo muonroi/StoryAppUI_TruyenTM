@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/features/story/presentation/widgets/widget.static.loading.stories.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
@@ -64,5 +65,37 @@ void showTooltipNotification(BuildContext context) {
       duration: const Duration(seconds: 2),
       backgroundColor: themeMode(context, ColorCode.disableColor.name),
     ),
+  );
+}
+
+Widget buildLoadingListView(
+    BuildContext context, double? width, double? height, double itemExtent) {
+  return SizedBox(
+      height: height,
+      child: CustomScrollView(
+        scrollDirection: Axis.horizontal,
+        slivers: <Widget>[
+          SliverFixedExtentList(
+            itemExtent: itemExtent,
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return buildLoadingRow(context, width, height);
+              },
+            ),
+          ),
+        ],
+      ));
+}
+
+Widget buildLoadingRow(BuildContext context, double? width, double? height) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      LoadingStoriesHome(
+        width: width,
+        height: height,
+      ),
+    ],
   );
 }
