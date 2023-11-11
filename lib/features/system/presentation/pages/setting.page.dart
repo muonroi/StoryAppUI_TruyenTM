@@ -13,6 +13,15 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  String _messageFromChild = '';
+
+  void _updateMessage(String message) {
+    setState(() {
+      _messageFromChild = message;
+    });
+    debugPrint(_messageFromChild);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   ToggleButtonDarkMode(
+                    callback: _updateMessage,
                     width: MainSetting.getPercentageOfDevice(context,
                             expectWidth: 200)
                         .width,

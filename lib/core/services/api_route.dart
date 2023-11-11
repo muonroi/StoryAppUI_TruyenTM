@@ -8,7 +8,7 @@ class ApiNetwork {
   // #endregion
 
   // #region Signalr
-  static const String notification = "hubs/noti-hub";
+  static const String notification = "hub/notification?access_token=%s";
   // #endregion
 
 // #region Account endpoint

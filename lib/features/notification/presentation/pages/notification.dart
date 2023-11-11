@@ -8,6 +8,7 @@ import 'package:muonroi/features/notification/provider/notification.provider.dar
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -116,140 +117,145 @@ class _NotificationPageState extends State<NotificationPage> {
           style: CustomFonts.h4(context),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-              child: BlocProvider(
-            create: (context) => _notificationBloc,
-            child: BlocListener<NotificationBloc, NotificationState>(
-              listener: (context, state) {
-                const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-              child: BlocBuilder<NotificationBloc, NotificationState>(
-                builder: (context, state) {
-                  if (state is NotificationLoadingState) {
-                    return const Center(
+      body: Consumer<NotificationProvider>(
+        builder:
+            (BuildContext context, NotificationProvider value, Widget? child) {
+          return Column(
+            children: [
+              Expanded(
+                  child: BlocProvider(
+                create: (context) => _notificationBloc,
+                child: BlocListener<NotificationBloc, NotificationState>(
+                  listener: (context, state) {
+                    const Center(
                       child: CircularProgressIndicator(),
                     );
-                  }
-                  if (state is NotificationLoadedState) {
-                    var notificationList =
-                        state.notificationSingleUser.result.items;
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (context.mounted) {
+                  },
+                  child: BlocBuilder<NotificationBloc, NotificationState>(
+                    builder: (context, state) {
+                      if (state is NotificationLoadingState) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (state is NotificationLoadedState) {
+                        var notificationList = state
+                            .notificationSingleUser.result.items.reversed
+                            .toList();
                         var totalViewSent = notificationList
                             .where((element) => element.notificationSate == 1)
                             .length;
-                        context.read<NotificationProvider>().setTotalView =
-                            totalViewSent;
+                        value.setTotalView = totalViewSent;
                         _sharedPreferences.setInt(
                             'totalNotification', totalViewSent);
-                      }
-                    });
 
-                    return SmartRefresher(
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      controller: _refreshController,
-                      onRefresh: _onRefresh,
-                      onLoading: _onLoading,
-                      footer: ClassicFooter(
-                        canLoadingIcon: const Icon(Icons.arrow_downward),
-                        canLoadingText: L(
-                            context,
-                            LanguageCodes.viewNextNotificationTextInfo
-                                .toString()),
-                        idleText: L(
-                            context,
-                            LanguageCodes.viewNextNotificationTextInfo
-                                .toString()),
-                      ),
-                      header: ClassicHeader(
-                        idleIcon: const Icon(Icons.arrow_upward),
-                        refreshingText: L(
-                            context,
-                            LanguageCodes.viewPreviousNotificationTextInfo
-                                .toString()),
-                        releaseText: L(
-                            context,
-                            LanguageCodes.viewPreviousNotificationTextInfo
-                                .toString()),
-                        idleText: L(
-                            context,
-                            LanguageCodes.viewPreviousNotificationTextInfo
-                                .toString()),
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  splashRadius: 25,
-                                  tooltip: L(
-                                      context,
-                                      LanguageCodes.viewNotificationAllTextInfo
-                                          .toString()),
-                                  onPressed: () async {
-                                    await _notificationRepository
-                                        .viewAllNotificationUser();
-                                    if (context.mounted) {
-                                      context
-                                          .read<NotificationProvider>()
-                                          .setViewAll = true;
-                                      context
-                                          .read<NotificationProvider>()
-                                          .setTotalView = 0;
-                                      _sharedPreferences.setInt(
-                                          'totalNotification', 0);
-                                    }
-                                  },
-                                  icon: const Icon(Icons.clear_all_outlined),
-                                  color: themeMode(
-                                      context, ColorCode.textColor.name),
-                                )
-                              ],
-                            ),
+                        return SmartRefresher(
+                          enablePullDown: true,
+                          enablePullUp: true,
+                          controller: _refreshController,
+                          onRefresh: _onRefresh,
+                          onLoading: _onLoading,
+                          footer: ClassicFooter(
+                            canLoadingIcon: const Icon(Icons.arrow_downward),
+                            canLoadingText: L(
+                                context,
+                                LanguageCodes.viewNextNotificationTextInfo
+                                    .toString()),
+                            idleText: L(
+                                context,
+                                LanguageCodes.viewNextNotificationTextInfo
+                                    .toString()),
                           ),
-                          Expanded(
-                            child: notificationList.isNotEmpty
-                                ? ListView.builder(
-                                    controller: _scrollController,
-                                    itemCount: notificationList.length,
-                                    itemBuilder: (context, index) {
-                                      return NotificationItem(
-                                          notificationId:
-                                              notificationList[index].id,
-                                          state: notificationList[index]
-                                                  .notificationSate ==
-                                              1,
-                                          imageUrl:
-                                              notificationList[index].imgUrl,
-                                          title: notificationList[index].title,
-                                          content: N(
-                                              context,
-                                              notificationList[index]
-                                                  .notificationType,
-                                              args: notificationList[index]
-                                                  .message
-                                                  .split('-')));
-                                    })
-                                : getEmptyData(context),
-                          )
-                        ],
-                      ),
-                    );
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-            ),
-          ))
-        ],
+                          header: ClassicHeader(
+                            idleIcon: const Icon(Icons.arrow_upward),
+                            refreshingText: L(
+                                context,
+                                LanguageCodes.viewPreviousNotificationTextInfo
+                                    .toString()),
+                            releaseText: L(
+                                context,
+                                LanguageCodes.viewPreviousNotificationTextInfo
+                                    .toString()),
+                            idleText: L(
+                                context,
+                                LanguageCodes.viewPreviousNotificationTextInfo
+                                    .toString()),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      splashRadius: 25,
+                                      tooltip: L(
+                                          context,
+                                          LanguageCodes
+                                              .viewNotificationAllTextInfo
+                                              .toString()),
+                                      onPressed: () async {
+                                        await _notificationRepository
+                                            .viewAllNotificationUser();
+                                        if (context.mounted) {
+                                          value.setViewAll = true;
+                                          value.setTotalView = 0;
+                                        }
+                                      },
+                                      icon:
+                                          const Icon(Icons.clear_all_outlined),
+                                      color: themeMode(
+                                          context, ColorCode.textColor.name),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: notificationList.isNotEmpty
+                                    ? ListView.builder(
+                                        controller: _scrollController,
+                                        itemCount: notificationList.length,
+                                        itemBuilder: (context, index) {
+                                          return NotificationItem(
+                                              currentNotificationSent:
+                                                  notificationList
+                                                      .where((element) =>
+                                                          element
+                                                              .notificationSate ==
+                                                          1)
+                                                      .length,
+                                              notificationId:
+                                                  notificationList[index].id,
+                                              state: notificationList[index]
+                                                      .notificationSate ==
+                                                  1,
+                                              imageUrl: notificationList[index]
+                                                  .imgUrl,
+                                              title:
+                                                  notificationList[index].title,
+                                              content: N(
+                                                  context,
+                                                  notificationList[index]
+                                                      .notificationType,
+                                                  args: notificationList[index]
+                                                      .message
+                                                      .split('-')));
+                                        })
+                                    : getEmptyData(context),
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
+              ))
+            ],
+          );
+        },
       ),
     );
   }

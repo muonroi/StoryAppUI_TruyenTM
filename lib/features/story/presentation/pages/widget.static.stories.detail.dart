@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/story/bloc/detail/detail_bloc.dart';
 import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
-import 'package:muonroi/features/story/data/models/models.single.story.dart';
 import 'package:muonroi/features/story/data/repositories/story_repository.dart';
 import 'package:muonroi/features/story/presentation/pages/widget.static.stories.download.dart';
 import 'package:muonroi/features/story/presentation/widgets/widget.static.detail.more.info.story.dart';
@@ -36,7 +35,6 @@ class _StoryDetailState extends State<StoryDetail> {
     _detailStory = DetailStoryPageBloc(widget.storyId);
     _detailStory.add(GetDetailStory());
     _isFirstLoad = true;
-    _initSharedPreferences();
     super.initState();
   }
 
@@ -58,12 +56,7 @@ class _StoryDetailState extends State<StoryDetail> {
     });
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-  }
-
   late DetailStoryPageBloc _detailStory;
-  late SharedPreferences _sharedPreferences;
   late int _chapterId = 0;
   late int _chapterNumber = 0;
   late final StoryRepository _storyRepository = StoryRepository();

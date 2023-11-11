@@ -16,6 +16,7 @@ class ToggleButtonDarkMode extends StatefulWidget {
   final Color? normalColor;
   final String textLeft;
   final String textRight;
+  final Function(String) callback;
   const ToggleButtonDarkMode(
       {super.key,
       required this.width,
@@ -25,7 +26,8 @@ class ToggleButtonDarkMode extends StatefulWidget {
       required this.textLeft,
       required this.textRight,
       this.selectedBackgroundColor,
-      this.noneSelectedBackgroundColor});
+      this.noneSelectedBackgroundColor,
+      required this.callback});
 
   @override
   State<ToggleButtonDarkMode> createState() => _ToggleButtonDarkModeState();
@@ -128,6 +130,7 @@ class _ToggleButtonDarkModeState extends State<ToggleButtonDarkMode> {
                     value.changeMode = Modes.light;
                   });
                   _sharedPreferences.setString("currentTemplate", Modes.light);
+                  widget.callback(Modes.light);
                 },
                 child: Align(
                   alignment: const Alignment(-1, 0),
@@ -154,6 +157,7 @@ class _ToggleButtonDarkModeState extends State<ToggleButtonDarkMode> {
                     value.changeMode = Modes.dark;
                   });
                   _sharedPreferences.setString("currentTemplate", Modes.dark);
+                  widget.callback(Modes.dark);
                 },
                 child: Align(
                   alignment: const Alignment(1, 0),

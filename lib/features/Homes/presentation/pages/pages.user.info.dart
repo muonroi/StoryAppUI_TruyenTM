@@ -240,6 +240,7 @@ class _UserInfoState extends State<UserInfo> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: themeMode(context, ColorCode.modeColor.name),
           title: Text(
             L(context, LanguageCodes.notificationTextInfo.toString()),
             style: CustomFonts.h5(context),

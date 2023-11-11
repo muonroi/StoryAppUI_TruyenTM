@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/Notification/widget.notification.dart';
+import 'package:muonroi/core/authorization/enums/key.dart';
+import 'package:muonroi/core/services/api_route.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/notification/presentation/pages/notification.dart';
 import 'package:muonroi/features/notification/provider/notification.provider.dart';
 import 'package:muonroi/features/story/data/models/models.recent.story.dart';
-import 'package:muonroi/shared/models/signalR/signalr.hub.dart';
 import 'package:muonroi/shared/models/signalR/signalr.hub.stream.name.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/models/signalR/widget.notification.dart';
@@ -23,23 +24,15 @@ import 'package:muonroi/features/homes/presentation/pages/pages.book.case.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.home.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.stories.free.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.user.info.dart';
-import 'package:muonroi/features/story/data/models/models.stories.story.dart';
 import 'package:muonroi/features/story/presentation/pages/widget.static.model.stories.search.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signalr_netcore/hub_connection.dart';
 import 'package:signalr_netcore/hub_connection_builder.dart';
+import 'package:sprintf/sprintf.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage(
-      {super.key,
-      required this.storiesInit,
-      required this.storiesEditorChoice,
-      required this.storiesCommon,
-      required this.accountResult});
-  final List<StoryItems> storiesInit;
-  final List<Widget> storiesEditorChoice;
-  final List<Widget> storiesCommon;
+  const MainPage({super.key, required this.accountResult});
   final AccountResult accountResult;
   @override
   State<MainPage> createState() => _MainPageState();
@@ -60,9 +53,6 @@ class _MainPageState extends State<MainPage> {
           primaryColor: themeMode(context, ColorCode.mainColor.name),
           fontFamily: CustomFonts.inter),
       home: HomePage(
-        storiesInit: widget.storiesInit,
-        storiesCommon: widget.storiesCommon,
-        storiesEditorChoice: widget.storiesEditorChoice,
         accountResult: widget.accountResult,
       ),
     );
@@ -70,17 +60,9 @@ class _MainPageState extends State<MainPage> {
 }
 
 class HomePage extends StatefulWidget {
-  final List<StoryItems> storiesInit;
-  final List<Widget> storiesEditorChoice;
-  final List<Widget> storiesCommon;
   final AccountResult accountResult;
 
-  const HomePage(
-      {super.key,
-      required this.storiesInit,
-      required this.storiesEditorChoice,
-      required this.storiesCommon,
-      required this.accountResult});
+  const HomePage({super.key, required this.accountResult});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -90,6 +72,9 @@ class _HomePageState extends State<HomePage> {
 // #region Setting shared
   @override
   void initState() {
+    _totalNotification = widget.accountResult.notificationNumber;
+    _isFirstLoad = true;
+    _isHubInitialized = false;
     _textSearchController = TextEditingController();
     _scrollLayoutController = ScrollController();
     _scrollLayoutController.addListener(_scrollListener);
@@ -97,8 +82,14 @@ class _HomePageState extends State<HomePage> {
     _pageStoriesCompleteController = PageController(viewportFraction: 0.9);
     _pageNewStoriesController = PageController(viewportFraction: 0.9);
     _pageBannerController = PageController(initialPage: 0);
-    _initSharedPreferences();
-    initHubAndListenGlobalNotification();
+    _itemHeight = 0.0;
+    _currentIndex = 0;
+    _isShowClearText = false;
+    _homePageItem = HomePageItems();
+    _throttle = Throttle(const Duration(milliseconds: 100));
+    _debouncer = Debouncer(const Duration(milliseconds: 100));
+    _initSharedPreferences()
+        .then((value) => initHubAndListenGlobalNotification());
     super.initState();
   }
 
@@ -118,74 +109,31 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> startHub() async {
     await _hubConnection.start();
+    debugPrint("Connected");
   }
 
   Future<void> initHubAndListenGlobalNotification() async {
     _hubConnection = HubConnectionBuilder()
-        .withUrl(SignalrCentral.notificationListen,
-            options: SignalrCentral.httpConnectionOptions)
+        .withUrl(sprintf(ApiNetwork.baseUrl + ApiNetwork.notification,
+            [_sharedPreferences.getString(KeyToken.accessToken.name)]))
         .withAutomaticReconnect(retryDelays: [30000]).build();
+
     _hubConnection.onclose(({error}) async {
-      debugPrint("Connection ${SignalrCentral.notificationListen} Closed!");
-      await _hubConnection.onreconnecting(({error}) {
-        debugPrint("Re-Connecting ${SignalrCentral.notificationListen}!");
+      debugPrint("Connection Closed!");
+      await _hubConnection.onreconnecting(({error}) async {
+        await reNewAccessToken();
       });
       await _hubConnection.onreconnected(({connectionId}) {});
     });
     await startHub();
-    if (_hubConnection.state == HubConnectionState.Connected) {
-      _hubConnection.on(HubStream.receiveGlobalNotification.name, (arguments) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          setState(() {
-            _totalNotification =
-                _sharedPreferences.getInt('totalNotification') ?? 0;
-            _totalNotification++;
-            context.read<NotificationProvider>().setTotalView =
-                _totalNotification;
-            _sharedPreferences.setInt('totalNotification', _totalNotification);
-            var notifyInfo = (json.decode(arguments.toString()) as List)
-                .map((data) => NotificationSignalr.fromJson(data))
-                .toList()
-                .first;
-            NotificationPush.showNotification(
-                title: L(context,
-                    LanguageCodes.notificationTextConfigTextInfo.toString()),
-                body: N(context, notifyInfo.type,
-                    args: notifyInfo.notificationContent.split('-')),
-                fln: flutterLocalNotificationsPlugin);
-          });
-        });
-      });
-      _hubConnection.on(HubStream.receiveNotificationByUser.name, (arguments) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          setState(() {
-            _totalNotification =
-                _sharedPreferences.getInt('totalNotification') ?? 0;
-            _totalNotification++;
-
-            context.read<NotificationProvider>().setTotalView =
-                _totalNotification;
-            _sharedPreferences.setInt('totalNotification', _totalNotification);
-            var notifyInfo = (json.decode(arguments.toString()) as List)
-                .map((data) => NotificationSignalr.fromJson(data))
-                .toList()
-                .first;
-            NotificationPush.showNotification(
-                title: L(context,
-                    LanguageCodes.notificationTextConfigTextInfo.toString()),
-                body: N(context, notifyInfo.type,
-                    args: notifyInfo.notificationContent.split('-')),
-                fln: flutterLocalNotificationsPlugin);
-          });
-        });
-      });
-    } else if (_hubConnection.state == HubConnectionState.Disconnected) {
-      startHub();
-    }
+    setState(() {
+      _isHubInitialized = true;
+    });
   }
+
 // #region Define data test
 
-  final List<Widget> imageBanners = [
+  final List<Widget> _banners = [
     Image.asset('assets/images/2x/Banner_1.1.png'),
     Image.asset('assets/images/2x/Banner_2.png'),
     Image.asset('assets/images/2x/Banner_3.png')
@@ -203,13 +151,15 @@ class _HomePageState extends State<HomePage> {
   // #endregion
 
 // #region Define variables
-  var _itemHeight = 0.0;
-  var _currentIndex = 0;
-  var _isShowClearText = false;
-  final _homePageItem = HomePageItems();
-  final _debouncer = Debouncer(const Duration(milliseconds: 100));
-  final _throttle = Throttle(const Duration(milliseconds: 100));
-  late int _totalNotification = 0;
+  late bool _isHubInitialized;
+  late bool _isFirstLoad;
+  late double _itemHeight;
+  late double _currentIndex;
+  late bool _isShowClearText;
+  late HomePageItems _homePageItem;
+  late Debouncer _debouncer;
+  late Throttle _throttle;
+  late int _totalNotification;
   late SharedPreferences _sharedPreferences;
   late HubConnection _hubConnection;
   // #endregion
@@ -234,7 +184,7 @@ class _HomePageState extends State<HomePage> {
           : 0;
 
       setState(() {
-        _currentIndex = firstVisibleIndex;
+        _currentIndex = double.parse(firstVisibleIndex.toString());
       });
     });
   }
@@ -253,7 +203,7 @@ class _HomePageState extends State<HomePage> {
         _onChangedSearch,
         _isShowClearText,
         _pageBannerController,
-        imageBanners,
+        _banners,
         numberOfBanner: 3);
     // #endregion
     return DefaultTabController(
@@ -297,8 +247,56 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Consumer<NotificationProvider>(
                   builder: (_, value, __) {
+                    if (_isFirstLoad && _isHubInitialized) {
+                      _isFirstLoad = false;
+                      if (_hubConnection.state ==
+                          HubConnectionState.Connected) {
+                        _hubConnection
+                            .on(HubStream.receiveGlobalNotification.name,
+                                (arguments) {
+                          _totalNotification++;
+                          value.setTotalView = _totalNotification;
+                          var notifyInfo = (json.decode(arguments.toString())
+                                  as List)
+                              .map((data) => NotificationSignalr.fromJson(data))
+                              .toList()
+                              .first;
+                          NotificationPush.showNotification(
+                              title: L(
+                                  context,
+                                  LanguageCodes.notificationTextConfigTextInfo
+                                      .toString()),
+                              body: N(context, notifyInfo.type,
+                                  args: notifyInfo.notificationContent
+                                      .split('-')),
+                              fln: flutterLocalNotificationsPlugin);
+                        });
+                        _hubConnection
+                            .on(HubStream.receiveNotificationByUser.name,
+                                (arguments) {
+                          _totalNotification++;
+                          value.setTotalView = _totalNotification;
+                          var notifyInfo = (json.decode(arguments.toString())
+                                  as List)
+                              .map((data) => NotificationSignalr.fromJson(data))
+                              .toList()
+                              .first;
+                          NotificationPush.showNotification(
+                              title: L(
+                                  context,
+                                  LanguageCodes.notificationTextConfigTextInfo
+                                      .toString()),
+                              body: N(context, notifyInfo.type,
+                                  args: notifyInfo.notificationContent
+                                      .split('-')),
+                              fln: flutterLocalNotificationsPlugin);
+                        });
+                      } else if (_hubConnection.state ==
+                          HubConnectionState.Disconnected) {
+                        startHub();
+                      }
+                    }
                     _totalNotification = value.totalNotification;
-
                     return Positioned(
                       top: 0,
                       right: 0,

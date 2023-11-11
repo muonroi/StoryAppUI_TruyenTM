@@ -254,7 +254,7 @@ class _SignInPageState extends State<SignInPage> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => IndexPage(
+                            builder: (context) => LoadingApp(
                                   accountResult: accountInfo.result!,
                                 )));
                   }
@@ -274,7 +274,8 @@ class _SignInPageState extends State<SignInPage> {
                           context,
                           LanguageCodes.noHaveAccountTextConfigTextInfo
                               .toString()),
-                      style: CustomFonts.h5(context),
+                      style: CustomFonts.h5(context).copyWith(
+                          color: themeMode(context, ColorCode.textColor.name)),
                       children: [
                         TextSpan(
                             text:

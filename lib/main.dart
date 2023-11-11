@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_logs/flutter_logs.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
@@ -10,13 +11,16 @@ import 'package:muonroi/features/notification/provider/notification.provider.dar
 import 'package:muonroi/features/system/provider/theme.mode.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/static/certificate/widget.static.cert.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'features/accounts/presentation/pages/pages.logins.sign_in.dart';
 import 'shared/settings/enums/enum.log.type.dart';
 
 void main() async {
-  HttpOverrides.global = MyHttpOverrides();
+  if (kDebugMode) {
+    HttpOverrides.global = MyHttpOverrides();
+  }
   WidgetsFlutterBinding.ensureInitialized();
   // #region Initialize Logging
   await FlutterLogs.initLogs(
@@ -85,6 +89,7 @@ class _MainAppState extends State<MainApp> {
       child: Consumer<CustomThemeModeProvider>(builder:
           (BuildContext context, CustomThemeModeProvider value, Widget? child) {
         var themePick = value.mode == Modes.none ? Modes.light : value.mode;
+        ManagerSystemMode.setMode = value;
         return MaterialApp(
           theme: ThemeData(
               brightness:
@@ -94,21 +99,12 @@ class _MainAppState extends State<MainApp> {
           home: accountResult != null
               ? _isSigninView
                   ? const SignInPage()
-                  : IndexPage(
+                  : LoadingApp(
                       accountResult: accountResult!,
                     )
               : const SignInPage(),
         );
       }),
     );
-  }
-}
-
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
   }
 }
