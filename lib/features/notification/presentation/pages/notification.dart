@@ -25,11 +25,10 @@ class _NotificationPageState extends State<NotificationPage> {
     _notificationBloc = NotificationBloc(pageIndex: 1, pageSize: 10);
     _isPrevious = false;
     _notificationBloc
-        .add(GetNotificationEventList(false, isPrevious: _isPrevious));
+        .add(GetNotificationEventList(true, isPrevious: _isPrevious));
     _refreshController = RefreshController(initialRefresh: false);
     countLoadMore = 0;
     _scrollController = ScrollController();
-    _scrollController.addListener(loadMore);
     _notificationRepository = NotificationRepository();
     _initSharedPreferences();
     super.initState();
@@ -38,31 +37,9 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   void dispose() {
     _notificationBloc.close();
+    _scrollController.dispose();
     _refreshController.dispose();
     super.dispose();
-  }
-
-  void loadMore() {
-    if (context.mounted) {
-      if (_scrollController.hasClients &&
-          _scrollController.position.atEdge &&
-          _scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent &&
-          countLoadMore == 1) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          setState(() {
-            _notificationBloc
-                .add(const GetNotificationEventList(false, isPrevious: false));
-            countLoadMore = 0;
-          });
-        });
-      } else if (_scrollController.position.atEdge &&
-          _scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent &&
-          countLoadMore < 1) {
-        countLoadMore++;
-      }
-    }
   }
 
   void _onRefresh() async {
@@ -81,7 +58,10 @@ class _NotificationPageState extends State<NotificationPage> {
     Future.delayed(const Duration(milliseconds: 1000));
     if (mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
+        setState(() {
+          _notificationBloc
+              .add(const GetNotificationEventList(false, isPrevious: false));
+        });
       });
     }
     _refreshController.loadComplete();
@@ -212,6 +192,7 @@ class _NotificationPageState extends State<NotificationPage> {
                               Expanded(
                                 child: notificationList.isNotEmpty
                                     ? ListView.builder(
+                                        physics: const BouncingScrollPhysics(),
                                         controller: _scrollController,
                                         itemCount: notificationList.length,
                                         itemBuilder: (context, index) {

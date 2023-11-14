@@ -40,4 +40,24 @@ class AccountsService {
     }
     return false;
   }
+
+  Future<bool> logout(String userGuid) async {
+    try {
+      Map<String, dynamic> data = {
+        "userId": userGuid,
+        "isUpdateAccountStatus": true
+      };
+      Dio dio = Dio(BaseOptions(
+          baseUrl: ApiNetwork.baseApi, responseType: ResponseType.plain));
+      final response = await dio.post(ApiNetwork.logout, data: data);
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
+        return false;
+      }
+    }
+    return false;
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
+import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_in.dart';
 import 'package:muonroi/features/coins/presentation/pages/upgrade.account.dart';
 import 'package:muonroi/features/contacts/presentation/pages/contact.dart';
@@ -26,6 +27,7 @@ class UserInfo extends StatefulWidget {
 class _UserInfoState extends State<UserInfo> {
   @override
   void initState() {
+    _avatar = widget.userInfo.avatar;
     super.initState();
     _initSharedPreferences();
   }
@@ -37,6 +39,13 @@ class _UserInfoState extends State<UserInfo> {
     }
   }
 
+  void renewAvatar(String avatarLink) {
+    setState(() {
+      _avatar = avatarLink;
+    });
+  }
+
+  late String _avatar;
   late SharedPreferences? _sharedPreferences;
   @override
   Widget build(BuildContext context) {
@@ -60,7 +69,8 @@ class _UserInfoState extends State<UserInfo> {
                   height: MainSetting.getPercentageOfDevice(context,
                           expectHeight: 70)
                       .height,
-                  child: netWorkImage(context, widget.userInfo.avatar, true),
+                  child: netWorkImage(context, _avatar, true,
+                      isSize: true, width: 70, height: 70),
                 ),
               ),
               Container(
@@ -173,9 +183,10 @@ class _UserInfoState extends State<UserInfo> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserInfoPage(
+                                    renewAvatar: renewAvatar,
                                     userGuid: widget.userInfo.userGuid,
                                     username: widget.userInfo.username,
-                                    avatar: widget.userInfo.avatar,
+                                    avatar: _avatar,
                                   ))),
                       text: L(context,
                           LanguageCodes.myAccountDetailTextInfo.toString()),
@@ -208,14 +219,21 @@ class _UserInfoState extends State<UserInfo> {
                             null);
                         userChoice = userChoice ?? false;
                         if (userChoice && mounted) {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (builder) {
-                            _sharedPreferences!
-                                .remove(KeyToken.accessToken.name);
-                            _sharedPreferences!
-                                .remove(KeyToken.refreshToken.name);
-                            return const SignInPage();
-                          }));
+                          final accountRepository = AccountRepository(
+                              widget.userInfo.username,
+                              "",
+                              widget.userInfo.userGuid);
+                          await accountRepository.logout();
+                          if (mounted) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (builder) {
+                              _sharedPreferences!
+                                  .remove(KeyToken.accessToken.name);
+                              _sharedPreferences!
+                                  .remove(KeyToken.refreshToken.name);
+                              return const SignInPage();
+                            }));
+                          }
                         }
                       },
                       text: L(context,

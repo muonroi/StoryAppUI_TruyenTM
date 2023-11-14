@@ -81,7 +81,11 @@ T? enumFromString<T>(Iterable<T> values, String value) {
 }
 
 Widget netWorkImage(BuildContext context, String url, bool setCache,
-        {bool isHome = false}) =>
+        {bool isHome = false,
+        bool isBanner = false,
+        bool isSize = false,
+        double? width = 0,
+        double? height = 0}) =>
     ExtendedImage.network(url,
         height: isHome
             ? MainSetting.getPercentageOfDevice(context, expectHeight: 145)
@@ -96,9 +100,24 @@ Widget netWorkImage(BuildContext context, String url, bool setCache,
         case LoadState.loading:
           return buildLoadingRow(
               context,
-              MainSetting.getPercentageOfDevice(context, expectWidth: 90).width,
-              MainSetting.getPercentageOfDevice(context, expectHeight: 145)
-                  .height);
+              isSize
+                  ? width
+                  : isBanner
+                      ? MainSetting.getPercentageOfDevice(context,
+                              expectWidth: 390)
+                          .width
+                      : MainSetting.getPercentageOfDevice(context,
+                              expectWidth: 90)
+                          .width,
+              isSize
+                  ? height
+                  : isBanner
+                      ? MainSetting.getPercentageOfDevice(context,
+                              expectHeight: 200)
+                          .height
+                      : MainSetting.getPercentageOfDevice(context,
+                              expectHeight: 145)
+                          .height);
         case LoadState.completed:
           return state.completedWidget;
         case LoadState.failed:

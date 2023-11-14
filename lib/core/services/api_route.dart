@@ -4,8 +4,11 @@ class ApiNetwork {
   static const String baseUrl = "https://muonroi.online/";
   static const String baseApi = "${baseUrl}api/v$apiVersion/";
   static const String renewToken = "tokens/access-token";
-  static const String baseSearchStory = "stories/search?";
   // #endregion
+
+// #region Settings
+  static const String banners = "settings/banners?type=%s";
+// #endregion
 
   // #region Signalr
   static const String notification = "hub/notification?access_token=%s";
@@ -43,6 +46,7 @@ class ApiNetwork {
       "stories/common?type=%s&pageIndex=%s&pageSize=%s";
   static const String getStoriesType =
       "stories/type?type=%s&pageIndex=%s&pageSize=%s";
+  static const String baseSearchStory = "stories/search?";
   // #endregion
 
   // #region Chapters endpoint

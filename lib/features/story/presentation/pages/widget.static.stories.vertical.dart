@@ -51,6 +51,7 @@ class StoriesVerticalDataBody extends StatefulWidget {
 class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
   @override
   void initState() {
+    _countLoadMore = 0;
     _isShowLabelOnlyFirstPage = true;
     _freeStoryPageBloc = FreeStoryPageBloc(1, 15);
     if (widget.idCategory == 0) {
@@ -81,20 +82,20 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
           _scrollController.position.atEdge &&
           _scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
-          countLoadMore == 1) {
+          _countLoadMore == 1) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
             _isShowLabelOnlyFirstPage = false;
             _freeStoryPageBloc.add(GroupMoreFreeStoryList(
                 categoryId: widget.idCategory ?? 0, isPrevious: false));
-            countLoadMore = 0;
+            _countLoadMore = 0;
           });
         });
       } else if (_scrollController.position.atEdge &&
           _scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
-          countLoadMore < 1) {
-        countLoadMore++;
+          _countLoadMore < 1) {
+        _countLoadMore++;
       }
     }
   }
@@ -126,7 +127,7 @@ class _StoriesVerticalDataBodyState extends State<StoriesVerticalDataBody> {
   late FreeStoryPageBloc _freeStoryPageBloc;
   late RefreshController _refreshController;
   late bool _isShowLabelOnlyFirstPage;
-  int countLoadMore = 0;
+  late int _countLoadMore;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

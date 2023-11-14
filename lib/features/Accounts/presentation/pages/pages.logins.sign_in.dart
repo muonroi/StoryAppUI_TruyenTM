@@ -42,6 +42,13 @@ class _SignInPageState extends State<SignInPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
@@ -226,7 +233,7 @@ class _SignInPageState extends State<SignInPage> {
                   _isLoading = true;
                 });
                 var accountRepository = AccountRepository(
-                    _usernameController.text, _passwordController.text);
+                    _usernameController.text, _passwordController.text, "");
                 var accountInfo = await accountRepository.signIn();
                 if (accountInfo.result == null) {
                   setState(() {
@@ -254,7 +261,7 @@ class _SignInPageState extends State<SignInPage> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => LoadingApp(
+                            builder: (context) => IndexPage(
                                   accountResult: accountInfo.result!,
                                 )));
                   }

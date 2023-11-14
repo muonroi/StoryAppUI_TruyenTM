@@ -109,7 +109,6 @@ class _StoriesItemsState extends State<StoriesItems> {
             }
             if (state is StoriesForUserLoadedState) {
               var storiesItem = state.stories.result.items;
-
               return SmartRefresher(
                 enablePullDown: true,
                 enablePullUp: true,
@@ -138,265 +137,292 @@ class _StoriesItemsState extends State<StoriesItems> {
                       LanguageCodes.viewPreviousNotificationTextInfo
                           .toString()),
                 ),
-                child: ListView.builder(
-                    itemCount: storiesSearch.isNotEmpty
-                        ? storiesSearch.length
-                        : storiesItem.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      if (_isFirstLoad) {
-                        _sharedPreferences.setInt(
-                            "story-${storiesItem[index].id}-current-page-index",
-                            storiesItem[index].pageCurrentIndex == 0
-                                ? 1
-                                : storiesItem[index].pageCurrentIndex);
+                child: storiesItem.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: storiesSearch.isNotEmpty
+                            ? storiesSearch.length
+                            : storiesItem.length,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          if (_isFirstLoad) {
+                            if (_sharedPreferences.getInt(
+                                    "story-${storiesItem[index].id}-current-page-index") ==
+                                null) {
+                              _sharedPreferences.setInt(
+                                  "story-${storiesItem[index].id}-current-page-index",
+                                  storiesItem[index].pageCurrentIndex == 0
+                                      ? 1
+                                      : storiesItem[index].pageCurrentIndex);
+                            }
+                            if (_sharedPreferences.getInt(
+                                    "story-${storiesItem[index].id}-current-chapter-index") ==
+                                null) {
+                              _sharedPreferences.setInt(
+                                  "story-${storiesItem[index].id}-current-chapter-index",
+                                  storiesItem[index].currentIndex);
+                            }
+                            if (_sharedPreferences.getInt(
+                                    "story-${storiesItem[index].id}-current-chapter") ==
+                                null) {
+                              _sharedPreferences.setInt(
+                                  "story-${storiesItem[index].id}-current-chapter",
+                                  storiesItem[index].numberOfChapter);
+                            }
 
-                        _sharedPreferences.setInt(
-                            "story-${storiesItem[index].id}-current-chapter-index",
-                            storiesItem[index].currentIndex);
+                            if (_sharedPreferences.getDouble(
+                                    "scrollPosition-${storiesItem[index].id}") ==
+                                null) {
+                              _sharedPreferences.setDouble(
+                                  "scrollPosition-${storiesItem[index].id}",
+                                  storiesItem[index].chapterLatestLocation);
+                            }
 
-                        _sharedPreferences.setInt(
-                            "story-${storiesItem[index].id}-current-chapter",
-                            storiesItem[index].numberOfChapter);
-
-                        _sharedPreferences.setDouble(
-                            "scrollPosition-${storiesItem[index].id}",
-                            storiesItem[index].chapterLatestLocation);
-                        if (context.mounted) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
                             if (context.mounted) {
-                              setState(() {
-                                _isFirstLoad = false;
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (context.mounted) {
+                                  setState(() {
+                                    _isFirstLoad = false;
+                                  });
+                                }
                               });
                             }
-                          });
-                        }
-                      }
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          index == 0
-                              ? SizedBox(
-                                  height: MainSetting.getPercentageOfDevice(
-                                          context,
-                                          expectHeight: 80)
-                                      .height,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width:
-                                              MainSetting.getPercentageOfDevice(
-                                                      context,
-                                                      expectWidth: 200)
+                          }
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              index == 0
+                                  ? SizedBox(
+                                      height: MainSetting.getPercentageOfDevice(
+                                              context,
+                                              expectHeight: 80)
+                                          .height,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              width: MainSetting
+                                                      .getPercentageOfDevice(
+                                                          context,
+                                                          expectWidth: 200)
                                                   .width,
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 10.0),
-                                            child: TextField(
-                                              style: CustomFonts.h5(context),
-                                              controller:
-                                                  widget.textSearchController,
-                                              onChanged: (value) {
-                                                if (context.mounted) {
-                                                  WidgetsBinding.instance
-                                                      .addPostFrameCallback(
-                                                          (_) {
-                                                    _handleSearch(
-                                                        value, storiesItem);
-                                                  });
-                                                }
-                                              },
-                                              maxLines: 1,
-                                              minLines: 1,
-                                              decoration: InputDecoration(
-                                                  contentPadding:
-                                                      const EdgeInsets.all(8.0),
-                                                  hintMaxLines: 1,
-                                                  hintText: L(
-                                                      context,
-                                                      LanguageCodes
-                                                          .searchTextInfo
-                                                          .toString()),
-                                                  hintStyle:
+                                              child: Container(
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0),
+                                                child: TextField(
+                                                  style:
                                                       CustomFonts.h5(context),
-                                                  suffixIcon: Visibility(
-                                                    visible: isShowClearText,
-                                                    child: IconButton(
-                                                      icon: Icon(Icons.clear,
+                                                  controller: widget
+                                                      .textSearchController,
+                                                  onChanged: (value) {
+                                                    if (context.mounted) {
+                                                      WidgetsBinding.instance
+                                                          .addPostFrameCallback(
+                                                              (_) {
+                                                        _handleSearch(
+                                                            value, storiesItem);
+                                                      });
+                                                    }
+                                                  },
+                                                  maxLines: 1,
+                                                  minLines: 1,
+                                                  decoration: InputDecoration(
+                                                      contentPadding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      hintMaxLines: 1,
+                                                      hintText: L(
+                                                          context,
+                                                          LanguageCodes
+                                                              .searchTextInfo
+                                                              .toString()),
+                                                      hintStyle: CustomFonts.h5(
+                                                          context),
+                                                      suffixIcon: Visibility(
+                                                        visible:
+                                                            isShowClearText,
+                                                        child: IconButton(
+                                                          icon: Icon(
+                                                              Icons.clear,
+                                                              color: themeMode(
+                                                                  context,
+                                                                  ColorCode
+                                                                      .textColor
+                                                                      .name)),
+                                                          onPressed: () {
+                                                            widget
+                                                                .textSearchController
+                                                                .clear();
+                                                          },
+                                                        ),
+                                                      ),
+                                                      prefixIcon: IconButton(
+                                                        icon: Icon(
+                                                          Icons.search,
                                                           color: themeMode(
                                                               context,
                                                               ColorCode
                                                                   .textColor
-                                                                  .name)),
+                                                                  .name),
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                      border:
+                                                          OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          30))),
+                                                ),
+                                              ),
+                                            ),
+                                            Row(
+                                              children: [
+                                                RotationTransition(
+                                                  turns: Tween(
+                                                    begin: 0.0,
+                                                    end: 1.0,
+                                                  ).animate(widget.reload),
+                                                  child: IconButton(
                                                       onPressed: () {
-                                                        widget
-                                                            .textSearchController
-                                                            .clear();
+                                                        setState(() {
+                                                          _storiesForUserBloc.add(
+                                                              const OnRefresh());
+                                                          widget.reload.reverse(
+                                                              from: 1.0);
+                                                          widget.reload.forward(
+                                                              from: 0.0);
+                                                        });
                                                       },
-                                                    ),
-                                                  ),
-                                                  prefixIcon: IconButton(
-                                                    icon: Icon(
-                                                      Icons.search,
-                                                      color: themeMode(
-                                                          context,
-                                                          ColorCode
-                                                              .textColor.name),
-                                                    ),
-                                                    onPressed: () {},
-                                                  ),
-                                                  border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30))),
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            RotationTransition(
-                                              turns: Tween(
-                                                begin: 0.0,
-                                                end: 1.0,
-                                              ).animate(widget.reload),
-                                              child: IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      _storiesForUserBloc.add(
-                                                          const OnRefresh());
-                                                      widget.reload
-                                                          .reverse(from: 1.0);
-                                                      widget.reload
-                                                          .forward(from: 0.0);
-                                                    });
-                                                  },
-                                                  icon: Icon(
-                                                      Icons.refresh_rounded,
-                                                      color: themeMode(
-                                                          context,
-                                                          ColorCode.textColor
-                                                              .name))),
-                                            ),
-                                            RotationTransition(
-                                              turns: Tween(
-                                                begin: 0.0,
-                                                end: 1.0,
-                                              ).animate(widget.sort),
-                                              child: IconButton(
-                                                  onPressed: () {
-                                                    if (isShort) {
-                                                      setState(() {
-                                                        storiesItem.sort(
-                                                            (a, b) => a
-                                                                .storyTitle
-                                                                .compareTo(b
-                                                                    .storyTitle));
-                                                      });
-                                                      widget.sort
-                                                          .reverse(from: 0.5);
-                                                    } else {
-                                                      setState(() {
-                                                        storiesItem.sort(
-                                                            (a, b) => b
-                                                                .storyTitle
-                                                                .compareTo(a
-                                                                    .storyTitle));
-                                                      });
-                                                      widget.sort
-                                                          .forward(from: 0.0);
-                                                    }
-                                                    isShort = !isShort;
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.sort,
-                                                    color: themeMode(
-                                                        context,
-                                                        ColorCode
-                                                            .textColor.name),
-                                                  )),
+                                                      icon: Icon(
+                                                          Icons.refresh_rounded,
+                                                          color: themeMode(
+                                                              context,
+                                                              ColorCode
+                                                                  .textColor
+                                                                  .name))),
+                                                ),
+                                                RotationTransition(
+                                                  turns: Tween(
+                                                    begin: 0.0,
+                                                    end: 1.0,
+                                                  ).animate(widget.sort),
+                                                  child: IconButton(
+                                                      onPressed: () {
+                                                        if (isShort) {
+                                                          setState(() {
+                                                            storiesItem.sort(
+                                                                (a, b) => a
+                                                                    .storyTitle
+                                                                    .compareTo(b
+                                                                        .storyTitle));
+                                                          });
+                                                          widget.sort.reverse(
+                                                              from: 0.5);
+                                                        } else {
+                                                          setState(() {
+                                                            storiesItem.sort(
+                                                                (a, b) => b
+                                                                    .storyTitle
+                                                                    .compareTo(a
+                                                                        .storyTitle));
+                                                          });
+                                                          widget.sort.forward(
+                                                              from: 0.0);
+                                                        }
+                                                        isShort = !isShort;
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.sort,
+                                                        color: themeMode(
+                                                            context,
+                                                            ColorCode.textColor
+                                                                .name),
+                                                      )),
+                                                )
+                                              ],
                                             )
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : Container(),
-                          index > storiesItem.length - 1
-                              ? Container()
-                              : GestureDetector(
-                                  onLongPress: () => {
-                                    setState(() {
-                                      _selectedIndex = index;
-                                      _isSelected = true;
-                                    }),
-                                    showModalBottomSheet(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                      builder: (context) {
-                                        return SizedBox(
-                                            height: MainSetting
-                                                    .getPercentageOfDevice(
-                                                        context,
-                                                        expectHeight: 50)
-                                                .height,
-                                            child: Column(children: [
-                                              IconButton(
-                                                  onPressed: () async {
-                                                    final storiesRepository =
-                                                        StoryRepository();
-                                                    var result =
-                                                        await storiesRepository
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
+                              index > storiesItem.length - 1
+                                  ? Container()
+                                  : GestureDetector(
+                                      onLongPress: () => {
+                                        setState(() {
+                                          _selectedIndex = index;
+                                          _isSelected = true;
+                                        }),
+                                        showModalBottomSheet(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12)),
+                                          builder: (context) {
+                                            return SizedBox(
+                                                height: MainSetting
+                                                        .getPercentageOfDevice(
+                                                            context,
+                                                            expectHeight: 50)
+                                                    .height,
+                                                child: Column(children: [
+                                                  IconButton(
+                                                      onPressed: () async {
+                                                        final storiesRepository =
+                                                            StoryRepository();
+                                                        var result = await storiesRepository
                                                             .deleteStoryForUser(
                                                                 storiesItem[
                                                                         index]
                                                                     .idForUser!);
-                                                    if (result) {
-                                                      setState(() {
-                                                        storiesItem.remove(
-                                                            storiesItem[index]);
-                                                        _isSelected = false;
-                                                        _selectedIndex = -1;
-                                                      });
-                                                    }
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.delete,
-                                                    color: Colors.red,
-                                                  ))
-                                            ]));
+                                                        if (result) {
+                                                          setState(() {
+                                                            storiesItem.remove(
+                                                                storiesItem[
+                                                                    index]);
+                                                            _isSelected = false;
+                                                            _selectedIndex = -1;
+                                                          });
+                                                          if (context.mounted) {
+                                                            Navigator.pop(
+                                                                context);
+                                                          }
+                                                        }
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.delete,
+                                                        color: Colors.red,
+                                                      ))
+                                                ]));
+                                          },
+                                          context: context,
+                                        ).then((value) {
+                                          if (_isSelected) {
+                                            setState(() {
+                                              _isSelected = false;
+                                              _selectedIndex = -1;
+                                            });
+                                          }
+                                        })
                                       },
-                                      context: context,
-                                    ).then((value) {
-                                      if (_isSelected) {
-                                        setState(() {
-                                          _isSelected = false;
-                                          _selectedIndex = -1;
-                                        });
-                                      }
-                                    })
-                                  },
-                                  child: StoriesBookCaseModelWidget(
-                                    storyInfo: storiesSearch.isNotEmpty
-                                        ? storiesSearch[index]
-                                        : storiesItem[index],
-                                    isSelected:
-                                        _isSelected && _selectedIndex == index,
-                                  ),
-                                )
-                        ],
-                      );
-                    }),
+                                      child: StoriesBookCaseModelWidget(
+                                        storyInfo: storiesSearch.isNotEmpty
+                                            ? storiesSearch[index]
+                                            : storiesItem[index],
+                                        isSelected: _isSelected &&
+                                            _selectedIndex == index,
+                                      ),
+                                    )
+                            ],
+                          );
+                        })
+                    : getEmptyData(context),
               );
-            }
-            if (state is StoriesForUserNoDataState) {
-              return getEmptyData(context);
             }
             return const Center(child: CircularProgressIndicator());
           },

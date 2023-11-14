@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mailto/mailto.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:url_launcher/url_launcher.dart' as url;
+
+class Utils {
+  static Future<void> sendEmail(
+      {required String email, String subject = "", String body = ""}) async {
+    final mail = Mailto(to: ['admin.contact@muonroi.online']);
+    if (await url.canLaunchUrl(Uri.parse(mail.toString()))) {
+      await url.launchUrl(Uri.parse(mail.toString()));
+    } else {
+      throw Exception("Unable to open the email");
+    }
+  }
+}
 
 class SettingItems extends StatelessWidget {
   final String text;

@@ -35,6 +35,15 @@ class _CustomDashboardState extends State<CustomDashboard> {
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
+      var currentTemplate = _sharedPreferences
+          .getString(KeyChapterTemplate.chapterConfig.toString());
+      if (currentTemplate == null) {
+        setCurrentTemplate(
+            _sharedPreferences,
+            DashboardSettings.getDashboardAvailableSettings(context)[0],
+            context);
+        _sharedPreferences.setInt('font_chosse_index', 0);
+      }
       _templateSettingData = getCurrentTemplate(_sharedPreferences, context);
       _selectedRadio =
           _templateSettingData.locationButton ?? KeyChapterButtonScroll.none;

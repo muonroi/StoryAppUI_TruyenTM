@@ -19,7 +19,6 @@ import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
-import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.book.case.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.home.dart';
 import 'package:muonroi/features/homes/presentation/pages/pages.stories.free.dart';
@@ -31,45 +30,17 @@ import 'package:signalr_netcore/hub_connection.dart';
 import 'package:signalr_netcore/hub_connection_builder.dart';
 import 'package:sprintf/sprintf.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key, required this.accountResult});
-  final AccountResult accountResult;
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: themeMode(context, ColorCode.mainColor.name),
-          fontFamily: CustomFonts.inter),
-      home: HomePage(
-        accountResult: widget.accountResult,
-      ),
-    );
-  }
-}
-
 class HomePage extends StatefulWidget {
   final AccountResult accountResult;
-
-  const HomePage({super.key, required this.accountResult});
+  final List<String> bannerUrl;
+  const HomePage(
+      {super.key, required this.accountResult, required this.bannerUrl});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-// #region Setting shared
   @override
   void initState() {
     _totalNotification = widget.accountResult.notificationNumber;
@@ -131,16 +102,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-// #region Define data test
-
-  final List<Widget> _banners = [
-    Image.asset('assets/images/2x/Banner_1.1.png'),
-    Image.asset('assets/images/2x/Banner_2.png'),
-    Image.asset('assets/images/2x/Banner_3.png')
-  ];
-  final List<ChapterInfo> chapterList = [];
-  // #endregion
-
 // #region Define controller
   late TextEditingController _textSearchController;
   late ScrollController _scrollLayoutController;
@@ -188,9 +149,8 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
-  // #endregion
-// #endregion
 
+  // #endregion
   @override
   Widget build(BuildContext context) {
     // #region get components
@@ -203,7 +163,7 @@ class _HomePageState extends State<HomePage> {
         _onChangedSearch,
         _isShowClearText,
         _pageBannerController,
-        _banners,
+        widget.bannerUrl,
         numberOfBanner: 3);
     // #endregion
     return DefaultTabController(

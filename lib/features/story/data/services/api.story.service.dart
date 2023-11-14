@@ -163,6 +163,22 @@ class StoryService {
     }
   }
 
+  Future<bool> deleteBookmarkStory(int bookmarkId) async {
+    try {
+      Map<String, dynamic> data = {'bookmarkId': bookmarkId};
+      var baseEndpoint = await endPoint();
+      final response =
+          await baseEndpoint.delete(ApiNetwork.bookmarkStory, data: data);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception("Failed to bookmark story - $e");
+    }
+  }
+
   Future<bool> createStoryForUser(int storyId, int type, int index,
       int pageIndex, int numberChapter, double locationChapter) async {
     try {

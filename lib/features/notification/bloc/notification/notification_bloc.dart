@@ -16,7 +16,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         emit(NotificationLoadingState());
         if (event.isPrevious && !event.onRefresh) {
           pageIndex--;
-        } else if (!event.isPrevious && pageIndex > 1 && !event.onRefresh) {
+        } else if (!event.isPrevious && pageIndex >= 1 && !event.onRefresh) {
           pageIndex++;
         }
         pageIndex = pageIndex < 1 ? 1 : pageIndex;

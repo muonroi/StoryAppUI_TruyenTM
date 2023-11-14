@@ -84,7 +84,7 @@ class _MainAppState extends State<MainApp> {
       providers: [
         ChangeNotifierProvider(create: (_) => TemplateSetting()),
         ChangeNotifierProvider(create: (_) => CustomThemeModeProvider()),
-        ChangeNotifierProvider(create: (_) => NotificationProvider())
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: Consumer<CustomThemeModeProvider>(builder:
           (BuildContext context, CustomThemeModeProvider value, Widget? child) {
@@ -94,12 +94,11 @@ class _MainAppState extends State<MainApp> {
           theme: ThemeData(
               brightness:
                   themePick == Modes.dark ? Brightness.dark : Brightness.light),
-          darkTheme: ThemeData(brightness: Brightness.dark),
           debugShowCheckedModeBanner: false,
           home: accountResult != null
               ? _isSigninView
                   ? const SignInPage()
-                  : LoadingApp(
+                  : IndexPage(
                       accountResult: accountResult!,
                     )
               : const SignInPage(),

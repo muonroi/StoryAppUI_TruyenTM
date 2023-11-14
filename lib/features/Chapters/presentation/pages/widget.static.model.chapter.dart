@@ -52,7 +52,7 @@ class Chapter extends StatefulWidget {
   State<Chapter> createState() => _ChapterState();
 }
 
-class _ChapterState extends State<Chapter> {
+class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   @override
   void initState() {
     currentPosition = 0;
@@ -71,6 +71,7 @@ class _ChapterState extends State<Chapter> {
       _chapterIndex = _chapterIndex = _sharedPreferences
               .getInt("story-${widget.storyId}-current-chapter-index") ??
           0;
+      _saveRecentStory();
     });
 
     _isFirstRefresh = true;
@@ -121,33 +122,23 @@ class _ChapterState extends State<Chapter> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _saveRecentStory();
+    } else if (state == AppLifecycleState.resumed) {
+      _saveRecentStory();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
   void dispose() {
     _groupChaptersBloc.close();
     _scrollController.removeListener(_saveScrollPosition);
     _scrollController.dispose();
     _refreshController.dispose();
     _isLoad = false;
-    _storyRepository.createStoryForUser(
-        widget.storyId,
-        StoryForUserType.recent.index,
-        _chapterIndex,
-        _pageIndex,
-        widget.chapterNumber,
-        currentPosition);
-    _sharedPreferences.setString(
-        "recently-story",
-        recentStoryModelToJson(StoryRecent(
-            storyId: widget.storyId,
-            storyName: widget.storyName,
-            chapterId: widget.chapterId,
-            lastChapterId: widget.lastChapterId,
-            firstChapterId: widget.firstChapterId,
-            isLoadHistory: widget.isLoadHistory,
-            loadSingleChapter: widget.loadSingleChapter,
-            pageIndex: widget.pageIndex,
-            totalChapter: widget.totalChapter,
-            chapterNumber: widget.chapterNumber)));
-    _sharedPreferences.setInt("recently-chapterId", _chapterIdOld);
+    _saveRecentStory();
     super.dispose();
   }
 
@@ -320,6 +311,31 @@ class _ChapterState extends State<Chapter> {
         newValue.locationButton ?? _settingConfig.locationButton;
     _settingConfig.isHorizontal =
         newValue.isHorizontal ?? _settingConfig.isHorizontal;
+  }
+
+  void _saveRecentStory() {
+    _storyRepository.createStoryForUser(
+        widget.storyId,
+        StoryForUserType.recent.index,
+        _chapterIndex,
+        _pageIndex,
+        widget.chapterNumber,
+        currentPosition);
+    _sharedPreferences.setString(
+        "recently-story",
+        recentStoryModelToJson(StoryRecent(
+            storyId: widget.storyId,
+            storyName: widget.storyName,
+            chapterId: widget.chapterId,
+            lastChapterId: widget.lastChapterId,
+            firstChapterId: widget.firstChapterId,
+            isLoadHistory: widget.isLoadHistory,
+            loadSingleChapter: widget.loadSingleChapter,
+            pageIndex: widget.pageIndex,
+            totalChapter: widget.totalChapter,
+            chapterNumber: widget.chapterNumber)));
+    _sharedPreferences.setInt("recently-chapterId", _chapterIdOld);
+    _sharedPreferences.setBool("is_saved_recent", true);
   }
 // #endregion
 

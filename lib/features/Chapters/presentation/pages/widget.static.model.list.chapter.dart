@@ -47,6 +47,8 @@ class _ChapterListPageState extends State<ChapterListPage>
 
   @override
   void dispose() {
+    _animationSortController.dispose();
+    _controller.dispose();
     _groupChapterOfStoryBloc.close();
     _latestChapterOfStoryBloc.close();
     super.dispose();

@@ -19,11 +19,12 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     _storyRepository = StoryRepository();
+    _ratingValue = widget.infoStory.rating;
     super.initState();
   }
 
   late StoryRepository _storyRepository;
-  late double ratingValue = 0.0;
+  late double _ratingValue;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -50,9 +51,7 @@ class _HeaderState extends State<Header> {
                     MainSetting.getPercentageOfDevice(context, expectWidth: 25)
                             .width ??
                         25,
-                initialRating: widget.infoStory.rating == 0.0
-                    ? 0
-                    : widget.infoStory.rating,
+                initialRating: _ratingValue == 0.0 ? 0 : _ratingValue,
                 minRating: 0.5,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
@@ -63,6 +62,7 @@ class _HeaderState extends State<Header> {
                 ),
                 onRatingUpdate: (rating) {
                   setState(() {
+                    _ratingValue = rating;
                     _storyRepository.voteStory(widget.infoStory.id, rating);
                   });
                 },
@@ -165,7 +165,7 @@ class _HeaderState extends State<Header> {
                                 children: [
                                   TextSpan(
                                       text:
-                                          ' ${widget.infoStory.rating == 0.0 ? 0 : widget.infoStory.rating}/5 ',
+                                          ' ${_ratingValue == 0.0 ? 0 : _ratingValue}/5 ',
                                       style: CustomFonts.h6(context).copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 15,

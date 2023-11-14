@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,11 +25,13 @@ class UserInfoPage extends StatefulWidget {
   final String username;
   final String avatar;
   final String userGuid;
+  final Function(String) renewAvatar;
   const UserInfoPage(
       {super.key,
       required this.username,
       required this.avatar,
-      required this.userGuid});
+      required this.userGuid,
+      required this.renewAvatar});
 
   @override
   State<UserInfoPage> createState() => _UserInfoPageState();
@@ -36,6 +40,7 @@ class UserInfoPage extends StatefulWidget {
 class _UserInfoPageState extends State<UserInfoPage> {
   @override
   void initState() {
+    _avatar = widget.avatar;
     _userInfoBloc = UserInfoBloc(widget.username);
     _userInfoBloc.add(GetUserInfo());
     _nameController = TextEditingController();
@@ -43,9 +48,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
     _phoneController = TextEditingController();
     _birthdayController = TextEditingController();
     _addressController = TextEditingController();
-    //  _image = File(widget.avatar);
+    _image = File(widget.avatar);
     _tempTextChange = null;
     _userRepository = UserRepository();
+    _textWidth = 0.0;
     super.initState();
     _initSharedPreferences();
   }
@@ -53,6 +59,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
   @override
   void dispose() {
     _userInfoBloc.close();
+    _nameController.dispose();
+    _gmailController.dispose();
+    _phoneController.dispose();
+    _birthdayController.dispose();
+    _addressController.dispose();
     super.dispose();
   }
 
@@ -60,11 +71,15 @@ class _UserInfoPageState extends State<UserInfoPage> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      setState(() {
-        //  _image = File(image.path);
-        //_userRepository.uploadAvatarUser(_image, widget.userGuid);
-      });
+      _image = File(image.path);
+      await _userRepository.uploadAvatarUser(_image, widget.userGuid);
     }
+    setState(() {
+      var userInfo = accountSignInFromJson(
+          _sharedPreferences.getString('userLogin') ?? '');
+      _avatar = userInfo.result!.avatar;
+      widget.renewAvatar(_avatar);
+    });
   }
 
   void _calculateTextWidth() {
@@ -83,9 +98,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
   }
 
   late SharedPreferences _sharedPreferences;
-  //late File _image;
+  late File _image;
   late String? _tempTextChange;
-  double _textWidth = 0.0;
+  late double _textWidth;
   late UserInfoBloc _userInfoBloc;
   late TextEditingController _nameController;
   late TextEditingController _gmailController;
@@ -93,6 +108,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   late TextEditingController _birthdayController;
   late TextEditingController _addressController;
   late UserRepository _userRepository;
+  late String _avatar;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +158,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   children: [
                     HeaderInfo(
                       pickImage: _pickImage,
-                      url: widget.avatar,
+                      url: _avatar,
                       textController: _nameController,
                       textWidth: _textWidth,
                       groupName: userInfo.groupName ?? 'anonymous',

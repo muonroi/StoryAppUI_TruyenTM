@@ -21,7 +21,7 @@ class HomePageItems {
       ValueChanged<String> funcOnChangedSearch,
       bool isShowClearText,
       PageController pageBannerController,
-      List<Widget> listBannerImage,
+      final List<String> bannerUrl,
       {int numberOfBanner = 3}) {
     late List<Widget> components = [
       // #region Header
@@ -31,7 +31,7 @@ class HomePageItems {
           isShowClearText: isShowClearText),
       BannerHomePage(
         bannerController: pageBannerController,
-        bannerListImage: listBannerImage,
+        bannerListImage: bannerUrl,
         numberOfBanner: numberOfBanner,
       ),
 
@@ -39,7 +39,7 @@ class HomePageItems {
 
       // #region Body
       const Padding(
-        padding: EdgeInsets.only(bottom: 32.0),
+        padding: EdgeInsets.symmetric(vertical: 30),
         child: MainCategories(),
       ),
 

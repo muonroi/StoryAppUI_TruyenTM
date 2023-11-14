@@ -32,16 +32,19 @@ class StoryDetail extends StatefulWidget {
 class _StoryDetailState extends State<StoryDetail> {
   @override
   void initState() {
+    _isFirstLoad = true;
+    _isBookmark = false;
+    _chapterNumber = 0;
+    _chapterId = 0;
+    _storyRepository = StoryRepository();
     _detailStory = DetailStoryPageBloc(widget.storyId);
     _detailStory.add(GetDetailStory());
-    _isFirstLoad = true;
     super.initState();
   }
 
   @override
   void dispose() {
     _detailStory.close();
-    _isFirstLoad = true;
     super.dispose();
   }
 
@@ -57,11 +60,11 @@ class _StoryDetailState extends State<StoryDetail> {
   }
 
   late DetailStoryPageBloc _detailStory;
-  late int _chapterId = 0;
-  late int _chapterNumber = 0;
-  late final StoryRepository _storyRepository = StoryRepository();
-  late bool _isFirstLoad = true;
-  late Color? _colorBookmark;
+  late int _chapterId;
+  late int _chapterNumber;
+  late StoryRepository _storyRepository;
+  late bool _isBookmark;
+  late bool _isFirstLoad;
   @override
   Widget build(BuildContext context) {
     getChapterId();
@@ -108,14 +111,9 @@ class _StoryDetailState extends State<StoryDetail> {
           builder: (context, state) {
             if (state is DetailStoryLoadedState) {
               var storyInfo = state.story.result;
-              late bool isBookmarkColor = storyInfo.isBookmark;
-
-              if (_isFirstLoad && isBookmarkColor) {
-                _colorBookmark = themeMode(context, ColorCode.mainColor.name);
-              } else if (!_isFirstLoad) {
-                _colorBookmark = themeMode(context, ColorCode.mainColor.name);
-              } else {
-                _colorBookmark = null;
+              if (_isFirstLoad) {
+                _isFirstLoad = false;
+                _isBookmark = storyInfo.isBookmark;
               }
               return Scaffold(
                 appBar: AppBar(
@@ -166,11 +164,11 @@ class _StoryDetailState extends State<StoryDetail> {
                           children: [
                             SizedBox(
                                 child: IconButton(
-                                    onPressed: () {},
+                                    onPressed: null,
                                     icon: Icon(
                                       Icons.headphones_outlined,
                                       color: themeMode(
-                                          context, ColorCode.textColor.name),
+                                          context, ColorCode.disableColor.name),
                                     ))),
                             SizedBox(
                               child: IconButton(
@@ -196,28 +194,39 @@ class _StoryDetailState extends State<StoryDetail> {
                             SizedBox(
                               child: IconButton(
                                   onPressed: () async {
-                                    final bool isBookmarked =
+                                    if (!_isBookmark) {
+                                      final bool isBookmarked =
+                                          await _storyRepository
+                                              .bookmarkStory(storyInfo.id);
+                                      if (isBookmarked) {
                                         await _storyRepository
-                                            .bookmarkStory(storyInfo.id);
-                                    await _storyRepository.createStoryForUser(
-                                        storyInfo.id,
-                                        StoryForUserType.bookmark.index,
-                                        0,
-                                        1,
-                                        1,
-                                        0);
+                                            .createStoryForUser(
+                                                storyInfo.id,
+                                                StoryForUserType.bookmark.index,
+                                                0,
+                                                1,
+                                                1,
+                                                0);
+                                      }
+                                    } else {
+                                      var result = await _storyRepository
+                                          .deleteBookmarkStory(
+                                              storyInfo.bookmarkId);
+                                      if (result) {
+                                        _storyRepository.deleteStoryForUser(
+                                            storyInfo.idForUser);
+                                      }
+                                    }
                                     setState(() {
-                                      _colorBookmark = isBookmarked
-                                          ? themeMode(
-                                              context, ColorCode.mainColor.name)
-                                          : null;
-                                      _isFirstLoad = false;
+                                      _isBookmark = !_isBookmark;
                                     });
                                   },
                                   icon: Icon(
                                     Icons.bookmark_add_outlined,
-                                    color: _colorBookmark ??
-                                        themeMode(
+                                    color: _isBookmark
+                                        ? themeMode(
+                                            context, ColorCode.mainColor.name)
+                                        : themeMode(
                                             context, ColorCode.textColor.name),
                                   )),
                             ),

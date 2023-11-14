@@ -10,16 +10,16 @@ class DashboardSettings {
       BuildContext context) {
     List<TemplateSetting> fontAvailable = [
       TemplateSetting(
-          backgroundColor: themeMode(context, ColorCode.modeColor.name),
-          fontColor: themeMode(context, ColorCode.textColor.name),
+          backgroundColor: const Color(0xFFEDEDED),
+          fontColor: const Color(0xFF2D2D2D),
           fontFamily: CustomFonts.inter,
           fontSize: 15.2,
           isLeftAlign: true,
           locationButton: KeyChapterButtonScroll.none,
           isHorizontal: false),
       TemplateSetting(
-          backgroundColor: themeMode(context, ColorCode.textColor.name),
-          fontColor: themeMode(context, ColorCode.modeColor.name),
+          backgroundColor: const Color(0xFF2D2D2D),
+          fontColor: const Color(0xFFEDEDED),
           fontFamily: CustomFonts.inter,
           fontSize: 15.2,
           isLeftAlign: true,

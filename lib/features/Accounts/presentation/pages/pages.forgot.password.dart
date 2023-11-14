@@ -93,7 +93,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     child: ButtonGlobal(
                       onPressed: () async {
                         var accountRepository =
-                            AccountRepository(_usernameController.text, "");
+                            AccountRepository(_usernameController.text, "", "");
                         var result = await accountRepository.forgotPassword();
                         if (result == true) {
                           if (mounted) {

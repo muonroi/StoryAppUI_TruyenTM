@@ -8,10 +8,6 @@ class CustomImages {
   static const String laddingLogo_01 = '${imagePath2x}ladding_logo_01.png';
   static const String laddingLogo_02 = '${imagePath2x}ladding_logo_02.png';
   static const String mainLogo = '${imagePath2x}main_logo.png';
-  static const String paypalLogo2x = '${imagePath2x}paypal_logo.png';
-  static const String paypalLogo3x = '${imagePath3x}paypal_logo.png';
-  static const String visaLogo2x = '${imagePath2x}visa_logo.png';
-  static const String visaLogo3x = '${imagePath3x}visa_logo.png';
   static const String gridFour2x = '${imagePath2x}GridFour.png';
   static const String gridFour3x = '${imagePath3x}GridFour.png';
   static const String translate2x = '${imagePath2x}Translate.png';

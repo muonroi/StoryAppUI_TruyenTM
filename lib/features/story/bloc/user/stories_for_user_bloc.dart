@@ -29,9 +29,7 @@ class StoriesForUserBloc
         pageIndex = pageIndex < 1 ? 1 : pageIndex;
         final mList = await storyRepository.getStoryForUser(
             storyForUserType.index, pageIndex, pageSize);
-        emit(mList.result.items.isEmpty
-            ? StoriesForUserNoDataState()
-            : StoriesForUserLoadedState(mList));
+        emit(StoriesForUserLoadedState(mList));
         if (!mList.isOk) {
           emit(StoriesForUserErrorState(
               mList.errorMessages.map((e) => e.toString()).toList().join(',')));

@@ -4,6 +4,8 @@ import 'package:muonroi/features/story/data/models/models.single.story.dart';
 
 StorySingleResult storySingleDefaultData() {
   return StorySingleResult(
+      idForUser: 0,
+      bookmarkId: 0,
       id: -1,
       guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       storyTitle: "",
