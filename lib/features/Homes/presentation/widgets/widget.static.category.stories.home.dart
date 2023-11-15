@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/features/story/bloc/special/special_bloc.dart';
 import 'package:muonroi/features/story/settings/enums/enum.stories.special.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.list.stories.image.dart';
-import 'package:muonroi/features/story/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/features/story/presentation/pages/page.stories.detail.dart';
 
 // #region new stories widget
 class StoriesNewUpdatedData extends StatefulWidget {

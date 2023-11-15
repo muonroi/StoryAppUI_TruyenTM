@@ -6,12 +6,12 @@ import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.forgot.password.dart';
-import 'package:muonroi/features/accounts/settings/enum/account.info.dart';
-import 'package:muonroi/features/homes/presentation/pages/pages.ladding.index.dart';
+import 'package:muonroi/features/accounts/settings/enum/enum.account.info.dart';
+import 'package:muonroi/features/homes/presentation/pages/page.ladding.index.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.images.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.images.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

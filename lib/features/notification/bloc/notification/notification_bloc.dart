@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/features/notification/data/models/notification.single.user.dart';
+import 'package:muonroi/features/notification/data/models/model.notification.single.user.dart';
 import 'package:muonroi/features/notification/data/repository/notification.repository.dart';
 part 'notification_event.dart';
 part 'notification_state.dart';

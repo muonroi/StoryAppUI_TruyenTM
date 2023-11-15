@@ -4,7 +4,7 @@ import 'package:muonroi/features/story/bloc/common/common_stories_bloc.dart';
 import 'package:muonroi/features/story/settings/enums/enum.stories.common.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/story/presentation/widgets/widget.static.model.full.stories.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

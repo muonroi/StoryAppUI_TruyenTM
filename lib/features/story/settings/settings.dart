@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:muonroi/features/story/data/models/models.single.story.dart';
+import 'package:muonroi/features/story/data/models/model.single.story.dart';
 
 StorySingleResult storySingleDefaultData() {
   return StorySingleResult(

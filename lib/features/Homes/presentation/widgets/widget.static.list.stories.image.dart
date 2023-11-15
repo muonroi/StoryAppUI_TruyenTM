@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 class StoriesImageIncludeSizeBox extends StatelessWidget {
   final int storyId;

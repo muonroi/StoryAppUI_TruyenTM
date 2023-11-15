@@ -1,8 +1,8 @@
 import 'package:muonroi/core/Authorization/setting.api.dart';
 import 'package:muonroi/core/services/api_route.dart';
 import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
-import 'package:muonroi/features/story/data/models/models.single.story.dart';
-import 'package:muonroi/features/story/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/data/models/model.single.story.dart';
+import 'package:muonroi/features/story/data/models/model.stories.story.dart';
 import 'package:muonroi/features/story/settings/settings.dart';
 import 'package:sprintf/sprintf.dart';
 

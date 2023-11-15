@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/features/story/data/models/models.stories.story.dart';
-import 'package:muonroi/features/story/data/repositories/story_repository.dart';
+import 'package:muonroi/features/story/data/models/model.stories.story.dart';
+import 'package:muonroi/features/story/data/repositories/story.repository.dart';
 import 'package:muonroi/features/story/settings/enums/enum.stories.common.dart';
 part 'common_stories_event.dart';
 part 'common_stories_state.dart';

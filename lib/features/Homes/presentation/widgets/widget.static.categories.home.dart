@@ -1,13 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/Categories/presentation/pages/widget.static.categories.dart';
-import 'package:muonroi/features/story/presentation/pages/widget.static.editor.choose.dart';
+import 'package:muonroi/features/categories/presentation/pages/page.categories.dart';
+import 'package:muonroi/features/story/presentation/pages/page.editor.choose.dart';
 import 'package:muonroi/features/story/settings/enums/enum.stories.special.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.images.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 // #region Main categories
 class MainCategories extends StatelessWidget {

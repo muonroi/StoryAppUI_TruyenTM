@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:muonroi/features/story/data/models/models.stories.story.dart';
-import 'package:muonroi/features/story/data/repositories/story_repository.dart';
+import 'package:muonroi/features/story/data/models/model.stories.story.dart';
+import 'package:muonroi/features/story/data/repositories/story.repository.dart';
 part 'story_event.dart';
 part 'story_state.dart';
 

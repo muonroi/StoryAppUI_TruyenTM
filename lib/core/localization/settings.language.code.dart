@@ -197,5 +197,15 @@ enum LanguageCodes {
   acceptTextInfo,
   unAcceptTextInfo,
   buyPremiumQuestionTextInfo,
+  serverErrorTextInfo,
+  changePasswordTextInfo,
+  newPasswordTextInfo,
+  confirmPasswordTextInfo,
+  otpConfirmErrorTextInfo,
+  confirmTextInfo,
+  requiredPasswordTextInfo,
+  errorDoesNotMatchPasswordTextInfo,
+  changePasswordSuccessTextInfo,
+  languageTextInfo,
 // #endregion
 }

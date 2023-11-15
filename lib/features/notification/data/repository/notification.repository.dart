@@ -1,5 +1,5 @@
-import 'package:muonroi/features/notification/data/models/notification.single.user.dart';
-import 'package:muonroi/features/notification/data/service/notification.service.dart';
+import 'package:muonroi/features/notification/data/models/model.notification.single.user.dart';
+import 'package:muonroi/features/notification/data/service/api.notification.service.dart';
 
 class NotificationRepository {
   var notificationService = NotificationService();

@@ -3,7 +3,7 @@ import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.common.stories.home.dart';
 import 'package:muonroi/features/story/settings/enums/enum.stories.common.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 class FilterByDateButton extends StatelessWidget {
   const FilterByDateButton({

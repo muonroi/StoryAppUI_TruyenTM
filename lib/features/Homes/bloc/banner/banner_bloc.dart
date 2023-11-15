@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/features/homes/data/models/home.banner.model.dart';
+import 'package:muonroi/features/homes/data/models/model.home.banner.dart';
 import 'package:muonroi/features/homes/data/repository/home.repository.dart';
 import 'package:muonroi/features/homes/settings/enum/enum.setting.type.dart';
 part 'banner_event.dart';

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/story/bloc/user/stories_for_user_bloc.dart';
-import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
-import 'package:muonroi/features/story/data/repositories/story_repository.dart';
+import 'package:muonroi/features/story/settings/enums/enum.story.user.dart';
+import 'package:muonroi/features/story/data/repositories/story.repository.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.model.book.case.stories.dart';
-import 'package:muonroi/features/story/data/models/models.stories.story.dart';
+import 'package:muonroi/features/story/data/models/model.stories.story.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

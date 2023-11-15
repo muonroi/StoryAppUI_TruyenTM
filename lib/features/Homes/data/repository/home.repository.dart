@@ -1,5 +1,5 @@
-import 'package:muonroi/features/homes/data/models/home.banner.model.dart';
-import 'package:muonroi/features/homes/data/services/home.service.dart';
+import 'package:muonroi/features/homes/data/models/model.home.banner.dart';
+import 'package:muonroi/features/homes/data/services/api.home.service.dart';
 
 class HomeRepository {
   final _homeService = HomeService();

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
+import 'package:muonroi/features/accounts/presentation/pages/pages.logins.valid_otp.dart';
+import 'package:muonroi/features/accounts/presentation/widgets/widget.alert.notification.confirm.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -97,58 +99,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         var result = await accountRepository.forgotPassword();
                         if (result == true) {
                           if (mounted) {
-                            showDialog(
-                                context: context,
-                                builder: (builder) {
-                                  return AlertDialog(
-                                    title: Text(
-                                      L(
-                                          context,
-                                          LanguageCodes.notificationTextInfo
-                                              .toString()),
-                                      style: CustomFonts.h3(context),
-                                    ),
-                                    content: Text(
-                                      L(
-                                          context,
-                                          LanguageCodes
-                                              .sendPasswordSuccessTextInfo
-                                              .toString()),
-                                      style: CustomFonts.h5(context),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .labelLarge,
-                                        ),
-                                        child: Container(
-                                          padding: const EdgeInsets.all(8.0),
-                                          decoration: BoxDecoration(
-                                              color: themeMode(context,
-                                                  ColorCode.mainColor.name),
-                                              borderRadius:
-                                                  BorderRadius.circular(30.0)),
-                                          child: Text(
-                                              L(
-                                                  context,
-                                                  LanguageCodes.ignoreTextInfo
-                                                      .toString()),
-                                              style: CustomFonts.h5(context)
-                                                  .copyWith(
-                                                      color: themeMode(
-                                                          context,
-                                                          ColorCode.modeColor
-                                                              .name))),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      )
-                                    ],
-                                  );
-                                });
+                            showConfirmAlert(
+                                context,
+                                L(
+                                    context,
+                                    LanguageCodes.sendPasswordSuccessTextInfo
+                                        .toString()),
+                                ColorCode.mainColor.name,
+                                isNextRoute: true,
+                                nextRoute: OTPScreen(
+                                    username: _usernameController.text));
+                          }
+                        } else {
+                          if (mounted) {
+                            showConfirmAlert(
+                                context,
+                                L(
+                                    context,
+                                    LanguageCodes.serverErrorTextInfo
+                                        .toString()),
+                                ColorCode.closeColor.name);
                           }
                         }
                       },

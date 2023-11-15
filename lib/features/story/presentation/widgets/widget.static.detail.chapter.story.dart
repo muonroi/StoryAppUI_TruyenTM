@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
-import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
-import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.list.chapter.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
+import 'package:muonroi/features/chapters/presentation/pages/page.model.list.chapter.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
-import 'package:muonroi/features/story/data/models/models.single.story.dart';
+import 'package:muonroi/features/story/data/models/model.single.story.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 typedef LatestChapter = void Function(String val);

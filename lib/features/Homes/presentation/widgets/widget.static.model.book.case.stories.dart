@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
+import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
-import 'package:muonroi/features/story/data/models/models.stories.story.dart';
-import 'package:muonroi/features/story/data/repositories/story_repository.dart';
-import 'package:muonroi/features/story/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
+import 'package:muonroi/features/story/data/models/model.stories.story.dart';
+import 'package:muonroi/features/story/data/repositories/story.repository.dart';
+import 'package:muonroi/features/story/presentation/pages/page.stories.detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StoriesBookCaseModelWidget extends StatefulWidget {

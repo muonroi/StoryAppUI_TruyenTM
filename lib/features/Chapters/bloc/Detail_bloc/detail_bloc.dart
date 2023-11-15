@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.single.chapter.dart';
-import 'package:muonroi/features/chapters/data/repositories/chapter_repository.dart';
+import 'package:muonroi/features/chapters/data/repositories/chapter.repository.dart';
 part 'detail_event.dart';
 part 'detail_state.dart';
 

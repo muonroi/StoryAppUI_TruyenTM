@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
-import 'package:muonroi/features/chapters/data/repositories/chapter_repository.dart';
+import 'package:muonroi/features/chapters/data/repositories/chapter.repository.dart';
 part 'group_chapter_event.dart';
 part 'group_chapter_state.dart';
 

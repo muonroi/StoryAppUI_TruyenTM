@@ -5,10 +5,10 @@
 // import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_in.dart';
 // import 'package:muonroi/features/accounts/presentation/pages/pages.logins.valid_otp.dart';
 // import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-// import 'package:muonroi/shared/settings/settings.main.dart';
+// import 'package:muonroi/shared/settings/setting.main.dart';
 // import 'package:muonroi/shared/static/textField/widget.static.textfield.password_input.dart';
 // import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
-// import 'package:muonroi/shared/settings/settings.fonts.dart';
+// import 'package:muonroi/shared/settings/setting.fonts.dart';
 // import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
 
 // enum Gender { male, female }

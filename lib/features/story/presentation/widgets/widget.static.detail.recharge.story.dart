@@ -5,10 +5,10 @@
 // import 'package:muonroi/Models/story/models.stories.story.dart';
 // import 'package:muonroi/Pages/Accounts/Logins/pages.logins.sign_in.dart';
 // import 'package:muonroi/settings/settings.colors.dart';
-// import 'package:muonroi/settings/settings.fonts.dart';
+// import 'package:muonroi/settings/setting.fonts.dart';
 // import 'package:muonroi/settings/settings.images.dart';
 // import 'package:muonroi/settings/settings.language_code.vi..dart';
-// import 'package:muonroi/settings/settings.main.dart';
+// import 'package:muonroi/settings/setting.main.dart';
 
 // class RechargeStory extends StatelessWidget {
 //   final StoryModel widget;

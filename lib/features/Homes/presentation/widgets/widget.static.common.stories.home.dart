@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/story/bloc/common/common_stories_bloc.dart';
 import 'package:muonroi/features/story/settings/enums/enum.stories.common.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
-import 'package:muonroi/features/story/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/features/story/presentation/pages/page.stories.detail.dart';
 
 class CommonTopStoriesData extends StatefulWidget {
   final EnumStoriesCommon type;

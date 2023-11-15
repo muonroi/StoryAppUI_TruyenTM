@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mailto/mailto.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:url_launcher/url_launcher.dart' as url;
 
 class Utils {

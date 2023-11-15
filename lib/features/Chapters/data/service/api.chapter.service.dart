@@ -4,8 +4,8 @@ import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart'
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.range.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.single.chapter.dart';
-import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
-import 'package:muonroi/features/chapters/data/models/models.chapters.preview.chapter.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.list.chapter.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.preview.chapter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
 

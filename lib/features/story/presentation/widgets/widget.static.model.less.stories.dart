@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
-import 'package:muonroi/features/story/presentation/pages/widget.static.stories.detail.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
+import 'package:muonroi/features/story/presentation/pages/page.stories.detail.dart';
 
 class StoryLessModelWidget extends StatefulWidget {
   final String networkImageUrl;

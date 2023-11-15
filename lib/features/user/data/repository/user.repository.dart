@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:muonroi/features/user/data/models/user.info.model.dart';
-import 'package:muonroi/features/user/data/models/user.single.detail.model.dart';
-import 'package:muonroi/features/user/data/services/user.service.dart';
+import 'package:muonroi/features/user/data/models/model.user.info.dart';
+import 'package:muonroi/features/user/data/models/model.user.single.detail.dart';
+import 'package:muonroi/features/user/data/services/api.user.service.dart';
 
 class UserRepository {
   final _provider = UserService();

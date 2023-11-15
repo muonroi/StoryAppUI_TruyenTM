@@ -1,12 +1,192 @@
 import 'package:muonroi/shared/models/signalR/enum/enum.signalr.type.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/core/localization/settings.languages.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:sprintf/sprintf.dart';
 
 class LocalizationLib {
   static final Map<String, Map<String, String>> _localizedValues = {
-    Languages.en: {},
+    Languages.en: {
+      LanguageCodes.searchTextInfo.toString():
+          'Enter story name, author name,...',
+      LanguageCodes.emptyChapterTextInfo.toString(): 'Updating',
+      LanguageCodes.notfoundTextInfo.toString(): 'Not found',
+      LanguageCodes.genreOfStrTextInfo.toString(): 'Genre',
+      LanguageCodes.hotStoriesTextInfo.toString(): 'Hot stories',
+      LanguageCodes.completeStoriesHomeTextInfo.toString(): 'Completed',
+      LanguageCodes.newStoriesHomeTextInfo.toString(): 'New stories',
+      LanguageCodes.trendStoriesTextInfo.toString(): 'Trending stories',
+      LanguageCodes.viewAllTextInfo.toString(): 'View all >',
+      LanguageCodes.newUpdatedStoriesTextInfo.toString():
+          'Newly updated stories',
+      LanguageCodes.commonOfStoriesTextInfo.toString(): 'Top popular stories',
+      LanguageCodes.allCommonStoriesTextInfo.toString(): 'All',
+      LanguageCodes.commonStoriesOfDayTextInfo.toString(): 'Top of the day',
+      LanguageCodes.commonStoriesOfWeekTextInfo.toString(): 'Top of the week',
+      LanguageCodes.commonStoriesOfMonthTextInfo.toString(): 'Top of the month',
+      LanguageCodes.newStoriesTextInfo.toString(): 'Newly released stories',
+      LanguageCodes.completeStoriesTextInfo.toString(): 'Completed stories',
+      LanguageCodes.newChapterUpdatedTextInfo.toString(): 'New chapter updated',
+      LanguageCodes.homePageTextInfo.toString(): 'Home',
+      LanguageCodes.recentStoriesTextInfo.toString(): 'Recent',
+      LanguageCodes.freeStoriesTextInfo.toString(): 'Free stories',
+      LanguageCodes.userInfoTextInfo.toString(): 'Profile',
+      LanguageCodes.passedNumberMinuteTextInfo.toString(): 'minutes ago',
+      LanguageCodes.chapterNumberTextInfo.toString(): 'Chapter',
+      LanguageCodes.rankTextInfo.toString(): 'Top',
+      LanguageCodes.savedStoriesTextInfo.toString(): 'Downloaded',
+      LanguageCodes.bookmarkStoriesTextInfo.toString(): 'Bookmarks',
+      LanguageCodes.storiesContinueChapterTextInfo.toString():
+          'Continue reading',
+      LanguageCodes.myAccountTextInfo.toString(): 'My account',
+      LanguageCodes.myAccountCoinTextInfo.toString(): 'Coins',
+      LanguageCodes.myAccountPremiumTextInfo.toString(): 'Upgrade account',
+      LanguageCodes.myAccountGiftCodeTextInfo.toString(): 'Promo code',
+      LanguageCodes.myAccountRechargeTextInfo.toString(): 'Recharge coins',
+      LanguageCodes.myAccountContactAdminTextInfo.toString():
+          'Contact & Support',
+      LanguageCodes.myAccountDetailTextInfo.toString(): 'Account details',
+      LanguageCodes.myAccountSettingTextInfo.toString(): 'Settings',
+      LanguageCodes.voteStoryTextInfo.toString(): 'Rate',
+      LanguageCodes.voteStoryTotalTextInfo.toString(): 'from',
+      LanguageCodes.totalViewStoryTextInfo.toString(): 'Views',
+      LanguageCodes.totalFavoriteStoryTextInfo.toString(): 'Likes',
+      LanguageCodes.introStoryTextInfo.toString(): 'Story introduction',
+      LanguageCodes.notifyStoryTextInfo.toString(): 'Notifications',
+      LanguageCodes.newChapterStoryTextInfo.toString(): 'New chapter',
+      LanguageCodes.listChapterStoryTextInfo.toString(): 'Chapter list',
+      LanguageCodes.writeCommentStoryTextInfo.toString(): 'Write a review',
+      LanguageCodes.coinStoryTextInfo.toString(): 'Coins',
+      LanguageCodes.pushRechargeStoryTextInfo.toString(): 'Top up coins',
+      LanguageCodes.similarStoriesTextInfo.toString(): 'Similar stories',
+      LanguageCodes.chapterEndTextInfo.toString(): 'End!',
+      LanguageCodes.tagCompleteTextInfo.toString(): 'completed',
+      LanguageCodes.nextChapterTextInfo.toString(): 'Next chapter',
+      LanguageCodes.previousChapterTextInfo.toString(): 'Previous chapter',
+      LanguageCodes.loadingTextInfo.toString(): 'Loading',
+      LanguageCodes.loadingMoreTextInfo.toString(): 'Swipe down to load more',
+      LanguageCodes.loadingPreviousTextInfo.toString():
+          'Swipe up to load previous',
+      LanguageCodes.customDashboardReadingTextInfo.toString():
+          'Customize layout',
+      LanguageCodes.defaultDashboardTextInfo.toString(): 'Default layout',
+      LanguageCodes.customAnotherDashboardTextInfo.toString(): 'Customize',
+      LanguageCodes.scrollConfigDashboardTextInfo.toString(): 'Scroll',
+      LanguageCodes.scrollConfigVerticalDashboardTextInfo.toString():
+          'Vertical scroll',
+      LanguageCodes.scrollConfigHorizontalDashboardTextInfo.toString():
+          'Horizontal scroll',
+      LanguageCodes.buttonScrollConfigDashboardTextInfo.toString():
+          'Button scroll',
+      LanguageCodes.buttonScrollConfigNoneDashboardTextInfo.toString(): 'Hide',
+      LanguageCodes.buttonScrollConfigDisplayDashboardTextInfo.toString():
+          'Show',
+      LanguageCodes.alignConfigDashboardTextInfo.toString(): 'Alignment',
+      LanguageCodes.alignConfigLeftDashboardTextInfo.toString(): 'Align left',
+      LanguageCodes.alignConfigRegularDashboardTextInfo.toString():
+          'Align center',
+      LanguageCodes.fontConfigDashboardTextInfo.toString(): 'Font style',
+      LanguageCodes.fontSizeConfigDashboardTextInfo.toString(): 'Font size',
+      LanguageCodes.fontColorConfigDashboardTextInfo.toString(): 'Font color',
+      LanguageCodes.backgroundConfigDashboardTextInfo.toString():
+          'Background color',
+      LanguageCodes.limitFontSizeConfigTextInfo.toString():
+          'Font size range (10-50)',
+      LanguageCodes.listChapterDetailConfigTextInfo.toString(): 'Chapter list',
+      LanguageCodes.storyDetailConfigTextInfo.toString(): 'Story details',
+      LanguageCodes.storyDownloadConfigTextInfo.toString(): 'Download',
+      LanguageCodes.storyPushCoinConfigTextInfo.toString(): 'Throw coins',
+      LanguageCodes.storyShareConfigTextInfo.toString(): 'Share',
+      LanguageCodes.storyReportConfigTextInfo.toString(): 'Report an issue',
+      LanguageCodes.signinConfigTextInfo.toString(): 'Sign in',
+      LanguageCodes.signupConfigTextInfo.toString(): 'Sign up',
+      LanguageCodes.inputUsernameTextConfigTextInfo.toString(): 'Username',
+      LanguageCodes.inputPasswordTextConfigTextInfo.toString(): 'Password',
+      LanguageCodes.noHaveAccountTextConfigTextInfo.toString():
+          'Don\'t have an account?',
+      LanguageCodes.inValidAccountTextConfigTextInfo.toString():
+          'Invalid username or password!',
+      LanguageCodes.publishStoryTextConfigTextInfo.toString():
+          'Story %s - %s has just been published!',
+      LanguageCodes.notificationTextConfigTextInfo.toString(): 'Notification',
+      LanguageCodes.notificationByUserTextConfigTextInfo.toString():
+          'User %s is now following your story %s',
+      LanguageCodes.downloadedTextInfo.toString(): 'Downloaded',
+      LanguageCodes.chaptersDownloadDeletedTextInfo.toString():
+          'Chapter %s deleted from memory',
+      LanguageCodes.chaptersDownloadAddedTextInfo.toString():
+          'Successfully downloaded %s chapters',
+      LanguageCodes.recentlyStoryTextInfo.toString():
+          'No recently read stories found',
+      LanguageCodes.upgradeAccountTextInfo.toString(): 'Upgrade account',
+      LanguageCodes.buyNowTextInfo.toString(): 'Buy now',
+      LanguageCodes.monthTextInfo.toString(): 'Month',
+      LanguageCodes.customerBenefitsTextInfo.toString(): 'Customer benefits',
+      LanguageCodes.oneLawsUpgradeAccountTextInfo.toString():
+          'Ad-free experience',
+      LanguageCodes.logoutAccountTextInfo.toString(): 'Log out',
+      LanguageCodes.contactTextInfo.toString(): 'Contact & Support',
+      LanguageCodes.contactToEmailTextInfo.toString(): 'Contact via email',
+      LanguageCodes.askCommonTextInfo.toString(): 'Frequently asked questions',
+      LanguageCodes.privacyTextInfo.toString(): 'Privacy policy',
+      LanguageCodes.privacyTermsTextInfo.toString(): 'Terms of service',
+      LanguageCodes.followUserTextInfo.toString(): 'Follow',
+      LanguageCodes.inboxTextInfo.toString(): 'Inbox',
+      LanguageCodes.gmailUserTextInfo.toString(): 'Gmail',
+      LanguageCodes.phoneNumberTextInfo.toString(): 'Phone number',
+      LanguageCodes.birthdayUserTextInfo.toString(): 'Birthday',
+      LanguageCodes.addressUserTextInfo.toString(): 'Address',
+      LanguageCodes.themeModeTextInfo.toString(): 'Theme mode',
+      LanguageCodes.lightModeTextInfo.toString(): 'Light',
+      LanguageCodes.darkModeTextInfo.toString(): 'Dark',
+      LanguageCodes.forgotPasswordTextInfo.toString(): 'Forgot password',
+      LanguageCodes.invalidAccountTextInfo.toString():
+          'Incorrect username or password',
+      LanguageCodes.rememberTextInfo.toString(): 'Remember',
+      LanguageCodes.forgotPasswordMoreInfoTextInfo.toString():
+          '''A password reset OTP will be sent to your email to reset your password. If you don't receive the email within a few minutes, please try again.''',
+      LanguageCodes.notificationTextInfo.toString(): 'Notification',
+      LanguageCodes.sendTextInfo.toString(): 'Sent',
+      LanguageCodes.ignoreTextInfo.toString(): 'Dismiss',
+      LanguageCodes.sendPasswordSuccessTextInfo.toString():
+          'OTP has been sent to your email. Please check your email.',
+      LanguageCodes.backInfoTextInfo.toString(): 'Back',
+      LanguageCodes.submitTextInfo.toString(): 'Submit',
+      LanguageCodes.isSureTextInfo.toString(): 'Agree',
+      LanguageCodes.isNotSureTextInfo.toString(): 'Disagree',
+      LanguageCodes.youSureLogoutTextInfo.toString(): 'Do you want to log out?',
+      LanguageCodes.invalidEmailTextInfo.toString(): 'Invalid email',
+      LanguageCodes.invalidPhoneNumberTextInfo.toString(): 'Invalid format',
+      LanguageCodes.changeNameTextInfo.toString(): 'Change your name',
+      LanguageCodes.changeUserInfoTextInfo.toString():
+          'Information changed successfully',
+      LanguageCodes.viewNotificationAllTextInfo.toString(): 'View all',
+      LanguageCodes.successTextInfo.toString(): 'Success',
+      LanguageCodes.unSuccessTextInfo.toString(): 'Failed',
+      LanguageCodes.noDataTextInfo.toString(): 'No data',
+      LanguageCodes.viewNextNotificationTextInfo.toString(): 'View next',
+      LanguageCodes.viewPreviousNotificationTextInfo.toString(): 'Go back',
+      LanguageCodes.closeAdsTextInfo.toString(): 'Close ad',
+      LanguageCodes.acceptTextInfo.toString(): 'Agree',
+      LanguageCodes.unAcceptTextInfo.toString(): 'Disagree',
+      LanguageCodes.buyPremiumQuestionTextInfo.toString():
+          'Do you want to purchase the premium package?',
+      LanguageCodes.serverErrorTextInfo.toString():
+          'An error occurred, please try again later',
+      LanguageCodes.changePasswordTextInfo.toString(): 'Change password',
+      LanguageCodes.newPasswordTextInfo.toString(): 'New password',
+      LanguageCodes.confirmPasswordTextInfo.toString(): 'Confirm password',
+      LanguageCodes.otpConfirmErrorTextInfo.toString():
+          'Invalid or expired OTP',
+      LanguageCodes.confirmTextInfo.toString(): 'Confirm',
+      LanguageCodes.requiredPasswordTextInfo.toString():
+          'Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long.',
+      LanguageCodes.errorDoesNotMatchPasswordTextInfo.toString():
+          'Passwords do not match',
+      LanguageCodes.changePasswordSuccessTextInfo.toString():
+          'Your password has been changed!',
+      LanguageCodes.languageTextInfo.toString(): 'Language'
+    },
     Languages.vi: {
       LanguageCodes.searchTextInfo.toString():
           'Nhập tên truyện, tên tác giả,...',
@@ -139,12 +319,12 @@ class LocalizationLib {
           'Tên tài khoản hoặc mật khẩu không chính xác',
       LanguageCodes.rememberTextInfo.toString(): 'Ghi nhớ',
       LanguageCodes.forgotPasswordMoreInfoTextInfo.toString():
-          'Một liên kết đặt lại mật khẩu sẽ được gửi đến email của bạn để đặt lại mật khẩu. Nếu bạn không nhận được email trong vòng vài phút, vui lòng thử lại.',
+          'Một OTP xác thực đặt lại mật khẩu sẽ được gửi đến email của bạn để đặt lại mật khẩu. Nếu bạn không nhận được email trong vòng vài phút, vui lòng thử lại.',
       LanguageCodes.notificationTextInfo.toString(): 'Thông báo',
       LanguageCodes.sendTextInfo.toString(): 'Đã gửi',
       LanguageCodes.ignoreTextInfo.toString(): 'Đã hiểu',
       LanguageCodes.sendPasswordSuccessTextInfo.toString():
-          'Một liên kết đặt lại mật khẩu được gửi đến địa chỉ email của bạn. Vui lòng kiểm tra email của bạn.',
+          'OTP đã được gửi đến email. Vui lòng kiểm tra email của bạn.',
       LanguageCodes.backInfoTextInfo.toString(): 'Quay lại',
       LanguageCodes.submitTextInfo.toString(): 'Gửi',
       LanguageCodes.isSureTextInfo.toString(): 'Đồng ý',
@@ -168,6 +348,21 @@ class LocalizationLib {
       LanguageCodes.unAcceptTextInfo.toString(): 'Không',
       LanguageCodes.buyPremiumQuestionTextInfo.toString():
           'Bạn có muốn mua gói trả phí?',
+      LanguageCodes.serverErrorTextInfo.toString():
+          'Có lỗi xảy ra vui lòng thử lại sau ít phút',
+      LanguageCodes.changePasswordTextInfo.toString(): 'Đổi mật khẩu',
+      LanguageCodes.newPasswordTextInfo.toString(): 'Mật khẩu mới',
+      LanguageCodes.confirmPasswordTextInfo.toString(): 'Nhập lại mật khẩu',
+      LanguageCodes.otpConfirmErrorTextInfo.toString():
+          'Otp không hợp lệ hoặc đã hết hạn',
+      LanguageCodes.confirmTextInfo.toString(): 'Xác thực',
+      LanguageCodes.requiredPasswordTextInfo.toString():
+          'Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường, một chữ số, một ký tự đặc biệt và dài ít nhất 8 ký tự.',
+      LanguageCodes.errorDoesNotMatchPasswordTextInfo.toString():
+          'Mật khẩu không khớp',
+      LanguageCodes.changePasswordSuccessTextInfo.toString():
+          'Mật khẩu của bạn đã được thay đổi!',
+      LanguageCodes.languageTextInfo.toString(): 'Ngôn ngữ'
     }
   };
   static String L(String key, {String locale = 'vi'}) {

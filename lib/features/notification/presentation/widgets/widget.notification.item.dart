@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/features/notification/data/repository/notification.repository.dart';
-import 'package:muonroi/features/notification/provider/notification.provider.dart';
+import 'package:muonroi/features/notification/provider/provider.notification.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:provider/provider.dart';
 
 class NotificationItem extends StatefulWidget {

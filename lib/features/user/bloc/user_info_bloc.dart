@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/features/user/data/models/user.info.model.dart';
+import 'package:muonroi/features/user/data/models/model.user.info.dart';
 import 'package:muonroi/features/user/data/repository/user.repository.dart';
 part 'user_info_event.dart';
 part 'user_info_state.dart';

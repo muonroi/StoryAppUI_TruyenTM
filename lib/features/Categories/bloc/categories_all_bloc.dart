@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/Categories/data/models/models.stories.dart';
-import 'package:muonroi/features/Categories/data/repositories/categories_repository.dart';
+import 'package:muonroi/features/categories/data/repositories/categories.repository.dart';
 
 part 'categories_all_event.dart';
 part 'categories_all_state.dart';
