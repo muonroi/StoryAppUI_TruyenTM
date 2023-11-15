@@ -1,32 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/features/chapters/provider/provider.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> showConfirmationDialog(
+    BuildContext context, String confirmAction, String content) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        title: Text(
+          confirmAction,
+          style: CustomFonts.h5(context).copyWith(fontWeight: FontWeight.w700),
+        ),
+        content: Text(
+          content,
+          style: CustomFonts.h5(context),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              L(context, LanguageCodes.unAcceptTextInfo.toString()),
+              style: CustomFonts.h6(context).copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              L(context, LanguageCodes.acceptTextInfo.toString()),
+              style: CustomFonts.h6(context).copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: themeMode(context, ColorCode.mainColor.name)),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
 
 class ButtonWidget {
   static Widget buttonNavigatorNextPreviewLanding(
       BuildContext context, Widget nextRoute,
       {String textDisplay = 'Next',
       TextStyle textStyle = const TextStyle(
-          fontFamily: "Inter", fontSize: 16, color: const Color(0xFF2D2D2D)),
+          fontFamily: "Inter", fontSize: 16, color: Color(0xFF2D2D2D)),
       Color color = const Color(0xFFFFB800),
       Color borderColor = const Color(0xFFFFB800),
-      double widthBorder = 2}) {
+      double widthBorder = 2,
+      bool isDisable = false}) {
     return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => nextRoute),
-        );
-      },
+      onPressed: !isDisable
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => nextRoute),
+              );
+            }
+          : null,
       style: ElevatedButton.styleFrom(
-          backgroundColor: color,
+          backgroundColor: !isDisable
+              ? color
+              : themeMode(context, ColorCode.disableColor.name),
           shape: const StadiumBorder(),
-          side: BorderSide(color: borderColor, width: widthBorder)),
+          side: !isDisable
+              ? BorderSide(color: borderColor, width: widthBorder)
+              : null),
       child: Text(
         textDisplay,
         style: textStyle,
@@ -42,15 +97,15 @@ class ButtonWidget {
       width: isActive ? value.width * 1 / 7 : value.height * 1 / 59,
       decoration: BoxDecoration(
           shape: !isActive ? BoxShape.circle : BoxShape.rectangle,
-          border:
-              Border.all(color: themMode(context, ColorCode.disableColor.name)),
+          border: Border.all(
+              color: themeMode(context, ColorCode.disableColor.name)),
           borderRadius: isActive
               ? const BorderRadius.vertical(
                   top: Radius.circular(20), bottom: Radius.circular(20))
               : null,
           color: isActive
-              ? themMode(context, ColorCode.disableColor.name)
-              : themMode(context, ColorCode.mainColor.name)),
+              ? themeMode(context, ColorCode.disableColor.name)
+              : themeMode(context, ColorCode.mainColor.name)),
     );
   }
 }
@@ -114,27 +169,21 @@ const double rightAlign = 1;
 class _ToggleButtonState extends State<ToggleButton> {
   @override
   void initState() {
-    _initSharedPreferences();
     super.initState();
     xAlign = leftAlign;
-    leftColor =
-        widget.selectedColor ?? themMode(context, ColorCode.modeColor.name);
-    rightColor =
-        widget.normalColor ?? themMode(context, ColorCode.textColor.name);
   }
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
-      var _templateSettingData =
-          getCurrentTemplate(_sharedPreferences, context);
-      if (_templateSettingData.isHorizontal != null &&
-          !_templateSettingData.isHorizontal!) {
+      var templateSettingData = getCurrentTemplate(_sharedPreferences, context);
+      if (templateSettingData.isHorizontal != null &&
+          !templateSettingData.isHorizontal!) {
         xAlign = leftAlign;
         leftColor = widget.selectedColor!;
         rightColor = widget.normalColor!;
-      } else if (_templateSettingData.isHorizontal != null &&
-          _templateSettingData.isHorizontal!) {
+      } else if (templateSettingData.isHorizontal != null &&
+          templateSettingData.isHorizontal!) {
         xAlign = rightAlign;
         rightColor = widget.selectedColor!;
         leftColor = widget.normalColor!;
@@ -144,6 +193,16 @@ class _ToggleButtonState extends State<ToggleButton> {
         rightColor = widget.normalColor!;
       }
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initSharedPreferences();
+    leftColor =
+        widget.selectedColor ?? themeMode(context, ColorCode.modeColor.name);
+    rightColor =
+        widget.normalColor ?? themeMode(context, ColorCode.textColor.name);
   }
 
   late double xAlign;
@@ -177,7 +236,7 @@ class _ToggleButtonState extends State<ToggleButton> {
               borderRadius: const BorderRadius.all(
                 Radius.circular(50.0),
               ),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                     color: Color.fromARGB(181, 156, 154, 154),
                     spreadRadius: 0.5)
@@ -223,7 +282,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                       widget.textLeft,
                       style: TextStyle(
                           color: leftColor,
-                          fontFamily: FontsDefault.inter,
+                          fontFamily: CustomFonts.inter,
                           fontWeight: FontWeight.w500),
                     ),
                   ),
@@ -254,7 +313,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                       widget.textRight,
                       style: TextStyle(
                           color: rightColor,
-                          fontFamily: FontsDefault.inter,
+                          fontFamily: CustomFonts.inter,
                           fontWeight: FontWeight.w500),
                     ),
                   ),

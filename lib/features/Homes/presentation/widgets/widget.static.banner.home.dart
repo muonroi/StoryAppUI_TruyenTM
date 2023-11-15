@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
-
-import '../../../../shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 class BannerHomePage extends StatefulWidget {
-  final List<Widget> bannerListImage;
+  final List<String> bannerListImage;
   final int numberOfBanner;
   final PageController bannerController;
   const BannerHomePage(
@@ -31,8 +29,6 @@ class _BannerHomePageState extends State<BannerHomePage> {
     super.dispose();
   }
 
-  final double bannerHeight = 200;
-  final double bannerWidth = 411.4;
   int _currentPage = 0;
   Timer? _timer;
 
@@ -56,16 +52,15 @@ class _BannerHomePageState extends State<BannerHomePage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SizedBox(
-          height: MainSetting.getPercentageOfDevice(context,
-                  expectHeight: bannerHeight)
+          height: MainSetting.getPercentageOfDevice(context, expectHeight: 200)
               .height,
-          child: PageView(
+          child: PageView.builder(
             controller: widget.bannerController,
-            children: [
-              Image.asset('assets/images/2x/Banner_1.1.png'),
-              Image.asset('assets/images/2x/Banner_2.png'),
-              Image.asset('assets/images/2x/Banner_3.png')
-            ],
+            itemCount: 3,
+            itemBuilder: (BuildContext context, int index) {
+              return netWorkImage(context, widget.bannerListImage[index], true,
+                  isBanner: true);
+            },
           )),
     );
   }

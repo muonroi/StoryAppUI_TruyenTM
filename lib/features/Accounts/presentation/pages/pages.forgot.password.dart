@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
+import 'package:muonroi/features/accounts/presentation/pages/pages.logins.valid_otp.dart';
+import 'package:muonroi/features/accounts/presentation/widgets/widget.alert.notification.confirm.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -35,15 +37,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 30.0),
                   child: Text(
-                    L(context, ViCode.forgotPasswordTextInfo.toString()),
-                    style: FontsDefault.h4(context),
+                    L(context, LanguageCodes.forgotPasswordTextInfo.toString()),
+                    style: CustomFonts.h4(context),
                   ),
                 ),
               ),
               SizedBox(
                 child: Text(
-                  L(context, ViCode.forgotPasswordMoreInfoTextInfo.toString()),
-                  style: FontsDefault.h6(context),
+                  L(context,
+                      LanguageCodes.forgotPasswordMoreInfoTextInfo.toString()),
+                  style: CustomFonts.h6(context),
                 ),
               ),
               SizedBox(
@@ -52,11 +55,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   decoration: InputDecoration(
                       icon: Icon(
                         Icons.person,
-                        color: themMode(context, ColorCode.mainColor.name),
+                        color: themeMode(context, ColorCode.mainColor.name),
                       ),
                       border: const UnderlineInputBorder(),
-                      labelText: L(context,
-                          ViCode.inputUsernameTextConfigTextInfo.toString())),
+                      labelText: L(
+                          context,
+                          LanguageCodes.inputUsernameTextConfigTextInfo
+                              .toString())),
                 ),
               ),
               Row(
@@ -73,11 +78,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            themMode(context, ColorCode.modeColor.name),
+                            themeMode(context, ColorCode.modeColor.name),
                       ),
-                      text: L(context, ViCode.backInfoTextInfo.toString()),
-                      textStyle: FontsDefault.h5(context).copyWith(
-                        color: themMode(context, ColorCode.textColor.name),
+                      text:
+                          L(context, LanguageCodes.backInfoTextInfo.toString()),
+                      textStyle: CustomFonts.h5(context).copyWith(
+                        color: themeMode(context, ColorCode.textColor.name),
                       ),
                     ),
                   ),
@@ -89,71 +95,40 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     child: ButtonGlobal(
                       onPressed: () async {
                         var accountRepository =
-                            AccountRepository(_usernameController.text, "");
+                            AccountRepository(_usernameController.text, "", "");
                         var result = await accountRepository.forgotPassword();
                         if (result == true) {
                           if (mounted) {
-                            showDialog(
-                                context: context,
-                                builder: (builder) {
-                                  return AlertDialog(
-                                    title: Text(
-                                      L(
-                                          context,
-                                          ViCode.notificationTextInfo
-                                              .toString()),
-                                      style: FontsDefault.h3(context),
-                                    ),
-                                    content: Text(
-                                      L(
-                                          context,
-                                          ViCode.sendPasswordSuccessTextInfo
-                                              .toString()),
-                                      style: FontsDefault.h5(context),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .labelLarge,
-                                        ),
-                                        child: Container(
-                                          padding: const EdgeInsets.all(8.0),
-                                          decoration: BoxDecoration(
-                                              color: themMode(context,
-                                                  ColorCode.mainColor.name),
-                                              borderRadius:
-                                                  BorderRadius.circular(30.0)),
-                                          child: Text(
-                                              L(
-                                                  context,
-                                                  ViCode.ignoreTextInfo
-                                                      .toString()),
-                                              style: FontsDefault.h5(context)
-                                                  .copyWith(
-                                                      color: themMode(
-                                                          context,
-                                                          ColorCode.modeColor
-                                                              .name))),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      )
-                                    ],
-                                  );
-                                });
+                            showConfirmAlert(
+                                context,
+                                L(
+                                    context,
+                                    LanguageCodes.sendPasswordSuccessTextInfo
+                                        .toString()),
+                                ColorCode.mainColor.name,
+                                isNextRoute: true,
+                                nextRoute: OTPScreen(
+                                    username: _usernameController.text));
+                          }
+                        } else {
+                          if (mounted) {
+                            showConfirmAlert(
+                                context,
+                                L(
+                                    context,
+                                    LanguageCodes.serverErrorTextInfo
+                                        .toString()),
+                                ColorCode.closeColor.name);
                           }
                         }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            themMode(context, ColorCode.mainColor.name),
+                            themeMode(context, ColorCode.mainColor.name),
                       ),
-                      text: L(context, ViCode.submitTextInfo.toString()),
-                      textStyle: FontsDefault.h5(context).copyWith(
-                          color: themMode(context, ColorCode.modeColor.name)),
+                      text: L(context, LanguageCodes.submitTextInfo.toString()),
+                      textStyle: CustomFonts.h5(context).copyWith(
+                          color: themeMode(context, ColorCode.modeColor.name)),
                     ),
                   ),
                 ],

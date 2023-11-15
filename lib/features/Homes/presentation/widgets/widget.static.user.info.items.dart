@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mailto/mailto.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
+import 'package:url_launcher/url_launcher.dart' as url;
+
+class Utils {
+  static Future<void> sendEmail(
+      {required String email, String subject = "", String body = ""}) async {
+    final mail = Mailto(to: ['admin.contact@muonroi.online']);
+    if (await url.canLaunchUrl(Uri.parse(mail.toString()))) {
+      await url.launchUrl(Uri.parse(mail.toString()));
+    } else {
+      throw Exception("Unable to open the email");
+    }
+  }
+}
 
 class SettingItems extends StatelessWidget {
   final String text;
@@ -24,7 +38,7 @@ class SettingItems extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: themMode(context, ColorCode.disableColor.name),
+                color: themeMode(context, ColorCode.disableColor.name),
                 borderRadius: BorderRadius.circular(10)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -40,7 +54,7 @@ class SettingItems extends StatelessWidget {
                     child: Image.asset(
                       image,
                       fit: BoxFit.cover,
-                      color: colorIcon ?? null,
+                      color: colorIcon,
                     )),
                 SizedBox(
                   width: MainSetting.getPercentageOfDevice(context,
@@ -51,7 +65,7 @@ class SettingItems extends StatelessWidget {
                       .height,
                   child: Text(
                     text,
-                    style: FontsDefault.h5(context),
+                    style: CustomFonts.h5(context),
                   ),
                 ),
                 SizedBox(
@@ -64,7 +78,7 @@ class SettingItems extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.center,
                     child: Icon(Icons.keyboard_arrow_right,
-                        color: themMode(context, ColorCode.textColor.name)),
+                        color: themeMode(context, ColorCode.textColor.name)),
                   ),
                 )
               ],

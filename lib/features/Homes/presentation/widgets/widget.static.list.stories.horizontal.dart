@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 class StoriesListHorizontal extends StatelessWidget {
   final String imageUrl;
@@ -14,7 +14,7 @@ class StoriesListHorizontal extends StatelessWidget {
             .height,
         child: GestureDetector(
           onTap: () {},
-          child: netWorkImage(imageUrl, true),
+          child: netWorkImage(context, imageUrl, true),
         ));
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 class CircleButtonIcon extends StatelessWidget {
   final Icon icon;
@@ -26,7 +26,7 @@ class CircleButtonIcon extends StatelessWidget {
         margin: margin ?? const EdgeInsets.symmetric(horizontal: 12.0),
         padding: EdgeInsets.all(borderSize),
         decoration: BoxDecoration(
-            color: color ?? themMode(context, ColorCode.disableColor.name),
+            color: color ?? themeMode(context, ColorCode.disableColor.name),
             borderRadius: BorderRadius.circular(borderSize)),
         child: icon,
       ),
@@ -37,7 +37,7 @@ class CircleButtonIcon extends StatelessWidget {
               child: TooltipTheme(
                 data: TooltipThemeData(
                   decoration: BoxDecoration(
-                    color: themMode(context, ColorCode.mainColor.name),
+                    color: themeMode(context, ColorCode.mainColor.name),
                     borderRadius: BorderRadius.zero,
                   ),
                 ),
@@ -49,7 +49,7 @@ class CircleButtonIcon extends StatelessWidget {
                     padding: EdgeInsets.all(borderSize),
                     decoration: BoxDecoration(
                         color: color ??
-                            themMode(context, ColorCode.disableColor.name),
+                            themeMode(context, ColorCode.disableColor.name),
                         borderRadius: BorderRadius.circular(borderSize)),
                     child: icon,
                   ),

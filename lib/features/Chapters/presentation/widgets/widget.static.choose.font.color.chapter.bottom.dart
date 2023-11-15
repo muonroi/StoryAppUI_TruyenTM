@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
+import 'package:muonroi/features/chapters/provider/provider.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 class ChooseFontColor extends StatefulWidget {
   final KeyChapterColor colorType;
@@ -58,15 +58,15 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: themMode(context, ColorCode.modeColor.name),
+      backgroundColor: themeMode(context, ColorCode.modeColor.name),
       appBar: AppBar(
         title: Title(
-            color: themMode(context, ColorCode.textColor.name),
+            color: themeMode(context, ColorCode.textColor.name),
             child: Text(
-              L(context, ViCode.fontConfigDashboardTextInfo.toString()),
-              style: FontsDefault.h5(context),
+              L(context, LanguageCodes.fontConfigDashboardTextInfo.toString()),
+              style: CustomFonts.h5(context),
             )),
-        backgroundColor: themMode(context, ColorCode.modeColor.name),
+        backgroundColor: themeMode(context, ColorCode.modeColor.name),
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: IconButton(

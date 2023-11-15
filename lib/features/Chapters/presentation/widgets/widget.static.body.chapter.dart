@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:muonroi/features/chapters/data/models/models.chapter.single.chapter.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 class BodyChapter extends StatelessWidget {
   final ScrollController scrollController;
-  final DetailChapterResult chapterInfo;
+  final GroupChapterItems chapterInfo;
   final String tempFontFamily;
   final Color tempFontColor;
   final bool tempIsLeftAlign;
@@ -50,8 +50,8 @@ class BodyChapter extends StatelessWidget {
                                   expectWidth: 96.75)
                               .width,
                           child: Text(
-                            "${L(context, ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}",
-                            style: FontsDefault.h5(context).copyWith(
+                            "${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}",
+                            style: CustomFonts.h5(context).copyWith(
                                 fontWeight: FontWeight.w600,
                                 fontFamily: tempFontFamily,
                                 color: tempFontColor),
@@ -69,7 +69,7 @@ class BodyChapter extends StatelessWidget {
                                 .replaceAll(RegExp(r'Chương \d+:'), '')
                                 .replaceAll("\n", "")
                                 .trim(),
-                            style: FontsDefault.h5(context).copyWith(
+                            style: CustomFonts.h5(context).copyWith(
                                 fontWeight: FontWeight.w600,
                                 fontFamily: tempFontFamily,
                                 color: tempFontColor),
@@ -81,7 +81,7 @@ class BodyChapter extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: 400,
                   child: Html(
                     data: chapterInfo.bodyChunk[index]

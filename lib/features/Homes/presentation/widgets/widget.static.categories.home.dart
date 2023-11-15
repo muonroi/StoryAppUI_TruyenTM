@@ -1,11 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/Categories/presentation/pages/widget.static.categories.dart';
+import 'package:muonroi/features/categories/presentation/pages/page.categories.dart';
+import 'package:muonroi/features/story/presentation/pages/page.editor.choose.dart';
+import 'package:muonroi/features/story/settings/enums/enum.stories.special.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.images.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.images.dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 // #region Main categories
 class MainCategories extends StatelessWidget {
@@ -23,7 +25,8 @@ class MainCategories extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: themMode(context, ColorCode.disableColor.name),
+                backgroundColor:
+                    themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
                   onPressed: () {
                     Navigator.push(
@@ -33,14 +36,14 @@ class MainCategories extends StatelessWidget {
                     );
                   },
                   icon: Image.asset(
-                    ImageDefault.gridFour2x,
-                    color: themMode(context, ColorCode.textColor.name),
+                    CustomImages.gridFour2x,
+                    color: themeMode(context, ColorCode.textColor.name),
                   ),
                 ),
               ),
               Text(
-                L(context, ViCode.genreOfStrTextInfo.toString()),
-                style: FontsDefault.h5(context),
+                L(context, LanguageCodes.genreOfStrTextInfo.toString()),
+                style: CustomFonts.h5(context),
               )
             ],
           ),
@@ -48,18 +51,28 @@ class MainCategories extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: themMode(context, ColorCode.disableColor.name),
+                backgroundColor:
+                    themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => RegularStories(
+                                nameTypeRegularStories: L(
+                                    context,
+                                    LanguageCodes.trendStoriesTextInfo
+                                        .toString()),
+                                type: EnumStoriesSpecial.storiesAll,
+                              ))),
                   icon: Image.asset(
-                    ImageDefault.translate2x,
-                    color: themMode(context, ColorCode.textColor.name),
+                    CustomImages.translate2x,
+                    color: themeMode(context, ColorCode.textColor.name),
                   ),
                 ),
               ),
               Text(
-                L(context, ViCode.translateStrTextInfo.toString()),
-                style: FontsDefault.h5(context),
+                L(context, LanguageCodes.hotStoriesTextInfo.toString()),
+                style: CustomFonts.h5(context),
               )
             ],
           ),
@@ -67,18 +80,28 @@ class MainCategories extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: themMode(context, ColorCode.disableColor.name),
+                backgroundColor:
+                    themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => RegularStories(
+                                nameTypeRegularStories: L(
+                                    context,
+                                    LanguageCodes.trendStoriesTextInfo
+                                        .toString()),
+                                type: EnumStoriesSpecial.storiesNew,
+                              ))),
                   icon: Image.asset(
-                    ImageDefault.bookOpenText2x,
-                    color: themMode(context, ColorCode.textColor.name),
+                    CustomImages.bookOpenText2x,
+                    color: themeMode(context, ColorCode.textColor.name),
                   ),
                 ),
               ),
               Text(
-                L(context, ViCode.fullStrTextInfo.toString()),
-                style: FontsDefault.h5(context),
+                L(context, LanguageCodes.newStoriesHomeTextInfo.toString()),
+                style: CustomFonts.h5(context),
               )
             ],
           ),
@@ -86,18 +109,29 @@ class MainCategories extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: themMode(context, ColorCode.disableColor.name),
+                backgroundColor:
+                    themeMode(context, ColorCode.disableColor.name),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => RegularStories(
+                                nameTypeRegularStories: L(
+                                    context,
+                                    LanguageCodes.trendStoriesTextInfo
+                                        .toString()),
+                                type: EnumStoriesSpecial.storiesComplete,
+                              ))),
                   icon: Image.asset(
-                    ImageDefault.vector2x,
-                    color: themMode(context, ColorCode.textColor.name),
+                    CustomImages.vector2x,
+                    color: themeMode(context, ColorCode.textColor.name),
                   ),
                 ),
               ),
               Text(
-                L(context, ViCode.creationStrTextInfo.toString()),
-                style: FontsDefault.h5(context),
+                L(context,
+                    LanguageCodes.completeStoriesHomeTextInfo.toString()),
+                style: CustomFonts.h5(context),
               )
             ],
           )
@@ -126,16 +160,16 @@ class GroupCategoryTextInfo extends StatelessWidget {
           Text(
             titleText,
             style:
-                FontsDefault.h5(context).copyWith(fontWeight: FontWeight.w700),
+                CustomFonts.h5(context).copyWith(fontWeight: FontWeight.w700),
           ),
           RichText(
               text: TextSpan(
                   text: L(
                     context,
-                    ViCode.viewAllTextInfo.toString(),
+                    LanguageCodes.viewAllTextInfo.toString(),
                   ),
-                  style: FontsDefault.h5(context).copyWith(
-                      color: themMode(context, ColorCode.mainColor.name)),
+                  style: CustomFonts.h5(context).copyWith(
+                      color: themeMode(context, ColorCode.mainColor.name)),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       Navigator.push(context,
@@ -165,8 +199,8 @@ class OnlyTitleTextInfo extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
               textInfo,
-              style: FontsDefault.h5(context)
-                  .copyWith(fontWeight: FontWeight.w700),
+              style:
+                  CustomFonts.h5(context).copyWith(fontWeight: FontWeight.w700),
             )
           ])),
     );

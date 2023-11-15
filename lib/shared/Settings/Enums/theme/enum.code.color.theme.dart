@@ -1,1 +1,8 @@
-enum ColorCode { mainColor, textColor, modeColor, disableColor }
+enum ColorCode {
+  mainColor,
+  closeColor,
+  textColor,
+  modeColor,
+  disableColor,
+  loadingContainerColor
+}

@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.range.dart';
-import 'package:muonroi/features/chapters/data/models/models.chapters.list.chapter.dart';
-import 'package:muonroi/features/chapters/data/models/models.chapters.preview.chapter.dart';
-import 'package:muonroi/features/chapters/data/repositories/chapter_repository.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.list.chapter.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.preview.chapter.dart';
+import 'package:muonroi/features/chapters/data/repositories/chapter.repository.dart';
 part 'latest_chapter_of_story_event.dart';
 part 'latest_chapter_of_story_state.dart';
 
@@ -29,12 +29,14 @@ class LatestChapterOfStoryBloc
       try {
         emit(LatestChapterOfStoryLoadingState());
         final mList = await chapterRepository.fetchChaptersData();
-        emit(LatestChapterOfStoryLoadedState(mList));
+        emit(mList.result.items.isEmpty
+            ? LatestChapterOfStoryNoDataState()
+            : LatestChapterOfStoryLoadedState(mList));
         if (!mList.isOk) {
           emit(LatestChapterOfStoryErrorState(
               mList.errorMessages.map((e) => e.toString()).toList().join(',')));
         }
-      } on NetworkError {
+      } on NetworkChapterError {
         emit(const LatestChapterOfStoryErrorState(
             "Failed to fetch data. is your device online?"));
       }
@@ -49,7 +51,7 @@ class LatestChapterOfStoryBloc
           emit(AnyLatestChapterOfStoryErrorState(
               mList.errorMessages.map((e) => e.toString()).toList().join(',')));
         }
-      } on NetworkError {
+      } on NetworkChapterError {
         emit(const AnyLatestChapterOfStoryErrorState(
             "Failed to fetch data. is your device online?"));
       }
@@ -58,13 +60,13 @@ class LatestChapterOfStoryBloc
       try {
         emit(FromToChapterOfStoryLoadingState());
         var mList = await chapterRepository.fetchFromToChapterOfStory(
-            storyId, event.fromChapterId, event.toChapterId);
+            storyId, event.pageIndex, event.fromChapterId, event.toChapterId);
         emit(FromToChapterOfStoryLoadedState(mList));
         if (!mList.isOk) {
           emit(FromToChapterOfStoryErrorState(
               mList.errorMessages.map((e) => e.toString()).toList().join(',')));
         }
-      } on NetworkError {
+      } on NetworkChapterError {
         emit(const FromToChapterOfStoryErrorState(
             "Failed to fetch data. is your device online?"));
       }

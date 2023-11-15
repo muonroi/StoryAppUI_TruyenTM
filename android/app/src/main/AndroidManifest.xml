@@ -1,3 +1,4 @@
+<!-- //ca-pub-7594358837893425 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.muonroi">
 <uses-permission android:name="android.permission.INTERNET" />
@@ -9,6 +10,7 @@
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
+            android:label="muonroi"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -33,5 +35,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7594358837893425~2188984996" />
     </application>
 </manifest>

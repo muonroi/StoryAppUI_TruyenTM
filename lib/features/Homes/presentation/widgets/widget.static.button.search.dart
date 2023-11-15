@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
-import 'package:muonroi/features/stories/presentation/pages/widget.static.model.stories.search.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
+import 'package:muonroi/features/story/presentation/pages/page.model.stories.search.dart';
 
 class SearchContainer extends StatelessWidget {
   final TextEditingController searchController;
@@ -27,16 +27,17 @@ class SearchContainer extends StatelessWidget {
           onChanged: onChanged,
           maxLines: 1,
           minLines: 1,
+          style: CustomFonts.h5(context),
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8.0),
               hintMaxLines: 1,
-              hintText: L(context, ViCode.searchTextInfo.toString()),
-              hintStyle: FontsDefault.h5(context),
+              hintText: L(context, LanguageCodes.searchTextInfo.toString()),
+              hintStyle: CustomFonts.h5(context),
               suffixIcon: Visibility(
                 visible: isShowClearText,
                 child: IconButton(
                   icon: Icon(Icons.clear,
-                      color: themMode(context, ColorCode.textColor.name)),
+                      color: themeMode(context, ColorCode.textColor.name)),
                   onPressed: () {
                     searchController.clear();
                   },
@@ -45,7 +46,7 @@ class SearchContainer extends StatelessWidget {
               prefixIcon: IconButton(
                 icon: Icon(
                   Icons.search,
-                  color: themMode(context, ColorCode.textColor.name),
+                  color: themeMode(context, ColorCode.textColor.name),
                 ),
                 onPressed: () {},
               ),

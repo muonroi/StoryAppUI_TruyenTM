@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
 
 class RoundedPasswordField extends StatelessWidget {
@@ -22,10 +22,10 @@ class RoundedPasswordField extends StatelessWidget {
           hintText: hintText,
           border: InputBorder.none,
           icon: Icon(Icons.lock,
-              color: themMode(context, ColorCode.mainColor.name)),
+              color: themeMode(context, ColorCode.mainColor.name)),
           suffixIcon: Icon(
             Icons.visibility,
-            color: themMode(context, ColorCode.mainColor.name),
+            color: themeMode(context, ColorCode.mainColor.name),
           ),
         ),
       ),

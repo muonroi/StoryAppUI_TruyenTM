@@ -1,0 +1,1 @@
+enum HubGroup { storyFavoritePublished_ }

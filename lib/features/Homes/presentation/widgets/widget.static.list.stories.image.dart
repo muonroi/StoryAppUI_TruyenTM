@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 class StoriesImageIncludeSizeBox extends StatelessWidget {
   final int storyId;
@@ -15,7 +15,7 @@ class StoriesImageIncludeSizeBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: netWorkImage(imageLink, true),
+      child: netWorkImage(context, imageLink, true, isHome: true),
     );
   }
 }

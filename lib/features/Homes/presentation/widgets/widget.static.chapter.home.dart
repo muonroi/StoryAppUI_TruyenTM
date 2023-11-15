@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.chapter.dart';
-import 'package:muonroi/shared/settings/settings.fonts.dart';
-import 'package:muonroi/shared/settings/settings.images.dart';
-import 'package:muonroi/core/localization/settings.language_code.vi..dart';
-import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
+import 'package:muonroi/features/story/data/repositories/story.repository.dart';
+import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.images.dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
-import 'package:muonroi/features/stories/data/repositories/story_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListNewChapter extends StatefulWidget {
   const ListNewChapter({
@@ -89,58 +91,71 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                                         expectWidth: 20)
                                                 .height,
                                             child: Image.asset(
-                                                ImageDefault.bookBookmark2x,
-                                                fit: BoxFit.cover),
+                                              CustomImages.bookBookmark2x,
+                                              fit: BoxFit.cover,
+                                              color: themeMode(context,
+                                                  ColorCode.textColor.name),
+                                            ),
                                           ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              TextButton(
-                                                  onPressed: null,
-                                                  child: RichText(
-                                                      text: TextSpan(
-                                                    text: chapterInfo
-                                                        .chapterTitle,
-                                                    style: FontsDefault.h5(
-                                                        context),
-                                                    children: <InlineSpan>[
-                                                      const TextSpan(
-                                                          text:
-                                                              '\n'), // Add a line break
-                                                      WidgetSpan(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 8.0),
-                                                          child: Text(
-                                                            DateFormat(
-                                                                    'dd/MM - HH:mm')
-                                                                .format(
-                                                              DateTime
-                                                                  .fromMillisecondsSinceEpoch(
-                                                                chapterInfo
-                                                                        .updatedDateTs *
-                                                                    1000,
-                                                              ).toLocal(),
+                                          SizedBox(
+                                            width: MainSetting
+                                                    .getPercentageOfDevice(
+                                                        context,
+                                                        expectWidth: 180)
+                                                .width,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                TextButton(
+                                                    onPressed: null,
+                                                    child: RichText(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        text: TextSpan(
+                                                          text: chapterInfo
+                                                              .chapterTitle
+                                                              .capitalize(),
+                                                          style: CustomFonts.h5(
+                                                              context),
+                                                          children: <InlineSpan>[
+                                                            const TextSpan(
+                                                                text:
+                                                                    '\n'), // Add a line break
+                                                            WidgetSpan(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        left:
+                                                                            8.0),
+                                                                child: Text(
+                                                                  DateFormat(
+                                                                          'dd/MM - HH:mm')
+                                                                      .format(
+                                                                    DateTime
+                                                                        .fromMillisecondsSinceEpoch(
+                                                                      chapterInfo
+                                                                              .updatedDateTs *
+                                                                          1000,
+                                                                    ).toLocal(),
+                                                                  ),
+                                                                  style: CustomFonts.h6(
+                                                                          context)
+                                                                      .copyWith(
+                                                                          fontSize:
+                                                                              11,
+                                                                          fontStyle:
+                                                                              FontStyle.italic),
+                                                                ),
+                                                              ),
                                                             ),
-                                                            style: FontsDefault
-                                                                    .h6(context)
-                                                                .copyWith(
-                                                                    fontSize:
-                                                                        11,
-                                                                    fontStyle:
-                                                                        FontStyle
-                                                                            .italic),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ))),
-                                            ],
+                                                          ],
+                                                        ))),
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),
@@ -157,9 +172,9 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                               TextButton(
                                                   onPressed: null,
                                                   child: Text(
-                                                    '${L(context, ViCode.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}',
-                                                    style: FontsDefault.h5(
-                                                        context),
+                                                    '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterInfo.numberOfChapter}',
+                                                    style:
+                                                        CustomFonts.h5(context),
                                                     textAlign: TextAlign.left,
                                                   )),
                                             ],
@@ -177,11 +192,36 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                               .fetchDetailStory(
                                             chapterInfo.storyId,
                                           );
+                                          var sharePreferences =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          sharePreferences.setInt(
+                                              "story-${storyInfo.result.id}-current-page-index",
+                                              storyInfo.result.totalPageIndex ==
+                                                      0
+                                                  ? 1
+                                                  : storyInfo
+                                                      .result.totalPageIndex);
+                                          sharePreferences.setInt(
+                                              "story-${storyInfo.result.id}-current-chapter-index",
+                                              index);
+                                          sharePreferences.setInt(
+                                              "story-${storyInfo.result.id}-current-chapter-id",
+                                              chapterInfo.id);
+                                          sharePreferences.setInt(
+                                              "story-${storyInfo.result.id}-current-chapter",
+                                              chapterInfo.numberOfChapter);
                                           if (context.mounted) {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => Chapter(
+                                                  totalChapter: storyInfo
+                                                      .result.totalChapter,
+                                                  chapterNumber: chapterInfo
+                                                      .numberOfChapter,
+                                                  pageIndex: 1,
+                                                  loadSingleChapter: false,
                                                   isLoadHistory: true,
                                                   storyId: chapterInfo.storyId,
                                                   storyName: storyInfo

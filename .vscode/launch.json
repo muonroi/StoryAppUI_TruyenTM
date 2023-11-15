@@ -8,19 +8,19 @@
         {
             "name": "muonroi",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
         },
         {
             "name": "muonroi (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
         },
         {
             "name": "muonroi (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
         }
     ]
 }
