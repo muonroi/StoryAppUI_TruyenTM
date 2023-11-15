@@ -163,6 +163,11 @@ class LocalizationLib {
       LanguageCodes.noDataTextInfo.toString(): 'Không có dữ liệu',
       LanguageCodes.viewNextNotificationTextInfo.toString(): 'Xem tiếp',
       LanguageCodes.viewPreviousNotificationTextInfo.toString(): 'Lùi về',
+      LanguageCodes.closeAdsTextInfo.toString(): 'Tắt quảng cáo',
+      LanguageCodes.acceptTextInfo.toString(): 'Đồng ý',
+      LanguageCodes.unAcceptTextInfo.toString(): 'Không',
+      LanguageCodes.buyPremiumQuestionTextInfo.toString():
+          'Bạn có muốn mua gói trả phí?',
     }
   };
   static String L(String key, {String locale = 'vi'}) {

@@ -193,5 +193,9 @@ enum LanguageCodes {
   viewPreviousNotificationTextInfo,
   emptyChapterTextInfo,
   completeStoriesHomeTextInfo,
+  closeAdsTextInfo,
+  acceptTextInfo,
+  unAcceptTextInfo,
+  buyPremiumQuestionTextInfo,
 // #endregion
 }

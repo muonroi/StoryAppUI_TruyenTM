@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_logs/flutter_logs.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
+import 'package:muonroi/core/ads/admob.service.ads.dart';
 import 'package:muonroi/core/notification/widget.notification.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
@@ -17,11 +19,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'features/accounts/presentation/pages/pages.logins.sign_in.dart';
 import 'shared/settings/enums/enum.log.type.dart';
 
+//ca-app-pub-7594358837893425~2188984996 ~ IOS: ca-app-pub-7594358837893425~9518957901
+//ca-app-pub-7594358837893425/8777803444 ~ IOS: ca-app-pub-7594358837893425/7003603062
 void main() async {
   if (kDebugMode) {
     HttpOverrides.global = MyHttpOverrides();
   }
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   // #region Initialize Logging
   await FlutterLogs.initLogs(
       logLevelsEnabled: [
@@ -80,11 +85,14 @@ class _MainAppState extends State<MainApp> {
   late AccountResult? accountResult;
   @override
   Widget build(BuildContext context) {
+    final initFuture = MobileAds.instance.initialize();
+    final adState = AdMobService(initFuture);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TemplateSetting()),
         ChangeNotifierProvider(create: (_) => CustomThemeModeProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        Provider<AdMobService>(create: (_) => adState)
       ],
       child: Consumer<CustomThemeModeProvider>(builder:
           (BuildContext context, CustomThemeModeProvider value, Widget? child) {

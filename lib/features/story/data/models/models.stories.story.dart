@@ -79,7 +79,8 @@ class StoryItems {
       required this.currentIndex,
       required this.pageCurrentIndex,
       required this.numberOfChapter,
-      required this.chapterLatestLocation});
+      required this.chapterLatestLocation,
+      required this.chapterLatestId});
 
   factory StoryItems.fromJson(Map<String, dynamic> json) => StoryItems(
       rankNumber: json["rankNumber"],
@@ -106,7 +107,8 @@ class StoryItems {
       pageCurrentIndex: json["pageCurrentIndex"] ?? 0,
       numberOfChapter: json["numberOfChapter"] ?? 0,
       chapterLatestLocation:
-          double.parse(json["chapterLatestLocation"].toString()));
+          double.parse(json["chapterLatestLocation"].toString()),
+      chapterLatestId: json["chapterlatestId"]);
 
   String authorName;
   String guid;
@@ -132,6 +134,7 @@ class StoryItems {
   int pageCurrentIndex;
   int numberOfChapter;
   double chapterLatestLocation;
+  int chapterLatestId;
   Map<String, dynamic> toJson() => {
         "rankNumber": rankNumber,
         "totalChapter": totalChapter,
@@ -156,6 +159,7 @@ class StoryItems {
         "pageCurrentIndex": pageCurrentIndex,
         "numberOfChapter": numberOfChapter,
         "chapterLatestLocation": chapterLatestLocation,
+        "chapterlatestId": chapterLatestId
       };
 }
 

@@ -11,6 +11,7 @@ class CustomColors {
       ColorCode.disableColor.name: const Color.fromARGB(221, 57, 56, 56),
       ColorCode.loadingContainerColor.name:
           const Color.fromARGB(70, 220, 217, 217),
+      ColorCode.closeColor.name: const Color.fromARGB(255, 240, 4, 4),
     },
     Modes.light: {
       ColorCode.mainColor.name: const Color(0xFFFFB800),
@@ -19,6 +20,7 @@ class CustomColors {
       ColorCode.disableColor.name: const Color.fromRGBO(238, 238, 238, 1),
       ColorCode.loadingContainerColor.name:
           const Color.fromARGB(40, 91, 90, 90),
+      ColorCode.closeColor.name: const Color.fromARGB(255, 240, 4, 4),
     },
   };
   static Color themeMode(String key, {String mode = Modes.light}) {

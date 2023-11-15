@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:muonroi/core/Authorization/setting.api.dart';
 import 'package:muonroi/core/authorization/enums/key.dart';
 import 'package:muonroi/core/services/api_route.dart';
@@ -42,7 +43,7 @@ class UserService {
   }
 
   Future<UserInfoResponseModel> uploadAvatarUser(
-      File file, String userGuid) async {
+      File file, String userGuid, String contentType) async {
     try {
       await refreshAccessToken();
       var sharedPreferences = await SharedPreferences.getInstance();
@@ -50,8 +51,13 @@ class UserService {
       var client = http.Client();
       var request = http.MultipartRequest(
           'POST', Uri.parse('${ApiNetwork.baseApi}${ApiNetwork.uploadAvatar}'));
-      request.files.add(await http.MultipartFile.fromPath('ImageSrc', file.path,
-          filename: 'image_$userGuid.jpg'));
+      request.files.add(await http.MultipartFile.fromPath(
+        'ImageSrc',
+        file.path,
+        filename: 'image_$userGuid.jpg',
+        contentType: MediaType(
+            contentType.split('/').first, contentType.split('/').last),
+      ));
       request.headers['Authorization'] = 'Bearer $token';
       request.headers['Content-Type'] = 'multipart/form-data';
       var response = await client.send(request);

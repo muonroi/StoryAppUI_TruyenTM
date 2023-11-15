@@ -114,14 +114,15 @@ class _SearchPageState extends State<SearchPage> {
                               child: SizedBox(
                                 width: MainSetting.getPercentageOfDevice(
                                         context,
-                                        expectWidth: 40)
+                                        expectWidth: 60)
                                     .width,
                                 height: MainSetting.getPercentageOfDevice(
                                         context,
                                         expectHeight: 100)
                                     .height,
                                 child: netWorkImage(
-                                    context, storiesSearch[index].imgUrl, true),
+                                    context, storiesSearch[index].imgUrl, true,
+                                    isSize: true, width: 60, height: 100),
                               ),
                             ),
                             title: Text(

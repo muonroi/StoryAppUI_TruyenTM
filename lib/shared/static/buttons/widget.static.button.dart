@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/chapters/provider/models.chapter.template.settings.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
@@ -6,6 +7,53 @@ import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> showConfirmationDialog(
+    BuildContext context, String confirmAction, String content) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        title: Text(
+          confirmAction,
+          style: CustomFonts.h5(context).copyWith(fontWeight: FontWeight.w700),
+        ),
+        content: Text(
+          content,
+          style: CustomFonts.h5(context),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              L(context, LanguageCodes.unAcceptTextInfo.toString()),
+              style: CustomFonts.h6(context).copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              L(context, LanguageCodes.acceptTextInfo.toString()),
+              style: CustomFonts.h6(context).copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: themeMode(context, ColorCode.mainColor.name)),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
 
 class ButtonWidget {
   static Widget buttonNavigatorNextPreviewLanding(

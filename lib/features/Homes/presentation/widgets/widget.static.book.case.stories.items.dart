@@ -31,17 +31,20 @@ class StoriesItems extends StatefulWidget {
 class _StoriesItemsState extends State<StoriesItems> {
   @override
   void initState() {
+    _storiesSearch = [];
     _isFirstLoad = true;
     _initSharedPreferences();
     _selectedIndex = -1;
-    pageIndex = 1;
-    pageSize = 5;
+    _pageIndex = 1;
+    _pageSize = 5;
     _isPrevious = false;
     _isSelected = false;
+    _isShort = false;
+    _isShowClearText = false;
     _refreshController = RefreshController(initialRefresh: false);
     _storiesForUserBloc = StoriesForUserBloc(
-        pageIndex: pageIndex,
-        pageSize: pageSize,
+        pageIndex: _pageIndex,
+        pageSize: _pageSize,
         storyForUserType: widget.storiesTypes);
     _storiesForUserBloc.add(StoriesForUserList(true, isPrevious: _isPrevious));
     super.initState();
@@ -87,12 +90,12 @@ class _StoriesItemsState extends State<StoriesItems> {
   late bool _isSelected;
   late bool _isPrevious;
   late RefreshController _refreshController;
-  var isShort = false;
-  bool isShowClearText = false;
-  List<StoryItems> storiesSearch = [];
+  late bool _isShort;
+  late bool _isShowClearText;
+  late List<StoryItems> _storiesSearch;
   late StoriesForUserBloc _storiesForUserBloc;
-  late int pageIndex;
-  late int pageSize;
+  late int _pageIndex;
+  late int _pageSize;
   late bool _isFirstLoad;
   @override
   Widget build(BuildContext context) {
@@ -139,12 +142,19 @@ class _StoriesItemsState extends State<StoriesItems> {
                 ),
                 child: storiesItem.isNotEmpty
                     ? ListView.builder(
-                        itemCount: storiesSearch.isNotEmpty
-                            ? storiesSearch.length
+                        itemCount: _storiesSearch.isNotEmpty
+                            ? _storiesSearch.length
                             : storiesItem.length,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
                           if (_isFirstLoad) {
+                            if (_sharedPreferences.getInt(
+                                    "story-${storiesItem[index].id}-current-chapter-id") ==
+                                null) {
+                              _sharedPreferences.setInt(
+                                  "story-${storiesItem[index].id}-current-chapter-id",
+                                  storiesItem[index].chapterLatestId);
+                            }
                             if (_sharedPreferences.getInt(
                                     "story-${storiesItem[index].id}-current-page-index") ==
                                 null) {
@@ -244,7 +254,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                                           context),
                                                       suffixIcon: Visibility(
                                                         visible:
-                                                            isShowClearText,
+                                                            _isShowClearText,
                                                         child: IconButton(
                                                           icon: Icon(
                                                               Icons.clear,
@@ -313,7 +323,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                                   ).animate(widget.sort),
                                                   child: IconButton(
                                                       onPressed: () {
-                                                        if (isShort) {
+                                                        if (_isShort) {
                                                           setState(() {
                                                             storiesItem.sort(
                                                                 (a, b) => a
@@ -334,7 +344,7 @@ class _StoriesItemsState extends State<StoriesItems> {
                                                           widget.sort.forward(
                                                               from: 0.0);
                                                         }
-                                                        isShort = !isShort;
+                                                        _isShort = !_isShort;
                                                       },
                                                       icon: Icon(
                                                         Icons.sort,
@@ -411,8 +421,8 @@ class _StoriesItemsState extends State<StoriesItems> {
                                         })
                                       },
                                       child: StoriesBookCaseModelWidget(
-                                        storyInfo: storiesSearch.isNotEmpty
-                                            ? storiesSearch[index]
+                                        storyInfo: _storiesSearch.isNotEmpty
+                                            ? _storiesSearch[index]
                                             : storiesItem[index],
                                         isSelected: _isSelected &&
                                             _selectedIndex == index,
@@ -439,8 +449,8 @@ class _StoriesItemsState extends State<StoriesItems> {
           element.storyTitle.toLowerCase().contains(value.toLowerCase())));
     }
     setState(() {
-      isShowClearText = isInputNotEmpty;
-      storiesSearch = searchedStories;
+      _isShowClearText = isInputNotEmpty;
+      _storiesSearch = searchedStories;
     });
   }
 }

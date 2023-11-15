@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:muonroi/core/ads/admob.service.ads.dart';
 import 'package:muonroi/features/chapters/bloc/group_chapter/group_chapter_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/presentation/pages/widget.static.model.list.chapter.dart';
@@ -20,6 +22,7 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/settings.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/settings.main.dart';
+import 'package:muonroi/shared/static/buttons/widget.static.premium.text.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,7 +58,10 @@ class Chapter extends StatefulWidget {
 class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   @override
   void initState() {
-    currentPosition = 0;
+    _heightBottomContainer = 75.2;
+    _heightAdsContainer = 49;
+    _isContainerVisible = false;
+    _currentPosition = 0;
     _isLookNextChapter = true;
     _maxScrollOffset = 0;
     _chapterName = "";
@@ -73,7 +79,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
           0;
       _saveRecentStory();
     });
-
+    _bannerIsLoaded = false;
     _isFirstRefresh = true;
     _chapterIdOld = 0;
     _chapterNumber = 0;
@@ -90,6 +96,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
     super.initState();
     _scrollController = ScrollController();
+    _scrollAdsController = ScrollController(initialScrollOffset: 75.2);
     _refreshController = RefreshController(initialRefresh: false);
     _scrollController.addListener(_saveScrollPosition);
     _isVisible = false;
@@ -111,7 +118,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
         });
       });
     } else if (!_isLoading) {
-      _isLoading = true;
+      _isLoading = false;
     }
   }
 
@@ -119,6 +126,13 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _initSharedPreferences();
+    final adState = Provider.of<AdMobService>(context);
+    adState.initializations.then((status) {
+      setState(() {
+        _createBannerAds(adState);
+        _bannerIsLoaded = true;
+      });
+    });
   }
 
   @override
@@ -143,6 +157,15 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   }
 
 // #region Methods
+  void _createBannerAds(adState) {
+    _bannerAd = BannerAd(
+        adUnitId:
+            "ca-app-pub-3940256099942544/6300978111", //adState.bannerAdUnitId,
+        size: AdSize.banner,
+        request: const AdRequest(),
+        listener: adState.adListener)
+      ..load();
+  }
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
@@ -173,7 +196,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
           groupChaptersToJson(_groupChapterItems!));
     }
     _sharedPreferences.setDouble(_scrollPositionKey, _scrollController.offset);
-    currentPosition = _scrollController.offset;
+    _currentPosition = _scrollController.offset;
     _sharedPreferences.setInt("story-${widget.storyId}", widget.storyId);
     _sharedPreferences.setInt(
         "story-${widget.storyId}-current-chapter-id", _chapterIdOld);
@@ -183,6 +206,20 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
         _pageIndex == 0 ? 1 : _pageIndex);
     _sharedPreferences.setInt(
         "story-${widget.storyId}-current-chapter-index", _chapterIndex);
+    _sharedPreferences.setString(
+        "recently-story",
+        recentStoryModelToJson(StoryRecent(
+            storyId: widget.storyId,
+            storyName: widget.storyName,
+            chapterId: widget.chapterId,
+            lastChapterId: widget.lastChapterId,
+            firstChapterId: widget.firstChapterId,
+            isLoadHistory: widget.isLoadHistory,
+            loadSingleChapter: widget.loadSingleChapter,
+            pageIndex: widget.pageIndex,
+            totalChapter: widget.totalChapter,
+            chapterNumber: widget.chapterNumber)));
+    _sharedPreferences.setInt("recently-chapterId", _chapterIdOld);
   }
 
   void _loadSavedScrollPosition() async {
@@ -217,6 +254,11 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     } else if (mounted && widget.firstChapterId != chapterId) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
+          _heightBottomContainer = 75.2;
+          _heightAdsContainer = 49;
+          _bannerAd!.load();
+          _bannerIsLoaded = true;
+          _isContainerVisible = false;
           _isLoading = false;
           _isDisableNextButton = false;
           if (_pageIndex > 1 && _chapterIndex == 0) {
@@ -245,6 +287,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
       }
     }
     _saveScrollPosition();
+    _saveRecentStory();
     _refreshController.refreshCompleted();
   }
 
@@ -261,10 +304,15 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
       });
     } else if (mounted && _isLoading ||
         widget.lastChapterId != chapterId &&
-            _scrollController.offset > _maxScrollOffset + 50 &&
+            _scrollController.offset > _maxScrollOffset + 150 &&
             !_isLookNextChapter) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
+          _heightBottomContainer = 75.2;
+          _heightAdsContainer = 49;
+          _bannerAd!.load();
+          _bannerIsLoaded = true;
+          _isContainerVisible = false;
           _isLookNextChapter = true;
           _isLoading = false;
           _isDisablePreviousButton = false;
@@ -286,6 +334,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
         });
         _chapterNumber++;
         _saveScrollPosition();
+        _saveRecentStory();
       });
     } else if (!_isLoading) {
       _isLoading = true;
@@ -314,13 +363,15 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   }
 
   void _saveRecentStory() {
+    var chapterId = _chapterIdOld == 0 ? widget.chapterId : _chapterIdOld;
     _storyRepository.createStoryForUser(
         widget.storyId,
         StoryForUserType.recent.index,
         _chapterIndex,
         _pageIndex,
         widget.chapterNumber,
-        currentPosition);
+        _currentPosition,
+        chapterId);
     _sharedPreferences.setString(
         "recently-story",
         recentStoryModelToJson(StoryRecent(
@@ -337,10 +388,16 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     _sharedPreferences.setInt("recently-chapterId", _chapterIdOld);
     _sharedPreferences.setBool("is_saved_recent", true);
   }
+
 // #endregion
 
 // #region Variables
-  late double currentPosition;
+  late double _heightAdsContainer;
+  late double _heightBottomContainer;
+  late bool _isContainerVisible;
+  late bool _bannerIsLoaded;
+  late BannerAd? _bannerAd;
+  late double _currentPosition;
   late double _maxScrollOffset;
   late int _chapterIndex;
   late int _pageIndex;
@@ -365,6 +422,8 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   late StoryRepository _storyRepository;
   late String _chapterName;
   late bool _isLookNextChapter;
+  late ScrollController _scrollAdsController;
+
   // #endregion
 
   @override
@@ -438,72 +497,193 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                     templateValue.isHorizontal ?? _settingConfig.isHorizontal;
                 // #endregion
                 return Scaffold(
-                  resizeToAvoidBottomInset: false,
-                  appBar: _isVisible
-                      ? AppBar(
-                          automaticallyImplyLeading: false,
-                          elevation: 0,
-                          backgroundColor: tempBackground,
-                          leading: IconButton(
-                              splashRadius: 25,
-                              color: tempFontColor,
-                              onPressed: () {
-                                Navigator.maybePop(context, true);
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios_sharp,
+                    resizeToAvoidBottomInset: false,
+                    appBar: _isVisible
+                        ? AppBar(
+                            automaticallyImplyLeading: false,
+                            elevation: 0,
+                            backgroundColor: tempBackground,
+                            leading: IconButton(
+                                splashRadius: 25,
                                 color: tempFontColor,
-                              )),
-                          actions: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.more_horiz,
-                                color: tempFontColor,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isShowDetailAppbar = !_isShowDetailAppbar;
-                                });
-                              },
-                              splashRadius: 25,
-                            )
-                          ],
-                          bottom: _isShowDetailAppbar
-                              ? PreferredSize(
-                                  preferredSize: const Size.fromHeight(80),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              InkWell(
-                                                onTap: () => Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ChapterListPage(
-                                                              totalChapter: widget
-                                                                  .totalChapter,
-                                                              storyId: chapterInfo[
-                                                                      _chapterIndex]
-                                                                  .storyId,
-                                                              lastChapterId: widget
-                                                                  .lastChapterId,
-                                                              firstChapterId: widget
-                                                                  .firstChapterId,
-                                                              storyTitle: widget
-                                                                  .storyName,
-                                                            ))),
-                                                child: Row(
+                                onPressed: () {
+                                  Navigator.maybePop(context, true);
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back_ios_sharp,
+                                  color: tempFontColor,
+                                )),
+                            actions: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.more_horiz,
+                                  color: tempFontColor,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isShowDetailAppbar = !_isShowDetailAppbar;
+                                  });
+                                },
+                                splashRadius: 25,
+                              )
+                            ],
+                            bottom: _isShowDetailAppbar
+                                ? PreferredSize(
+                                    preferredSize: const Size.fromHeight(80),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () => Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ChapterListPage(
+                                                                totalChapter: widget
+                                                                    .totalChapter,
+                                                                storyId: chapterInfo[
+                                                                        _chapterIndex]
+                                                                    .storyId,
+                                                                lastChapterId:
+                                                                    widget
+                                                                        .lastChapterId,
+                                                                firstChapterId:
+                                                                    widget
+                                                                        .firstChapterId,
+                                                                storyTitle: widget
+                                                                    .storyName,
+                                                              ))),
+                                                  child: Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                bottom: 4.0,
+                                                                right: 4.0,
+                                                                top: 4.0),
+                                                        child: Icon(
+                                                          Icons.list,
+                                                          color: tempFontColor,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        L(
+                                                            context,
+                                                            LanguageCodes
+                                                                .listChapterDetailConfigTextInfo
+                                                                .toString()),
+                                                        style: CustomFonts.h6(
+                                                                context)
+                                                            .copyWith(
+                                                                color:
+                                                                    tempFontColor),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () => Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StoryDetail(
+                                                                storyId: chapterInfo[
+                                                                        _chapterIndex]
+                                                                    .storyId,
+                                                                storyTitle: widget
+                                                                    .storyName,
+                                                              ))),
+                                                  child: Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(4.0),
+                                                        child: Icon(
+                                                          Icons.book,
+                                                          color: tempFontColor,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        L(
+                                                            context,
+                                                            LanguageCodes
+                                                                .storyDetailConfigTextInfo
+                                                                .toString()),
+                                                        style: CustomFonts.h6(
+                                                                context)
+                                                            .copyWith(
+                                                                color:
+                                                                    tempFontColor),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () => Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StoriesDownloadPage(
+                                                                storyId: chapterInfo[
+                                                                        _chapterIndex]
+                                                                    .storyId,
+                                                                storyName: widget
+                                                                    .storyName,
+                                                                totalChapter: widget
+                                                                    .totalChapter,
+                                                              ))),
+                                                  child: Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(4.0),
+                                                        child: Icon(
+                                                          Icons.download,
+                                                          color: tempFontColor,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        L(
+                                                            context,
+                                                            LanguageCodes
+                                                                .storyDownloadConfigTextInfo
+                                                                .toString()),
+                                                        style: CustomFonts.h6(
+                                                                context)
+                                                            .copyWith(
+                                                                color:
+                                                                    tempFontColor),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
                                                   children: [
                                                     Padding(
                                                       padding:
@@ -512,15 +692,14 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                                               right: 4.0,
                                                               top: 4.0),
                                                       child: Icon(
-                                                        Icons.list,
-                                                        color: tempFontColor,
-                                                      ),
+                                                          Icons.publish_sharp,
+                                                          color: tempFontColor),
                                                     ),
                                                     Text(
                                                       L(
                                                           context,
                                                           LanguageCodes
-                                                              .listChapterDetailConfigTextInfo
+                                                              .storyPushCoinConfigTextInfo
                                                               .toString()),
                                                       style: CustomFonts.h6(
                                                               context)
@@ -530,35 +709,20 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                                     )
                                                   ],
                                                 ),
-                                              ),
-                                              InkWell(
-                                                onTap: () => Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            StoryDetail(
-                                                              storyId: chapterInfo[
-                                                                      _chapterIndex]
-                                                                  .storyId,
-                                                              storyTitle: widget
-                                                                  .storyName,
-                                                            ))),
-                                                child: Row(
+                                                Row(
                                                   children: [
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.all(
                                                               4.0),
-                                                      child: Icon(
-                                                        Icons.book,
-                                                        color: tempFontColor,
-                                                      ),
+                                                      child: Icon(Icons.share,
+                                                          color: tempFontColor),
                                                     ),
                                                     Text(
                                                       L(
                                                           context,
                                                           LanguageCodes
-                                                              .storyDetailConfigTextInfo
+                                                              .storyShareConfigTextInfo
                                                               .toString()),
                                                       style: CustomFonts.h6(
                                                               context)
@@ -568,37 +732,20 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                                     )
                                                   ],
                                                 ),
-                                              ),
-                                              InkWell(
-                                                onTap: () => Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            StoriesDownloadPage(
-                                                              storyId: chapterInfo[
-                                                                      _chapterIndex]
-                                                                  .storyId,
-                                                              storyName: widget
-                                                                  .storyName,
-                                                              totalChapter: widget
-                                                                  .totalChapter,
-                                                            ))),
-                                                child: Row(
+                                                Row(
                                                   children: [
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.all(
                                                               4.0),
-                                                      child: Icon(
-                                                        Icons.download,
-                                                        color: tempFontColor,
-                                                      ),
+                                                      child: Icon(Icons.error,
+                                                          color: tempFontColor),
                                                     ),
                                                     Text(
                                                       L(
                                                           context,
                                                           LanguageCodes
-                                                              .storyDownloadConfigTextInfo
+                                                              .storyReportConfigTextInfo
                                                               .toString()),
                                                       style: CustomFonts.h6(
                                                               context)
@@ -607,263 +754,372 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                                                   tempFontColor),
                                                     )
                                                   ],
-                                                ),
-                                              )
-                                            ],
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 4.0,
-                                                            right: 4.0,
-                                                            top: 4.0),
-                                                    child: Icon(
-                                                        Icons.publish_sharp,
-                                                        color: tempFontColor),
-                                                  ),
-                                                  Text(
-                                                    L(
-                                                        context,
-                                                        LanguageCodes
-                                                            .storyPushCoinConfigTextInfo
-                                                            .toString()),
-                                                    style: CustomFonts.h6(
-                                                            context)
-                                                        .copyWith(
-                                                            color:
-                                                                tempFontColor),
-                                                  )
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: Icon(Icons.share,
-                                                        color: tempFontColor),
-                                                  ),
-                                                  Text(
-                                                    L(
-                                                        context,
-                                                        LanguageCodes
-                                                            .storyShareConfigTextInfo
-                                                            .toString()),
-                                                    style: CustomFonts.h6(
-                                                            context)
-                                                        .copyWith(
-                                                            color:
-                                                                tempFontColor),
-                                                  )
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: Icon(Icons.error,
-                                                        color: tempFontColor),
-                                                  ),
-                                                  Text(
-                                                    L(
-                                                        context,
-                                                        LanguageCodes
-                                                            .storyReportConfigTextInfo
-                                                            .toString()),
-                                                    style: CustomFonts.h6(
-                                                            context)
-                                                        .copyWith(
-                                                            color:
-                                                                tempFontColor),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ))
-                              : null,
-                          title: Stack(children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Title(
-                                  color: tempFontColor!,
-                                  child: Text(
-                                    _chapterName.isEmpty
-                                        ? widget.storyName
-                                        : _chapterName
-                                            .replaceAll(
-                                                RegExp(r'Chương \d+:'), '')
-                                            .replaceAll("\n", "")
-                                            .replaceAll('.', "")
-                                            .trim(),
-                                    style: CustomFonts.h5(context).copyWith(
-                                        fontFamily: tempFontFamily,
-                                        color: tempFontColor,
-                                        fontSize: 14),
-                                  )),
-                            ),
-                            showToolTip(_chapterName.isEmpty
-                                ? widget.storyName
-                                : _chapterName
-                                    .replaceAll(RegExp(r'Chương \d+:'), '')
-                                    .replaceAll("\n", "")
-                                    .trim())
-                          ]),
-                        )
-                      : PreferredSize(
-                          preferredSize: Size.zero, child: Container()),
-                  backgroundColor: tempBackground,
-                  body: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isVisible = !_isVisible;
-                        _isShowDetailAppbar = false;
-                      });
-                    },
-                    child: SmartRefresher(
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      header: ClassicHeader(
-                        idleIcon: Icon(
-                          Icons.arrow_upward,
-                          color: tempFontColor,
-                        ),
-                        idleText: L(context,
-                            LanguageCodes.previousChapterTextInfo.toString()),
-                        refreshingText: L(
-                            context, LanguageCodes.loadingTextInfo.toString()),
-                        releaseText: L(
-                            context, LanguageCodes.loadingTextInfo.toString()),
-                      ),
-                      controller: _refreshController,
-                      onRefresh: () =>
-                          _onRefresh(chapterInfo[_chapterIndex].id),
-                      onLoading: () =>
-                          _onLoading(chapterInfo[_chapterIndex].id, true),
-                      footer: ClassicFooter(
-                        canLoadingIcon: Icon(
-                          Icons.arrow_downward,
-                          color: tempFontColor,
-                        ),
-                        idleText: L(context,
-                            LanguageCodes.loadingMoreTextInfo.toString()),
-                        canLoadingText: L(context,
-                            LanguageCodes.nextChapterTextInfo.toString()),
-                      ),
-                      child: tempIsHorizontal!
-                          ? ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              physics: const PageScrollPhysics(),
-                              controller: _scrollController,
-                              itemCount:
-                                  chapterInfo[_chapterIndex].bodyChunk.length,
-                              itemBuilder: (context, index) {
-                                var textString = convertTagHtmlFormatToString(
-                                        chapterInfo[_chapterIndex]
-                                            .bodyChunk[index])
-                                    .trim();
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(12.0),
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: AutoSizeText(
-                                          textString,
-                                          style: TextStyle(
-                                            fontSize: tempFontSize! > 30
-                                                ? 30
-                                                : tempFontSize,
-                                            fontFamily: tempFontFamily,
-                                            color: tempFontColor,
-                                            backgroundColor: tempBackground,
-                                          ),
-                                          textAlign: tempIsLeftAlign!
-                                              ? TextAlign.justify
-                                              : TextAlign.left,
-                                        ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                );
-                              })
-                          : ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              controller: _scrollController,
-                              itemCount: 1,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Html(
-                                        data: chapterInfo[_chapterIndex]
-                                            .body
-                                            .replaceAll("\n", "")
-                                            .trim(),
-                                        style: {
-                                          '#': Style(
+                                    ))
+                                : null,
+                            title: Stack(children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Title(
+                                    color: tempFontColor!,
+                                    child: Text(
+                                      _chapterName.isEmpty
+                                          ? widget.storyName
+                                          : _chapterName
+                                              .replaceAll(
+                                                  RegExp(r'Chương \d+:'), '')
+                                              .replaceAll("\n", "")
+                                              .replaceAll('.', "")
+                                              .trim(),
+                                      style: CustomFonts.h5(context).copyWith(
+                                          fontFamily: tempFontFamily,
+                                          color: tempFontColor,
+                                          fontSize: 14),
+                                    )),
+                              ),
+                              showToolTip(_chapterName.isEmpty
+                                  ? widget.storyName
+                                  : _chapterName
+                                      .replaceAll(RegExp(r'Chương \d+:'), '')
+                                      .replaceAll("\n", "")
+                                      .trim())
+                            ]),
+                          )
+                        : PreferredSize(
+                            preferredSize: Size.zero, child: Container()),
+                    backgroundColor: tempBackground,
+                    body: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isVisible = !_isVisible;
+                          if (_isVisible == false) {
+                            _heightBottomContainer =
+                                MainSetting.getPercentageOfDevice(context,
+                                        expectHeight: 26.0)
+                                    .height!;
+                            _heightAdsContainer =
+                                MainSetting.getPercentageOfDevice(context,
+                                        expectHeight: 0.0)
+                                    .height!;
+                          } else {
+                            _heightBottomContainer =
+                                MainSetting.getPercentageOfDevice(context,
+                                        expectHeight: 75.2)
+                                    .height!;
+                            _heightAdsContainer =
+                                MainSetting.getPercentageOfDevice(context,
+                                        expectHeight: 49)
+                                    .height!;
+                          }
+                          if (!_isContainerVisible && _isVisible == false) {
+                            _heightBottomContainer =
+                                MainSetting.getPercentageOfDevice(context,
+                                        expectHeight: 75.2)
+                                    .height!;
+                            _heightAdsContainer =
+                                MainSetting.getPercentageOfDevice(context,
+                                        expectHeight: 49)
+                                    .height!;
+                          }
+
+                          _isShowDetailAppbar = false;
+                        });
+                      },
+                      child: SmartRefresher(
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        header: ClassicHeader(
+                          idleIcon: Icon(
+                            Icons.arrow_upward,
+                            color: tempFontColor,
+                          ),
+                          idleText: L(context,
+                              LanguageCodes.previousChapterTextInfo.toString()),
+                          refreshingText: L(context,
+                              LanguageCodes.loadingTextInfo.toString()),
+                          releaseText: L(context,
+                              LanguageCodes.loadingTextInfo.toString()),
+                        ),
+                        controller: _refreshController,
+                        onRefresh: () =>
+                            _onRefresh(chapterInfo[_chapterIndex].id),
+                        onLoading: () =>
+                            _onLoading(chapterInfo[_chapterIndex].id, true),
+                        footer: ClassicFooter(
+                          canLoadingIcon: Icon(
+                            Icons.arrow_downward,
+                            color: tempFontColor,
+                          ),
+                          idleText: L(context,
+                              LanguageCodes.loadingMoreTextInfo.toString()),
+                          canLoadingText: L(context,
+                              LanguageCodes.nextChapterTextInfo.toString()),
+                        ),
+                        child: tempIsHorizontal!
+                            ? ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: const PageScrollPhysics(),
+                                controller: _scrollController,
+                                itemCount:
+                                    chapterInfo[_chapterIndex].bodyChunk.length,
+                                itemBuilder: (context, index) {
+                                  var textString = convertTagHtmlFormatToString(
+                                          chapterInfo[_chapterIndex]
+                                              .bodyChunk[index])
+                                      .trim();
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          padding: const EdgeInsets.all(12.0),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: AutoSizeText(
+                                            textString,
+                                            style: TextStyle(
+                                              fontSize: tempFontSize! > 30
+                                                  ? 30
+                                                  : tempFontSize,
+                                              fontFamily: tempFontFamily,
+                                              color: tempFontColor,
+                                              backgroundColor: tempBackground,
+                                            ),
                                             textAlign: tempIsLeftAlign!
                                                 ? TextAlign.justify
                                                 : TextAlign.left,
-                                            fontFamily: tempFontFamily,
-                                            fontSize: FontSize(tempFontSize!),
-                                            color: tempFontColor,
-                                            backgroundColor: tempBackground,
                                           ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                })
+                            : ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                controller: _scrollController,
+                                itemCount: 1,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Html(
+                                          data: chapterInfo[_chapterIndex]
+                                              .body
+                                              .replaceAll("\n", "")
+                                              .trim(),
+                                          style: {
+                                            '#': Style(
+                                              textAlign: tempIsLeftAlign!
+                                                  ? TextAlign.justify
+                                                  : TextAlign.left,
+                                              fontFamily: tempFontFamily,
+                                              fontSize: FontSize(tempFontSize!),
+                                              color: tempFontColor,
+                                              backgroundColor: tempBackground,
+                                            ),
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                      ),
+                    ),
+                    floatingActionButton: ButtonChapterScroll(
+                        tempLocationScrollButton: tempLocationScrollButton,
+                        tempFontColor: tempFontColor!,
+                        tempBackground: tempBackground!,
+                        scrollController: _scrollController),
+                    bottomNavigationBar: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _scrollAdsController,
+                      child: AnimatedContainer(
+                        height: MainSetting.getPercentageOfDevice(context,
+                                expectHeight: _heightBottomContainer)
+                            .height,
+                        duration: const Duration(milliseconds: 300),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12.0),
+                                    child: Container(
+                                        padding: const EdgeInsets.all(4.0),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                            color: themeMode(context,
+                                                ColorCode.textColor.name)),
+                                        child: const BuyPremium()),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: SizedBox(
+                                      width: MainSetting.getPercentageOfDevice(
+                                              context,
+                                              expectWidth: 20)
+                                          .width,
+                                      height: MainSetting.getPercentageOfDevice(
+                                              context,
+                                              expectHeight: 18)
+                                          .height,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            if (_scrollAdsController
+                                                    .hasClients &&
+                                                !_isContainerVisible) {
+                                              _heightBottomContainer =
+                                                  MainSetting
+                                                          .getPercentageOfDevice(
+                                                              context,
+                                                              expectHeight: 26)
+                                                      .height!;
+                                              _heightAdsContainer = MainSetting
+                                                      .getPercentageOfDevice(
+                                                          context,
+                                                          expectHeight: 0)
+                                                  .height!;
+                                              _scrollAdsController.animateTo(
+                                                0,
+                                                duration: const Duration(
+                                                    milliseconds: 300),
+                                                curve: Curves.easeInOut,
+                                              );
+                                              _isContainerVisible = true;
+                                            } else if (_scrollAdsController
+                                                    .hasClients &&
+                                                _isContainerVisible) {
+                                              _heightBottomContainer =
+                                                  MainSetting
+                                                          .getPercentageOfDevice(
+                                                              context,
+                                                              expectHeight:
+                                                                  75.2)
+                                                      .height!;
+                                              _heightAdsContainer = MainSetting
+                                                      .getPercentageOfDevice(
+                                                          context,
+                                                          expectHeight: 49)
+                                                  .height!;
+                                              _scrollAdsController.animateTo(
+                                                75.2,
+                                                duration: const Duration(
+                                                    milliseconds: 300),
+                                                curve: Curves.easeInOut,
+                                              );
+                                              _isContainerVisible = false;
+                                            }
+                                          });
                                         },
+                                        child: _isVisible
+                                            ? null
+                                            : Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30.0),
+                                                    color: themeMode(
+                                                        context,
+                                                        ColorCode
+                                                            .textColor.name)),
+                                                child: !_isContainerVisible
+                                                    ? Icon(
+                                                        size: MainSetting
+                                                                .getPercentageOfDevice(
+                                                                    context,
+                                                                    expectWidth:
+                                                                        18)
+                                                            .width,
+                                                        Icons
+                                                            .keyboard_arrow_down_outlined,
+                                                        color: themeMode(
+                                                            context,
+                                                            ColorCode.modeColor
+                                                                .name),
+                                                      )
+                                                    : Icon(
+                                                        size: MainSetting
+                                                                .getPercentageOfDevice(
+                                                                    context,
+                                                                    expectWidth:
+                                                                        18)
+                                                            .width,
+                                                        Icons
+                                                            .keyboard_arrow_up_outlined,
+                                                        color: themeMode(
+                                                            context,
+                                                            ColorCode.modeColor
+                                                                .name),
+                                                      ),
+                                              ),
                                       ),
                                     ),
-                                  ],
-                                );
-                              }),
-                    ),
-                  ),
-                  floatingActionButton: ButtonChapterScroll(
-                      tempLocationScrollButton: tempLocationScrollButton,
-                      tempFontColor: tempFontColor!,
-                      tempBackground: tempBackground!,
-                      scrollController: _scrollController),
-                  bottomNavigationBar: _isVisible
-                      ? AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.linearToEaseOut,
-                          child: BottomChapterDetail(
-                              isDisablePreviousButton: _isDisablePreviousButton,
-                              isDisableNextButton: _isDisableNextButton ||
-                                  chapterInfo[_chapterIndex].id ==
-                                      widget.lastChapterId,
-                              fontColor: tempFontColor,
-                              backgroundColor: tempBackground,
-                              chapterId: chapterInfo[_chapterIndex].id,
-                              onRefresh: (int chapterId) =>
-                                  _onRefresh(chapterInfo[_chapterIndex].id),
-                              onLoading: (int chapterId, bool isCheckShow) =>
-                                  _onLoading(
-                                      chapterInfo[_chapterIndex].id, false)),
-                        )
-                      : null,
-                );
+                                  ),
+                                ],
+                              ),
+                            ),
+                            _isVisible
+                                ? AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.linearToEaseOut,
+                                    child: BottomChapterDetail(
+                                        isDisablePreviousButton:
+                                            _isDisablePreviousButton,
+                                        isDisableNextButton:
+                                            _isDisableNextButton ||
+                                                chapterInfo[_chapterIndex].id ==
+                                                    widget.lastChapterId,
+                                        fontColor: tempFontColor,
+                                        backgroundColor: tempBackground,
+                                        chapterId:
+                                            chapterInfo[_chapterIndex].id,
+                                        onRefresh: (int chapterId) =>
+                                            _onRefresh(
+                                                chapterInfo[_chapterIndex].id),
+                                        onLoading: (int chapterId,
+                                                bool isCheckShow) =>
+                                            _onLoading(
+                                                chapterInfo[_chapterIndex].id,
+                                                false)),
+                                  )
+                                : _bannerAd == null
+                                    ? const SizedBox()
+                                    : _bannerIsLoaded
+                                        ? Stack(children: [
+                                            AnimatedContainer(
+                                              height: MainSetting
+                                                      .getPercentageOfDevice(
+                                                          context,
+                                                          expectHeight:
+                                                              _heightAdsContainer)
+                                                  .height,
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              child: AdWidget(ad: _bannerAd!),
+                                            ),
+                                          ])
+                                        : const SizedBox()
+                          ],
+                        ),
+                      ),
+                    ));
               },
             );
           }

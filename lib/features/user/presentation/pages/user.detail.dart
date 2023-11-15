@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:mime/mime.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
 import 'package:muonroi/features/user/bloc/user_info_bloc.dart';
@@ -72,7 +73,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       _image = File(image.path);
-      await _userRepository.uploadAvatarUser(_image, widget.userGuid);
+      await _userRepository.uploadAvatarUser(_image, widget.userGuid,
+          lookupMimeType(image.path) ?? 'application/octet-stream');
     }
     setState(() {
       var userInfo = accountSignInFromJson(

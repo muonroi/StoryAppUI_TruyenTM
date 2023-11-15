@@ -4,7 +4,10 @@ import 'package:muonroi/features/accounts/data/models/models.account.signin.dart
 import 'package:muonroi/features/homes/bloc/banner/banner_bloc.dart';
 import 'package:muonroi/features/homes/presentation/pages/controller.main.dart';
 import 'package:muonroi/features/homes/settings/enum/enum.setting.type.dart';
+import 'package:muonroi/features/story/bloc/user/stories_for_user_bloc.dart';
+import 'package:muonroi/features/story/data/models/enum/enum.story.user.dart';
 import 'package:muonroi/shared/settings/settings.images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IndexPage extends StatefulWidget {
   final AccountResult accountResult;
@@ -17,8 +20,12 @@ class IndexPage extends StatefulWidget {
 class _IndexPageState extends State<IndexPage> {
   @override
   void initState() {
+    _storiesForUserBloc = StoriesForUserBloc(
+        pageIndex: 1, pageSize: 20, storyForUserType: StoryForUserType.recent);
     _bannerBloc = BannerBloc(EnumSettingType.banner);
     _bannerBloc.add(const GetBannerList());
+    _storiesForUserBloc.add(const StoriesForUserList(true, isPrevious: false));
+    _initSharedPreferences();
     super.initState();
   }
 
@@ -28,7 +35,13 @@ class _IndexPageState extends State<IndexPage> {
     super.dispose();
   }
 
+  Future<void> _initSharedPreferences() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  late SharedPreferences _sharedPreferences;
   late BannerBloc _bannerBloc;
+  late StoriesForUserBloc _storiesForUserBloc;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +58,8 @@ class _IndexPageState extends State<IndexPage> {
             }
             if (state is BannerLoadedState) {
               var bannerUrl = state.banners.result.bannerUrl;
-              return _homePage(context, widget.accountResult, bannerUrl);
+              return _homePage(context, widget.accountResult, bannerUrl,
+                  _storiesForUserBloc, _sharedPreferences);
             }
             return _homeLoading();
           },
@@ -56,10 +70,74 @@ class _IndexPageState extends State<IndexPage> {
 }
 
 Widget _homePage(
-    BuildContext context, AccountResult accountResult, List<String> bannerUrl) {
-  return HomePage(
-    accountResult: accountResult,
-    bannerUrl: bannerUrl,
+    BuildContext context,
+    AccountResult accountResult,
+    List<String> bannerUrl,
+    StoriesForUserBloc storiesForUserBloc,
+    SharedPreferences sharedPreferences) {
+  return BlocProvider(
+    create: (context) => storiesForUserBloc,
+    child: BlocListener<StoriesForUserBloc, StoriesForUserState>(
+      listener: (context, state) {
+        _homeLoading();
+      },
+      child: BlocBuilder<StoriesForUserBloc, StoriesForUserState>(
+        builder: (context, state) {
+          if (state is StoriesForUserLoadingState) {
+            return _homeLoading();
+          }
+          if (state is StoriesForUserLoadedState) {
+            var storiesItem = state.stories.result.items;
+            for (int index = 0; index < storiesItem.length; index++) {
+              if (sharedPreferences.getInt(
+                      "story-${storiesItem[index].id}-current-chapter-id") ==
+                  null) {
+                sharedPreferences.setInt(
+                    "story-${storiesItem[index].id}-current-chapter-id",
+                    storiesItem[index].chapterLatestId);
+              }
+              if (sharedPreferences.getInt(
+                      "story-${storiesItem[index].id}-current-page-index") ==
+                  null) {
+                sharedPreferences.setInt(
+                    "story-${storiesItem[index].id}-current-page-index",
+                    storiesItem[index].pageCurrentIndex == 0
+                        ? 1
+                        : storiesItem[index].pageCurrentIndex);
+              }
+              if (sharedPreferences.getInt(
+                      "story-${storiesItem[index].id}-current-chapter-index") ==
+                  null) {
+                sharedPreferences.setInt(
+                    "story-${storiesItem[index].id}-current-chapter-index",
+                    storiesItem[index].currentIndex);
+              }
+              if (sharedPreferences.getInt(
+                      "story-${storiesItem[index].id}-current-chapter") ==
+                  null) {
+                sharedPreferences.setInt(
+                    "story-${storiesItem[index].id}-current-chapter",
+                    storiesItem[index].numberOfChapter);
+              }
+
+              if (sharedPreferences
+                      .getDouble("scrollPosition-${storiesItem[index].id}") ==
+                  null) {
+                sharedPreferences.setDouble(
+                    "scrollPosition-${storiesItem[index].id}",
+                    storiesItem[index].chapterLatestLocation);
+              }
+            }
+
+            return HomePage(
+              accountResult: accountResult,
+              bannerUrl: bannerUrl,
+            );
+          }
+          return _homeLoading();
+        },
+      ),
+    ),
   );
 }
 

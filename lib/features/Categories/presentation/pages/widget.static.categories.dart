@@ -27,7 +27,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     super.dispose();
   }
 
-  CategoriesBloc categoriesBloc = CategoriesBloc(1, 24);
+  CategoriesBloc categoriesBloc = CategoriesBloc(1, 30);
 
   @override
   Widget build(BuildContext context) {

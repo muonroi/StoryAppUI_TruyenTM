@@ -206,7 +206,8 @@ class _StoryDetailState extends State<StoryDetail> {
                                                 0,
                                                 1,
                                                 1,
-                                                0);
+                                                0,
+                                                storyInfo.firstChapterId);
                                       }
                                     } else {
                                       var result = await _storyRepository

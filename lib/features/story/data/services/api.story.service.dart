@@ -179,8 +179,14 @@ class StoryService {
     }
   }
 
-  Future<bool> createStoryForUser(int storyId, int type, int index,
-      int pageIndex, int numberChapter, double locationChapter) async {
+  Future<bool> createStoryForUser(
+      int storyId,
+      int type,
+      int index,
+      int pageIndex,
+      int numberChapter,
+      double locationChapter,
+      int chapterLatestId) async {
     try {
       Map<String, dynamic> data = {
         'storyId': storyId,
@@ -189,6 +195,7 @@ class StoryService {
         "chapterPageIndex": pageIndex,
         "chapterNumber": numberChapter,
         "chapterLatestLocation": locationChapter,
+        "chapterId": chapterLatestId
       };
       var baseEndpoint = await endPoint();
       final response =

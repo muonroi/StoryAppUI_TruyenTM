@@ -9,8 +9,9 @@ class UserRepository {
   UserRepository();
   Future<UserInfoResponseModel> fetchUserInfoData(String username) =>
       _provider.getUserInfo(username);
-  Future<UserInfoResponseModel> uploadAvatarUser(File image, String userGuid) =>
-      _provider.uploadAvatarUser(image, userGuid);
+  Future<UserInfoResponseModel> uploadAvatarUser(
+          File image, String userGuid, String type) =>
+      _provider.uploadAvatarUser(image, userGuid, type);
   Future<UserInfoResponseModel> uploadInfoUser(SingleUserDetail request) =>
       _provider.updateUserInfo(request);
 }

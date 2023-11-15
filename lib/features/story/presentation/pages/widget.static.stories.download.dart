@@ -186,6 +186,7 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                                   0,
                                                   1,
                                                   1,
+                                                  0,
                                                   0);
                                         }
                                         if (context.mounted && isDelete) {
