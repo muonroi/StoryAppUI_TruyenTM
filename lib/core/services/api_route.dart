@@ -22,7 +22,7 @@ class ApiNetwork {
   static const String userInfoByUsername = "users/single/username?username=%s";
   static const String login = "users/login";
   static const String forgotPassword = "users/forgot-password";
-  static const String register = "users";
+  static const String curdUser = "users";
   static const String updateInfo = "users/profile";
   static const String uploadAvatar = "users/update-avatar";
   static const String validateOtp = "users/valid-otp";

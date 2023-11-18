@@ -1,4 +1,4 @@
-package com.example.muonroi
+package com.muonroi.truyentm
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -8,7 +8,7 @@ class AdMobService {
   AdMobService(this.initializations);
 
   String get bannerAdUnitId => Platform.isAndroid
-      ? "ca-app-pub-7594358837893425/8777803444"
+      ? "ca-app-pub-7594358837893425/4808878083"
       : "ca-app-pub-7594358837893425/7003603062";
 
   BannerAdListener get adListener => _adListener;

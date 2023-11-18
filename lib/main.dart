@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_logs/flutter_logs.dart';
@@ -6,7 +8,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
 import 'package:muonroi/core/advertising/ads.admob.service.dart';
 import 'package:muonroi/core/notification/widget.notification.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
+import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
+import 'package:muonroi/features/accounts/settings/enum/enum.platform.dart';
 import 'package:muonroi/features/chapters/provider/provider.chapter.template.settings.dart';
 import 'package:muonroi/features/homes/presentation/pages/page.ladding.index.dart';
 import 'package:muonroi/features/notification/provider/provider.notification.dart';
@@ -22,6 +26,8 @@ import 'shared/settings/enums/enum.log.type.dart';
 //ca-app-pub-7594358837893425~2188984996 ~ IOS: ca-app-pub-7594358837893425~9518957901
 //ca-app-pub-7594358837893425/8777803444 ~ IOS: ca-app-pub-7594358837893425/7003603062
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   if (kDebugMode) {
     HttpOverrides.global = MyHttpOverrides();
   }
@@ -62,6 +68,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   @override
   void initState() {
+    uid = null;
     accountResult = null;
     NotificationPush.initialize(flutterLocalNotificationsPlugin);
     initLocalStored();
@@ -70,17 +77,47 @@ class _MainAppState extends State<MainApp> {
 
   initLocalStored() async {
     await SharedPreferences.getInstance().then((value) {
-      setState(() {
+      setState(() async {
+        var method = value.getString("MethodLogin");
         _isSigninView = value.getString(KeyToken.accessToken.name) == null;
-        if (!_isSigninView) {
-          accountResult =
-              accountSignInFromJson(value.getString('userLogin')!).result!;
+        if (method == EnumPlatform.google.name) {
+          final FirebaseAuth auth = FirebaseAuth.instance;
+          var userInfo = auth.currentUser;
+          if (userInfo != null) {
+            var accountRepository = AccountRepository();
+            uid = userInfo.uid;
+            var accountInfo = await accountRepository.signIn(
+                userInfo.email!, "${userInfo.uid}12345678Az*", uid);
+            if (accountInfo.result == null) {
+              _isSigninView = true;
+            }
+            value.setString(
+                KeyToken.accessToken.name, accountInfo.result!.jwtToken);
+            value.setString(
+                KeyToken.refreshToken.name, accountInfo.result!.refreshToken);
+            value.setString('userLogin', accountSignInToJson(accountInfo));
+            if (mounted) {
+              setState(() {
+                _isSigninView = false;
+                accountResult =
+                    accountSignInFromJson(value.getString('userLogin')!)
+                        .result!;
+              });
+            }
+          }
+        }
+        if (method == EnumPlatform.system.name) {
+          if (!_isSigninView) {
+            accountResult =
+                accountSignInFromJson(value.getString('userLogin')!).result!;
+          }
         }
       });
       return value;
     });
   }
 
+  late String? uid;
   late bool _isSigninView = false;
   late AccountResult? accountResult;
   @override

@@ -118,6 +118,18 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                     textAlign: TextAlign.left,
                     overflow: TextOverflow.ellipsis,
                   ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(20.0),
+                  width: MainSetting.getPercentageOfDevice(context,
+                          expectWidth: 500)
+                      .width,
+                  child: Text(
+                    '2. ${L(context, LanguageCodes.twoLawsUpgradeAccountTextInfo.toString())}',
+                    style: CustomFonts.h5(context),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 )
               ],
             )

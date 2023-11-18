@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
 import 'package:muonroi/features/user/bloc/user_info_bloc.dart';
 import 'package:muonroi/features/user/data/models/model.user.single.detail.dart';
 import 'package:muonroi/features/user/data/repository/user.repository.dart';
@@ -16,7 +16,6 @@ import 'package:muonroi/features/user/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:muonroi/shared/static/buttons/widget.static.circle.button.icon.dart';
 import 'package:muonroi/shared/static/items/widget.divider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -146,11 +145,12 @@ class _UserInfoPageState extends State<UserInfoPage> {
               if (state is UserInfoLoadedState) {
                 var userInfo = state.user.result;
                 if (_tempTextChange == null) {
-                  _nameController.text = '${userInfo.name} ${userInfo.surname}';
+                  _nameController.text =
+                      '${userInfo!.name} ${userInfo.surname}';
                 } else {
                   _nameController.text = _tempTextChange!;
                 }
-                _gmailController.text = userInfo.email;
+                _gmailController.text = userInfo!.email;
                 _phoneController.text = userInfo.phoneNumber;
                 _addressController.text = userInfo.address;
                 _birthdayController.text =
@@ -165,41 +165,41 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       textWidth: _textWidth,
                       groupName: userInfo.groupName ?? 'anonymous',
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CircleButtonIcon(
-                          icon: Icon(
-                            Icons.notification_add_outlined,
-                            color: themeMode(context, ColorCode.textColor.name),
-                          ),
-                          borderSize: 16.0,
-                          action: () {},
-                          tooltip: L(context,
-                              LanguageCodes.followUserTextInfo.toString()),
-                        ),
-                        CircleButtonIcon(
-                          icon: Icon(
-                            Icons.person_add_alt_1_outlined,
-                            color: themeMode(context, ColorCode.textColor.name),
-                          ),
-                          borderSize: 16.0,
-                          action: () {},
-                          tooltip: L(context,
-                              LanguageCodes.followUserTextInfo.toString()),
-                        ),
-                        CircleButtonIcon(
-                          icon: Icon(
-                            Icons.chat_bubble_outline_rounded,
-                            color: themeMode(context, ColorCode.textColor.name),
-                          ),
-                          borderSize: 16.0,
-                          action: () {},
-                          tooltip: L(
-                              context, LanguageCodes.inboxTextInfo.toString()),
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    //     CircleButtonIcon(
+                    //       icon: Icon(
+                    //         Icons.notification_add_outlined,
+                    //         color: themeMode(context, ColorCode.textColor.name),
+                    //       ),
+                    //       borderSize: 16.0,
+                    //       action: () {},
+                    //       tooltip: L(context,
+                    //           LanguageCodes.followUserTextInfo.toString()),
+                    //     ),
+                    //     CircleButtonIcon(
+                    //       icon: Icon(
+                    //         Icons.person_add_alt_1_outlined,
+                    //         color: themeMode(context, ColorCode.textColor.name),
+                    //       ),
+                    //       borderSize: 16.0,
+                    //       action: () {},
+                    //       tooltip: L(context,
+                    //           LanguageCodes.followUserTextInfo.toString()),
+                    //     ),
+                    //     CircleButtonIcon(
+                    //       icon: Icon(
+                    //         Icons.chat_bubble_outline_rounded,
+                    //         color: themeMode(context, ColorCode.textColor.name),
+                    //       ),
+                    //       borderSize: 16.0,
+                    //       action: () {},
+                    //       tooltip: L(
+                    //           context, LanguageCodes.inboxTextInfo.toString()),
+                    //     )
+                    //   ],
+                    // ),
                     const CustomDivider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -456,13 +456,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     reason: 'Update info user');
                 var result = await _userRepository.uploadInfoUser(userInfo);
                 var oldInfo = accountSignInFromJson('userLogin');
-                oldInfo.result!.name = result.result.name;
-                oldInfo.result!.surname = result.result.surname;
-                oldInfo.result!.phoneNumber = result.result.phoneNumber;
-                oldInfo.result!.email = result.result.email;
-                oldInfo.result!.address = result.result.address;
-                oldInfo.result!.birthDate = result.result.birthDate;
-                oldInfo.result!.accountStatus = result.result.accountStatus;
+                oldInfo.result!.name = result.result!.name;
+                oldInfo.result!.surname = result.result!.surname;
+                oldInfo.result!.phoneNumber = result.result!.phoneNumber;
+                oldInfo.result!.email = result.result!.email;
+                oldInfo.result!.address = result.result!.address;
+                oldInfo.result!.birthDate = result.result!.birthDate;
+                oldInfo.result!.accountStatus = result.result!.accountStatus;
                 _sharedPreferences.setString(
                     'userLogin', accountSignInToJson(oldInfo));
               }

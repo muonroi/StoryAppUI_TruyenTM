@@ -1,32 +1,76 @@
-import 'package:flutter/material.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
+import 'package:flutter/material.dart';
 
 class RoundedInputField extends StatelessWidget {
-  final TextEditingController? dateController;
+  final TextEditingController? textController;
   final String hintText;
   final IconData icon;
-  final ValueChanged<String> onChanged;
   final VoidCallback? ontap;
   final bool readonly;
+  final String errorMessage;
+  final void Function(String) onChange;
+  final bool isShowIcon;
+  final void Function()? iconAction;
+  final bool? isVisibility;
+  final bool isPassword;
   const RoundedInputField({
     super.key,
     required this.hintText,
     this.icon = Icons.person,
-    required this.onChanged,
     this.ontap,
     required this.readonly,
-    this.dateController,
+    this.textController,
+    required this.errorMessage,
+    required this.onChange,
+    required this.isShowIcon,
+    this.iconAction,
+    this.isVisibility,
+    required this.isPassword,
   });
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextField(
-        controller: dateController,
+        controller: textController,
         readOnly: readonly,
         onTap: ontap,
-        onChanged: onChanged,
+        onChanged: onChange,
+        obscureText: isPassword,
         decoration: InputDecoration(
+            suffixIcon: isShowIcon
+                ? IconButton(
+                    onPressed: iconAction,
+                    icon: Icon(
+                      isShowIcon && isVisibility!
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: themeMode(context, ColorCode.mainColor.name),
+                    ),
+                  )
+                : null,
+            errorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                  color: errorMessage != ""
+                      ? themeMode(context, ColorCode.closeColor.name)
+                      : themeMode(context, ColorCode.mainColor.name),
+                  width: errorMessage != "" ? 0.0 : 1.5),
+            ),
+            focusedErrorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                  color: errorMessage != ""
+                      ? themeMode(context, ColorCode.closeColor.name)
+                      : themeMode(context, ColorCode.mainColor.name),
+                  width: errorMessage != "" ? 0.0 : 1.5),
+            ),
+            labelText: hintText,
+            labelStyle: TextStyle(
+              color: errorMessage != ""
+                  ? themeMode(context, ColorCode.closeColor.name)
+                  : themeMode(context, ColorCode.textColor.name),
+            ),
+            errorMaxLines: 3,
+            errorText: errorMessage,
             hintText: hintText,
             icon: Icon(
               icon,

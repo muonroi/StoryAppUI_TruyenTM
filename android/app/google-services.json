@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "318256480448",
+    "project_id": "connectvn-acd36",
+    "storage_bucket": "connectvn-acd36.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318256480448:android:958fddb0bb7fb34d5e2d25",
+        "android_client_info": {
+          "package_name": "com.muonroi.truyentm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318256480448-qdt43tdp9qrme9029jpneklcdnkmgm95.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muonroi.truyentm",
+            "certificate_hash": "fb8ed726f42e09484454a094c547641114b8e2c0"
+          }
+        },
+        {
+          "client_id": "318256480448-tf5iaf93m7lo2u9fkju2qek27f64nnqu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muonroi.truyentm",
+            "certificate_hash": "9c8633caa3a7c79469f4b5b163121afb53ab6ed8"
+          }
+        },
+        {
+          "client_id": "318256480448-770bp0pidjuj59seaqr86pul3uc87no2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyQM5fmmF9PnNVfcOqLNmXrZF0tmj06eA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318256480448-770bp0pidjuj59seaqr86pul3uc87no2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "318256480448-dm0b2498stgm29thinjsimtdelfjsi45.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.TruyenTM"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318256480448:android:d376dbc6d4241ffe5e2d25",
+        "android_client_info": {
+          "package_name": "com.story.TruyenTM"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318256480448-770bp0pidjuj59seaqr86pul3uc87no2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyQM5fmmF9PnNVfcOqLNmXrZF0tmj06eA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318256480448-770bp0pidjuj59seaqr86pul3uc87no2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "318256480448-dm0b2498stgm29thinjsimtdelfjsi45.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.TruyenTM"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

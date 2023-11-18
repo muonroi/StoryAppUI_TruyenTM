@@ -6,13 +6,14 @@ import 'package:muonroi/features/coins/presentation/pages/page.upgrade.account.d
 import 'package:muonroi/features/contacts/presentation/pages/page.contact.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.user.info.items.dart';
 import 'package:muonroi/features/system/presentation/pages/page.setting.dart';
-import 'package:muonroi/features/user/presentation/pages/user.detail.dart';
+import 'package:muonroi/features/user/presentation/pages/page.confirm.delete.dart';
+import 'package:muonroi/features/user/presentation/pages/page.user.detail.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.info.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -193,6 +194,7 @@ class _UserInfoState extends State<UserInfo> {
                       image: CustomImages.user2x,
                       colorIcon: themeMode(context, ColorCode.textColor.name),
                     ),
+
                     SettingItems(
                       onPressed: () => Navigator.push(
                           context,
@@ -203,12 +205,33 @@ class _UserInfoState extends State<UserInfo> {
                       image: CustomImages.gear2x,
                       colorIcon: themeMode(context, ColorCode.textColor.name),
                     ),
+
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 50.0),
                       child: Divider(
                         color: themeMode(context, ColorCode.disableColor.name),
                         thickness: 3,
                       ),
+                    ),
+
+                    SettingItems(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (builder) {
+                          return ConfirmDeleteAccountWidget(
+                            title: L(
+                                context,
+                                LanguageCodes.requestDeleteAccountTextInfo
+                                    .toString()),
+                          );
+                        }));
+                      },
+                      text: L(
+                          context,
+                          LanguageCodes.requestDeleteAccountTextInfo
+                              .toString()),
+                      image: CustomImages.deleteAccount2x,
+                      colorIcon: themeMode(context, ColorCode.textColor.name),
                     ),
                     SettingItems(
                       onPressed: () async {
@@ -219,11 +242,9 @@ class _UserInfoState extends State<UserInfo> {
                             null);
                         userChoice = userChoice ?? false;
                         if (userChoice && mounted) {
-                          final accountRepository = AccountRepository(
-                              widget.userInfo.username,
-                              "",
-                              widget.userInfo.userGuid);
-                          await accountRepository.logout();
+                          final accountRepository = AccountRepository();
+                          await accountRepository
+                              .logout(widget.userInfo.userGuid);
                           if (mounted) {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (builder) {

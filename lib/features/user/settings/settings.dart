@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:muonroi/core/authorization/enums/key.dart';
 import 'package:muonroi/core/services/api_route.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.token.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 bool isEmailValid(String email) {

@@ -1,11 +1,9 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
-import 'package:muonroi/core/localization/settings.languages.dart';
+import 'package:muonroi/features/system/presentation/widgets/widget.box.select.dart';
 import 'package:muonroi/features/system/presentation/widgets/widget.toggle.button.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
-import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -16,8 +14,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String _messageFromChild = '';
-
   void _updateMessage(String message) {
     setState(() {
       _messageFromChild = message;
@@ -25,11 +21,7 @@ class _SettingsPageState extends State<SettingsPage> {
     debugPrint(_messageFromChild);
   }
 
-  String selectedLanguage = Languages.vi;
-  Map<String, String> languageImages = {
-    Languages.vi: CustomImages.vi2x,
-    Languages.en: CustomImages.en2x,
-  };
+  late String _messageFromChild = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,58 +117,22 @@ class _SettingsPageState extends State<SettingsPage> {
                       height: MainSetting.getPercentageOfDevice(context,
                               expectHeight: 100)
                           .height,
-                      child: const Row(
+                      child: Row(
                         children: [
                           Expanded(
-                            child: SelectBox(),
+                            child: SelectBox(
+                              callBack: _updateMessage,
+                            ),
                           ),
                         ],
                       ),
                     ),
+                    const SizedBox(width: 10),
                   ],
                 ),
               ),
             ],
           ),
         ));
-  }
-}
-
-class SelectBox extends StatefulWidget {
-  const SelectBox({super.key});
-
-  @override
-  State<SelectBox> createState() => _SelectBoxState();
-}
-
-class _SelectBoxState extends State<SelectBox> {
-  String selectedLanguage = Languages.vi;
-  Map<String, String> languageImages = {
-    Languages.vi: CustomImages.vi2x,
-    Languages.en: CustomImages.en2x,
-  };
-  @override
-  Widget build(BuildContext context) {
-    return DropdownSearch<String>(
-      items: languageImages.keys.toList(),
-      selectedItem: selectedLanguage,
-      onChanged: (String? newValue) {
-        setState(() {
-          selectedLanguage = newValue!;
-        });
-      },
-      dropdownBuilder: (context, itemString) {
-        return Row(
-          children: [
-            Image.asset(
-              languageImages[itemString]!,
-              height: 30,
-              width: 30,
-            ),
-            SizedBox(width: 10),
-          ],
-        );
-      },
-    );
   }
 }

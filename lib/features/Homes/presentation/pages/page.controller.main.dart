@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:muonroi/core/Notification/widget.notification.dart';
 import 'package:muonroi/core/authorization/enums/key.dart';
 import 'package:muonroi/core/services/api_route.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
 import 'package:muonroi/features/notification/presentation/pages/page.notification.dart';
 import 'package:muonroi/features/notification/provider/provider.notification.dart';
 import 'package:muonroi/features/story/data/models/model.recent.story.dart';
@@ -18,7 +18,7 @@ import 'package:muonroi/features/homes/presentation/widgets/widget.routes.items.
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.signup.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.info.dart';
 import 'package:muonroi/features/homes/presentation/pages/page.book.case.dart';
 import 'package:muonroi/features/homes/presentation/pages/page.home.dart';
 import 'package:muonroi/features/homes/presentation/pages/page.stories.free.dart';
@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: themeMode(context, ColorCode.modeColor.name),
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            leading: Image.asset(CustomImages.mainLogo),
+            leading: Image.asset(CustomImages.laddingLogo),
             backgroundColor: themeMode(context, ColorCode.modeColor.name),
             elevation: 0,
             actions: [

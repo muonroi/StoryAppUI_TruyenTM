@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.signin.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
 import 'package:muonroi/features/homes/bloc/banner/banner_bloc.dart';
 import 'package:muonroi/features/homes/presentation/pages/page.controller.main.dart';
 import 'package:muonroi/features/homes/settings/enum/enum.setting.type.dart';

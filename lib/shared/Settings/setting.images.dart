@@ -41,4 +41,6 @@ class CustomImages {
   static const String privacyTerms2x = '${imagePath2x}privacy_terms.png';
   static const String vi2x = '${imagePath2x}vi.png';
   static const String en2x = '${imagePath2x}us.png';
+  static const String google2x = '${imagePath2x}google_icon.png';
+  static const String deleteAccount2x = '${imagePath2x}delete_account.png';
 }

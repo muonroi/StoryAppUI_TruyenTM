@@ -124,6 +124,8 @@ class LocalizationLib {
       LanguageCodes.customerBenefitsTextInfo.toString(): 'Customer benefits',
       LanguageCodes.oneLawsUpgradeAccountTextInfo.toString():
           'Ad-free experience',
+      LanguageCodes.twoLawsUpgradeAccountTextInfo.toString():
+          'Use the latest functions of the application',
       LanguageCodes.logoutAccountTextInfo.toString(): 'Log out',
       LanguageCodes.contactTextInfo.toString(): 'Contact & Support',
       LanguageCodes.contactToEmailTextInfo.toString(): 'Contact via email',
@@ -185,7 +187,45 @@ class LocalizationLib {
           'Passwords do not match',
       LanguageCodes.changePasswordSuccessTextInfo.toString():
           'Your password has been changed!',
-      LanguageCodes.languageTextInfo.toString(): 'Language'
+      LanguageCodes.languageTextInfo.toString(): 'Language',
+      LanguageCodes.continueWithGoogleTextInfo.toString(): 'Or continue with',
+      LanguageCodes.emailSignUpTextInfo.toString(): 'Email',
+      LanguageCodes.usernameSignUpErrorTextInfo.toString():
+          'Account allows only [a-z, A-Z, 0-9, _]',
+      LanguageCodes.emailSignUpErrorTextInfo.toString(): 'Invalid email format',
+      LanguageCodes.haveAccountTextInfo.toString(): 'Already have an account?',
+      LanguageCodes.chosseGenderTextInfo.toString(): 'Please choose gender',
+      LanguageCodes.maleTextInfo.toString(): 'Male',
+      LanguageCodes.femaleTextInfo.toString(): 'Female',
+      LanguageCodes.requestDeleteAccountTextInfo.toString():
+          'Request to delete account',
+      LanguageCodes.confirmDeleteAccountTextInfo.toString():
+          'Your account will be permanently deleted! Do you want to proceed?',
+      LanguageCodes.privacyDeleteAccountTextInfo.toString():
+          '1. Your account will be automatically deleted after 5 days. Please log in before this time to cancel the account deletion order.',
+      LanguageCodes.privacyOneTextInfo.toString():
+          '1. Do not disclose your email address or other security-related information to third parties unless you violate the rules.',
+      LanguageCodes.privacyTwoTextInfo.toString():
+          '2. Do not disclose your IP address to third parties.',
+      LanguageCodes.privacyThirdTextInfo.toString():
+          '3. Do not disclose your location to third parties. Use this information only to improve the functionality of the app. Everything is completely automated.',
+      LanguageCodes.privacyFourTextInfo.toString():
+          '''4. We store publicly visible activities when you participate in activities, including:
+   Activity in stories (story log)
+   Account-wide activity (account log)''',
+      LanguageCodes.privacyFiveTextInfo.toString():
+          '5. Most of the information you enter into the app is public, so we are not responsible for maintaining the privacy of that information.',
+      LanguageCodes.privacySixTextInfo.toString():
+          '''6. We have a mechanism to indicate when you are online or offline from the website. A green dot will appear next to your name when online and disappear when offline.''',
+      LanguageCodes.privacySevenTextInfo.toString():
+          '''7. To completely delete your data, please follow these steps:
+   User management page.
+   Choose the request to delete the account.
+   Your account will be automatically deleted after 5 days, and log in before this time to cancel the account deletion order.''',
+      LanguageCodes.deleteAccountSuccessTextInfo.toString():
+          'Account deletion command successful',
+      LanguageCodes.agreeDeleteAccountTextInfo.toString():
+          'I agree to the terms and conditions',
     },
     Languages.vi: {
       LanguageCodes.searchTextInfo.toString():
@@ -299,6 +339,8 @@ class LocalizationLib {
       LanguageCodes.customerBenefitsTextInfo.toString(): "Quyền lợi khách hàng",
       LanguageCodes.oneLawsUpgradeAccountTextInfo.toString():
           "Sử dụng ứng dụng không có quảng cáo",
+      LanguageCodes.twoLawsUpgradeAccountTextInfo.toString():
+          'Sử dụng các chức năng mới nhất của ứng dụng',
       LanguageCodes.logoutAccountTextInfo.toString(): "Đăng xuất",
       LanguageCodes.contactTextInfo.toString(): "Liên hệ & Hỗ trợ",
       LanguageCodes.contactToEmailTextInfo.toString(): "Liên hệ qua email",
@@ -350,6 +392,8 @@ class LocalizationLib {
           'Bạn có muốn mua gói trả phí?',
       LanguageCodes.serverErrorTextInfo.toString():
           'Có lỗi xảy ra vui lòng thử lại sau ít phút',
+      LanguageCodes.serverErrorReLoginTextInfo.toString():
+          'Có lỗi xảy ra vui lòng đăng nhập lại',
       LanguageCodes.changePasswordTextInfo.toString(): 'Đổi mật khẩu',
       LanguageCodes.newPasswordTextInfo.toString(): 'Mật khẩu mới',
       LanguageCodes.confirmPasswordTextInfo.toString(): 'Nhập lại mật khẩu',
@@ -362,7 +406,47 @@ class LocalizationLib {
           'Mật khẩu không khớp',
       LanguageCodes.changePasswordSuccessTextInfo.toString():
           'Mật khẩu của bạn đã được thay đổi!',
-      LanguageCodes.languageTextInfo.toString(): 'Ngôn ngữ'
+      LanguageCodes.languageTextInfo.toString(): 'Ngôn ngữ',
+      LanguageCodes.continueWithGoogleTextInfo.toString(): 'Hoặc tiếp tục với',
+      LanguageCodes.emailSignUpTextInfo.toString(): 'Email',
+      LanguageCodes.usernameSignUpErrorTextInfo.toString():
+          'Tài khoản chỉ cho phép [a-z,A-Z,0-9,_]',
+      LanguageCodes.emailSignUpErrorTextInfo.toString():
+          'Email không đúng định dạng',
+      LanguageCodes.haveAccountTextInfo.toString(): 'Đã có tài khoản?',
+      LanguageCodes.chosseGenderTextInfo.toString(): 'Vui lòng chọn giới tính',
+      LanguageCodes.maleTextInfo.toString(): 'Nam',
+      LanguageCodes.femaleTextInfo.toString(): 'Nữ',
+      LanguageCodes.requestDeleteAccountTextInfo.toString():
+          'Yêu cầu xoá tài khoản',
+      LanguageCodes.confirmDeleteAccountTextInfo.toString():
+          'Tài khoản của bạn sẽ bị xoá vĩnh viễn! Bạn có muốn tiếp tục?',
+      LanguageCodes.privacyDeleteAccountTextInfo.toString():
+          '1. Tài khoản của bạn sẽ được tự động xoá sau 5 ngày. Vui lòng đăng nhập lại trước thời gian này để huỷ bỏ lệnh xoá tài khoản',
+      LanguageCodes.privacyOneTextInfo.toString():
+          '1. Không tiết lộ địa chỉ email, hay các thông tin cần bảo mật khác cho bên thứ 3, trừ khi bạn vi phạm nội quy.',
+      LanguageCodes.privacyTwoTextInfo.toString():
+          '2. Không tiết lộ địa chỉ IP cho bên thứ 3.',
+      LanguageCodes.privacyThirdTextInfo.toString():
+          '3. Không tiết lộ vị trí của bạn cho bên thứ 3. Đồng thời chỉ sử dụng thông tin này để cải thiện chức năng của app. Mọi việc đều hoàn toàn tự động.',
+      LanguageCodes.privacyFourTextInfo.toString():
+          '''4. Chúng tôi lưu trữ các hoạt động mang tính công khai khi bạn tham gia hoạt động gồm:
+             Hoạt động tại truyện (nhật ký của truyện)
+             Hoạt động chung của tài khoản (nhật ký tài khoản)''',
+      LanguageCodes.privacyFiveTextInfo.toString():
+          '5. Các thông tin bạn nhập vào ứng dụng hầu hết đều là công khai, vì vậy chúng tôi không chịu trách nhiệm về việc giữ tính riêng tư các thông tin đó.',
+      LanguageCodes.privacySixTextInfo.toString():
+          '''6. Chúng tôi có cơ chế để cho biết khi nào bạn online hay offline khỏi website. Một chấm xanh sẽ xuất hiện bên cạnh tên của bạn khi online và biến mất khi offline.
+             ''',
+      LanguageCodes.privacySevenTextInfo.toString():
+          '''7. Để xóa hoàn toàn dữ liệu của bạn, vui lòng thực hiện các bước sau:
+             Trang quản lý người dùng.
+             Chọn yêu cầu xoá tài khoản.
+             Tài khoản của bạn sẽ tự động xoá sau 5 ngày, và đăng nhập lại trước thời gian này để huỷ bỏ lệnh xoá tài khoản''',
+      LanguageCodes.deleteAccountSuccessTextInfo.toString():
+          'Đặt lệnh xoá tài khoản thành công',
+      LanguageCodes.agreeDeleteAccountTextInfo.toString():
+          'Tôi đồng ý với các Điều khoản và Điều kiện',
     }
   };
   static String L(String key, {String locale = 'vi'}) {

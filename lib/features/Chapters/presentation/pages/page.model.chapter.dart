@@ -159,8 +159,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
 // #region Methods
   void _createBannerAds(adState) {
     _bannerAd = BannerAd(
-        adUnitId:
-            "ca-app-pub-3940256099942544/6300978111", //adState.bannerAdUnitId,
+        adUnitId: adState.bannerAdUnitId,
         size: AdSize.banner,
         request: const AdRequest(),
         listener: adState.adListener)

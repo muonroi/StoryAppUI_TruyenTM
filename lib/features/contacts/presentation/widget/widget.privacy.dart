@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/Settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
@@ -57,7 +58,7 @@ class PrivacyPolicyWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10.0),
             const Text(
-              '13 Tháng 11, 2023',
+              'November 13th, 2023',
               style: TextStyle(
                 fontStyle: FontStyle.italic,
               ),
@@ -66,50 +67,45 @@ class PrivacyPolicyWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '1. Không tiết lộ địa chỉ email, hay các thông tin cần bảo mật khác cho bên thứ 3, trừ khi bạn vi phạm nội quy.',
-                style: CustomFonts.h6(context).copyWith(fontSize: 12),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('2. Không tiết lộ địa chỉ IP cho bên thứ 3.',
-                  style: CustomFonts.h6(context).copyWith(fontSize: 12)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                '3. Không tiết lộ vị trí của bạn cho bên thứ 3. Đồng thời chỉ sử dụng thông tin này để cải thiện chức năng của website. Mọi việc đều hoàn toàn tự động.',
+                L(context, LanguageCodes.privacyOneTextInfo.toString()),
                 style: CustomFonts.h6(context).copyWith(fontSize: 12),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                  '''4. Chúng tôi lưu trữ các hoạt động mang tính công khai khi bạn tham gia hoạt động gồm:
-             Hoạt động tại truyện (nhật ký của truyện)
-             Hoạt động chung của tài khoản (nhật ký tài khoản)''',
+                  L(context, LanguageCodes.privacyTwoTextInfo.toString()),
                   style: CustomFonts.h6(context).copyWith(fontSize: 12)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                  '5. Các thông tin bạn nhập vào ứng dụng hầu hết đều là công khai, vì vậy chúng tôi không chịu trách nhiệm về việc giữ tính riêng tư các thông tin đó.',
+                L(context, LanguageCodes.privacyThirdTextInfo.toString()),
+                style: CustomFonts.h6(context).copyWith(fontSize: 12),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  L(context, LanguageCodes.privacyFourTextInfo.toString()),
                   style: CustomFonts.h6(context).copyWith(fontSize: 12)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                  '''6. Chúng tôi có cơ chế để cho biết khi nào bạn online hay offline khỏi website. Một chấm xanh sẽ xuất hiện bên cạnh tên của bạn khi online và biến mất khi offline.
-             ''',
+                  L(context, LanguageCodes.privacyFiveTextInfo.toString()),
                   style: CustomFonts.h6(context).copyWith(fontSize: 12)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                  '''7. Để xóa hoàn toàn dữ liệu của bạn, vui lòng thực hiện các bước sau:
-             Truy cập vào fanpage facebook chính thức của muonroi .
-             Gửi tin nhắn trực tiếp, cung cấp thông tin tài khoản và yêu cầu xóa dữ liệu.
-             Chúng tôi sẽ tiến hành xác thực thông tin, và gửi phản hồi trong vòng 03 ngày làm việc.''',
+                  L(context, LanguageCodes.privacySixTextInfo.toString()),
+                  style: CustomFonts.h6(context).copyWith(fontSize: 12)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  L(context, LanguageCodes.privacySevenTextInfo.toString()),
                   style: CustomFonts.h6(context).copyWith(fontSize: 12)),
             )
           ],

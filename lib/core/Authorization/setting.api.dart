@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
 import 'package:muonroi/core/services/api_route.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.token.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<Dio> endPoint() async {
@@ -12,7 +12,7 @@ Future<Dio> endPoint() async {
   Dio dio = Dio();
   dio.options.baseUrl = ApiNetwork.baseApi;
   dio.options.responseType = ResponseType.plain;
-  // dio.interceptors.add(LogInterceptor());
+  dio.interceptors.add(LogInterceptor());
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (request, handler) {
