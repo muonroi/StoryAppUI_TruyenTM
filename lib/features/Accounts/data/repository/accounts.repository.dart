@@ -38,8 +38,6 @@ class AccountRepository {
   ) =>
       _provider.changePassword(username, password, newPassword, otp, token);
 
-  Future<String> getCurrentLocation() => _provider.getCurrentAddress();
-
   Future<User?> authGoogle() => _provider.signInWithGoogle();
 
   Future<bool> deleteAccount() => _provider.deleteUser();

@@ -11,6 +11,7 @@ class BottomChapterDetail extends StatefulWidget {
   final Color fontColor;
   final bool isDisableNextButton;
   final bool isDisablePreviousButton;
+  final Color disableColor;
   const BottomChapterDetail(
       {super.key,
       required this.chapterId,
@@ -19,7 +20,8 @@ class BottomChapterDetail extends StatefulWidget {
       required this.backgroundColor,
       required this.fontColor,
       required this.isDisableNextButton,
-      required this.isDisablePreviousButton});
+      required this.isDisablePreviousButton,
+      required this.disableColor});
 
   @override
   State<BottomChapterDetail> createState() => _BottomChapterDetailState();
@@ -49,7 +51,7 @@ class _BottomChapterDetailState extends State<BottomChapterDetail> {
                         .width,
                 color: !widget.isDisablePreviousButton
                     ? widget.fontColor
-                    : themeMode(context, ColorCode.disableColor.name),
+                    : widget.disableColor,
               ),
             ),
             IconButton(
@@ -66,7 +68,7 @@ class _BottomChapterDetailState extends State<BottomChapterDetail> {
                         .width,
                 color: !widget.isDisableNextButton
                     ? themeMode(context, ColorCode.mainColor.name)
-                    : themeMode(context, ColorCode.disableColor.name),
+                    : widget.disableColor,
               ),
             ),
             IconButton(

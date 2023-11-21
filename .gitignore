@@ -46,3 +46,4 @@ key.properties
 app/truyentm.jks
 *.jks
 app/google-services.json
+.env

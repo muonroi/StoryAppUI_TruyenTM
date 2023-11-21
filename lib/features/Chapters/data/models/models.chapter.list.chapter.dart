@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:muonroi/features/chapters/settings/settings.dart';
+
 ChapterInfo chapterInfoFromJson(String str) =>
     ChapterInfo.fromJson(json.decode(str));
 
@@ -84,7 +86,7 @@ class ChapterItems {
   factory ChapterItems.fromJson(Map<String, dynamic> json) => ChapterItems(
         id: json["id"],
         chapterTitle: json["chapterTitle"],
-        body: json["body"],
+        body: decryptStringAES(json["body"]),
         numberOfChapter: json["numberOfChapter"],
         numberOfWord: json["numberOfWord"],
         storyId: json["storyId"],

@@ -22,10 +22,12 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'features/accounts/presentation/pages/pages.logins.sign_in.dart';
 import 'shared/settings/enums/enum.log.type.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 //ca-app-pub-7594358837893425~2188984996 ~ IOS: ca-app-pub-7594358837893425~9518957901
 //ca-app-pub-7594358837893425/8777803444 ~ IOS: ca-app-pub-7594358837893425/7003603062
 void main() async {
+  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   if (kDebugMode) {

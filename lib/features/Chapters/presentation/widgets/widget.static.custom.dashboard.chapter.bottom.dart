@@ -271,7 +271,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                         width:
                                             MainSetting.getPercentageOfDevice(
                                                     context,
-                                                    expectWidth: 280)
+                                                    expectWidth: 250)
                                                 .width,
                                         child: Row(
                                           children: [

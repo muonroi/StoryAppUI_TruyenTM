@@ -226,6 +226,11 @@ class LocalizationLib {
           'Account deletion command successful',
       LanguageCodes.agreeDeleteAccountTextInfo.toString():
           'I agree to the terms and conditions',
+      LanguageCodes.paymentSuccessTextInfo.toString(): 'Payment successful!',
+      LanguageCodes.paymentSuccessCustomerInfoTextInfo.toString():
+          'Your %s was successful charged',
+      LanguageCodes.timeBackToHomeTextInfo.toString():
+          'You will back to home after %s',
     },
     Languages.vi: {
       LanguageCodes.searchTextInfo.toString():
@@ -447,6 +452,11 @@ class LocalizationLib {
           'Đặt lệnh xoá tài khoản thành công',
       LanguageCodes.agreeDeleteAccountTextInfo.toString():
           'Tôi đồng ý với các Điều khoản và Điều kiện',
+      LanguageCodes.paymentSuccessTextInfo.toString(): 'Thanh toán thành công!',
+      LanguageCodes.paymentSuccessCustomerInfoTextInfo.toString():
+          'Thẻ đã %s thanh toán thành công',
+      LanguageCodes.timeBackToHomeTextInfo.toString():
+          'Bạn sẽ trở về trang chủ sau %s ',
     }
   };
   static String L(String key, {String locale = 'vi'}) {

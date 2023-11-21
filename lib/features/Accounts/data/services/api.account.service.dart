@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:muonroi/core/authorization/setting.api.dart';
@@ -138,72 +136,6 @@ class AccountsService {
       return user;
     } catch (error) {
       return null;
-    }
-  }
-
-  Future<Position> getCurrentPosition() async {
-    try {
-      late bool servicePermission = false;
-      late LocationPermission permission;
-      servicePermission = await Geolocator.isLocationServiceEnabled();
-      if (!servicePermission) {
-        return Future.error('Location services are disabled.');
-      }
-      permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          return Position(
-              longitude: 106.629662,
-              latitude: 10.823099,
-              timestamp: DateTime.timestamp(),
-              accuracy: 90.5,
-              altitude: 90.5,
-              altitudeAccuracy: 90.4,
-              heading: 90,
-              headingAccuracy: 90,
-              speed: 95,
-              speedAccuracy: 95.4);
-        }
-      }
-      if (permission == LocationPermission.deniedForever) {
-        return Position(
-            longitude: 106.629662,
-            latitude: 10.823099,
-            timestamp: DateTime.timestamp(),
-            accuracy: 90.5,
-            altitude: 90.5,
-            altitudeAccuracy: 90.4,
-            heading: 90,
-            headingAccuracy: 90,
-            speed: 95,
-            speedAccuracy: 95.4);
-      }
-      return await Geolocator.getCurrentPosition();
-    } catch (error) {
-      return Position(
-          longitude: 106.629662,
-          latitude: 10.823099,
-          timestamp: DateTime.timestamp(),
-          accuracy: 90.5,
-          altitude: 90.5,
-          altitudeAccuracy: 90.4,
-          heading: 90,
-          headingAccuracy: 90,
-          speed: 95,
-          speedAccuracy: 95.4);
-    }
-  }
-
-  Future<String> getCurrentAddress() async {
-    try {
-      var position = await getCurrentPosition();
-      final placemarks =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
-      final place = placemarks[0];
-      return "${place.locality}, ${place.country}";
-    } catch (error) {
-      return "Ho Chi Minh, Viet Nam";
     }
   }
 

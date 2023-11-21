@@ -323,8 +323,7 @@ class _SignInPageState extends State<SignInPage> {
                       ontap: () async {
                         _sharedPreferences.setString(
                             "MethodLogin", EnumPlatform.google.name);
-                        var address =
-                            await _accountRepository.getCurrentLocation();
+                        var address = "Viet Nam";
                         var userInfo = await _accountRepository.authGoogle();
                         try {
                           if (userInfo != null) {

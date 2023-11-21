@@ -1,7 +1,7 @@
 name: muonroi
 description: muonroi
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.2
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -52,9 +52,10 @@ dependencies:
   url_launcher: ^6.2.1
   uuid: ^3.0.7
   firebase_core: ^2.22.0
-  geolocator: ^10.1.0
-  geocoding: ^2.1.1
   pay: ^1.1.2
+  battery_info: ^1.1.1
+  encrypt: ^5.0.3
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +79,7 @@ flutter:
     - assets/fonts/
     - assets/fonts/Inters/
     - assets/fonts/Poppins/
+    - .env
   fonts:
     - family: Inter
       fonts:

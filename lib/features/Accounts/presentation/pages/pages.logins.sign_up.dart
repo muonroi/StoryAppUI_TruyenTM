@@ -95,7 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
           backgroundColor: themeMode(context, ColorCode.mainColor.name),
           onPressed: () async {
             final accountRepository = AccountRepository();
-            var address = await accountRepository.getCurrentLocation();
+            var address = "Viet Nam";
             final sharedPreferences = await SharedPreferences.getInstance();
             var request = AccountSignUpDTO(
                 name: "${Random().nextInt(100000) + 0}",

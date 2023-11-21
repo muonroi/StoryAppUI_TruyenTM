@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
 import 'package:muonroi/core/services/api_route.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.token.dart';
@@ -7,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<Dio> endPoint() async {
   var sharedPreferences = await SharedPreferences.getInstance();
-  String? token;
+  String token = dotenv.env['ENV_TOKEN']!;
   String? refreshTokenStr;
   Dio dio = Dio();
   dio.options.baseUrl = ApiNetwork.baseApi;
@@ -16,14 +17,13 @@ Future<Dio> endPoint() async {
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (request, handler) {
-        if (token != null && refreshTokenStr != null) {
-          request.headers['Authorization'] = 'Bearer $token';
-        }
+        request.headers['Authorization'] = 'Bearer $token';
         return handler.next(request);
       },
       onError: (e, handler) async {
         if (e.response?.statusCode == 401) {
-          token = sharedPreferences.getString(KeyToken.accessToken.name);
+          token = sharedPreferences.getString(KeyToken.accessToken.name) ??
+              dotenv.env['ENV_TOKEN']!;
           refreshTokenStr =
               sharedPreferences.getString(KeyToken.refreshToken.name);
           try {

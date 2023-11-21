@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:muonroi/features/chapters/settings/settings.dart';
+
 ListPagingRangeChapters listPagingRangeChaptersFromJson(String str) =>
     ListPagingRangeChapters.fromJson(json.decode(str));
 
@@ -69,7 +71,7 @@ class Result {
   factory Result.fromJson(Map<String, dynamic> json) => Result(
       id: json["id"],
       chapterTitle: json["chapterTitle"],
-      body: json["body"],
+      body: decryptStringAES(json["body"]),
       numberOfChapter: json["numberOfChapter"],
       numberOfWord: json["numberOfWord"],
       storyId: json["storyId"],

@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:battery_info/battery_info_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:intl/intl.dart';
 import 'package:muonroi/core/advertising/ads.admob.service.dart';
 import 'package:muonroi/features/chapters/bloc/group_chapter/group_chapter_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
@@ -28,6 +32,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Chapter extends StatefulWidget {
+  // #region Constructor
   final bool loadSingleChapter;
   final int storyId;
   final String storyName;
@@ -50,6 +55,7 @@ class Chapter extends StatefulWidget {
       required this.pageIndex,
       required this.totalChapter,
       required this.chapterNumber});
+  // #endregion
 
   @override
   State<Chapter> createState() => _ChapterState();
@@ -58,6 +64,8 @@ class Chapter extends StatefulWidget {
 class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   @override
   void initState() {
+    _batteryLevel = 0;
+    _seconds = 10;
     _heightBottomContainer = 75.2;
     _heightAdsContainer = 49;
     _isContainerVisible = false;
@@ -65,6 +73,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     _isLookNextChapter = true;
     _maxScrollOffset = 0;
     _chapterName = "";
+    _currentTime = '';
     _pageIndex = widget.pageIndex;
     _chapterIndex = 0;
     _initSharedPreferences().then((value) async {
@@ -120,6 +129,9 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     } else if (!_isLoading) {
       _isLoading = false;
     }
+    startCountdown();
+    getBatteryLevel();
+    getCurrentTime();
   }
 
   @override
@@ -153,7 +165,22 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     _refreshController.dispose();
     _isLoad = false;
     _saveRecentStory();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
     super.dispose();
+  }
+
+  void startCountdown() {
+    const oneSecond = Duration(seconds: 1);
+    Timer.periodic(oneSecond, (timer) {
+      if (_seconds == 0) {
+        timer.cancel();
+      } else {
+        setState(() {
+          _seconds--;
+        });
+      }
+    });
   }
 
 // #region Methods
@@ -184,6 +211,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   }
 
   void _saveScrollPosition() {
+    getCurrentTime();
     if (_isFirstRefresh) {
       _maxScrollOffset = _scrollController.position.maxScrollExtent;
     }
@@ -253,6 +281,8 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     } else if (mounted && widget.firstChapterId != chapterId) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
+          _seconds = 10;
+          startCountdown();
           _heightBottomContainer = 75.2;
           _heightAdsContainer = 49;
           _bannerAd!.load();
@@ -303,10 +333,12 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
       });
     } else if (mounted && _isLoading ||
         widget.lastChapterId != chapterId &&
-            _scrollController.offset > _maxScrollOffset + 150 &&
+            _scrollController.offset > _maxScrollOffset + 80 &&
             !_isLookNextChapter) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
+          _seconds = 10;
+          startCountdown();
           _heightBottomContainer = 75.2;
           _heightAdsContainer = 49;
           _bannerAd!.load();
@@ -388,9 +420,49 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     _sharedPreferences.setBool("is_saved_recent", true);
   }
 
+  Future<void> getBatteryLevel() async {
+    try {
+      var level = (await BatteryInfoPlugin().iosBatteryInfo)!.batteryLevel;
+      setState(() {
+        _batteryLevel = level ?? 0;
+      });
+    } catch (e) {
+      debugPrint("Error getting battery level: $e");
+    }
+  }
+
+  IconData _getBatteryIcon() {
+    if (_batteryLevel == 0) {
+      return Icons.battery_0_bar_sharp;
+    } else if (_batteryLevel == 100) {
+      return Icons.battery_full;
+    } else if (_batteryLevel >= 90) {
+      return Icons.battery_6_bar_sharp;
+    } else if (_batteryLevel >= 60) {
+      return Icons.battery_5_bar_sharp;
+    } else if (_batteryLevel >= 30) {
+      return Icons.battery_4_bar_sharp;
+    } else if (_batteryLevel >= 15) {
+      return Icons.battery_3_bar_sharp;
+    } else {
+      return Icons.battery_alert_sharp;
+    }
+  }
+
+  Future<void> getCurrentTime() async {
+    DateTime now = DateTime.now();
+    String formattedTime = DateFormat.Hm().format(now);
+    setState(() {
+      _currentTime = formattedTime;
+    });
+  }
+
 // #endregion
 
 // #region Variables
+  late String _currentTime = '';
+  late int _batteryLevel;
+  late int _seconds;
   late double _heightAdsContainer;
   late double _heightBottomContainer;
   late bool _isContainerVisible;
@@ -427,8 +499,9 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    var batteryIcon = _getBatteryIcon();
     if (!_isVisible) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
           overlays: SystemUiOverlay.values);
     }
     return BlocProvider(
@@ -463,6 +536,8 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                 themeMode(context, ColorCode.textColor.name);
             _settingConfig.fontFamily =
                 _settingConfig.fontFamily ?? CustomFonts.inter;
+            _settingConfig.disableColor = _settingConfig.disableColor ??
+                const Color.fromARGB(255, 179, 178, 178);
             _settingConfig.fontSize = _settingConfig.fontSize ?? 15;
             _settingConfig.isLeftAlign = _settingConfig.isLeftAlign ?? true;
             _settingConfig.locationButton =
@@ -496,6 +571,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                     templateValue.isHorizontal ?? _settingConfig.isHorizontal;
                 // #endregion
                 return Scaffold(
+                    // #region Appbar and menu
                     resizeToAvoidBottomInset: false,
                     appBar: _isVisible
                         ? AppBar(
@@ -768,14 +844,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                 child: Title(
                                     color: tempFontColor!,
                                     child: Text(
-                                      _chapterName.isEmpty
-                                          ? widget.storyName
-                                          : _chapterName
-                                              .replaceAll(
-                                                  RegExp(r'Chương \d+:'), '')
-                                              .replaceAll("\n", "")
-                                              .replaceAll('.', "")
-                                              .trim(),
+                                      widget.storyName,
                                       style: CustomFonts.h5(context).copyWith(
                                           fontFamily: tempFontFamily,
                                           color: tempFontColor,
@@ -792,6 +861,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                           )
                         : PreferredSize(
                             preferredSize: Size.zero, child: Container()),
+                    // #endregion
                     backgroundColor: tempBackground,
                     body: GestureDetector(
                       onTap: () {
@@ -830,111 +900,242 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                           _isShowDetailAppbar = false;
                         });
                       },
-                      child: SmartRefresher(
-                        enablePullDown: true,
-                        enablePullUp: true,
-                        header: ClassicHeader(
-                          idleIcon: Icon(
-                            Icons.arrow_upward,
-                            color: tempFontColor,
-                          ),
-                          idleText: L(context,
-                              LanguageCodes.previousChapterTextInfo.toString()),
-                          refreshingText: L(context,
-                              LanguageCodes.loadingTextInfo.toString()),
-                          releaseText: L(context,
-                              LanguageCodes.loadingTextInfo.toString()),
-                        ),
-                        controller: _refreshController,
-                        onRefresh: () =>
-                            _onRefresh(chapterInfo[_chapterIndex].id),
-                        onLoading: () =>
-                            _onLoading(chapterInfo[_chapterIndex].id, true),
-                        footer: ClassicFooter(
-                          canLoadingIcon: Icon(
-                            Icons.arrow_downward,
-                            color: tempFontColor,
-                          ),
-                          idleText: L(context,
-                              LanguageCodes.loadingMoreTextInfo.toString()),
-                          canLoadingText: L(context,
-                              LanguageCodes.nextChapterTextInfo.toString()),
-                        ),
-                        child: tempIsHorizontal!
-                            ? ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                physics: const PageScrollPhysics(),
-                                controller: _scrollController,
-                                itemCount:
-                                    chapterInfo[_chapterIndex].bodyChunk.length,
-                                itemBuilder: (context, index) {
-                                  var textString = convertTagHtmlFormatToString(
-                                          chapterInfo[_chapterIndex]
-                                              .bodyChunk[index])
-                                      .trim();
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          padding: const EdgeInsets.all(12.0),
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: AutoSizeText(
-                                            textString,
-                                            style: TextStyle(
-                                              fontSize: tempFontSize! > 30
-                                                  ? 30
-                                                  : tempFontSize,
-                                              fontFamily: tempFontFamily,
-                                              color: tempFontColor,
-                                              backgroundColor: tempBackground,
+                      child: Stack(children: [
+                        tempIsHorizontal!
+                            ? SmartRefresher(
+                                enablePullDown: true,
+                                enablePullUp: true,
+                                header: ClassicHeader(
+                                  idleIcon: Icon(
+                                    Icons.arrow_upward,
+                                    color: tempFontColor,
+                                  ),
+                                  idleText: L(
+                                      context,
+                                      LanguageCodes.previousChapterTextInfo
+                                          .toString()),
+                                  refreshingText: L(context,
+                                      LanguageCodes.loadingTextInfo.toString()),
+                                  releaseText: L(context,
+                                      LanguageCodes.loadingTextInfo.toString()),
+                                ),
+                                controller: _refreshController,
+                                onRefresh: () =>
+                                    _onRefresh(chapterInfo[_chapterIndex].id),
+                                onLoading: () => _onLoading(
+                                    chapterInfo[_chapterIndex].id, true),
+                                footer: ClassicFooter(
+                                  canLoadingIcon: Icon(
+                                    Icons.arrow_downward,
+                                    color: tempFontColor,
+                                  ),
+                                  idleText: L(
+                                      context,
+                                      LanguageCodes.loadingMoreTextInfo
+                                          .toString()),
+                                  canLoadingText: L(
+                                      context,
+                                      LanguageCodes.nextChapterTextInfo
+                                          .toString()),
+                                ),
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    physics: const PageScrollPhysics(),
+                                    controller: _scrollController,
+                                    itemCount: chapterInfo[_chapterIndex]
+                                        .bodyChunk
+                                        .length,
+                                    itemBuilder: (context, index) {
+                                      var textString =
+                                          convertTagHtmlFormatToString(
+                                        chapterInfo[_chapterIndex]
+                                            .bodyChunk[index],
+                                      ).trim();
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: AutoSizeText(
+                                                textString,
+                                                style: TextStyle(
+                                                  fontSize: tempFontSize! > 30
+                                                      ? 30
+                                                      : tempFontSize,
+                                                  color: tempFontColor,
+                                                  backgroundColor:
+                                                      tempBackground,
+                                                ),
+                                                textAlign: tempIsLeftAlign!
+                                                    ? TextAlign.justify
+                                                    : TextAlign.left,
+                                              ),
                                             ),
-                                            textAlign: tempIsLeftAlign!
-                                                ? TextAlign.justify
-                                                : TextAlign.left,
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                              )
+                            : SmartRefresher(
+                                enablePullDown: true,
+                                enablePullUp: true,
+                                header: ClassicHeader(
+                                  idleIcon: Icon(
+                                    Icons.arrow_upward,
+                                    color: tempFontColor,
+                                  ),
+                                  idleText: L(
+                                      context,
+                                      LanguageCodes.previousChapterTextInfo
+                                          .toString()),
+                                  refreshingText: L(context,
+                                      LanguageCodes.loadingTextInfo.toString()),
+                                  releaseText: L(context,
+                                      LanguageCodes.loadingTextInfo.toString()),
+                                ),
+                                controller: _refreshController,
+                                onRefresh: () =>
+                                    _onRefresh(chapterInfo[_chapterIndex].id),
+                                onLoading: () => _onLoading(
+                                    chapterInfo[_chapterIndex].id, true),
+                                footer: ClassicFooter(
+                                  canLoadingIcon: Icon(
+                                    Icons.arrow_downward,
+                                    color: tempFontColor,
+                                  ),
+                                  idleText: L(
+                                      context,
+                                      LanguageCodes.loadingMoreTextInfo
+                                          .toString()),
+                                  canLoadingText: L(
+                                      context,
+                                      LanguageCodes.nextChapterTextInfo
+                                          .toString()),
+                                ),
+                                child: ListView.builder(
+                                    physics: const BouncingScrollPhysics(),
+                                    controller: _scrollController,
+                                    itemCount: 1,
+                                    itemBuilder: (context, index) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Html(
+                                              data: chapterInfo[_chapterIndex]
+                                                  .body
+                                                  .replaceAll("\n", "")
+                                                  .trim(),
+                                              style: {
+                                                '#': Style(
+                                                  textAlign: tempIsLeftAlign!
+                                                      ? TextAlign.justify
+                                                      : TextAlign.left,
+                                                  fontFamily: tempFontFamily,
+                                                  fontSize:
+                                                      FontSize(tempFontSize!),
+                                                  color: tempFontColor,
+                                                  backgroundColor:
+                                                      tempBackground,
+                                                ),
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                              ),
+                        !_isVisible
+                            ? Positioned(
+                                top: 0,
+                                right: 0,
+                                left: 0,
+                                child: Container(
+                                  height: MainSetting.getPercentageOfDevice(
+                                          context,
+                                          expectHeight: 35)
+                                      .height,
+                                  color: tempBackground,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Stack(children: [
+                                        Container(
+                                          width:
+                                              MainSetting.getPercentageOfDevice(
+                                                      context,
+                                                      expectWidth: 300)
+                                                  .width,
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(
+                                            _chapterName
+                                                .replaceAll(
+                                                    RegExp(r'Chương \d+:'), '')
+                                                .replaceAll("\n", "")
+                                                .replaceAll('.', "")
+                                                .trim(),
+                                            style: CustomFonts.h6(context)
+                                                .copyWith(
+                                                    color: tempFontColor,
+                                                    fontSize: tempFontSize),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  );
-                                })
-                            : ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                controller: _scrollController,
-                                itemCount: 1,
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Html(
-                                          data: chapterInfo[_chapterIndex]
-                                              .body
-                                              .replaceAll("\n", "")
-                                              .trim(),
-                                          style: {
-                                            '#': Style(
-                                              textAlign: tempIsLeftAlign!
-                                                  ? TextAlign.justify
-                                                  : TextAlign.left,
-                                              fontFamily: tempFontFamily,
-                                              fontSize: FontSize(tempFontSize!),
-                                              color: tempFontColor,
-                                              backgroundColor: tempBackground,
+                                        showToolTip(_chapterName
+                                            .replaceAll(
+                                                RegExp(r'Chương \d+:'), '')
+                                            .replaceAll("\n", "")
+                                            .replaceAll('.', "")
+                                            .trim())
+                                      ]),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              _currentTime,
+                                              style: CustomFonts.h6(context)
+                                                  .copyWith(
+                                                      color: tempFontColor,
+                                                      fontSize: 13),
+                                              textAlign: TextAlign.center,
                                             ),
-                                          },
-                                        ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Icon(
+                                              batteryIcon,
+                                              size: 13,
+                                              color: tempFontColor,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
-                                  );
-                                }),
-                      ),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox()
+                      ]),
                     ),
+
+                    // #region dashboard bottom and ads banner
+
                     floatingActionButton: ButtonChapterScroll(
                         tempLocationScrollButton: tempLocationScrollButton,
                         tempFontColor: tempFontColor!,
@@ -968,109 +1169,144 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                         child: const BuyPremium()),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: SizedBox(
-                                      width: MainSetting.getPercentageOfDevice(
-                                              context,
-                                              expectWidth: 20)
-                                          .width,
-                                      height: MainSetting.getPercentageOfDevice(
-                                              context,
-                                              expectHeight: 18)
-                                          .height,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            if (_scrollAdsController
-                                                    .hasClients &&
-                                                !_isContainerVisible) {
-                                              _heightBottomContainer =
-                                                  MainSetting
-                                                          .getPercentageOfDevice(
-                                                              context,
-                                                              expectHeight: 26)
-                                                      .height!;
-                                              _heightAdsContainer = MainSetting
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: _seconds == 0
+                                          ? SizedBox(
+                                              width: MainSetting
                                                       .getPercentageOfDevice(
                                                           context,
-                                                          expectHeight: 0)
-                                                  .height!;
-                                              _scrollAdsController.animateTo(
-                                                0,
-                                                duration: const Duration(
-                                                    milliseconds: 300),
-                                                curve: Curves.easeInOut,
-                                              );
-                                              _isContainerVisible = true;
-                                            } else if (_scrollAdsController
-                                                    .hasClients &&
-                                                _isContainerVisible) {
-                                              _heightBottomContainer =
-                                                  MainSetting
-                                                          .getPercentageOfDevice(
-                                                              context,
-                                                              expectHeight:
-                                                                  75.2)
-                                                      .height!;
-                                              _heightAdsContainer = MainSetting
+                                                          expectWidth: 20)
+                                                  .width,
+                                              height: MainSetting
                                                       .getPercentageOfDevice(
                                                           context,
-                                                          expectHeight: 49)
-                                                  .height!;
-                                              _scrollAdsController.animateTo(
-                                                75.2,
-                                                duration: const Duration(
-                                                    milliseconds: 300),
-                                                curve: Curves.easeInOut,
-                                              );
-                                              _isContainerVisible = false;
-                                            }
-                                          });
-                                        },
-                                        child: _isVisible
-                                            ? null
-                                            : Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30.0),
-                                                    color: themeMode(
-                                                        context,
-                                                        ColorCode
-                                                            .textColor.name)),
-                                                child: !_isContainerVisible
-                                                    ? Icon(
-                                                        size: MainSetting
-                                                                .getPercentageOfDevice(
+                                                          expectHeight: 18)
+                                                  .height,
+                                              child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      if (_scrollAdsController
+                                                              .hasClients &&
+                                                          !_isContainerVisible) {
+                                                        _heightBottomContainer =
+                                                            MainSetting.getPercentageOfDevice(
                                                                     context,
-                                                                    expectWidth:
-                                                                        18)
-                                                            .width,
-                                                        Icons
-                                                            .keyboard_arrow_down_outlined,
+                                                                    expectHeight:
+                                                                        26)
+                                                                .height!;
+                                                        _heightAdsContainer =
+                                                            MainSetting.getPercentageOfDevice(
+                                                                    context,
+                                                                    expectHeight:
+                                                                        0)
+                                                                .height!;
+                                                        _scrollAdsController
+                                                            .animateTo(
+                                                          0,
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      300),
+                                                          curve:
+                                                              Curves.easeInOut,
+                                                        );
+                                                        _isContainerVisible =
+                                                            true;
+                                                      } else if (_scrollAdsController
+                                                              .hasClients &&
+                                                          _isContainerVisible) {
+                                                        _heightBottomContainer =
+                                                            MainSetting.getPercentageOfDevice(
+                                                                    context,
+                                                                    expectHeight:
+                                                                        75.2)
+                                                                .height!;
+                                                        _heightAdsContainer =
+                                                            MainSetting.getPercentageOfDevice(
+                                                                    context,
+                                                                    expectHeight:
+                                                                        49)
+                                                                .height!;
+                                                        _scrollAdsController
+                                                            .animateTo(
+                                                          75.2,
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      300),
+                                                          curve:
+                                                              Curves.easeInOut,
+                                                        );
+                                                        _isContainerVisible =
+                                                            false;
+                                                      }
+                                                    });
+                                                  },
+                                                  child: _isVisible
+                                                      ? null
+                                                      : Container(
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          30.0),
+                                                              color: themeMode(
+                                                                  context,
+                                                                  ColorCode
+                                                                      .textColor
+                                                                      .name)),
+                                                          child:
+                                                              !_isContainerVisible
+                                                                  ? Icon(
+                                                                      size: MainSetting.getPercentageOfDevice(
+                                                                              context,
+                                                                              expectWidth: 18)
+                                                                          .width,
+                                                                      Icons
+                                                                          .keyboard_arrow_down_outlined,
+                                                                      color: themeMode(
+                                                                          context,
+                                                                          ColorCode
+                                                                              .modeColor
+                                                                              .name),
+                                                                    )
+                                                                  : Icon(
+                                                                      size: MainSetting.getPercentageOfDevice(
+                                                                              context,
+                                                                              expectWidth: 18)
+                                                                          .width,
+                                                                      Icons
+                                                                          .keyboard_arrow_up_outlined,
+                                                                      color: themeMode(
+                                                                          context,
+                                                                          ColorCode
+                                                                              .modeColor
+                                                                              .name),
+                                                                    ),
+                                                        )),
+                                            )
+                                          : Container(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.0),
+                                                  color: themeMode(
+                                                      context,
+                                                      ColorCode
+                                                          .textColor.name)),
+                                              child: Text(
+                                                "$_seconds",
+                                                style: CustomFonts.h6(context)
+                                                    .copyWith(
                                                         color: themeMode(
                                                             context,
                                                             ColorCode.modeColor
-                                                                .name),
-                                                      )
-                                                    : Icon(
-                                                        size: MainSetting
-                                                                .getPercentageOfDevice(
-                                                                    context,
-                                                                    expectWidth:
-                                                                        18)
-                                                            .width,
-                                                        Icons
-                                                            .keyboard_arrow_up_outlined,
-                                                        color: themeMode(
-                                                            context,
-                                                            ColorCode.modeColor
-                                                                .name),
-                                                      ),
+                                                                .name)),
                                               ),
-                                      ),
-                                    ),
-                                  ),
+                                            )),
                                 ],
                               ),
                             ),
@@ -1079,6 +1315,8 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.linearToEaseOut,
                                     child: BottomChapterDetail(
+                                        disableColor: _settingConfig
+                                            .disableColor!,
                                         isDisablePreviousButton:
                                             _isDisablePreviousButton,
                                         isDisableNextButton:
@@ -1118,6 +1356,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                           ],
                         ),
                       ),
+                      // #endregion
                     ));
               },
             );

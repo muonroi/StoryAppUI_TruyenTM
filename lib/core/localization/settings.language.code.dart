@@ -229,5 +229,8 @@ enum LanguageCodes {
   deleteAccountSuccessTextInfo,
   agreeDeleteAccountTextInfo,
   twoLawsUpgradeAccountTextInfo,
+  paymentSuccessTextInfo,
+  paymentSuccessCustomerInfoTextInfo,
+  timeBackToHomeTextInfo,
 // #endregion
 }
