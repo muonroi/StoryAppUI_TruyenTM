@@ -27,6 +27,7 @@ class ApiNetwork {
   static const String uploadAvatar = "users/update-avatar";
   static const String validateOtp = "users/valid-otp";
   static const String changePassword = "users/change-password";
+  static const String userSubscription = "users/subscription";
 // #endregion
 
   // #region Stories endpoint

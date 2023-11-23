@@ -9,6 +9,7 @@ import 'package:muonroi/features/accounts/data/models/model.account.signin.dart'
 import 'package:muonroi/features/user/data/models/model.user.info.dart';
 import 'package:muonroi/features/user/data/models/model.user.single.detail.dart';
 import 'package:muonroi/features/user/settings/settings.dart';
+import 'package:muonroi/shared/models/signalR/widget.base.response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -91,6 +92,35 @@ class UserService {
       }
     } catch (e) {
       throw Exception("Failed to load user info - $e");
+    }
+  }
+
+  Future<BaseResponseServer> createUserSubscription() async {
+    try {
+      var baseEndpoint = await endPoint();
+      final response =
+          await baseEndpoint.post(ApiNetwork.userSubscription, data: {});
+      if (response.statusCode == 200) {
+        return baseResponseServerFromJson(response.data.toString());
+      } else {
+        throw Exception("Failed to load user subscription info");
+      }
+    } catch (e) {
+      throw Exception("Failed to load user subscription - $e");
+    }
+  }
+
+  Future<BaseResponseServer> getUserSubscription() async {
+    try {
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint.get(ApiNetwork.userSubscription);
+      if (response.statusCode == 200) {
+        return baseResponseServerFromJson(response.data.toString());
+      } else {
+        throw Exception("Failed to load user subscription info");
+      }
+    } catch (e) {
+      throw Exception("Failed to load user subscription - $e");
     }
   }
 }

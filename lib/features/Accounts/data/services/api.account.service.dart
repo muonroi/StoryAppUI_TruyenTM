@@ -6,7 +6,9 @@ import 'package:muonroi/core/authorization/setting.api.dart';
 import 'package:muonroi/core/services/api_route.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.signup.dart';
+import 'package:muonroi/features/accounts/settings/enum/enum.platform.dart';
 import 'package:muonroi/features/user/presentation/widgets/widget.validate.otp.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountsService {
   Future<AccountSignInModel> signIn(
@@ -54,14 +56,15 @@ class AccountsService {
 
   Future<bool> logout(String userGuid) async {
     try {
-      Map<String, dynamic> data = {
-        "userId": userGuid,
-        "isUpdateAccountStatus": true
-      };
-      Dio dio = Dio(BaseOptions(
-          baseUrl: ApiNetwork.baseApi, responseType: ResponseType.plain));
-      final response = await dio.post(ApiNetwork.logout, data: data);
+      var sharedPreferences = await SharedPreferences.getInstance();
+      Map<String, dynamic> data = {"isUpdateAccountStatus": true};
+      var baseUrl = await endPoint();
+      final response = await baseUrl.post(ApiNetwork.logout, data: data);
       if (response.statusCode == 200) {
+        var method = sharedPreferences.getString("MethodLogin");
+        if (method == EnumPlatform.google.name) {
+          await signOutGoogle();
+        }
         return true;
       }
     } on DioException catch (e) {
@@ -137,6 +140,11 @@ class AccountsService {
     } catch (error) {
       return null;
     }
+  }
+
+  Future<void> signOutGoogle() async {
+    await GoogleSignIn().signOut();
+    await FirebaseAuth.instance.signOut();
   }
 
   Future<AccountSignInModel> registerUser(AccountSignUpDTO input) async {

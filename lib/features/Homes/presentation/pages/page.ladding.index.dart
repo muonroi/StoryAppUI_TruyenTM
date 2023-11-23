@@ -4,9 +4,9 @@ import 'package:muonroi/features/accounts/data/models/model.account.signin.dart'
 import 'package:muonroi/features/homes/bloc/banner/banner_bloc.dart';
 import 'package:muonroi/features/homes/presentation/pages/page.controller.main.dart';
 import 'package:muonroi/features/homes/settings/enum/enum.setting.type.dart';
+import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/features/story/bloc/user/stories_for_user_bloc.dart';
 import 'package:muonroi/features/story/settings/enums/enum.story.user.dart';
-import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class IndexPage extends StatefulWidget {
@@ -49,19 +49,19 @@ class _IndexPageState extends State<IndexPage> {
       create: (context) => _bannerBloc,
       child: BlocListener<BannerBloc, BannerState>(
         listener: (context, state) {
-          _homeLoading();
+          homeLoading();
         },
         child: BlocBuilder<BannerBloc, BannerState>(
           builder: (context, state) {
             if (state is BannerLoadingState) {
-              return _homeLoading();
+              return homeLoading();
             }
             if (state is BannerLoadedState) {
               var bannerUrl = state.banners.result.bannerUrl;
               return _homePage(context, widget.accountResult, bannerUrl,
                   _storiesForUserBloc, _sharedPreferences);
             }
-            return _homeLoading();
+            return homeLoading();
           },
         ),
       ),
@@ -79,12 +79,12 @@ Widget _homePage(
     create: (context) => storiesForUserBloc,
     child: BlocListener<StoriesForUserBloc, StoriesForUserState>(
       listener: (context, state) {
-        _homeLoading();
+        homeLoading();
       },
       child: BlocBuilder<StoriesForUserBloc, StoriesForUserState>(
         builder: (context, state) {
           if (state is StoriesForUserLoadingState) {
-            return _homeLoading();
+            return homeLoading();
           }
           if (state is StoriesForUserLoadedState) {
             var storiesItem = state.stories.result.items;
@@ -134,19 +134,9 @@ Widget _homePage(
               bannerUrl: bannerUrl,
             );
           }
-          return _homeLoading();
+          return homeLoading();
         },
       ),
     ),
   );
 }
-
-Widget _homeLoading() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(flex: 2, child: Image.asset(CustomImages.laddingLogo))
-        ],
-      ),
-    );

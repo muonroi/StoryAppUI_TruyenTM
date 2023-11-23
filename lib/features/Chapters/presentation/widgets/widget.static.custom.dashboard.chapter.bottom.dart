@@ -207,7 +207,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                             ),
                             ToggleButton(
                               width: MainSetting.getPercentageOfDevice(context,
-                                      expectWidth: 280)
+                                      expectWidth: 270)
                                   .width,
                               height: MainSetting.getPercentageOfDevice(context,
                                       expectHeight: 40)
@@ -235,7 +235,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
                         ),
                         // #endregion
                         // #region Chosse Button scroll (hide or show)
-
                         !tempHorizontal
                             ? Container(
                                 margin:
@@ -403,7 +402,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                             ),
                             SizedBox(
                               width: MainSetting.getPercentageOfDevice(context,
-                                      expectWidth: 280)
+                                      expectWidth: 270)
                                   .width,
                               height: MainSetting.getPercentageOfDevice(context,
                                       expectHeight: 40)
@@ -424,7 +423,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                   SizedBox(
                                     width: MainSetting.getPercentageOfDevice(
                                             context,
-                                            expectWidth: 135)
+                                            expectWidth: 130)
                                         .width,
                                     height: MainSetting.getPercentageOfDevice(
                                             context,
@@ -445,7 +444,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                   SizedBox(
                                     width: MainSetting.getPercentageOfDevice(
                                             context,
-                                            expectWidth: 135)
+                                            expectWidth: 130)
                                         .width,
                                     height: MainSetting.getPercentageOfDevice(
                                             context,
@@ -541,7 +540,7 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                       ]),
                                   width: MainSetting.getPercentageOfDevice(
                                           context,
-                                          expectWidth: 280)
+                                          expectWidth: 270)
                                       .width,
                                   height: MainSetting.getPercentageOfDevice(
                                           context,

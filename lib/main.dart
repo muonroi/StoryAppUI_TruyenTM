@@ -12,7 +12,7 @@ import 'package:muonroi/features/accounts/data/models/model.account.signin.dart'
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
 import 'package:muonroi/features/accounts/settings/enum/enum.platform.dart';
 import 'package:muonroi/features/chapters/provider/provider.chapter.template.settings.dart';
-import 'package:muonroi/features/homes/presentation/pages/page.ladding.index.dart';
+import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/features/notification/provider/provider.notification.dart';
 import 'package:muonroi/features/system/provider/provider.theme.mode.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
@@ -20,12 +20,9 @@ import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/shared/static/certificate/widget.static.cert.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'features/accounts/presentation/pages/pages.logins.sign_in.dart';
 import 'shared/settings/enums/enum.log.type.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-//ca-app-pub-7594358837893425~2188984996 ~ IOS: ca-app-pub-7594358837893425~9518957901
-//ca-app-pub-7594358837893425/8777803444 ~ IOS: ca-app-pub-7594358837893425/7003603062
 void main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,58 +67,84 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   @override
   void initState() {
-    uid = null;
-    accountResult = null;
-    NotificationPush.initialize(flutterLocalNotificationsPlugin);
+    _isSigninView = false;
+    _accountResult = null;
     initLocalStored();
+    uid = null;
+    NotificationPush.initialize(flutterLocalNotificationsPlugin);
     super.initState();
   }
 
   initLocalStored() async {
     await SharedPreferences.getInstance().then((value) {
-      setState(() async {
-        var method = value.getString("MethodLogin");
-        _isSigninView = value.getString(KeyToken.accessToken.name) == null;
-        if (method == EnumPlatform.google.name) {
-          final FirebaseAuth auth = FirebaseAuth.instance;
-          var userInfo = auth.currentUser;
-          if (userInfo != null) {
-            var accountRepository = AccountRepository();
-            uid = userInfo.uid;
-            var accountInfo = await accountRepository.signIn(
-                userInfo.email!, "${userInfo.uid}12345678Az*", uid);
-            if (accountInfo.result == null) {
-              _isSigninView = true;
-            }
-            value.setString(
-                KeyToken.accessToken.name, accountInfo.result!.jwtToken);
-            value.setString(
-                KeyToken.refreshToken.name, accountInfo.result!.refreshToken);
-            value.setString('userLogin', accountSignInToJson(accountInfo));
-            if (mounted) {
-              setState(() {
-                _isSigninView = false;
-                accountResult =
-                    accountSignInFromJson(value.getString('userLogin')!)
-                        .result!;
-              });
+      if (context.mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          var method = value.getString("MethodLogin");
+          setState(() {
+            _isSigninView = value.getString(KeyToken.accessToken.name) == null;
+          });
+
+          if (method == EnumPlatform.google.name) {
+            final FirebaseAuth auth = FirebaseAuth.instance;
+            var userInfo = auth.currentUser;
+            if (userInfo != null) {
+              var accountRepository = AccountRepository();
+              uid = userInfo.uid;
+              var accountInfo = await accountRepository.signIn(
+                userInfo.email!,
+                "${userInfo.uid}12345678Az*",
+                uid,
+              );
+
+              if (accountInfo.result == null) {
+                _isSigninView = true;
+              }
+
+              value.setString(
+                KeyToken.accessToken.name,
+                accountInfo.result!.jwtToken,
+              );
+              value.setString(
+                KeyToken.refreshToken.name,
+                accountInfo.result!.refreshToken,
+              );
+              value.setString(
+                'userLogin',
+                accountSignInToJson(accountInfo),
+              );
+
+              if (mounted) {
+                setState(() {
+                  _isSigninView = false;
+                  _accountResult =
+                      accountSignInFromJson(value.getString('userLogin')!)
+                          .result!;
+                });
+              }
             }
           }
-        }
-        if (method == EnumPlatform.system.name) {
-          if (!_isSigninView) {
-            accountResult =
-                accountSignInFromJson(value.getString('userLogin')!).result!;
+
+          if (method == EnumPlatform.system.name) {
+            if (!_isSigninView) {
+              if (mounted) {
+                setState(() {
+                  _accountResult =
+                      accountSignInFromJson(value.getString('userLogin')!)
+                          .result!;
+                });
+              }
+            }
           }
-        }
-      });
+        });
+      }
+
       return value;
     });
   }
 
   late String? uid;
-  late bool _isSigninView = false;
-  late AccountResult? accountResult;
+  late bool _isSigninView;
+  late AccountResult? _accountResult;
   @override
   Widget build(BuildContext context) {
     final initFuture = MobileAds.instance.initialize();
@@ -138,18 +161,13 @@ class _MainAppState extends State<MainApp> {
         var themePick = value.mode == Modes.none ? Modes.light : value.mode;
         ManagerSystemMode.setMode = value;
         return MaterialApp(
-          theme: ThemeData(
-              brightness:
-                  themePick == Modes.dark ? Brightness.dark : Brightness.light),
-          debugShowCheckedModeBanner: false,
-          home: accountResult != null
-              ? _isSigninView
-                  ? const SignInPage()
-                  : IndexPage(
-                      accountResult: accountResult!,
-                    )
-              : const SignInPage(),
-        );
+            theme: ThemeData(
+                brightness: themePick == Modes.dark
+                    ? Brightness.dark
+                    : Brightness.light),
+            debugShowCheckedModeBanner: false,
+            home: homeLoading(
+                accountResult: _accountResult, signinView: _isSigninView));
       }),
     );
   }

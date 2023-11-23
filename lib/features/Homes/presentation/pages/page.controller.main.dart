@@ -307,6 +307,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 UserInfo(
                     userInfo: AccountInfo(
+                        isSubScription: widget.accountResult.isSubScription,
                         userGuid: widget.accountResult.id,
                         fullName:
                             '${widget.accountResult.surname}${widget.accountResult.name}',
@@ -327,24 +328,23 @@ class _HomePageState extends State<HomePage> {
 
               if (storyInfoRecently != null) {
                 var storyResult = recentStoryModelFromJson(storyInfoRecently);
-                var storyInfo = storyResult;
-                var chapterNumber = _sharedPreferences
-                        .getInt("story-${storyInfo.storyId}-current-chapter") ??
+                var chapterNumber = _sharedPreferences.getInt(
+                        "story-${storyResult.storyId}-current-chapter") ??
                     1;
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Chapter(
                     chapterNumber: chapterNumber,
-                    totalChapter: storyInfo.totalChapter,
-                    pageIndex: 1,
+                    totalChapter: storyResult.totalChapter,
+                    pageIndex: storyResult.pageIndex,
                     loadSingleChapter: false,
                     isLoadHistory: true,
-                    storyId: storyInfo.storyId,
-                    storyName: storyInfo.storyName,
+                    storyId: storyResult.storyId,
+                    storyName: storyResult.storyName,
                     chapterId: chapterIdRecently == 0
-                        ? storyInfo.firstChapterId
+                        ? storyResult.firstChapterId
                         : chapterIdRecently,
-                    lastChapterId: storyInfo.lastChapterId,
-                    firstChapterId: storyInfo.firstChapterId,
+                    lastChapterId: storyResult.lastChapterId,
+                    firstChapterId: storyResult.firstChapterId,
                   );
                 }));
               } else {

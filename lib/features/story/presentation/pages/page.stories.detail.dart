@@ -36,6 +36,7 @@ class _StoryDetailState extends State<StoryDetail> {
     _isBookmark = false;
     _chapterNumber = 0;
     _chapterId = 0;
+    _pageIndex = 0;
     _storyRepository = StoryRepository();
     _detailStory = DetailStoryPageBloc(widget.storyId);
     _detailStory.add(GetDetailStory());
@@ -56,9 +57,13 @@ class _StoryDetailState extends State<StoryDetail> {
               0);
       _chapterNumber =
           (chapterTemp.getInt("story-${widget.storyId}-current-chapter") ?? 0);
+      _pageIndex =
+          (chapterTemp.getInt("story-${widget.storyId}-current-page-index") ??
+              0);
     });
   }
 
+  late int _pageIndex;
   late DetailStoryPageBloc _detailStory;
   late int _chapterId;
   late int _chapterNumber;
@@ -246,7 +251,7 @@ class _StoryDetailState extends State<StoryDetail> {
                                 chapterNumber:
                                     _chapterNumber == 0 ? 1 : _chapterNumber,
                                 totalChapter: storyInfo.totalChapter,
-                                pageIndex: 1,
+                                pageIndex: _pageIndex,
                                 loadSingleChapter: false,
                                 isLoadHistory: true,
                                 storyId: widget.storyId,

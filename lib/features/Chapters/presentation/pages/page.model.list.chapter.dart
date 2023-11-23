@@ -31,6 +31,13 @@ class _ChapterListPageState extends State<ChapterListPage>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
+    _chapterPagingKeys = [];
+    _isShort = false;
+    _isLock = true;
+    _controller = ScrollController();
+    _fromChapterId = 1;
+    _toChapterId = 100;
+    _selectedItemIndex = 0;
     _animationSortController = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 300),
@@ -41,7 +48,10 @@ class _ChapterListPageState extends State<ChapterListPage>
     _latestChapterOfStoryBloc =
         LatestChapterOfStoryBloc(widget.storyId, false, 1, 100, 0);
     _latestChapterOfStoryBloc.add(GetFromToChapterOfStoryList(
-        pageIndex: 0, fromChapterId: fromChapterId, toChapterId: toChapterId));
+        pageIndex: 0,
+        fromChapterId: _fromChapterId,
+        toChapterId: _toChapterId));
+
     super.initState();
   }
 
@@ -57,12 +67,13 @@ class _ChapterListPageState extends State<ChapterListPage>
   late AnimationController _animationSortController;
   late GroupChapterOfStoryBloc _groupChapterOfStoryBloc;
   late LatestChapterOfStoryBloc _latestChapterOfStoryBloc;
-  final ScrollController _controller = ScrollController();
-  List<GlobalKey> chapterPagingKeys = [];
-  late bool isShort = false;
-  late int fromChapterId = 1;
-  late int toChapterId = 100;
-  int selectedItemIndex = 0;
+  late ScrollController _controller;
+  late List<GlobalKey> _chapterPagingKeys;
+  late bool _isShort;
+  late int _fromChapterId;
+  late int _toChapterId;
+  late int _selectedItemIndex;
+  late bool _isLock;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,12 +127,12 @@ class _ChapterListPageState extends State<ChapterListPage>
                       ).animate(_animationSortController),
                       child: IconButton(
                           onPressed: () {
-                            if (isShort) {
+                            if (_isShort) {
                               _animationSortController.reverse(from: 0.5);
                             } else {
                               _animationSortController.forward(from: 0.0);
                             }
-                            isShort = !isShort;
+                            _isShort = !_isShort;
                           },
                           icon: Icon(
                             Icons.sort,
@@ -146,12 +157,12 @@ class _ChapterListPageState extends State<ChapterListPage>
                           for (int i = 0;
                               i < state.chapter.result.length;
                               i++) {
-                            chapterPagingKeys.add(GlobalKey());
+                            _chapterPagingKeys.add(GlobalKey());
                           }
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             setState(() {
-                              fromChapterId = state.chapter.result[0].fromId;
-                              toChapterId = state.chapter.result[0].toId;
+                              _fromChapterId = state.chapter.result[0].fromId;
+                              _toChapterId = state.chapter.result[0].toId;
                             });
                           });
                           return Expanded(
@@ -169,25 +180,29 @@ class _ChapterListPageState extends State<ChapterListPage>
                                       splashColor: themeMode(
                                               context, ColorCode.mainColor.name)
                                           .withOpacity(0.5),
-                                      onTap: () async {
-                                        WidgetsBinding.instance
-                                            .addPostFrameCallback((_) {
-                                          setState(() {
-                                            selectedItemIndex = index;
-                                            _latestChapterOfStoryBloc.add(
-                                                GetFromToChapterOfStoryList(
-                                                    pageIndex: chapterPagingInfo
-                                                        .pageIndex,
-                                                    fromChapterId:
-                                                        chapterPagingInfo
-                                                            .fromId,
-                                                    toChapterId:
-                                                        chapterPagingInfo
-                                                            .toId));
-                                          });
-                                        });
-                                        await scrollItem(index);
-                                      },
+                                      onTap: !_isLock
+                                          ? () async {
+                                              WidgetsBinding.instance
+                                                  .addPostFrameCallback((_) {
+                                                setState(() {
+                                                  _isLock = true;
+                                                  _selectedItemIndex = index;
+                                                  _latestChapterOfStoryBloc.add(
+                                                      GetFromToChapterOfStoryList(
+                                                          pageIndex:
+                                                              chapterPagingInfo
+                                                                  .pageIndex,
+                                                          fromChapterId:
+                                                              chapterPagingInfo
+                                                                  .fromId,
+                                                          toChapterId:
+                                                              chapterPagingInfo
+                                                                  .toId));
+                                                });
+                                              });
+                                              await scrollItem(index);
+                                            }
+                                          : () {},
                                       borderRadius: BorderRadius.circular(16.0),
                                       child: Row(
                                         mainAxisAlignment:
@@ -196,10 +211,10 @@ class _ChapterListPageState extends State<ChapterListPage>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                              key: chapterPagingKeys[index],
+                                              key: _chapterPagingKeys[index],
                                               margin:
                                                   const EdgeInsets.all(16.0),
-                                              child: selectedItemIndex == index
+                                              child: _selectedItemIndex == index
                                                   ? Text(
                                                       '${chapterPagingInfo.from}-${chapterPagingInfo.to}',
                                                       style: TextStyle(
@@ -252,17 +267,18 @@ class _ChapterListPageState extends State<ChapterListPage>
                       );
                     }
                     if (state is FromToChapterOfStoryLoadedState) {
+                      _isLock = false;
                       List<int> originalIndices = List.generate(
                           state.chapter.result.length, (index) => index);
                       return Expanded(
                           child: ListView.builder(
                         itemCount: state.chapter.result.length,
                         itemBuilder: ((context, index) {
-                          if (!isShort) {
+                          if (!_isShort) {
                             state.chapter.result.sort((a, b) =>
                                 a.numberOfChapter.compareTo(b.numberOfChapter));
                           }
-                          if (isShort) {
+                          if (_isShort) {
                             state.chapter.result.sort((a, b) =>
                                 b.numberOfChapter.compareTo(a.numberOfChapter));
                           }
@@ -285,7 +301,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                                             : chapterInfo.groupIndex);
                                     sharePreferences.setInt(
                                         "story-${widget.storyId}-current-chapter-index",
-                                        isShort
+                                        _isShort
                                             ? originalIndices.length - 1 - index
                                             : index);
                                     sharePreferences.setInt(
@@ -396,7 +412,7 @@ class _ChapterListPageState extends State<ChapterListPage>
   }
 
   Future scrollItem(int index) async {
-    await Scrollable.ensureVisible(chapterPagingKeys[index].currentContext!,
+    await Scrollable.ensureVisible(_chapterPagingKeys[index].currentContext!,
         alignment: 0.5, duration: const Duration(milliseconds: 300));
   }
 }

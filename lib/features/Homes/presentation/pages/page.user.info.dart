@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_in.dart';
-import 'package:muonroi/features/coins/presentation/pages/page.upgrade.account.dart';
 import 'package:muonroi/features/contacts/presentation/pages/page.contact.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.user.info.items.dart';
 import 'package:muonroi/features/system/presentation/pages/page.setting.dart';
@@ -14,7 +13,6 @@ import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.info.dart';
-import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserInfo extends StatefulWidget {
@@ -85,80 +83,81 @@ class _UserInfoState extends State<UserInfo> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Column(
-                            children: [
-                              Text(formatValueNumber(widget.userInfo.coin ?? 0),
-                                  style: CustomFonts.h5(context)),
-                              SizedBox(
-                                width: MainSetting.getPercentageOfDevice(
-                                        context,
-                                        expectWidth: 120)
-                                    .width,
-                                height: MainSetting.getPercentageOfDevice(
-                                        context,
-                                        expectHeight: 25)
-                                    .height,
-                                child: Text(
-                                  L(
-                                      context,
-                                      LanguageCodes.myAccountCoinTextInfo
-                                          .toString()),
-                                  style: CustomFonts.h5(context),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            '|',
-                            style: CustomFonts.h4(context)
-                                .copyWith(fontWeight: FontWeight.w300),
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                widget.userInfo.totalStoriesBought.toString(),
-                                style: CustomFonts.h5(context),
-                              ),
-                              SizedBox(
-                                width: MainSetting.getPercentageOfDevice(
-                                        context,
-                                        expectWidth: 120)
-                                    .width,
-                                height: MainSetting.getPercentageOfDevice(
-                                        context,
-                                        expectHeight: 25)
-                                    .height,
-                                child: Text(
-                                  L(
-                                      context,
-                                      LanguageCodes.savedStoriesTextInfo
-                                          .toString()),
-                                  style: CustomFonts.h5(context),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          )
+                          SizedBox()
+                          // Column(
+                          //   children: [
+                          //     Text(formatValueNumber(widget.userInfo.coin ?? 0),
+                          //         style: CustomFonts.h5(context)),
+                          //     SizedBox(
+                          //       width: MainSetting.getPercentageOfDevice(
+                          //               context,
+                          //               expectWidth: 120)
+                          //           .width,
+                          //       height: MainSetting.getPercentageOfDevice(
+                          //               context,
+                          //               expectHeight: 25)
+                          //           .height,
+                          //       child: Text(
+                          //         L(
+                          //             context,
+                          //             LanguageCodes.myAccountCoinTextInfo
+                          //                 .toString()),
+                          //         style: CustomFonts.h5(context),
+                          //         textAlign: TextAlign.center,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                          // Text(
+                          //   '|',
+                          //   style: CustomFonts.h4(context)
+                          //       .copyWith(fontWeight: FontWeight.w300),
+                          // ),
+                          // Column(
+                          //   children: [
+                          //     Text(
+                          //       widget.userInfo.totalStoriesBought.toString(),
+                          //       style: CustomFonts.h5(context),
+                          //     ),
+                          //     SizedBox(
+                          //       width: MainSetting.getPercentageOfDevice(
+                          //               context,
+                          //               expectWidth: 120)
+                          //           .width,
+                          //       height: MainSetting.getPercentageOfDevice(
+                          //               context,
+                          //               expectHeight: 25)
+                          //           .height,
+                          //       child: Text(
+                          //         L(
+                          //             context,
+                          //             LanguageCodes.savedStoriesTextInfo
+                          //                 .toString()),
+                          //         style: CustomFonts.h5(context),
+                          //         textAlign: TextAlign.center,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // )
                         ],
                       ),
                     ),
-                    SettingItems(
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const UpgradeAccount())),
-                      text: L(context,
-                          LanguageCodes.myAccountPremiumTextInfo.toString()),
-                      image: CustomImages.crown2x,
-                      colorIcon: themeMode(context, ColorCode.textColor.name),
-                    ),
+                    // SettingItems(
+                    //   onPressed: () => Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => const UpgradeAccount())),
+                    //   text: L(context,
+                    //       LanguageCodes.myAccountPremiumTextInfo.toString()),
+                    //   image: CustomImages.crown2x,
+                    //   colorIcon: themeMode(context, ColorCode.textColor.name),
+                    // ),
                     // SettingItems(
                     //     onPressed: () {},
                     //     text:L(context,ViCode.myAccountGiftCodeTextInfo.toString()),
