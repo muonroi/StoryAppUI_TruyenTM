@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
-import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_in.dart';
+import 'package:muonroi/features/coins/presentation/widgets/widget.payment.success.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
+//import 'package:pay/pay.dart';
 
 class UpgradeAccount extends StatefulWidget {
   const UpgradeAccount({super.key});
@@ -15,6 +15,66 @@ class UpgradeAccount extends StatefulWidget {
 }
 
 class _UpgradeAccountState extends State<UpgradeAccount> {
+  // final _paymentItems = [
+  //   const PaymentItem(
+  //     label: 'Total',
+  //     amount: '99.99',
+  //     status: PaymentItemStatus.final_price,
+  //   )
+  // ];
+  Future<void> onGooglePayResult(paymentResult) async {
+    //description
+    if (mounted) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (builder) => PaymentSuccessNotice(
+                    paymentInfo: paymentResult['paymentMethodData']
+                        ["description"],
+                  )));
+    }
+  }
+
+  final String defaultGooglePay = '''{
+  "provider": "google_pay",
+  "data": {
+    "environment": "TEST",
+    "apiVersion": 2,
+    "apiVersionMinor": 0,
+    "allowedPaymentMethods": [
+      {
+        "type": "CARD",
+        "tokenizationSpecification": {
+          "type": "PAYMENT_GATEWAY",
+          "parameters": {
+            "gateway": "example",
+            "gatewayMerchantId": "gatewayMerchantId"
+          }
+        },
+        "parameters": {
+          "allowedCardNetworks": ["VISA", "MASTERCARD"],
+          "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+          "billingAddressRequired": true,
+          "billingAddressParameters": {
+            "format": "FULL",
+            "phoneNumberRequired": true
+          }
+        }
+      }
+    ],
+    "merchantInfo": {
+      "merchantId": "01234567890123456789",
+      "merchantName": "Example Merchant Name"
+    },
+    "transactionInfo": {
+    "totalPriceStatus": "FINAL",
+    "totalPrice": "12.34",
+    "countryCode": "VN",
+    "currencyCode": "VND"
+  }
+  }
+}''';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,15 +139,17 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                       style: CustomFonts.h4(context),
                     ),
                   ),
-                  SizedBox(
-                    child: ButtonWidget.buttonNavigatorNextPreviewLanding(
-                        context, const SignInPage(),
-                        textDisplay:
-                            L(context, LanguageCodes.buyNowTextInfo.toString()),
-                        textStyle: CustomFonts.h5(context).copyWith(
-                            color:
-                                themeMode(context, ColorCode.modeColor.name))),
-                  ),
+                  // GooglePayButton(
+                  //   paymentConfiguration:
+                  //       PaymentConfiguration.fromJsonString(defaultGooglePay),
+                  //   paymentItems: _paymentItems,
+                  //   type: GooglePayButtonType.subscribe,
+                  //   margin: const EdgeInsets.only(top: 15.0),
+                  //   onPaymentResult: onGooglePayResult,
+                  //   loadingIndicator: const Center(
+                  //     child: CircularProgressIndicator(),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -117,6 +179,19 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
                     style: CustomFonts.h5(context),
                     textAlign: TextAlign.left,
                     overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(20.0),
+                  width: MainSetting.getPercentageOfDevice(context,
+                          expectWidth: 500)
+                      .width,
+                  child: Text(
+                    '2. ${L(context, LanguageCodes.twoLawsUpgradeAccountTextInfo.toString())}',
+                    style: CustomFonts.h5(context),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
                   ),
                 )
               ],

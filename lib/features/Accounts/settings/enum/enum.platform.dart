@@ -1,0 +1,1 @@
+enum EnumPlatform { system, google }

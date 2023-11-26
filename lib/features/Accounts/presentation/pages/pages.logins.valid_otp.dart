@@ -74,12 +74,12 @@ class _OTPScreenState extends State<OTPScreen> {
                     backgroundColor: MaterialStateProperty.all(
                         themeMode(context, ColorCode.mainColor.name))),
                 onPressed: () async {
-                  final accountRepository =
-                      AccountRepository(widget.username, "", "");
+                  final accountRepository = AccountRepository();
                   String enteredOTP = otpControllers
                       .map((controller) => controller.text)
                       .join();
-                  var result = await accountRepository.validOtp(enteredOTP);
+                  var result = await accountRepository.validOtp(
+                      enteredOTP, widget.username);
 
                   if (result.result.isVerify && mounted) {
                     Navigator.push(

@@ -3,7 +3,8 @@ enum KeyChapterTemplate {
   fontFamily,
   fontColor,
   backgroundColor,
-  fontSize
+  fontSize,
+  disableColor
 }
 
 enum KeyChapterButtonScroll {
@@ -15,4 +16,4 @@ enum KeyChapterButtonScroll {
   static KeyChapterButtonScroll fromJson(String json) => values.byName(json);
 }
 
-enum KeyChapterColor { chapterColor, none, background, font }
+enum KeyChapterColor { chapterColor, none, background, font, disableColor }

@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart' as url;
 class Utils {
   static Future<void> sendEmail(
       {required String email, String subject = "", String body = ""}) async {
-    final mail = Mailto(to: ['admin.contact@muonroi.online']);
+    final mail = Mailto(to: ['admin.contact@TruyenTM.online']);
     if (await url.canLaunchUrl(Uri.parse(mail.toString()))) {
       await url.launchUrl(Uri.parse(mail.toString()));
     } else {

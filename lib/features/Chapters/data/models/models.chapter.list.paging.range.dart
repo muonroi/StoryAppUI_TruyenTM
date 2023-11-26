@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:muonroi/features/chapters/settings/settings.dart';
+
 ListPagingRangeChapters listPagingRangeChaptersFromJson(String str) =>
     ListPagingRangeChapters.fromJson(json.decode(str));
 
@@ -7,7 +9,7 @@ String listPagingRangeChaptersToJson(ListPagingRangeChapters data) =>
     json.encode(data.toJson());
 
 class ListPagingRangeChapters {
-  List<Result> result;
+  List<PagingResult> result;
   List<dynamic> errorMessages;
   bool isOk;
   int statusCode;
@@ -21,8 +23,8 @@ class ListPagingRangeChapters {
 
   factory ListPagingRangeChapters.fromJson(Map<String, dynamic> json) =>
       ListPagingRangeChapters(
-        result:
-            List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
+        result: List<PagingResult>.from(
+            json["result"].map((x) => PagingResult.fromJson(x))),
         errorMessages: List<dynamic>.from(json["errorMessages"].map((x) => x)),
         isOk: json["isOK"],
         statusCode: json["statusCode"],
@@ -36,7 +38,7 @@ class ListPagingRangeChapters {
       };
 }
 
-class Result {
+class PagingResult {
   int id;
   String chapterTitle;
   String body;
@@ -50,7 +52,7 @@ class Result {
   String updatedUserName;
   int pageIndex;
   int groupIndex;
-  Result({
+  PagingResult({
     required this.id,
     required this.chapterTitle,
     required this.body,
@@ -66,10 +68,10 @@ class Result {
     required this.groupIndex,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory PagingResult.fromJson(Map<String, dynamic> json) => PagingResult(
       id: json["id"],
       chapterTitle: json["chapterTitle"],
-      body: json["body"],
+      body: json["body"] == "" ? "" : decryptStringAES(json["body"]),
       numberOfChapter: json["numberOfChapter"],
       numberOfWord: json["numberOfWord"],
       storyId: json["storyId"],

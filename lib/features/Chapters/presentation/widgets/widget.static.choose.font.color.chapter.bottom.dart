@@ -45,6 +45,8 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
           break;
         case KeyChapterColor.chapterColor:
           break;
+        case KeyChapterColor.disableColor:
+          break;
         case KeyChapterColor.none:
           break;
       }
@@ -90,6 +92,8 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
                     templateValue.valueSetting = currentTemplate;
                     break;
                   case KeyChapterColor.chapterColor:
+                    break;
+                  case KeyChapterColor.disableColor:
                     break;
                   case KeyChapterColor.none:
                     break;

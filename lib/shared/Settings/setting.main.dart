@@ -9,7 +9,7 @@ import 'package:icons_flutter/icons_flutter.dart';
 import 'package:muonroi/core/authorization/enums/key.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/core/services/api_route.dart';
-import 'package:muonroi/features/accounts/data/models/models.account.token.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.token.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/models/signalR/enum/enum.signalr.type.dart';
@@ -24,16 +24,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ManagerSystemMode {
   static late CustomThemeModeProvider _tempCurrentMode;
+  static late CustomThemeModeProvider _tempCurrentLanguage;
   static CustomThemeModeProvider get currentMode => _tempCurrentMode;
+  static CustomThemeModeProvider get currentLanguage => _tempCurrentLanguage;
   static set setMode(CustomThemeModeProvider mode) {
     _tempCurrentMode = mode;
+    _tempCurrentLanguage = mode;
   }
 }
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 String L(BuildContext context, String key, {String locate = Languages.vi}) {
-  return LocalizationLib.L(key, locale: locate);
+  CustomThemeModeProvider languagePick = ManagerSystemMode.currentLanguage;
+  return LocalizationLib.L(key,
+      locale: languagePick.language == Languages.none
+          ? locate
+          : languagePick.language);
 }
 
 Future<void> reNewAccessToken() async {

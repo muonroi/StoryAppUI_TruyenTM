@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/chapters/bloc/group_bloc/group_chapters_of_story_bloc.dart';
 import 'package:muonroi/features/story/bloc/detail/detail_bloc.dart';
+import 'package:muonroi/features/story/presentation/pages/page.audio.story.dart';
 import 'package:muonroi/features/story/settings/enums/enum.story.user.dart';
 import 'package:muonroi/features/story/data/repositories/story.repository.dart';
 import 'package:muonroi/features/story/presentation/pages/page.stories.download.dart';
@@ -36,14 +38,19 @@ class _StoryDetailState extends State<StoryDetail> {
     _isBookmark = false;
     _chapterNumber = 0;
     _chapterId = 0;
+    _pageIndex = 0;
     _storyRepository = StoryRepository();
     _detailStory = DetailStoryPageBloc(widget.storyId);
     _detailStory.add(GetDetailStory());
+    _groupChapterOfStoryBloc =
+        GroupChapterOfStoryBloc(widget.storyId, 1, 15, false, 0);
+    _groupChapterOfStoryBloc.add(GroupChapterOfStoryList());
     super.initState();
   }
 
   @override
   void dispose() {
+    _groupChapterOfStoryBloc.close();
     _detailStory.close();
     super.dispose();
   }
@@ -56,15 +63,21 @@ class _StoryDetailState extends State<StoryDetail> {
               0);
       _chapterNumber =
           (chapterTemp.getInt("story-${widget.storyId}-current-chapter") ?? 0);
+      _pageIndex =
+          (chapterTemp.getInt("story-${widget.storyId}-current-page-index") ??
+              0);
     });
   }
 
+  late int _pageIndex;
   late DetailStoryPageBloc _detailStory;
   late int _chapterId;
   late int _chapterNumber;
   late StoryRepository _storyRepository;
   late bool _isBookmark;
   late bool _isFirstLoad;
+  late GroupChapterOfStoryBloc _groupChapterOfStoryBloc;
+
   @override
   Widget build(BuildContext context) {
     getChapterId();
@@ -164,11 +177,27 @@ class _StoryDetailState extends State<StoryDetail> {
                           children: [
                             SizedBox(
                                 child: IconButton(
-                                    onPressed: null,
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (builder) => StoryAudio(
+                                                    totalChapter:
+                                                        storyInfo.totalChapter,
+                                                    lastChapterId:
+                                                        storyInfo.lastChapterId,
+                                                    firstChapterId: storyInfo
+                                                        .firstChapterId,
+                                                    imageUrl: storyInfo.imgUrl,
+                                                    title: widget.storyTitle,
+                                                    chapterId: _chapterId,
+                                                    storyId: widget.storyId,
+                                                  )));
+                                    },
                                     icon: Icon(
                                       Icons.headphones_outlined,
                                       color: themeMode(
-                                          context, ColorCode.disableColor.name),
+                                          context, ColorCode.textColor.name),
                                     ))),
                             SizedBox(
                               child: IconButton(
@@ -243,10 +272,11 @@ class _StoryDetailState extends State<StoryDetail> {
                           child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                               context,
                               Chapter(
+                                imageUrl: storyInfo.imgUrl,
                                 chapterNumber:
                                     _chapterNumber == 0 ? 1 : _chapterNumber,
                                 totalChapter: storyInfo.totalChapter,
-                                pageIndex: 1,
+                                pageIndex: _pageIndex,
                                 loadSingleChapter: false,
                                 isLoadHistory: true,
                                 storyId: widget.storyId,

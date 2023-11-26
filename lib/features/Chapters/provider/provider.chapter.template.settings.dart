@@ -20,6 +20,7 @@ class TemplateSetting with ChangeNotifier {
   double? fontSize;
   bool? isLeftAlign;
   bool? isHorizontal;
+  Color? disableColor;
   KeyChapterButtonScroll? locationButton;
 
   TemplateSetting(
@@ -29,8 +30,10 @@ class TemplateSetting with ChangeNotifier {
       this.backgroundColor,
       this.isLeftAlign,
       this.locationButton,
-      this.isHorizontal});
+      this.isHorizontal,
+      this.disableColor});
   set valueSetting(TemplateSetting newValue) {
+    disableColor = newValue.disableColor;
     fontColor = newValue.fontColor;
     backgroundColor = newValue.backgroundColor;
     fontSize = newValue.fontSize;
@@ -44,6 +47,8 @@ class TemplateSetting with ChangeNotifier {
   factory TemplateSetting.fromJson(
           BuildContext context, Map<String, dynamic> json) =>
       TemplateSetting(
+        disableColor: colorFromJson(json["disableColor"],
+            themeMode(context, ColorCode.textColor.name), context),
         fontFamily: json["fontFamily"],
         fontColor: colorFromJson(json["fontColor"],
             themeMode(context, ColorCode.textColor.name), context),
@@ -60,6 +65,8 @@ class TemplateSetting with ChangeNotifier {
             : bool.parse("false"),
       );
   Map<String, dynamic> toJson(BuildContext context) => {
+        "disableColor": colorToJson(disableColor,
+            themeMode(context, ColorCode.textColor.name).value, context),
         "fontFamily": fontFamily,
         "fontColor": colorToJson(fontColor,
             themeMode(context, ColorCode.textColor.name).value, context),

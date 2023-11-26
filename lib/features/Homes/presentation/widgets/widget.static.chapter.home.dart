@@ -216,6 +216,7 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => Chapter(
+                                                  imageUrl: '',
                                                   totalChapter: storyInfo
                                                       .result.totalChapter,
                                                   chapterNumber: chapterInfo

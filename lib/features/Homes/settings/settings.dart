@@ -2,10 +2,49 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
+import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_in.dart';
+import 'package:muonroi/features/homes/presentation/pages/page.ladding.index.dart';
 import 'package:muonroi/features/story/presentation/widgets/widget.static.loading.stories.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
+import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
+
+Widget homeLoading({AccountResult? accountResult, bool? signinView}) {
+  if (signinView != null) {
+    if (accountResult == null) {
+      if (signinView) {
+        return const SignInPage();
+      }
+    } else {
+      return IndexPage(
+        accountResult: accountResult,
+      );
+    }
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(flex: 2, child: Image.asset(CustomImages.laddingLogo))
+          ],
+        ),
+      ),
+    );
+  } else {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(flex: 2, child: Image.asset(CustomImages.laddingLogo))
+        ],
+      ),
+    );
+  }
+}
 
 class Debouncer {
   final Duration delay;

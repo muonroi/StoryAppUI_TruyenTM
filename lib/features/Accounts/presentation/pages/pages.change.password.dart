@@ -194,9 +194,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       : themeMode(context, ColorCode.disableColor.name))),
               onPressed: _isEnableButton
                   ? () async {
-                      final accountRepository =
-                          AccountRepository(widget.username, "", "");
+                      final accountRepository = AccountRepository();
                       var result = await accountRepository.changePassword(
+                          widget.username,
                           _newPasswordController.text,
                           _confirmPasswordController.text,
                           widget.code,

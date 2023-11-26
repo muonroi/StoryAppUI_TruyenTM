@@ -22,11 +22,12 @@ class ApiNetwork {
   static const String userInfoByUsername = "users/single/username?username=%s";
   static const String login = "users/login";
   static const String forgotPassword = "users/forgot-password";
-  static const String register = "users";
+  static const String curdUser = "users";
   static const String updateInfo = "users/profile";
   static const String uploadAvatar = "users/update-avatar";
   static const String validateOtp = "users/valid-otp";
   static const String changePassword = "users/change-password";
+  static const String userSubscription = "users/subscription";
 // #endregion
 
   // #region Stories endpoint
@@ -64,7 +65,7 @@ class ApiNetwork {
   static const String getListChapterPaging =
       "chapters/paging-chapter?storyId=%s";
   static const String getFromToChapterPaging =
-      "chapters/group?storyId=%s&pageIndex=%s&fromChapterId=%s&toChapterId=%s";
+      "chapters/group?storyId=%s&pageIndex=%s&fromChapterId=%s&toChapterId=%s&isSetCache=true";
   static const String getGroupChapters =
       "chapters/group-chapter?storyId=%s&pageIndex=%s&pageSize=%s";
   // #endregion

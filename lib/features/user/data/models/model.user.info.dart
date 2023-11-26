@@ -13,7 +13,7 @@ String userInfoResponseModelToJson(UserInfoResponseModel data) =>
     json.encode(data.toJson());
 
 class UserInfoResponseModel {
-  Result result;
+  Result? result;
   List<dynamic> errorMessages;
   bool isOk;
   dynamic statusCode;
@@ -27,14 +27,14 @@ class UserInfoResponseModel {
 
   factory UserInfoResponseModel.fromJson(Map<String, dynamic> json) =>
       UserInfoResponseModel(
-        result: Result.fromJson(json["result"]),
+        result: json["result"] != null ? Result.fromJson(json["result"]) : null,
         errorMessages: List<dynamic>.from(json["errorMessages"].map((x) => x)),
         isOk: json["isOK"],
         statusCode: json["statusCode"],
       );
 
   Map<String, dynamic> toJson() => {
-        "result": result.toJson(),
+        "result": result != null ? result!.toJson() : null,
         "errorMessages": List<dynamic>.from(errorMessages.map((x) => x)),
         "isOK": isOk,
         "statusCode": statusCode,

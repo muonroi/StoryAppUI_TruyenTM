@@ -67,7 +67,6 @@ class _LoadingStoriesHomeState extends State<LoadingStoriesHome>
 
 class CircleSkeleton extends StatelessWidget {
   const CircleSkeleton({Key? key, this.size = 24}) : super(key: key);
-
   final double? size;
 
   @override

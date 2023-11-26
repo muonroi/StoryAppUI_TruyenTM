@@ -1,4 +1,6 @@
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:muonroi/features/chapters/provider/provider.chapter.template.settings.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
@@ -57,4 +59,15 @@ double checkDouble(dynamic value) {
   } else {
     return value;
   }
+}
+
+String decryptStringAES(String encryptedText) {
+  encrypt.IV iv = encrypt.IV.fromBase64(dotenv.env['ENV_IV'] ?? '');
+  encrypt.Key key = encrypt.Key.fromBase64(dotenv.env['ENV_SECRET'] ?? '');
+  final encrypter =
+      encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc));
+
+  final encrypted = encrypt.Encrypted.fromBase64(encryptedText);
+  final decrypted = encrypter.decrypt(encrypted, iv: iv);
+  return decrypted;
 }

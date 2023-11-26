@@ -6,18 +6,18 @@
     "configurations": [
 
         {
-            "name": "muonroi",
+            "name": "TruyenTM",
             "request": "launch",
             "type": "dart",
         },
         {
-            "name": "muonroi (profile mode)",
+            "name": "TruyenTM (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
         },
         {
-            "name": "muonroi (release mode)",
+            "name": "TruyenTM (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",

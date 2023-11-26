@@ -52,6 +52,9 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
         chapterNumber = (chapterTemp
                 .getInt("story-${widget.storyInfo.id}-current-chapter") ??
             0);
+        pageIndex = (chapterTemp
+                .getInt("story-${widget.storyInfo.id}-current-page-index") ??
+            0);
       });
     }
   }
@@ -59,6 +62,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
   late bool buttonState = true;
   late int chapterId = 0;
   late int chapterNumber = 0;
+  late int pageIndex = 0;
   final Future<SharedPreferences> sharedPreferences =
       SharedPreferences.getInstance();
   final StoryRepository storyRepository = StoryRepository();
@@ -173,6 +177,8 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) => Chapter(
+                                                        imageUrl: storyInfo
+                                                            .result.imgUrl,
                                                         chapterNumber:
                                                             chapterNumber == 0
                                                                 ? 1
@@ -180,7 +186,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                         totalChapter: storyInfo
                                                             .result
                                                             .totalChapter,
-                                                        pageIndex: 1,
+                                                        pageIndex: pageIndex,
                                                         loadSingleChapter:
                                                             false,
                                                         isLoadHistory: true,

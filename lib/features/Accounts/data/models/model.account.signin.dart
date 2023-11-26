@@ -67,6 +67,7 @@ class AccountResult {
   String groupName;
   String phoneNumber;
   int notificationNumber;
+  bool isSubScription;
   AccountResult({
     required this.isDeleted,
     required this.jwtToken,
@@ -93,6 +94,7 @@ class AccountResult {
     required this.groupName,
     required this.phoneNumber,
     required this.notificationNumber,
+    required this.isSubScription,
   });
 
   factory AccountResult.fromJson(Map<String, dynamic> json) => AccountResult(
@@ -120,7 +122,8 @@ class AccountResult {
       roleName: json["roleName"],
       groupName: json["groupName"],
       phoneNumber: json["phoneNumber"],
-      notificationNumber: json["notificationNumber"]);
+      notificationNumber: json["notificationNumber"],
+      isSubScription: json["isSubScription"]);
 
   Map<String, dynamic> toJson() => {
         "isDeleted": isDeleted,
@@ -147,6 +150,7 @@ class AccountResult {
         "roleName": roleName,
         "groupName": groupName,
         "phoneNumber": phoneNumber,
-        "notificationNumber": notificationNumber
+        "notificationNumber": notificationNumber,
+        "isSubScription": isSubScription
       };
 }
