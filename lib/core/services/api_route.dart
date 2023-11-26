@@ -65,7 +65,7 @@ class ApiNetwork {
   static const String getListChapterPaging =
       "chapters/paging-chapter?storyId=%s";
   static const String getFromToChapterPaging =
-      "chapters/group?storyId=%s&pageIndex=%s&fromChapterId=%s&toChapterId=%s";
+      "chapters/group?storyId=%s&pageIndex=%s&fromChapterId=%s&toChapterId=%s&isSetCache=true";
   static const String getGroupChapters =
       "chapters/group-chapter?storyId=%s&pageIndex=%s&pageSize=%s";
   // #endregion

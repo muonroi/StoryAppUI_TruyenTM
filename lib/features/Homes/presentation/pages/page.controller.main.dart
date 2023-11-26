@@ -333,6 +333,7 @@ class _HomePageState extends State<HomePage> {
                     1;
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Chapter(
+                    imageUrl: storyResult.imageStory,
                     chapterNumber: chapterNumber,
                     totalChapter: storyResult.totalChapter,
                     pageIndex: storyResult.pageIndex,

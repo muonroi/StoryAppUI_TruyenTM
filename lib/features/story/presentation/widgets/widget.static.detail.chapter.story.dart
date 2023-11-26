@@ -16,6 +16,7 @@ typedef LatestChapter = void Function(String val);
 class ChapterOfStory extends StatefulWidget {
   final int storyId;
   final StorySingleResult storyInfo;
+
   const ChapterOfStory(
       {super.key, required this.storyId, required this.storyInfo});
 
@@ -158,6 +159,7 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => Chapter(
+                                            imageUrl: widget.storyInfo.imgUrl,
                                             chapterNumber:
                                                 chapterItem.numberOfChapter,
                                             totalChapter:
@@ -205,6 +207,9 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                         child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                             context,
                             ChapterListPage(
+                              chapterCallback: null,
+                              isAudio: false,
+                              storyImageUrl: widget.storyInfo.imgUrl,
                               totalChapter: widget.storyInfo.totalChapter,
                               storyId: widget.storyId,
                               storyTitle: widget.storyInfo.storyTitle,

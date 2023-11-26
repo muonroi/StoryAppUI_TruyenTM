@@ -177,6 +177,8 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) => Chapter(
+                                                        imageUrl: storyInfo
+                                                            .result.imgUrl,
                                                         chapterNumber:
                                                             chapterNumber == 0
                                                                 ? 1

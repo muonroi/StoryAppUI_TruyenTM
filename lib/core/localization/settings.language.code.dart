@@ -232,5 +232,8 @@ enum LanguageCodes {
   paymentSuccessTextInfo,
   paymentSuccessCustomerInfoTextInfo,
   timeBackToHomeTextInfo,
+  audioSettingTextInfo,
+  timerSettingTextInfo,
+  timerInfoSettingTextInfo,
 // #endregion
 }

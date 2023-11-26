@@ -16,17 +16,20 @@ class StoryRecent {
   final int pageIndex;
   final int totalChapter;
   final int chapterNumber;
-  const StoryRecent(
-      {required this.storyId,
-      required this.storyName,
-      required this.chapterId,
-      required this.lastChapterId,
-      required this.firstChapterId,
-      required this.isLoadHistory,
-      required this.loadSingleChapter,
-      required this.pageIndex,
-      required this.totalChapter,
-      required this.chapterNumber});
+  final String imageStory;
+  const StoryRecent({
+    required this.storyId,
+    required this.storyName,
+    required this.chapterId,
+    required this.lastChapterId,
+    required this.firstChapterId,
+    required this.isLoadHistory,
+    required this.loadSingleChapter,
+    required this.pageIndex,
+    required this.totalChapter,
+    required this.chapterNumber,
+    required this.imageStory,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -40,6 +43,7 @@ class StoryRecent {
       'pageIndex': pageIndex,
       'totalChapter': totalChapter,
       'chapterNumber': chapterNumber,
+      'imageStory': imageStory,
     };
   }
 
@@ -55,6 +59,7 @@ class StoryRecent {
       pageIndex: map['pageIndex'] as int,
       totalChapter: map['totalChapter'] as int,
       chapterNumber: map['chapterNumber'] as int,
+      imageStory: map['imageStory'] as String,
     );
   }
 

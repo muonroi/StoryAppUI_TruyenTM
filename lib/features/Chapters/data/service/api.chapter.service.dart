@@ -30,14 +30,23 @@ class ChapterService {
 
   Future<ListPagingChapters> getGroupChaptersDataDetail(int storyId) async {
     try {
-      var baseEndpoint = await endPoint();
+      var sharedPreferences = await SharedPreferences.getInstance();
+      var groupDataChapter =
+          sharedPreferences.getString("getGroupChaptersDataDetail-$storyId");
+      if (groupDataChapter == null) {
+        var baseEndpoint = await endPoint();
 
-      final response = await baseEndpoint
-          .get(sprintf(ApiNetwork.getListChapterPaging, ["$storyId"]));
-      if (response.statusCode == 200) {
-        return listPagingChaptersFromJson(response.data.toString());
+        final response = await baseEndpoint
+            .get(sprintf(ApiNetwork.getListChapterPaging, ["$storyId"]));
+        if (response.statusCode == 200) {
+          sharedPreferences.setString(
+              "getGroupChaptersDataDetail-$storyId", response.data.toString());
+          return listPagingChaptersFromJson(response.data.toString());
+        } else {
+          throw Exception("Failed to load chapter");
+        }
       } else {
-        throw Exception("Failed to load chapter");
+        return listPagingChaptersFromJson(groupDataChapter);
       }
     } catch (e) {
       throw Exception("Failed to load chapter");
@@ -107,14 +116,24 @@ class ChapterService {
   Future<ListPagingRangeChapters> getFromToChaptersDataDetail(
       int storyId, int pageIndex, int from, int to) async {
     try {
-      var baseEndpoint = await endPoint();
-      final response = await baseEndpoint.get(sprintf(
-          ApiNetwork.getFromToChapterPaging,
-          ["$storyId", "$pageIndex", "$from", "$to"]));
-      if (response.statusCode == 200) {
-        return listPagingRangeChaptersFromJson(response.data.toString());
+      var sharedPreferences = await SharedPreferences.getInstance();
+      var fromToChapter = sharedPreferences.getString(
+          "getFromToChaptersDataDetail-$storyId-$pageIndex-$from-$to");
+      if (fromToChapter == null) {
+        var baseEndpoint = await endPoint();
+        final response = await baseEndpoint.get(sprintf(
+            ApiNetwork.getFromToChapterPaging,
+            ["$storyId", "$pageIndex", "$from", "$to"]));
+        if (response.statusCode == 200) {
+          sharedPreferences.setString(
+              "getFromToChaptersDataDetail-$storyId-$pageIndex-$from-$to",
+              response.data.toString());
+          return listPagingRangeChaptersFromJson(response.data.toString());
+        } else {
+          throw Exception("Failed to load chapter");
+        }
       } else {
-        throw Exception("Failed to load chapter");
+        return listPagingRangeChaptersFromJson(fromToChapter);
       }
     } catch (e) {
       throw Exception("Failed to load chapter");
@@ -177,13 +196,12 @@ List<GroupChapterItems> decryptBodyChapterAndChunk(
   return items;
 }
 
-List<String> convertDynamicToList(dynamic dynamicObject) {
+List<String> convertDynamicToList(dynamic dynamicObject, [String? insertItem]) {
   if (dynamicObject is Iterable) {
-    List<String> stringList = [];
+    List<String> stringList = insertItem != null ? [insertItem] : [];
     for (var item in dynamicObject) {
       stringList.add(item.toString());
     }
-
     return stringList;
   } else {
     throw ArgumentError("Dynamic object is not iterable.");

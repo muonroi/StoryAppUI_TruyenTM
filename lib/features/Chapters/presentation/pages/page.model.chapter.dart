@@ -9,6 +9,7 @@ import 'package:muonroi/core/advertising/ads.admob.service.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
 import 'package:muonroi/features/chapters/bloc/group_chapter/group_chapter_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
 import 'package:muonroi/features/chapters/presentation/pages/page.model.list.chapter.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.button.scroll.chapter.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.count.time.ads.dart';
@@ -47,6 +48,7 @@ class Chapter extends StatefulWidget {
   final int pageIndex;
   final int totalChapter;
   final int chapterNumber;
+  final String imageUrl;
   const Chapter(
       {super.key,
       required this.storyId,
@@ -58,7 +60,8 @@ class Chapter extends StatefulWidget {
       required this.loadSingleChapter,
       required this.pageIndex,
       required this.totalChapter,
-      required this.chapterNumber});
+      required this.chapterNumber,
+      required this.imageUrl});
   // #endregion
 
   @override
@@ -68,8 +71,9 @@ class Chapter extends StatefulWidget {
 class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   @override
   void initState() {
+    _fromToChapterList = "";
     _groupChapterItems = null;
-    _second = 10;
+    _second = 5;
     _isCountComplete = false;
     _userInfo = '';
     _isSubscription = false;
@@ -101,7 +105,6 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     _scrollController = ScrollController();
     _scrollAdsController = ScrollController(initialScrollOffset: 75.2);
     _refreshController = RefreshController(initialRefresh: false);
-    _scrollController.addListener(_saveScrollPosition);
     _isVisible = false;
     _isLoad = true;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -141,11 +144,11 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
+      _saveScrollPosition();
       _saveRecentStory();
-      _saveQuickChapterLocation();
     } else if (state == AppLifecycleState.resumed) {
+      _saveScrollPosition();
       _saveRecentStory();
-      _saveQuickChapterLocation();
     }
     super.didChangeAppLifecycleState(state);
   }
@@ -153,10 +156,10 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   @override
   void dispose() {
     _groupChaptersBloc.close();
-    _scrollController.removeListener(_saveScrollPosition);
     _scrollController.dispose();
     _refreshController.dispose();
     _isLoad = false;
+    _saveScrollPosition();
     _saveRecentStory();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
@@ -167,6 +170,8 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
+    _fromToChapterList = _sharedPreferences
+        .getString("getGroupChaptersDataDetail-${widget.storyId}")!;
     _pageIndex = _sharedPreferences
                 .getInt("story-${widget.storyId}-current-page-index") ==
             null
@@ -227,19 +232,23 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
   }
 
   void _saveScrollPosition() {
-    if (_isFirstRefresh) {
-      _maxScrollOffset = _scrollController.position.maxScrollExtent;
+    if (_scrollAdsController.hasClients) {
+      if (_isFirstRefresh) {
+        _maxScrollOffset = _scrollController.position.maxScrollExtent;
+      }
+      _sharedPreferences.setDouble(
+          _scrollPositionKey, _scrollController.offset);
+      _sharedPreferences.setInt("story-${widget.storyId}", widget.storyId);
+      _sharedPreferences.setInt(
+          "story-${widget.storyId}-current-chapter-id", _chapterIdOld);
+      _sharedPreferences.setInt(
+          "story-${widget.storyId}-current-chapter", _chapterNumber);
+      _sharedPreferences.setInt("story-${widget.storyId}-current-page-index",
+          _pageIndex == 0 ? 1 : _pageIndex);
+      _sharedPreferences.setInt(
+          "story-${widget.storyId}-current-chapter-index", _chapterIndex);
     }
-    _sharedPreferences.setDouble(_scrollPositionKey, _scrollController.offset);
-    _sharedPreferences.setInt("story-${widget.storyId}", widget.storyId);
-    _sharedPreferences.setInt(
-        "story-${widget.storyId}-current-chapter-id", _chapterIdOld);
-    _sharedPreferences.setInt(
-        "story-${widget.storyId}-current-chapter", _chapterNumber);
-    _sharedPreferences.setInt("story-${widget.storyId}-current-page-index",
-        _pageIndex == 0 ? 1 : _pageIndex);
-    _sharedPreferences.setInt(
-        "story-${widget.storyId}-current-chapter-index", _chapterIndex);
+
     _saveQuickChapterLocation();
   }
 
@@ -282,7 +291,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
         setState(() {
           _isVisible = false;
           _isCountComplete = false;
-          _second = 10;
+          _second = 1;
           _heightBottomContainer = 75.2;
           _heightAdsContainer = 49;
           _bannerAd!.load();
@@ -301,8 +310,10 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
             _chapterIndex = _pageSize;
             _sharedPreferences.setInt(
                 "story-${widget.storyId}-current-chapter-index", _chapterIndex);
+            _updateChapterCurrentIntoChapterList();
           } else {
             _chapterIndex = _chapterIndex > 0 ? --_chapterIndex : 0;
+            _updateChapterCurrentIntoChapterList();
             if (_pageIndex == 1 && _chapterIndex == 0) {
               _isDisablePreviousButton = true;
             }
@@ -338,7 +349,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
         setState(() {
           _isVisible = false;
           _isCountComplete = false;
-          _second = 10;
+          _second = 1;
           _heightBottomContainer = 75.2;
           _heightAdsContainer = 49;
           _bannerAd!.load();
@@ -356,10 +367,12 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
             _sharedPreferences.setInt(
                 "story-${widget.storyId}-current-page-index",
                 _pageIndex == 0 ? 1 : _pageIndex);
+
             _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
             _chapterIndex = 0;
-          }
-          if (_scrollController.hasClients) {
+            _updateChapterCurrentIntoChapterList();
+          } else {
+            _updateChapterCurrentIntoChapterList();
             _scrollController.jumpTo(0);
           }
         });
@@ -372,8 +385,35 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     if (_isLookNextChapter) {
       _isLookNextChapter = false;
     }
+
     _saveScrollPosition();
     _refreshController.loadComplete();
+  }
+
+  void _updateChapterCurrentIntoChapterList([bool isAudio = false]) {
+    var fromToChapterInfo = listPagingChaptersFromJson(_fromToChapterList);
+    if (isAudio) {
+      _sharedPreferences.setInt(
+          "selected-chapter-chunk-${widget.storyId}-$isAudio-page-index", 0);
+    }
+    _sharedPreferences.setInt(
+        "selected-chapter-${widget.storyId}-$isAudio-from-chapter-id",
+        fromToChapterInfo
+            .result[_pageIndex > 0 ? _pageIndex - 1 : _pageIndex].fromId);
+    _sharedPreferences.setInt(
+        "selected-chapter-${widget.storyId}-$isAudio-to-chapter-id",
+        fromToChapterInfo
+            .result[_pageIndex > 0 ? _pageIndex - 1 : _pageIndex].toId);
+
+    _sharedPreferences.setInt(
+        "selected-chapter-${widget.storyId}-$isAudio-item-index",
+        _chapterIndex);
+
+    _sharedPreferences.setInt(
+        "selected-chapter-${widget.storyId}-$isAudio-page-index-ui",
+        _pageIndex - 1);
+    _sharedPreferences.setInt(
+        "selected-chapter-${widget.storyId}-$isAudio-page-index", _pageIndex);
   }
 
   void _reNewValueInSettingTemplate(TemplateSetting newValue) {
@@ -399,10 +439,11 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     });
   }
 
-  void _saveQuickChapterLocation({int? chapterNumber}) {
+  void _saveQuickChapterLocation() {
     _sharedPreferences.setString(
         "recently-story",
         recentStoryModelToJson(StoryRecent(
+            imageStory: widget.imageUrl,
             storyId: widget.storyId,
             storyName: widget.storyName,
             chapterId: _chapterIdOld,
@@ -412,13 +453,14 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
             loadSingleChapter: widget.loadSingleChapter,
             pageIndex: _pageIndex,
             totalChapter: widget.totalChapter,
-            chapterNumber: chapterNumber ?? _chapterNumber)));
+            chapterNumber: _chapterNumber)));
     _sharedPreferences.setInt("recently-chapterId", _chapterIdOld);
     _sharedPreferences.setBool("is_saved_recent", true);
   }
 // #endregion
 
 // #region Variables
+  late String _fromToChapterList;
   late int _second;
   late String _userInfo;
   late bool _isSubscription;
@@ -583,6 +625,12 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               ChapterListPage(
+                                                                chapterCallback:
+                                                                    null,
+                                                                isAudio: false,
+                                                                storyImageUrl:
+                                                                    widget
+                                                                        .imageUrl,
                                                                 totalChapter: widget
                                                                     .totalChapter,
                                                                 storyId: chapterInfo[
@@ -821,7 +869,11 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                     // #endregion
                     backgroundColor: tempBackground,
                     body: GestureDetector(
+                      onTapDown: (_) => _saveScrollPosition(),
+                      onTapUp: (_) => _saveScrollPosition(),
+                      onTapCancel: () => _saveScrollPosition(),
                       onTap: () {
+                        _saveScrollPosition();
                         setState(() {
                           if (!_isCountComplete) {
                             _isCountComplete = _isSubscription;
@@ -1279,6 +1331,15 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.linearToEaseOut,
                                     child: BottomChapterDetail(
+                                        callback: (val) =>
+                                            _updateChapterCurrentIntoChapterList(
+                                                val),
+                                        totalChapter: widget.totalChapter,
+                                        firstChapterId: widget.firstChapterId,
+                                        lastChapterId: widget.lastChapterId,
+                                        storyImageUrl: widget.imageUrl,
+                                        storyId: widget.storyId,
+                                        title: widget.storyName,
                                         disableColor: _settingConfig
                                             .disableColor!,
                                         isDisablePreviousButton:

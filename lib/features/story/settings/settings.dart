@@ -1,5 +1,5 @@
-import 'dart:ui';
-
+import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 import 'package:muonroi/features/story/data/models/model.single.story.dart';
 
 StorySingleResult storySingleDefaultData() {
@@ -48,3 +48,22 @@ const Color primaryColor = Color(0xFF2967FF);
 const Color grayColor = Color(0xFF8D8D8E);
 
 const double defaultPadding = 16.0;
+
+String parseHtmlString(String htmlString) {
+  final document = parse(htmlString);
+  final String parsedString = parse(document.body!.text).documentElement!.text;
+  return parsedString;
+}
+
+List<String> splitString(String input, int maxLength) {
+  List<String> result = [];
+  for (int i = 0; i < input.length; i += maxLength) {
+    result.add(input.substring(
+        i, i + maxLength > input.length ? input.length : i + maxLength));
+  }
+  return result;
+}
+
+enum TtsState { playing, stopped, paused, continued }
+
+final GlobalKey<ScaffoldState> chapterAudioKey = GlobalKey<ScaffoldState>();

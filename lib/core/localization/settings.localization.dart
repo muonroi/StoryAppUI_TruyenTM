@@ -231,6 +231,10 @@ class LocalizationLib {
           'Your %s was successful charged',
       LanguageCodes.timeBackToHomeTextInfo.toString():
           'You will back to home after %s',
+      LanguageCodes.audioSettingTextInfo.toString(): 'Volume',
+      LanguageCodes.timerSettingTextInfo.toString(): 'Timer',
+      LanguageCodes.timerInfoSettingTextInfo.toString():
+          'Select the number of minutes you want to timer',
     },
     Languages.vi: {
       LanguageCodes.searchTextInfo.toString():
@@ -457,6 +461,10 @@ class LocalizationLib {
           'Thẻ đã %s thanh toán thành công',
       LanguageCodes.timeBackToHomeTextInfo.toString():
           'Bạn sẽ trở về trang chủ sau %s ',
+      LanguageCodes.audioSettingTextInfo.toString(): 'Âm lượng',
+      LanguageCodes.timerInfoSettingTextInfo.toString():
+          'Chọn số phút bạn muốn hẹn giờ',
+      LanguageCodes.timerSettingTextInfo.toString(): 'Hẹn giờ',
     }
   };
   static String L(String key, {String locale = 'vi'}) {
