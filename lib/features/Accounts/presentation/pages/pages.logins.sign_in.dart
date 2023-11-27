@@ -335,6 +335,7 @@ class _SignInPageState extends State<SignInPage> {
                                 .fetchUserInfoData(userInfo.email!);
                             if (isExistUser.result == null) {
                               var request = AccountSignUpDTO(
+                                  avatar: userInfo.photoURL ?? "",
                                   name: "${Random().nextInt(100000) + 0}",
                                   surname: "user",
                                   username:

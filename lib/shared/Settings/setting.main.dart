@@ -193,3 +193,14 @@ Widget getEmptyData(BuildContext context) {
     ),
   );
 }
+
+Widget getNoInternetData(BuildContext context) {
+  return SizedBox(
+    child: Center(
+      child: Text(
+        L(context, LanguageCodes.noInternetTextInfo.toString()),
+        style: CustomFonts.h5(context),
+      ),
+    ),
+  );
+}

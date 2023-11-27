@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,9 +37,10 @@ class StoryAudio extends StatefulWidget {
   State<StoryAudio> createState() => _StoryAudioState();
 }
 
-class _StoryAudioState extends State<StoryAudio> {
+class _StoryAudioState extends State<StoryAudio> with WidgetsBindingObserver {
   @override
   void initState() {
+    _textTimerController = TextEditingController();
     _fromToChapterList = "";
     _chapterId = [];
     _currentChapterIndex = 0;
@@ -59,7 +59,7 @@ class _StoryAudioState extends State<StoryAudio> {
     _chapterController = ScrollController(initialScrollOffset: 0.0);
     _groupChaptersBloc = GroupChapterBloc(widget.storyId, _pageIndex, 99);
     _speakingChapterContent();
-    _textController = TextEditingController();
+    _textTimerController = TextEditingController();
     _getVoice();
     _voices = [];
 
@@ -69,7 +69,7 @@ class _StoryAudioState extends State<StoryAudio> {
 
   @override
   void dispose() {
-    _textController.dispose();
+    _textTimerController.dispose();
     _chapterController.dispose();
     _stop();
     super.dispose();
@@ -316,7 +316,7 @@ class _StoryAudioState extends State<StoryAudio> {
           content: TextField(
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            controller: _textController,
+            controller: _textTimerController,
             decoration: InputDecoration(
                 labelText: L(context,
                     LanguageCodes.timerInfoSettingTextInfo.toString())),
@@ -324,7 +324,7 @@ class _StoryAudioState extends State<StoryAudio> {
           actions: [
             TextButton(
               onPressed: () {
-                String enteredText = _textController.text;
+                String enteredText = _textTimerController.text;
                 setTimerAndCallFunction(int.parse(enteredText), _pause);
                 Navigator.of(context).pop();
               },
@@ -351,7 +351,7 @@ class _StoryAudioState extends State<StoryAudio> {
   get isPaused => _ttsState == TtsState.paused;
   get isContinued => _ttsState == TtsState.continued;
 
-  TextEditingController _textController = TextEditingController();
+  late TextEditingController _textTimerController;
   late List<int> _chapterId;
   late String _fromToChapterList;
   late SharedPreferences _sharedPreferences;

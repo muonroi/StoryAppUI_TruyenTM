@@ -31,6 +31,7 @@ class StoriesItems extends StatefulWidget {
 class _StoriesItemsState extends State<StoriesItems> {
   @override
   void initState() {
+    _availableInternet = false;
     _storiesSearch = [];
     _isFirstLoad = true;
     _initSharedPreferences();
@@ -83,6 +84,8 @@ class _StoriesItemsState extends State<StoriesItems> {
 
   Future<void> _initSharedPreferences() async {
     _sharedPreferences = await SharedPreferences.getInstance();
+    _availableInternet =
+        _sharedPreferences.getBool('availableInternet') ?? false;
   }
 
   late SharedPreferences _sharedPreferences;
@@ -97,6 +100,7 @@ class _StoriesItemsState extends State<StoriesItems> {
   late int _pageIndex;
   late int _pageSize;
   late bool _isFirstLoad;
+  late bool _availableInternet;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -433,6 +437,9 @@ class _StoriesItemsState extends State<StoriesItems> {
                         })
                     : getEmptyData(context),
               );
+            }
+            if (!_availableInternet) {
+              return getNoInternetData(context);
             }
             return const Center(child: CircularProgressIndicator());
           },

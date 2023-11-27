@@ -28,13 +28,9 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:muonroi/shared/static/buttons/widget.static.premium.text.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-typedef ChapterBuilder = void Function(
-    BuildContext context, void Function() resetTimeGlobal);
 
 class Chapter extends StatefulWidget {
   // #region Constructor
@@ -105,6 +101,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     _scrollController = ScrollController();
     _scrollAdsController = ScrollController(initialScrollOffset: 75.2);
     _refreshController = RefreshController(initialRefresh: false);
+    _scrollController.addListener(_saveScrollPosition);
     _isVisible = false;
     _isLoad = true;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -155,6 +152,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_saveScrollPosition);
     _groupChaptersBloc.close();
     _scrollController.dispose();
     _refreshController.dispose();
@@ -1194,22 +1192,22 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 12.0),
-                                          child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30.0),
-                                                  color: themeMode(
-                                                      context,
-                                                      ColorCode
-                                                          .textColor.name)),
-                                              child: const BuyPremium()),
-                                        ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.symmetric(
+                                        //       horizontal: 12.0),
+                                        //   child: Container(
+                                        //       padding:
+                                        //           const EdgeInsets.all(4.0),
+                                        //       decoration: BoxDecoration(
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(
+                                        //                   30.0),
+                                        //           color: themeMode(
+                                        //               context,
+                                        //               ColorCode
+                                        //                   .textColor.name)),
+                                        //       child: const BuyPremium()),
+                                        // ),
                                         Padding(
                                             padding: const EdgeInsets.only(
                                                 right: 8.0),

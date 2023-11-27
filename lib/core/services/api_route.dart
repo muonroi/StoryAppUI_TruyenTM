@@ -1,5 +1,7 @@
 class ApiNetwork {
   static const String apiVersion = "1.0";
+  static const String urlApp =
+      "https://play.google.com/store/apps/details?id=com.muonroi.truyentm";
   // #region Base api
   static const String baseUrl = "https://muonroi.online/";
   static const String baseApi = "${baseUrl}api/v$apiVersion/";
@@ -8,6 +10,8 @@ class ApiNetwork {
 
 // #region Settings
   static const String banners = "settings/banners?type=%s";
+  static const String settingByType = "settings/all?type=%s";
+
 // #endregion
 
   // #region Signalr

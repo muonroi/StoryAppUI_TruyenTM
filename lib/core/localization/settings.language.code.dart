@@ -235,5 +235,7 @@ enum LanguageCodes {
   audioSettingTextInfo,
   timerSettingTextInfo,
   timerInfoSettingTextInfo,
+  noInternetTextInfo,
+  firstInfoTrialTextInfo,
 // #endregion
 }

@@ -8,6 +8,54 @@ import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class ConfirmDialog extends StatelessWidget {
+  final String title;
+  final String content;
+  final VoidCallback onYes;
+  final VoidCallback onNo;
+
+  const ConfirmDialog(
+      {super.key,
+      required this.title,
+      required this.content,
+      required this.onYes,
+      required this.onNo});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        title,
+        style: CustomFonts.h5(context).copyWith(fontWeight: FontWeight.w600),
+      ),
+      content: Text(
+        content,
+        style: CustomFonts.h5(context),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: onNo,
+          child: Text(
+            L(context, LanguageCodes.unAcceptTextInfo.toString()),
+            style: CustomFonts.h6(context).copyWith(
+                fontWeight: FontWeight.w700,
+                color: themeMode(context, ColorCode.textColor.name)),
+          ),
+        ),
+        TextButton(
+          onPressed: onYes,
+          child: Text(
+            L(context, LanguageCodes.acceptTextInfo.toString()),
+            style: CustomFonts.h6(context).copyWith(
+                fontWeight: FontWeight.w700,
+                color: themeMode(context, ColorCode.mainColor.name)),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 Future<void> showConfirmationDialog(
     BuildContext context, String confirmAction, String content) async {
   return showDialog<void>(

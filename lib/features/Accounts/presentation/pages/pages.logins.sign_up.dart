@@ -98,6 +98,7 @@ class _SignUpPageState extends State<SignUpPage> {
             var address = "Viet Nam";
             final sharedPreferences = await SharedPreferences.getInstance();
             var request = AccountSignUpDTO(
+                avatar: "",
                 name: "${Random().nextInt(100000) + 0}",
                 surname: "user",
                 username: _usernameController.text,

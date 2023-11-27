@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:muonroi/core/notification/widget.notification.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/chapters/bloc/group_bloc/group_chapters_of_story_bloc.dart';
@@ -30,6 +31,7 @@ class StoriesDownloadPage extends StatefulWidget {
 class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
   @override
   void initState() {
+    _currentIndex = [];
     _groupChapterOfStoryBloc =
         GroupChapterOfStoryBloc(widget.storyId, 1, 15, false, 0);
     _groupChapterOfStoryBloc.add(GroupChapterOfStoryList());
@@ -60,6 +62,7 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
   late List<int> _isDownloadComplete;
   late SharedPreferences _sharedPreferences;
   late int _currentTotal;
+  late List<int> _currentIndex;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,35 +138,49 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                       borderRadius:
                                           BorderRadius.circular(32.0)),
                                   child: Align(
-                                    alignment: Alignment.center,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "${chapterIndex.from}-${chapterIndex.to}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: CustomFonts.h5(context),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8.0),
-                                            child: _sharedPreferences.getBool(
-                                                        "story-${widget.storyId}-download-group-chapter-$index") ??
-                                                    _isDownloadComplete
-                                                        .contains(index)
-                                                ? Icon(
-                                                    Icons.check_circle_outline,
-                                                    color: themeMode(
-                                                        context,
-                                                        ColorCode
-                                                            .mainColor.name),
-                                                  )
-                                                : null)
-                                      ],
-                                    ),
-                                  ),
+                                      alignment: Alignment.center,
+                                      child: !_currentIndex.contains(index)
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "${chapterIndex.from}-${chapterIndex.to}",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style:
+                                                      CustomFonts.h5(context),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0),
+                                                    child: _sharedPreferences
+                                                                .getBool(
+                                                                    "story-${widget.storyId}-download-group-chapter-$index") ??
+                                                            _isDownloadComplete
+                                                                .contains(index)
+                                                        ? Icon(
+                                                            Icons
+                                                                .check_circle_outline,
+                                                            color: themeMode(
+                                                                context,
+                                                                ColorCode
+                                                                    .mainColor
+                                                                    .name),
+                                                          )
+                                                        : null)
+                                              ],
+                                            )
+                                          : Positioned.fill(
+                                              child: Material(
+                                              color: Colors.transparent,
+                                              child: SpinKitWave(
+                                                color: themeMode(context,
+                                                    ColorCode.mainColor.name),
+                                              ),
+                                            ))),
                                 ),
                                 Positioned.fill(
                                   child: Material(
@@ -172,6 +189,9 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(32.0),
                                       onTap: () async {
+                                        setState(() {
+                                          _currentIndex.add(index);
+                                        });
                                         var isDelete = _sharedPreferences.getBool(
                                                 "story-${widget.storyId}-download-group-chapter-$index") ??
                                             false;
@@ -228,8 +248,11 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                           setState(() {
                                             _isDownloadComplete.remove(index);
                                             _currentTotal = currentTotal;
+                                            _currentIndex.remove(index);
                                           });
                                         } else {
+                                          var storyRepository =
+                                              StoryRepository();
                                           var chapterRepository =
                                               ChapterRepository(
                                                   chapterIndex.pageIndex,
@@ -242,6 +265,23 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                                   .fetchGroupChapters(
                                                       widget.storyId,
                                                       chapterIndex.pageIndex);
+                                          await chapterRepository
+                                              .fetchFromToChapterOfStory(
+                                                  widget.storyId,
+                                                  chapterIndex.pageIndex,
+                                                  chapterIndex.fromId,
+                                                  chapterIndex.toId);
+
+                                          // #region save story info
+                                          var storyInfo =
+                                              _sharedPreferences.getString(
+                                                  "storyDetail-${widget.storyId}");
+                                          if (storyInfo == null) {
+                                            await storyRepository
+                                                .fetchDetailStory(
+                                                    widget.storyId);
+                                          }
+                                          // #endregion
 
                                           // #region save chapter
                                           _sharedPreferences.setString(
@@ -249,11 +289,13 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                               groupChaptersToJson(
                                                   chapterResult));
                                           // #endregion
+
                                           // #region save saved of index
                                           _sharedPreferences.setBool(
                                               "story-${widget.storyId}-download-group-chapter-$index",
                                               true);
                                           // #endregion
+
                                           // #region get and set new total chapter downloaded
                                           var total = _sharedPreferences.getInt(
                                                   "story-${widget.storyId}-current-group-chapter-download-total") ??
@@ -266,6 +308,7 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                                       "story-${widget.storyId}-current-group-chapter-download-total") ??
                                                   0;
                                           // #endregion
+
                                           setState(() {
                                             NotificationPush.showNotification(
                                                 title: L(
@@ -286,6 +329,7 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                                     flutterLocalNotificationsPlugin);
                                             _currentTotal = currentTotal;
                                             _isDownloadComplete.add(index);
+                                            _currentIndex.remove(index);
                                           });
                                         }
                                       },

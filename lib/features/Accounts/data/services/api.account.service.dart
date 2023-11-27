@@ -150,6 +150,7 @@ class AccountsService {
   Future<AccountSignInModel> registerUser(AccountSignUpDTO input) async {
     try {
       Map<String, dynamic> data = {
+        "avatar": input.avatar,
         "name": input.name,
         "surname": input.surname,
         "username": input.username,

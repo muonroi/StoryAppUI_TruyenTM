@@ -1,7 +1,7 @@
 name: muonroi
 description: muonroi
 publish_to: 'none'
-version: 1.0.3
+version: 1.0.4
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -57,7 +57,10 @@ dependencies:
   encrypt: ^5.0.3
   flutter_dotenv: ^5.1.0
   flutter_tts: ^3.8.3
-
+  audio_service: ^0.18.12
+  just_audio: ^0.9.36
+  package_info_plus: ^4.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

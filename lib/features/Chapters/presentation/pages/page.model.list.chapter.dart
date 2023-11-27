@@ -37,6 +37,7 @@ class _ChapterListPageState extends State<ChapterListPage>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
+    _isNetwork = false;
     _selectedPageIndexUi = 0;
     _selectedItemOffset = 0.0;
     _selectedPageIndexOffset = 0.0;
@@ -104,6 +105,8 @@ class _ChapterListPageState extends State<ChapterListPage>
     _selectedPageIndexOffset = _sharedPreferences.getDouble(
             "selected-chapter-${widget.storyId}-${widget.isAudio}-page-index-offset") ??
         0.0;
+    _isNetwork = _sharedPreferences.getBool('availableInternet')!;
+    _isLock = _isNetwork == false ? false : true;
   }
 
   void _loadScrollItem() {
@@ -137,6 +140,7 @@ class _ChapterListPageState extends State<ChapterListPage>
     }
   }
 
+  late bool _isNetwork;
   late int _fromId;
   late int _toId;
   late SharedPreferences _sharedPreferences;
@@ -164,6 +168,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                 backgroundColor: themeMode(context, ColorCode.modeColor.name),
                 elevation: 0,
                 leading: IconButton(
+                  splashRadius: 22,
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.arrow_back_ios),
                   color: themeMode(context, ColorCode.textColor.name),
@@ -253,8 +258,17 @@ class _ChapterListPageState extends State<ChapterListPage>
                         GroupChapterOfStoryState>(
                       builder: (context, state) {
                         if (state is GroupChapterOfStoryLoadingState) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          if (!_isNetwork) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              setState(() {
+                                _isLock = false;
+                              });
+                            });
+                            return getNoInternetData(context);
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
                         }
                         if (state is GroupChapterOfStoryLoadedState) {
                           _loadScrollItem();
@@ -359,6 +373,14 @@ class _ChapterListPageState extends State<ChapterListPage>
                                     );
                                   })));
                         }
+                        if (!_isNetwork) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            setState(() {
+                              _isLock = false;
+                            });
+                          });
+                          return getNoInternetData(context);
+                        }
                         return const Center(child: CircularProgressIndicator());
                       },
                     ),
@@ -379,6 +401,14 @@ class _ChapterListPageState extends State<ChapterListPage>
                     LatestChapterOfStoryState>(
                   builder: (context, state) {
                     if (state is FromToChapterOfStoryLoadingState) {
+                      if (!_isNetwork) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          setState(() {
+                            _isLock = false;
+                          });
+                        });
+                        return getNoInternetData(context);
+                      }
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
@@ -576,6 +606,14 @@ class _ChapterListPageState extends State<ChapterListPage>
                           );
                         }),
                       ));
+                    }
+                    if (!_isNetwork) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        setState(() {
+                          _isLock = false;
+                        });
+                      });
+                      return getNoInternetData(context);
                     }
                     return const Center(
                       child: CircularProgressIndicator(),

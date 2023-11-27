@@ -4,6 +4,7 @@ import 'package:muonroi/shared/settings/enums/enum.search.story.dart';
 import 'package:muonroi/features/story/data/models/model.single.story.dart';
 import 'package:muonroi/features/story/data/models/model.stories.story.dart';
 import 'package:muonroi/features/story/settings/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
 
 class StoryService {
@@ -56,19 +57,19 @@ class StoryService {
 
   Future<SingleStoryModel> getDetailStoryList(int storyId) async {
     try {
-      var baseEndpoint = await endPoint();
-      final response = await baseEndpoint
-          .get(sprintf(ApiNetwork.getDetailStory, ["$storyId"]));
-      if (response.statusCode == 200) {
-        return singleStoryModelFromJson(response.data.toString());
-      } else {
-        return SingleStoryModel(
-          errorMessages: [],
-          result: storySingleDefaultData(),
-          isOk: false,
-          statusCode: 400,
-        );
+      var sharedPreferences = await SharedPreferences.getInstance();
+      var storyDetail = sharedPreferences.getString("storyDetail-$storyId");
+      if (storyDetail == null) {
+        var baseEndpoint = await endPoint();
+        final response = await baseEndpoint
+            .get(sprintf(ApiNetwork.getDetailStory, ["$storyId"]));
+        if (response.statusCode == 200) {
+          sharedPreferences.setString(
+              "storyDetail-$storyId", response.data.toString());
+          return singleStoryModelFromJson(response.data.toString());
+        }
       }
+      return singleStoryModelFromJson(storyDetail!);
     } catch (e) {
       return SingleStoryModel(
         errorMessages: [e],
@@ -229,11 +230,21 @@ class StoryService {
   Future<StoriesModel> getStoriesForUser(
       int pageIndex, int pageSize, int type) async {
     try {
-      var baseEndpoint = await endPoint();
-      final response = await baseEndpoint.get(
-          sprintf(ApiNetwork.getStoriesForUser, [type, pageIndex, pageSize]));
-      if (response.statusCode == 200) {
-        return storiesFromJson(response.data.toString());
+      var sharedPreferences = await SharedPreferences.getInstance();
+      bool interAvailable = sharedPreferences.getBool('availableInternet')!;
+      var data = sharedPreferences.getString('getStoriesForUser-$type');
+      if (interAvailable) {
+        var baseEndpoint = await endPoint();
+        final response = await baseEndpoint.get(
+            sprintf(ApiNetwork.getStoriesForUser, [type, pageIndex, pageSize]));
+        if (response.statusCode == 200) {
+          sharedPreferences.setString(
+              'getStoriesForUser-$type', response.data.toString());
+          return storiesFromJson(response.data.toString());
+        }
+      }
+      if (!interAvailable && data != null) {
+        return storiesFromJson(data);
       } else {
         return StoriesModel(
           errorMessages: [],

@@ -235,6 +235,9 @@ class LocalizationLib {
       LanguageCodes.timerSettingTextInfo.toString(): 'Timer',
       LanguageCodes.timerInfoSettingTextInfo.toString():
           'Select the number of minutes you want to timer',
+      LanguageCodes.noInternetTextInfo.toString(): 'Internet unavailable',
+      LanguageCodes.firstInfoTrialTextInfo.toString():
+          'This is a trial version! We will update the story as soon as possible. Thank you.'
     },
     Languages.vi: {
       LanguageCodes.searchTextInfo.toString():
@@ -465,6 +468,9 @@ class LocalizationLib {
       LanguageCodes.timerInfoSettingTextInfo.toString():
           'Chọn số phút bạn muốn hẹn giờ',
       LanguageCodes.timerSettingTextInfo.toString(): 'Hẹn giờ',
+      LanguageCodes.noInternetTextInfo.toString(): 'Mạng không khả dụng',
+      LanguageCodes.firstInfoTrialTextInfo.toString():
+          'Đây là phiên bản thử nghiệm! Mọi thứ đều miễn phí và chúng tôi sẽ cập nhật truyện sớm nhất có thể. Xin cám ơn!'
     }
   };
   static String L(String key, {String locale = 'vi'}) {
