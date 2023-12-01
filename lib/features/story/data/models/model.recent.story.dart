@@ -6,6 +6,7 @@ StoryRecent recentStoryModelFromJson(String str) =>
 String recentStoryModelToJson(StoryRecent data) => json.encode(data.toJson());
 
 class StoryRecent {
+  final String author;
   final bool loadSingleChapter;
   final int storyId;
   final String storyName;
@@ -18,6 +19,7 @@ class StoryRecent {
   final int chapterNumber;
   final String imageStory;
   const StoryRecent({
+    required this.author,
     required this.storyId,
     required this.storyName,
     required this.chapterId,
@@ -33,6 +35,7 @@ class StoryRecent {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'author': author,
       'loadSingleChapter': loadSingleChapter,
       'storyId': storyId,
       'storyName': storyName,
@@ -49,6 +52,7 @@ class StoryRecent {
 
   factory StoryRecent.fromMap(Map<String, dynamic> map) {
     return StoryRecent(
+      author: map['author'] as String,
       loadSingleChapter: map['loadSingleChapter'] as bool,
       storyId: map['storyId'] as int,
       storyName: map['storyName'] as String,

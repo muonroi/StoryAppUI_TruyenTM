@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/story/presentation/widgets/widget.static.loading.stories.dart';
@@ -21,17 +21,33 @@ Widget homeLoading() {
   );
 }
 
-Future<bool> checkInternetAvailable() async {
-  try {
-    final result = await InternetAddress.lookup('muonroi.online');
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      return true;
-    } else {
-      return false;
-    }
-  } on SocketException catch (_) {
-    return false;
-  }
+Future<void> execute(
+  InternetConnectionChecker internetConnectionChecker,
+) async {
+  debugPrint(
+      '''The statement 'this machine is connected to the Internet' is: ''');
+  final bool isConnected = await InternetConnectionChecker().hasConnection;
+  debugPrint(
+    isConnected.toString(),
+  );
+  debugPrint(
+    'Current status: ${await InternetConnectionChecker().connectionStatus}',
+  );
+  final StreamSubscription<InternetConnectionStatus> listener =
+      InternetConnectionChecker().onStatusChange.listen(
+    (InternetConnectionStatus status) {
+      switch (status) {
+        case InternetConnectionStatus.connected:
+          debugPrint('Data connection is available.');
+          break;
+        case InternetConnectionStatus.disconnected:
+          debugPrint('You are disconnected from the internet.');
+          break;
+      }
+    },
+  );
+  await Future<void>.delayed(const Duration(seconds: 30));
+  await listener.cancel();
 }
 
 class Debouncer {

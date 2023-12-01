@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ChapterListPage extends StatefulWidget {
   final int storyId;
+  final String author;
   final String storyTitle;
   final int lastChapterId;
   final int firstChapterId;
@@ -27,7 +28,8 @@ class ChapterListPage extends StatefulWidget {
       required this.totalChapter,
       required this.storyImageUrl,
       required this.isAudio,
-      required this.chapterCallback});
+      required this.chapterCallback,
+      required this.author});
 
   @override
   State<ChapterListPage> createState() => _ChapterListPageState();
@@ -484,6 +486,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) => Chapter(
+                                                    author: widget.author,
                                                     imageUrl:
                                                         widget.storyImageUrl,
                                                     chapterNumber: chapterInfo

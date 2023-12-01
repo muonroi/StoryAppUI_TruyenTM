@@ -163,6 +163,9 @@ class _StoryDetailState extends State<StoryDetail> {
                   },
                 )),
                 bottomNavigationBar: BottomAppBar(
+                  height: MainSetting.getPercentageOfDevice(context,
+                          expectHeight: 62)
+                      .height,
                   color: themeMode(context, ColorCode.modeColor.name),
                   child: SizedBox(
                       child: Row(
@@ -170,18 +173,38 @@ class _StoryDetailState extends State<StoryDetail> {
                     children: [
                       SizedBox(
                         width: MainSetting.getPercentageOfDevice(context,
-                                expectWidth: 200)
+                                expectWidth: 150)
                             .width,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             SizedBox(
                                 child: IconButton(
                                     onPressed: () {
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (builder) =>
+                                      //             StoryAudioTest(
+                                      //               author:
+                                      //                   storyInfo.authorName,
+                                      //               totalChapter:
+                                      //                   storyInfo.totalChapter,
+                                      //               lastChapterId:
+                                      //                   storyInfo.lastChapterId,
+                                      //               firstChapterId: storyInfo
+                                      //                   .firstChapterId,
+                                      //               imageUrl: storyInfo.imgUrl,
+                                      //               title: widget.storyTitle,
+                                      //               chapterId: _chapterId,
+                                      //               storyId: widget.storyId,
+                                      //             )));
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (builder) => StoryAudio(
+                                                    author:
+                                                        storyInfo.authorName,
                                                     totalChapter:
                                                         storyInfo.totalChapter,
                                                     lastChapterId:
@@ -263,47 +286,44 @@ class _StoryDetailState extends State<StoryDetail> {
                           ],
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: SizedBox(
-                          width: MainSetting.getPercentageOfDevice(context,
-                                  expectWidth: 150)
-                              .width,
-                          child: ButtonWidget.buttonNavigatorNextPreviewLanding(
-                              context,
-                              Chapter(
-                                imageUrl: storyInfo.imgUrl,
-                                chapterNumber:
-                                    _chapterNumber == 0 ? 1 : _chapterNumber,
-                                totalChapter: storyInfo.totalChapter,
-                                pageIndex: _pageIndex,
-                                loadSingleChapter: false,
-                                isLoadHistory: true,
-                                storyId: widget.storyId,
-                                storyName: widget.storyTitle,
-                                chapterId: _chapterId == 0
-                                    ? storyInfo.firstChapterId
-                                    : _chapterId,
-                                lastChapterId: storyInfo.lastChapterId,
-                                firstChapterId: storyInfo.firstChapterId,
-                              ),
-                              textStyle: CustomFonts.h5(context).copyWith(
-                                  color: themeMode(
-                                      context, ColorCode.textColor.name),
-                                  fontWeight: FontWeight.w500),
-                              color:
-                                  themeMode(context, ColorCode.mainColor.name),
-                              borderColor:
-                                  themeMode(context, ColorCode.mainColor.name),
-                              widthBorder: 2,
-                              isDisable: storyInfo.totalChapter == 0,
-                              textDisplay: !(storyInfo.totalChapter == 0)
-                                  ? '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${_chapterNumber == 0 ? 1 : _chapterNumber}'
-                                  : L(
-                                      context,
-                                      LanguageCodes.emptyChapterTextInfo
-                                          .toString())),
-                        ),
+                      SizedBox(
+                        width: MainSetting.getPercentageOfDevice(context,
+                                expectWidth: 200)
+                            .width,
+                        child: ButtonWidget.buttonNavigatorNextPreviewLanding(
+                            context,
+                            Chapter(
+                              author: storyInfo.authorName,
+                              imageUrl: storyInfo.imgUrl,
+                              chapterNumber:
+                                  _chapterNumber == 0 ? 1 : _chapterNumber,
+                              totalChapter: storyInfo.totalChapter,
+                              pageIndex: _pageIndex,
+                              loadSingleChapter: false,
+                              isLoadHistory: true,
+                              storyId: widget.storyId,
+                              storyName: widget.storyTitle,
+                              chapterId: _chapterId == 0
+                                  ? storyInfo.firstChapterId
+                                  : _chapterId,
+                              lastChapterId: storyInfo.lastChapterId,
+                              firstChapterId: storyInfo.firstChapterId,
+                            ),
+                            textStyle: CustomFonts.h5(context).copyWith(
+                                color: themeMode(
+                                    context, ColorCode.textColor.name),
+                                fontWeight: FontWeight.w500),
+                            color: themeMode(context, ColorCode.mainColor.name),
+                            borderColor:
+                                themeMode(context, ColorCode.mainColor.name),
+                            widthBorder: 2,
+                            isDisable: storyInfo.totalChapter == 0,
+                            textDisplay: !(storyInfo.totalChapter == 0)
+                                ? '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${_chapterNumber == 0 ? 1 : _chapterNumber}'
+                                : L(
+                                    context,
+                                    LanguageCodes.emptyChapterTextInfo
+                                        .toString())),
                       )
                     ],
                   )),

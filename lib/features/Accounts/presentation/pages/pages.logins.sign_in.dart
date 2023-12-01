@@ -447,7 +447,7 @@ class _SignInPageState extends State<SignInPage> {
                       padding: 12.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 32.0),
+                      padding: const EdgeInsets.symmetric(vertical: 29.0),
                       child: RichText(
                         text: TextSpan(
                             text: L(

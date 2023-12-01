@@ -34,6 +34,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Chapter extends StatefulWidget {
   // #region Constructor
+  final String author;
   final bool loadSingleChapter;
   final int storyId;
   final String storyName;
@@ -45,19 +46,21 @@ class Chapter extends StatefulWidget {
   final int totalChapter;
   final int chapterNumber;
   final String imageUrl;
-  const Chapter(
-      {super.key,
-      required this.storyId,
-      required this.storyName,
-      required this.chapterId,
-      required this.lastChapterId,
-      required this.firstChapterId,
-      required this.isLoadHistory,
-      required this.loadSingleChapter,
-      required this.pageIndex,
-      required this.totalChapter,
-      required this.chapterNumber,
-      required this.imageUrl});
+  const Chapter({
+    super.key,
+    required this.storyId,
+    required this.storyName,
+    required this.chapterId,
+    required this.lastChapterId,
+    required this.firstChapterId,
+    required this.isLoadHistory,
+    required this.loadSingleChapter,
+    required this.pageIndex,
+    required this.totalChapter,
+    required this.chapterNumber,
+    required this.imageUrl,
+    required this.author,
+  });
   // #endregion
 
   @override
@@ -101,7 +104,6 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     _scrollController = ScrollController();
     _scrollAdsController = ScrollController(initialScrollOffset: 75.2);
     _refreshController = RefreshController(initialRefresh: false);
-    _scrollController.addListener(_saveScrollPosition);
     _isVisible = false;
     _isLoad = true;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -152,7 +154,6 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    _scrollController.removeListener(_saveScrollPosition);
     _groupChaptersBloc.close();
     _scrollController.dispose();
     _refreshController.dispose();
@@ -441,6 +442,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
     _sharedPreferences.setString(
         "recently-story",
         recentStoryModelToJson(StoryRecent(
+            author: widget.author,
             imageStory: widget.imageUrl,
             storyId: widget.storyId,
             storyName: widget.storyName,
@@ -623,6 +625,8 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               ChapterListPage(
+                                                                author: widget
+                                                                    .author,
                                                                 chapterCallback:
                                                                     null,
                                                                 isAudio: false,
@@ -1329,6 +1333,7 @@ class _ChapterState extends State<Chapter> with WidgetsBindingObserver {
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.linearToEaseOut,
                                     child: BottomChapterDetail(
+                                        author: widget.author,
                                         callback: (val) =>
                                             _updateChapterCurrentIntoChapterList(
                                                 val),

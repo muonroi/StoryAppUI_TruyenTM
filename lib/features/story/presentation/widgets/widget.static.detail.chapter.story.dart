@@ -159,6 +159,7 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => Chapter(
+                                            author: widget.storyInfo.authorName,
                                             imageUrl: widget.storyInfo.imgUrl,
                                             chapterNumber:
                                                 chapterItem.numberOfChapter,
@@ -207,6 +208,7 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                         child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                             context,
                             ChapterListPage(
+                              author: widget.storyInfo.authorName,
                               chapterCallback: null,
                               isAudio: false,
                               storyImageUrl: widget.storyInfo.imgUrl,

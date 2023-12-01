@@ -12,8 +12,10 @@ import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_sto
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ListNewChapter extends StatefulWidget {
+  final String author;
   const ListNewChapter({
     super.key,
+    required this.author,
   });
 
   @override
@@ -216,6 +218,7 @@ class _ListNewChapterState extends State<ListNewChapter> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => Chapter(
+                                                  author: widget.author,
                                                   imageUrl: '',
                                                   totalChapter: storyInfo
                                                       .result.totalChapter,

@@ -177,6 +177,8 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) => Chapter(
+                                                        author: widget.storyInfo
+                                                            .authorName,
                                                         imageUrl: storyInfo
                                                             .result.imgUrl,
                                                         chapterNumber:
@@ -235,7 +237,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                             padding: const EdgeInsets.only(right: 8.0),
                             child: SizedBox(
                               width: MainSetting.getPercentageOfDevice(context,
-                                      expectWidth: 100)
+                                      expectWidth: 80)
                                   .width,
                               child: Stack(children: [
                                 Text(

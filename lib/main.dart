@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_logs/flutter_logs.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:muonroi/core/advertising/ads.admob.service.dart';
 import 'package:muonroi/core/notification/widget.notification.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.ladding.page.dart';
@@ -17,24 +18,21 @@ import 'package:provider/provider.dart';
 import 'shared/settings/enums/enum.log.type.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-//late AudioHandler _audioHandler;
 void main() async {
-  // _audioHandler = await AudioService.init(
-  //   builder: () => AudioPlayerHandler(),
+  // audioHandler = await AudioService.init(
+  //   builder: () => TextPlayerHandler(),
   //   config: const AudioServiceConfig(
-  //     androidNotificationChannelId: 'com.ryanheise.myapp.channel.audio',
-  //     androidNotificationChannelName: 'Audio playback',
-  //     androidNotificationOngoing: true,
-  //   ),
+  //       androidNotificationChannelId: 'com.muonroi.truyentm.channel.audio',
+  //       androidNotificationChannelName: 'Audio playback',
+  //       androidNotificationOngoing: true,
+  //       androidNotificationIcon: 'mipmap/launcher_icon'),
   // );
-
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   if (kDebugMode) {
     HttpOverrides.global = MyHttpOverrides();
   }
-  WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   // #region Initialize Logging
   await FlutterLogs.initLogs(
@@ -58,6 +56,7 @@ void main() async {
       debugFileOperations: true,
       isDebuggable: true);
   // #endregion
+
   runApp(const MainApp());
 }
 
@@ -79,6 +78,12 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     final initFuture = MobileAds.instance.initialize();
     final adState = AdMobService(initFuture);
+    final InternetConnectionChecker customInstance =
+        InternetConnectionChecker.createInstance(
+      checkTimeout: const Duration(seconds: 1),
+      checkInterval: const Duration(seconds: 1),
+    );
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TemplateSetting()),
@@ -96,10 +101,10 @@ class _MainAppState extends State<MainApp> {
                     ? Brightness.dark
                     : Brightness.light),
             debugShowCheckedModeBanner: false,
-            home: const LaddingPage());
+            home: LaddingPage(
+              internetConnectionChecker: customInstance,
+            ));
       }),
     );
   }
 }
-// homeLoading(
-//                 accountResult: _accountResult, signinView: _isSigninView));

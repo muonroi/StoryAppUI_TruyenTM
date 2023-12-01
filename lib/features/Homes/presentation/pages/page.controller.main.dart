@@ -320,6 +320,7 @@ class _HomePageState extends State<HomePage> {
                         coin: 99)),
               ]),
           floatingActionButton: FloatingActionButton(
+            shape: const CircleBorder(),
             onPressed: () {
               var storyInfoRecently =
                   _sharedPreferences.getString("recently-story");
@@ -333,6 +334,7 @@ class _HomePageState extends State<HomePage> {
                     1;
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Chapter(
+                    author: storyResult.author,
                     imageUrl: storyResult.imageStory,
                     chapterNumber: chapterNumber,
                     totalChapter: storyResult.totalChapter,
@@ -362,7 +364,11 @@ class _HomePageState extends State<HomePage> {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: TabBarCustom(context: context)),
+          bottomNavigationBar: SizedBox(
+              height:
+                  MainSetting.getPercentageOfDevice(context, expectHeight: 62)
+                      .height,
+              child: TabBarCustom(context: context))),
     );
   }
 }

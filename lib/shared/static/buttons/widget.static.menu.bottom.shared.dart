@@ -17,7 +17,7 @@ class _TabBarCustomState extends State<TabBarCustom> {
   Widget build(BuildContext context) {
     return BottomAppBar(
       height:
-          MainSetting.getPercentageOfDevice(context, expectHeight: 60).height,
+          MainSetting.getPercentageOfDevice(context, expectHeight: 62).height,
       color: themeMode(context, ColorCode.modeColor.name),
       shape: const CircularNotchedRectangle(),
       child: TabBar(

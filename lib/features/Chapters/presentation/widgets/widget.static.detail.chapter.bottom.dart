@@ -5,6 +5,7 @@ import 'package:muonroi/shared/settings/setting.main.dart';
 import 'widget.static.custom.dashboard.chapter.bottom.dart';
 
 class BottomChapterDetail extends StatefulWidget {
+  final String author;
   final Function(bool) callback;
   final int chapterId;
   final String title;
@@ -37,6 +38,7 @@ class BottomChapterDetail extends StatefulWidget {
     required this.lastChapterId,
     required this.totalChapter,
     required this.callback,
+    required this.author,
   });
 
   @override
@@ -47,6 +49,9 @@ class _BottomChapterDetailState extends State<BottomChapterDetail> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      padding: const EdgeInsets.only(bottom: 4.0),
+      height:
+          MainSetting.getPercentageOfDevice(context, expectHeight: 50).height,
       color: widget.backgroundColor,
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -108,6 +113,7 @@ class _BottomChapterDetailState extends State<BottomChapterDetail> {
                     context,
                     MaterialPageRoute(
                         builder: (builder) => StoryAudio(
+                              author: widget.author,
                               lastChapterId: widget.lastChapterId,
                               firstChapterId: widget.firstChapterId,
                               totalChapter: widget.totalChapter,
