@@ -4,7 +4,6 @@ import 'package:muonroi/features/chapters/provider/provider.chapter.template.set
 import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
@@ -24,17 +23,15 @@ class ChooseFontColor extends StatefulWidget {
 class _ChooseFontColorState extends State<ChooseFontColor> {
   @override
   void initState() {
-    _initSharedPreferences();
+    _initData();
     _pickerColor = const Color(0xff443a49);
     _templateSetting = TemplateSetting();
     super.initState();
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-
+  void _initData() {
     setState(() {
-      _templateSetting = getCurrentTemplate(_sharedPreferences, context);
+      _templateSetting = getCurrentTemplate(context);
       switch (widget.colorType) {
         case KeyChapterColor.background:
           _pickerColor =
@@ -55,7 +52,6 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
 
   late Color _pickerColor;
   late TemplateSetting _templateSetting;
-  late SharedPreferences _sharedPreferences;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,8 +76,7 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
           return SingleChildScrollView(
             child: HueRingPicker(
               onColorChanged: (Color value) {
-                var currentTemplate =
-                    getCurrentTemplate(_sharedPreferences, context);
+                var currentTemplate = getCurrentTemplate(context);
                 switch (widget.colorType) {
                   case KeyChapterColor.background:
                     currentTemplate.backgroundColor = value;
@@ -101,8 +96,7 @@ class _ChooseFontColorState extends State<ChooseFontColor> {
                 setState(() {
                   _pickerColor = value;
                 });
-                setCurrentTemplate(
-                    _sharedPreferences, currentTemplate, context);
+                setCurrentTemplate(currentTemplate, context);
               },
               pickerColor: _pickerColor,
             ),

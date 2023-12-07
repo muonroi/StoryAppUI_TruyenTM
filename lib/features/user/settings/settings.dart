@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:muonroi/core/authorization/enums/key.dart';
 import 'package:muonroi/core/services/api_route.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.token.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 bool isEmailValid(String email) {
   RegExp regex = RegExp(
@@ -35,10 +35,8 @@ Set<String> formatNameUser(String fullName) {
 }
 
 Future<void> refreshAccessToken() async {
-  var sharedPreferences = await SharedPreferences.getInstance();
-  String? token = sharedPreferences.getString(KeyToken.accessToken.name);
-  String? refreshTokenStr =
-      sharedPreferences.getString(KeyToken.refreshToken.name);
+  String? token = userBox.get(KeyToken.accessToken.name);
+  String? refreshTokenStr = userBox.get(KeyToken.refreshToken.name);
   Dio dio = Dio();
   dio.options.baseUrl = ApiNetwork.baseApi;
   dio.options.responseType = ResponseType.plain;
@@ -48,8 +46,8 @@ Future<void> refreshAccessToken() async {
         data: jsonEncode({"refreshToken": refreshTokenStr}));
     if (response.statusCode == 200) {
       var newToken = tokenModelFromJson(response.data.toString());
-      sharedPreferences.setString(KeyToken.accessToken.name, newToken.result);
-      sharedPreferences.setString(KeyToken.refreshToken.name, refreshTokenStr!);
+      userBox.put(KeyToken.accessToken.name, newToken.result);
+      userBox.put(KeyToken.refreshToken.name, refreshTokenStr!);
     }
   } catch (e) {
     debugPrint(e.toString());

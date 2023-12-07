@@ -6,7 +6,6 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectBox extends StatefulWidget {
   final Function(String) callBack;
@@ -19,25 +18,14 @@ class SelectBox extends StatefulWidget {
 class _SelectBoxState extends State<SelectBox> {
   @override
   void initState() {
-    _selectedLanguage = Languages.none;
     _languageImages = {
       Languages.vi: CustomImages.vi2x,
       Languages.en: CustomImages.en2x,
     };
-    _initSharedPreferences().then((value) {
-      setState(() {
-        _selectedLanguage =
-            _sharedPreferences.getString("currentLanguage") ?? Languages.vi;
-      });
-    });
+    _selectedLanguage = systemBox.get("currentLanguage") ?? Languages.vi;
     super.initState();
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-  }
-
-  late SharedPreferences _sharedPreferences;
   late String _selectedLanguage;
   late Map<String, String> _languageImages;
   @override
@@ -54,8 +42,7 @@ class _SelectBoxState extends State<SelectBox> {
               _selectedLanguage = newValue!;
               value.changeLanguage = _selectedLanguage;
               widget.callBack(_selectedLanguage);
-              _sharedPreferences.setString(
-                  "currentLanguage", _selectedLanguage);
+              systemBox.put("currentLanguage", _selectedLanguage);
             });
           },
           dropdownDecoratorProps: DropDownDecoratorProps(

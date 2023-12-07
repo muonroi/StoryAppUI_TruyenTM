@@ -39,8 +39,11 @@ class ChapterRepository {
       _provider.getFromToChaptersDataDetail(storyId, pageIndex, from, to);
 
   Future<GroupChapters> fetchGroupChapters(int storyId, int pageIndex,
-          {int pageSize = 100}) =>
-      _provider.getGroupChapters(storyId, pageIndex, pageSize: pageSize);
+          {int pageSize = 100,
+          bool isDownload = false,
+          bool isAudio = false}) =>
+      _provider.getGroupChapters(storyId, pageIndex,
+          pageSize: pageSize, isDownload: isDownload, isAudio: isAudio);
 }
 
 class NetworkChapterError extends Error {}

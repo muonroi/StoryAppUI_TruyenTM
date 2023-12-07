@@ -129,7 +129,7 @@ enum LanguageCodes {
   backgroundConfigDashboardTextInfo,
   alignConfigDashboardTextInfo,
   limitFontSizeConfigTextInfo,
-  listChapterDetailConfigTextInfo,
+  chapterListConfigTextInfo,
   storyDetailConfigTextInfo,
   storyDownloadConfigTextInfo,
   storyPushCoinConfigTextInfo,
@@ -237,5 +237,6 @@ enum LanguageCodes {
   timerInfoSettingTextInfo,
   noInternetTextInfo,
   firstInfoTrialTextInfo,
+  prepareCountTimesTextInfo,
 // #endregion
 }

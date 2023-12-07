@@ -6,7 +6,6 @@ import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChooseFontPage extends StatefulWidget {
   const ChooseFontPage({super.key});
@@ -18,21 +17,19 @@ class ChooseFontPage extends StatefulWidget {
 class _ChooseFontPageState extends State<ChooseFontPage> {
   @override
   void initState() {
-    _initSharedPreferences();
+    _initData();
     _templateSettingData = TemplateSetting();
     _chosseFontName = "";
     super.initState();
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
+  void _initData() {
     setState(() {
-      _templateSettingData = getCurrentTemplate(_sharedPreferences, context);
+      _templateSettingData = getCurrentTemplate(context);
       _chosseFontName = _templateSettingData.fontFamily ?? '';
     });
   }
 
-  late SharedPreferences _sharedPreferences;
   late String _chosseFontName;
   late TemplateSetting _templateSettingData;
   @override
@@ -104,11 +101,9 @@ class _ChooseFontPageState extends State<ChooseFontPage> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(20.0),
                           onTap: () {
-                            var currentTemplate =
-                                getCurrentTemplate(_sharedPreferences, context);
+                            var currentTemplate = getCurrentTemplate(context);
                             currentTemplate.fontFamily = fontName;
-                            setCurrentTemplate(
-                                _sharedPreferences, currentTemplate, context);
+                            setCurrentTemplate(currentTemplate, context);
                             templateValue.valueSetting = currentTemplate;
                             setState(() {
                               _chosseFontName = fontName;

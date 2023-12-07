@@ -7,16 +7,15 @@ import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.signup.dart';
 import 'package:muonroi/features/accounts/data/repository/accounts.repository.dart';
+import 'package:muonroi/features/accounts/presentation/pages/pages.ladding.page.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_in.dart';
 import 'package:muonroi/features/accounts/presentation/widgets/widget.alert.notification.confirm.dart';
 import 'package:muonroi/features/accounts/settings/enum/enum.account.info.dart';
 import 'package:muonroi/features/accounts/settings/enum/enum.platform.dart';
-import 'package:muonroi/features/homes/presentation/pages/page.ladding.index.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 enum Gender { male, female }
 
@@ -96,7 +95,6 @@ class _SignUpPageState extends State<SignUpPage> {
           onPressed: () async {
             final accountRepository = AccountRepository();
             var address = "Viet Nam";
-            final sharedPreferences = await SharedPreferences.getInstance();
             var request = AccountSignUpDTO(
                 avatar: "",
                 name: "${Random().nextInt(100000) + 0}",
@@ -112,24 +110,19 @@ class _SignUpPageState extends State<SignUpPage> {
                 passwordHash: _passwordController.text);
             var accountInfo = await accountRepository.register(request);
             if (accountInfo.result != null) {
-              sharedPreferences.setString(
-                  AccountInfo.username.name, _usernameController.text);
-              sharedPreferences.setString(
-                  AccountInfo.password.name, _passwordController.text);
-              sharedPreferences.setBool(AccountInfo.remember.name, true);
-              sharedPreferences.setString(
+              userBox.put(AccountInfo.username.name, _usernameController.text);
+              userBox.put(AccountInfo.password.name, _passwordController.text);
+              userBox.put(AccountInfo.remember.name, true);
+              userBox.put(
                   KeyToken.accessToken.name, accountInfo.result!.jwtToken);
-              sharedPreferences.setString(
+              userBox.put(
                   KeyToken.refreshToken.name, accountInfo.result!.refreshToken);
-              sharedPreferences.setString(
-                  'userLogin', accountSignInToJson(accountInfo));
+              userBox.put('userLogin', accountSignInToJson(accountInfo));
               if (mounted) {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => IndexPage(
-                              accountResult: accountInfo.result!,
-                            )));
+                        builder: (context) => const LaddingPage()));
               }
             } else {
               if (mounted) {

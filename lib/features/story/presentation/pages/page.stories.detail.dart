@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muonroi/features/chapters/bloc/group_bloc/group_chapters_of_story_bloc.dart';
+import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
 import 'package:muonroi/features/story/bloc/detail/detail_bloc.dart';
 import 'package:muonroi/features/story/presentation/pages/page.audio.story.dart';
+import 'package:muonroi/features/story/presentation/widgets/widget.static.detail.header.story.dart';
+import 'package:muonroi/features/story/presentation/widgets/widget.static.detail.intro.notify.story.dart';
 import 'package:muonroi/features/story/settings/enums/enum.story.user.dart';
 import 'package:muonroi/features/story/data/repositories/story.repository.dart';
 import 'package:muonroi/features/story/presentation/pages/page.stories.download.dart';
@@ -10,14 +15,10 @@ import 'package:muonroi/features/story/presentation/widgets/widget.static.detail
 import 'package:muonroi/features/story/presentation/widgets/widget.static.detail.similar.story.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
-import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/story/presentation/widgets/widget.static.detail.chapter.story.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../widgets/widget.static.detail.header.story.dart';
-import '../widgets/widget.static.detail.intro.notify.story.dart';
 
 class StoryDetail extends StatefulWidget {
   final int storyId;
@@ -34,6 +35,7 @@ class StoryDetail extends StatefulWidget {
 class _StoryDetailState extends State<StoryDetail> {
   @override
   void initState() {
+    _isGetChapterId = true;
     _isFirstLoad = true;
     _isBookmark = false;
     _chapterNumber = 0;
@@ -45,27 +47,31 @@ class _StoryDetailState extends State<StoryDetail> {
     _groupChapterOfStoryBloc =
         GroupChapterOfStoryBloc(widget.storyId, 1, 15, false, 0);
     _groupChapterOfStoryBloc.add(GroupChapterOfStoryList());
+    _reloadChapterId = StreamController<bool>();
     super.initState();
+    _reloadChapterId.stream.listen((event) {
+      if (event) {
+        getChapterId();
+      }
+    });
   }
 
   @override
   void dispose() {
     _groupChapterOfStoryBloc.close();
     _detailStory.close();
+    _reloadChapterId.close();
     super.dispose();
   }
 
-  Future<void> getChapterId() async {
-    final SharedPreferences chapterTemp = await SharedPreferences.getInstance();
+  void getChapterId() {
     setState(() {
       _chapterId =
-          (chapterTemp.getInt("story-${widget.storyId}-current-chapter-id") ??
-              0);
+          (chapterBox.get("story-${widget.storyId}-current-chapter-id") ?? 0);
       _chapterNumber =
-          (chapterTemp.getInt("story-${widget.storyId}-current-chapter") ?? 0);
+          (chapterBox.get("story-${widget.storyId}-current-chapter") ?? 0);
       _pageIndex =
-          (chapterTemp.getInt("story-${widget.storyId}-current-page-index") ??
-              0);
+          (chapterBox.get("story-${widget.storyId}-current-page-index") ?? 0);
     });
   }
 
@@ -77,10 +83,14 @@ class _StoryDetailState extends State<StoryDetail> {
   late bool _isBookmark;
   late bool _isFirstLoad;
   late GroupChapterOfStoryBloc _groupChapterOfStoryBloc;
-
+  late bool _isGetChapterId;
+  late StreamController<bool> _reloadChapterId;
   @override
   Widget build(BuildContext context) {
-    getChapterId();
+    if (_isGetChapterId) {
+      _isGetChapterId = false;
+      getChapterId();
+    }
     // #region not use now
     // List<Widget> componentOfDetailStory = [
     //   Header(infoStory: widget.storyInfo),
@@ -164,7 +174,7 @@ class _StoryDetailState extends State<StoryDetail> {
                 )),
                 bottomNavigationBar: BottomAppBar(
                   height: MainSetting.getPercentageOfDevice(context,
-                          expectHeight: 62)
+                          expectHeight: 70)
                       .height,
                   color: themeMode(context, ColorCode.modeColor.name),
                   child: SizedBox(
@@ -181,24 +191,6 @@ class _StoryDetailState extends State<StoryDetail> {
                             SizedBox(
                                 child: IconButton(
                                     onPressed: () {
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (builder) =>
-                                      //             StoryAudioTest(
-                                      //               author:
-                                      //                   storyInfo.authorName,
-                                      //               totalChapter:
-                                      //                   storyInfo.totalChapter,
-                                      //               lastChapterId:
-                                      //                   storyInfo.lastChapterId,
-                                      //               firstChapterId: storyInfo
-                                      //                   .firstChapterId,
-                                      //               imageUrl: storyInfo.imgUrl,
-                                      //               title: widget.storyTitle,
-                                      //               chapterId: _chapterId,
-                                      //               storyId: widget.storyId,
-                                      //             )));
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -292,7 +284,8 @@ class _StoryDetailState extends State<StoryDetail> {
                             .width,
                         child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                             context,
-                            Chapter(
+                            NewChapter(
+                              reloadChapterId: _reloadChapterId,
                               author: storyInfo.authorName,
                               imageUrl: storyInfo.imgUrl,
                               chapterNumber:
@@ -309,6 +302,23 @@ class _StoryDetailState extends State<StoryDetail> {
                               lastChapterId: storyInfo.lastChapterId,
                               firstChapterId: storyInfo.firstChapterId,
                             ),
+                            // Chapter(
+                            //   author: storyInfo.authorName,
+                            //   imageUrl: storyInfo.imgUrl,
+                            //   chapterNumber:
+                            //       _chapterNumber == 0 ? 1 : _chapterNumber,
+                            //   totalChapter: storyInfo.totalChapter,
+                            //   pageIndex: _pageIndex,
+                            //   loadSingleChapter: false,
+                            //   isLoadHistory: true,
+                            //   storyId: widget.storyId,
+                            //   storyName: widget.storyTitle,
+                            //   chapterId: _chapterId == 0
+                            //       ? storyInfo.firstChapterId
+                            //       : _chapterId,
+                            //   lastChapterId: storyInfo.lastChapterId,
+                            //   firstChapterId: storyInfo.firstChapterId,
+                            // ),
                             textStyle: CustomFonts.h5(context).copyWith(
                                 color: themeMode(
                                     context, ColorCode.textColor.name),

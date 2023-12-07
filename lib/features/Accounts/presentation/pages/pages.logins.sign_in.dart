@@ -11,7 +11,7 @@ import 'package:muonroi/features/accounts/presentation/pages/pages.forgot.passwo
 import 'package:muonroi/features/accounts/presentation/pages/pages.logins.sign_up.dart';
 import 'package:muonroi/features/accounts/settings/enum/enum.account.info.dart';
 import 'package:muonroi/features/accounts/settings/enum/enum.platform.dart';
-import 'package:muonroi/features/homes/presentation/pages/page.ladding.index.dart';
+import 'package:muonroi/features/homes/presentation/pages/page.controller.main.dart';
 import 'package:muonroi/features/user/data/repository/user.repository.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
@@ -19,7 +19,6 @@ import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/shared/static/items/widget.divider.dart';
 import 'package:muonroi/shared/static/textField/widget.static.textfield.text_input.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -38,14 +37,9 @@ class _SignInPageState extends State<SignInPage> {
     _rememberMe = false;
     _isVisibility = true;
     _isLoading = false;
-    _initSharedPreferences().then((value) {
-      _usernameController.text =
-          _sharedPreferences.getString(AccountInfo.username.name) ?? "";
-      _passwordController.text =
-          _sharedPreferences.getString(AccountInfo.password.name) ?? "";
-      _rememberMe =
-          _sharedPreferences.getBool(AccountInfo.remember.name) ?? false;
-    });
+    _usernameController.text = userBox.get(AccountInfo.username.name) ?? "";
+    _passwordController.text = userBox.get(AccountInfo.password.name) ?? "";
+    _rememberMe = userBox.get(AccountInfo.remember.name) ?? false;
     super.initState();
   }
 
@@ -56,11 +50,6 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-  }
-
-  late SharedPreferences _sharedPreferences;
   late String username;
   late String password;
   late TextEditingController _usernameController;
@@ -232,8 +221,7 @@ class _SignInPageState extends State<SignInPage> {
         floatingActionButton: FloatingActionButton(
             backgroundColor: themeMode(context, ColorCode.mainColor.name),
             onPressed: () async {
-              _sharedPreferences.setString(
-                  "MethodLogin", EnumPlatform.system.name);
+              userBox.put("MethodLogin", EnumPlatform.system.name);
               setState(() {
                 _isLoading = true;
               });
@@ -246,28 +234,27 @@ class _SignInPageState extends State<SignInPage> {
                 });
               } else {
                 if (_rememberMe) {
-                  _sharedPreferences.setString(
+                  userBox.put(
                       AccountInfo.username.name, _usernameController.text);
-                  _sharedPreferences.setString(
+                  userBox.put(
                       AccountInfo.password.name, _passwordController.text);
-                  _sharedPreferences.setBool(
-                      AccountInfo.remember.name, _rememberMe);
+                  userBox.put(AccountInfo.remember.name, _rememberMe);
                 }
-                _sharedPreferences.setString(
+                userBox.put(
                     KeyToken.accessToken.name, accountInfo.result!.jwtToken);
-                _sharedPreferences.setString(KeyToken.refreshToken.name,
+                userBox.put(KeyToken.refreshToken.name,
                     accountInfo.result!.refreshToken);
                 _isShowLabelError = false;
-                _sharedPreferences.setString(
-                    'userLogin', accountSignInToJson(accountInfo));
+                userBox.put('userLogin', accountSignInToJson(accountInfo));
+                var accountResult =
+                    accountSignInFromJson(userBox.get('userLogin')!).result;
                 if (mounted) {
                   _isLoading = false;
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => IndexPage(
-                                accountResult: accountInfo.result!,
-                              )));
+                          builder: (context) =>
+                              HomePage(accountResult: accountResult!)));
                 }
               }
             },
@@ -321,8 +308,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     LoginWithSocialMedia(
                       ontap: () async {
-                        _sharedPreferences.setString(
-                            "MethodLogin", EnumPlatform.google.name);
+                        userBox.put("MethodLogin", EnumPlatform.google.name);
                         var address = "Viet Nam";
                         var userInfo = await _accountRepository.authGoogle();
                         try {
@@ -357,32 +343,29 @@ class _SignInPageState extends State<SignInPage> {
                                   _isLoading = false;
                                 });
                               } else {
-                                _sharedPreferences.setString(
-                                    AccountInfo.username.name,
+                                userBox.put(AccountInfo.username.name,
                                     _usernameController.text);
-                                _sharedPreferences.setString(
-                                    AccountInfo.password.name,
+                                userBox.put(AccountInfo.password.name,
                                     _passwordController.text);
-                                _sharedPreferences.setBool(
+                                userBox.put(
                                     AccountInfo.remember.name, _rememberMe);
-                                _sharedPreferences.setString(
-                                    KeyToken.accessToken.name,
+                                userBox.put(KeyToken.accessToken.name,
                                     accountInfo.result!.jwtToken);
-                                _sharedPreferences.setString(
-                                    KeyToken.refreshToken.name,
+                                userBox.put(KeyToken.refreshToken.name,
                                     accountInfo.result!.refreshToken);
                                 _isShowLabelError = false;
-                                _sharedPreferences.setString('userLogin',
+                                userBox.put('userLogin',
                                     accountSignInToJson(accountInfo));
+                                var accountResult = accountSignInFromJson(
+                                        userBox.get('userLogin')!)
+                                    .result;
                                 if (mounted) {
                                   _isLoading = false;
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => IndexPage(
-                                                accountResult:
-                                                    accountInfo.result!,
-                                              )));
+                                          builder: (context) => HomePage(
+                                              accountResult: accountResult!)));
                                 }
                               }
                             } else {
@@ -399,32 +382,29 @@ class _SignInPageState extends State<SignInPage> {
                                   _isLoading = false;
                                 });
                               } else {
-                                _sharedPreferences.setString(
-                                    AccountInfo.username.name,
+                                userBox.put(AccountInfo.username.name,
                                     _usernameController.text);
-                                _sharedPreferences.setString(
-                                    AccountInfo.password.name,
+                                userBox.put(AccountInfo.password.name,
                                     _passwordController.text);
-                                _sharedPreferences.setBool(
+                                userBox.put(
                                     AccountInfo.remember.name, _rememberMe);
-                                _sharedPreferences.setString(
-                                    KeyToken.accessToken.name,
+                                userBox.put(KeyToken.accessToken.name,
                                     accountInfo.result!.jwtToken);
-                                _sharedPreferences.setString(
-                                    KeyToken.refreshToken.name,
+                                userBox.put(KeyToken.refreshToken.name,
                                     accountInfo.result!.refreshToken);
                                 _isShowLabelError = false;
-                                _sharedPreferences.setString('userLogin',
+                                userBox.put('userLogin',
                                     accountSignInToJson(accountInfo));
+                                var accountResult = accountSignInFromJson(
+                                        userBox.get('userLogin')!)
+                                    .result;
                                 if (mounted) {
                                   _isLoading = false;
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => IndexPage(
-                                                accountResult:
-                                                    accountInfo.result!,
-                                              )));
+                                          builder: (context) => HomePage(
+                                              accountResult: accountResult!)));
                                 }
                               }
                             }

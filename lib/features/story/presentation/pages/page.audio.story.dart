@@ -6,14 +6,13 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/chapters/bloc/group_chapter/group_chapter_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
-import 'package:muonroi/features/chapters/data/service/api.chapter.service.dart';
+import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/features/story/presentation/widgets/widget.chapter.title.story.audio.dart';
 import 'package:muonroi/features/story/presentation/widgets/widget.static.list.chapter.audio.dart';
 import 'package:muonroi/features/story/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class StoryAudio extends StatefulWidget {
   final String author;
@@ -66,7 +65,7 @@ class _StoryAudioState extends State<StoryAudio> with WidgetsBindingObserver {
     _getVoice();
     _voices = [];
     super.initState();
-    _initSharedPreferences();
+    _initData();
     _getCurrentCharacter();
   }
 
@@ -87,21 +86,19 @@ class _StoryAudioState extends State<StoryAudio> with WidgetsBindingObserver {
   }
 // #region method
 
-  Future _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-    _fromToChapterList = _sharedPreferences
-            .getString("getGroupChaptersDataDetail-${widget.storyId}") ??
-        "";
-    _pageIndex = _sharedPreferences
-            .getInt("selected-chapter-${widget.storyId}-true-page-index") ??
-        1;
-    _currentChapterIndex = _sharedPreferences
-            .getInt("selected-chapter-${widget.storyId}-true-item-index") ??
+  Future _initData() async {
+    _fromToChapterList =
+        chapterBox.get("getGroupChaptersDataDetail-${widget.storyId}") ?? "";
+    _pageIndex =
+        chapterBox.get("selected-chapter-${widget.storyId}-true-page-index") ??
+            1;
+    _currentChapterIndex = chapterBox.get(
+            "selected-chapter-${_pageIndex - 1}-${widget.storyId}-true-item-index") ??
         0;
-    _currentChapterChunkIndex = _sharedPreferences.getInt(
-            "selected-chapter-chunk-${widget.storyId}-true-page-index") ??
+    _currentChapterChunkIndex = chapterBox
+            .get("selected-chapter-chunk-${widget.storyId}-true-page-index") ??
         0;
-    _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
+    _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex, true));
   }
 
   // Future _setVolume(value) async {
@@ -249,13 +246,13 @@ class _StoryAudioState extends State<StoryAudio> with WidgetsBindingObserver {
     // #region Private audio
     var fromToChapterInfo = listPagingChaptersFromJson(_fromToChapterList);
 
-    _sharedPreferences.setInt(
+    chapterBox.put(
         "selected-chapter-${widget.storyId}-true-page-index-audio", _pageIndex);
-    _sharedPreferences.setInt(
+    chapterBox.put(
         "selected-chapter-${widget.storyId}-true-from-chapter-id",
         fromToChapterInfo
             .result[_pageIndex > 0 ? _pageIndex - 1 : _pageIndex].fromId);
-    _sharedPreferences.setInt(
+    chapterBox.put(
         "selected-chapter-${widget.storyId}-true-to-chapter-id",
         fromToChapterInfo
             .result[_pageIndex > 0 ? _pageIndex - 1 : _pageIndex].toId);
@@ -263,14 +260,14 @@ class _StoryAudioState extends State<StoryAudio> with WidgetsBindingObserver {
     // #endregion
 
     // #region save
-    _sharedPreferences.setInt(
-        "selected-chapter-${widget.storyId}-true-item-index",
+    chapterBox.put("current-page-index", _pageIndex - 1);
+    removeIndex(fromToChapterInfo.result.length, widget.storyId, true);
+    chapterBox.put(
+        "selected-chapter-${_pageIndex - 1}-${widget.storyId}-true-item-index",
         _currentChapterIndex);
-
-    _sharedPreferences.setInt(
-        "selected-chapter-${widget.storyId}-true-page-index-ui",
+    chapterBox.put("selected-chapter-${widget.storyId}-true-page-index-ui",
         _pageIndex - 1);
-    _sharedPreferences.setInt(
+    chapterBox.put(
         "selected-chapter-${widget.storyId}-true-page-index", _pageIndex);
     // #endregion
   }
@@ -297,10 +294,14 @@ class _StoryAudioState extends State<StoryAudio> with WidgetsBindingObserver {
         value = 1;
       }
       _speak();
-      _sharedPreferences.setInt(
-          "selected-chapter-${widget.storyId}-true-item-index",
+      var fromToChapterInfo = listPagingChaptersFromJson(_fromToChapterList);
+
+      chapterBox.put("current-page-index", _pageIndex - 1);
+      removeIndex(fromToChapterInfo.result.length, widget.storyId, true);
+      chapterBox.put(
+          "selected-chapter-${_pageIndex - 1}-${widget.storyId}-true-item-index",
           _currentChapterIndex);
-      _sharedPreferences.setInt(
+      chapterBox.put(
           "selected-chapter-chunk-${widget.storyId}-true-page-index", value);
     }
   }
@@ -308,7 +309,7 @@ class _StoryAudioState extends State<StoryAudio> with WidgetsBindingObserver {
   void _updateChapterId(value, int pageIndex) {
     setState(() {
       _pageIndex = pageIndex;
-      _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
+      _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex, true));
       _currentChapterIndex = value;
       _isDisplayPauseIcon = true;
     });
@@ -369,7 +370,6 @@ class _StoryAudioState extends State<StoryAudio> with WidgetsBindingObserver {
   late TextEditingController _textTimerController;
   late List<int> _chapterId;
   late String _fromToChapterList;
-  late SharedPreferences _sharedPreferences;
   late List<dynamic>? _voices;
   late double _volume;
   late double _pitch;

@@ -1,11 +1,55 @@
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/provider/provider.chapter.template.settings.dart';
 import 'package:muonroi/shared/settings/enums/emum.key.local.storage.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+List<String> decryptChunkBody(dynamic items, int size) {
+  List<String> chunkBody = [];
+  items = convertDynamicToList(items);
+  for (int i = 0; i < size; i++) {
+    var chunkTemp = convertDynamicToList(items)[i];
+    chunkTemp = decryptStringAES(chunkTemp);
+    chunkBody.add(chunkTemp);
+  }
+  return chunkBody;
+}
+
+List<GroupChapterItems> decryptBodyChapterAndChunk(
+    List<GroupChapterItems> items) {
+  for (int i = 0; i < items.length; i++) {
+    var tempChunk = [];
+    for (int j = 0; j < items[i].chunkSize; j++) {
+      var chunkContent =
+          decryptStringAES(convertDynamicToList(items[i].bodyChunk)[j]);
+      tempChunk.add(chunkContent);
+    }
+    items[i].bodyChunk = tempChunk;
+    items[i].body = decryptStringAES(items[i].body);
+  }
+  return items;
+}
+
+List<String> convertDynamicToList(dynamic dynamicObject, [String? insertItem]) {
+  if (dynamicObject is Iterable) {
+    List<String> stringList = insertItem != null ? [insertItem] : [];
+    for (var item in dynamicObject) {
+      stringList.add(item.toString());
+    }
+    return stringList;
+  } else {
+    throw ArgumentError("Dynamic object is not iterable.");
+  }
+}
+
+void removeIndex(int totalPageIndex, int storyId, bool isAudio) {
+  for (var i = 0; i < totalPageIndex; i++) {
+    chapterBox.delete("selected-chapter-$i-$storyId-$isAudio-item-index");
+  }
+}
 
 Color colorFromJson(jsonColor, Color colorDefault, BuildContext context) {
   if (jsonColor == null) {
@@ -18,17 +62,14 @@ int colorToJson(Color? color, int colorDefault, BuildContext context) {
   return color?.value ?? themeMode(context, ColorCode.textColor.name).value;
 }
 
-TemplateSetting getCurrentTemplate(
-        SharedPreferences sharedPreferences, BuildContext context) =>
+TemplateSetting getCurrentTemplate(BuildContext context) =>
     templateSettingFromJson(
-        sharedPreferences
-                .getString(KeyChapterTemplate.chapterConfig.toString()) ??
+        templateChapterBox.get(KeyChapterTemplate.chapterConfig.toString()) ??
             '',
         context);
 
-void setCurrentTemplate(SharedPreferences sharedPreferences,
-        TemplateSetting value, BuildContext context) =>
-    sharedPreferences.setString(KeyChapterTemplate.chapterConfig.toString(),
+void setCurrentTemplate(TemplateSetting value, BuildContext context) =>
+    templateChapterBox.put(KeyChapterTemplate.chapterConfig.toString(),
         templateSettingToJson(value, context));
 int calculatePageCount(int itemCount) {
   return (itemCount / 1).ceil();

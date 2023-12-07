@@ -2,12 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
-import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
-import 'package:muonroi/features/homes/presentation/pages/page.ladding.index.dart';
+import 'package:muonroi/features/accounts/presentation/pages/pages.ladding.page.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
 
 class PaymentSuccessNotice extends StatefulWidget {
@@ -23,23 +21,16 @@ class _PaymentSuccessNoticeState extends State<PaymentSuccessNotice> {
   void initState() {
     _seconds = 5;
     super.initState();
-    _initSharedPreferences().then((value) {
-      startCountdown();
-    });
+    startCountdown();
   }
 
   void startCountdown() {
     const oneSecond = Duration(seconds: 1);
     Timer.periodic(oneSecond, (timer) {
       if (_seconds == 0) {
-        var accountResult =
-            accountSignInFromJson(_sharedPreferences.getString('userLogin')!)
-                .result!;
         timer.cancel();
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (builder) => IndexPage(accountResult: accountResult)));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (builder) => const LaddingPage()));
       } else {
         setState(() {
           _seconds--;
@@ -48,11 +39,6 @@ class _PaymentSuccessNoticeState extends State<PaymentSuccessNotice> {
     });
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-  }
-
-  late SharedPreferences _sharedPreferences;
   late int _seconds;
   @override
   Widget build(BuildContext context) {

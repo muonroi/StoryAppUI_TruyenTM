@@ -5,7 +5,6 @@ import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ToggleButtonDarkMode extends StatefulWidget {
   final double? width;
@@ -39,7 +38,7 @@ const double rightAlign = 1;
 class _ToggleButtonDarkModeState extends State<ToggleButtonDarkMode> {
   @override
   void initState() {
-    _initSharedPreferences();
+    _initData();
     super.initState();
     xAlign = leftAlign;
     leftColor =
@@ -48,10 +47,9 @@ class _ToggleButtonDarkModeState extends State<ToggleButtonDarkMode> {
         widget.normalColor ?? themeMode(context, ColorCode.textColor.name);
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
+  Future<void> _initData() async {
     setState(() {
-      var templateSettingData = _sharedPreferences.getString("currentTemplate");
+      var templateSettingData = systemBox.get("currentTemplate");
       if (templateSettingData != null && templateSettingData == Modes.light) {
         xAlign = leftAlign;
         leftColor = widget.selectedColor!;
@@ -72,8 +70,6 @@ class _ToggleButtonDarkModeState extends State<ToggleButtonDarkMode> {
   late double xAlign;
   late Color leftColor;
   late Color rightColor;
-  late SharedPreferences _sharedPreferences;
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -129,7 +125,7 @@ class _ToggleButtonDarkModeState extends State<ToggleButtonDarkMode> {
                     rightColor = widget.normalColor!;
                     value.changeMode = Modes.light;
                   });
-                  _sharedPreferences.setString("currentTemplate", Modes.light);
+                  systemBox.put("currentTemplate", Modes.light);
                   widget.callback(Modes.light);
                 },
                 child: Align(
@@ -156,7 +152,7 @@ class _ToggleButtonDarkModeState extends State<ToggleButtonDarkMode> {
                     leftColor = widget.normalColor!;
                     value.changeMode = Modes.dark;
                   });
-                  _sharedPreferences.setString("currentTemplate", Modes.dark);
+                  systemBox.put("currentTemplate", Modes.dark);
                   widget.callback(Modes.dark);
                 },
                 child: Align(

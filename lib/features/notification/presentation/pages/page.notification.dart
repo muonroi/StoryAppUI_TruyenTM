@@ -10,7 +10,6 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -30,7 +29,6 @@ class _NotificationPageState extends State<NotificationPage> {
     countLoadMore = 0;
     _scrollController = ScrollController();
     _notificationRepository = NotificationRepository();
-    _initSharedPreferences();
     super.initState();
   }
 
@@ -67,11 +65,6 @@ class _NotificationPageState extends State<NotificationPage> {
     _refreshController.loadComplete();
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-  }
-
-  late SharedPreferences _sharedPreferences;
   late ScrollController _scrollController;
   late NotificationBloc _notificationBloc;
   late bool _isPrevious;
@@ -126,8 +119,7 @@ class _NotificationPageState extends State<NotificationPage> {
                             .where((element) => element.notificationSate == 1)
                             .length;
                         value.setTotalView = totalViewSent;
-                        _sharedPreferences.setInt(
-                            'totalNotification', totalViewSent);
+                        userBox.put('totalNotification', totalViewSent);
 
                         return SmartRefresher(
                           enablePullDown: true,

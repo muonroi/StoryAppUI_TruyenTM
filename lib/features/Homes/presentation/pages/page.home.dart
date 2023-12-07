@@ -7,7 +7,6 @@ import 'package:muonroi/features/homes/settings/enum/enum.setting.type.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RenderHomePage extends StatefulWidget {
@@ -38,12 +37,10 @@ class _RenderHomePageState extends State<RenderHomePage> {
   }
 
   Future _initPackageInfo() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
     _packageInfo = await PackageInfo.fromPlatform();
-    _isFirstLoad = _sharedPreferences.getBool('notification') ?? true;
+    _isFirstLoad = userBox.get('notification') ?? true;
   }
 
-  late SharedPreferences _sharedPreferences;
   late SettingsBloc _settingsBloc;
   late PackageInfo _packageInfo;
   late bool _isFirstLoad;
@@ -99,12 +96,10 @@ class _RenderHomePageState extends State<RenderHomePage> {
                               setState(() {
                                 if (!currentVersionApp) {
                                   _isFirstLoad = false;
-                                  _sharedPreferences.setBool(
-                                      'notification', true);
+                                  userBox.put('notification', true);
                                 } else {
                                   _isFirstLoad = false;
-                                  _sharedPreferences.setBool(
-                                      'notification', false);
+                                  userBox.put('notification', false);
                                 }
                               });
                             },
@@ -130,12 +125,10 @@ class _RenderHomePageState extends State<RenderHomePage> {
                               setState(() {
                                 if (!currentVersionApp) {
                                   _isFirstLoad = false;
-                                  _sharedPreferences.setBool(
-                                      'notification', true);
+                                  userBox.put('notification', true);
                                 } else {
                                   _isFirstLoad = false;
-                                  _sharedPreferences.setBool(
-                                      'notification', false);
+                                  userBox.put('notification', false);
                                 }
                               });
                             },

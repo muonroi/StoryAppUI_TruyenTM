@@ -4,10 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:muonroi/core/Authorization/enums/key.dart';
 import 'package:muonroi/core/services/api_route.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.token.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 
 Future<Dio> endPoint() async {
-  var sharedPreferences = await SharedPreferences.getInstance();
   String token = dotenv.env['ENV_TOKEN']!;
   String? refreshTokenStr;
   Dio dio = Dio();
@@ -22,10 +21,9 @@ Future<Dio> endPoint() async {
       },
       onError: (e, handler) async {
         if (e.response?.statusCode == 401) {
-          token = sharedPreferences.getString(KeyToken.accessToken.name) ??
+          token = userBox.get(KeyToken.accessToken.name) ??
               dotenv.env['ENV_TOKEN']!;
-          refreshTokenStr =
-              sharedPreferences.getString(KeyToken.refreshToken.name);
+          refreshTokenStr = userBox.get(KeyToken.refreshToken.name);
           try {
             await dio
                 .post(ApiNetwork.renewToken,
@@ -33,10 +31,8 @@ Future<Dio> endPoint() async {
                 .then((value) async {
               if (value.statusCode == 200) {
                 var newToken = tokenModelFromJson(value.data.toString());
-                sharedPreferences.setString(
-                    KeyToken.accessToken.name, newToken.result);
-                sharedPreferences.setString(
-                    KeyToken.refreshToken.name, refreshTokenStr!);
+                userBox.put(KeyToken.accessToken.name, newToken.result);
+                userBox.put(KeyToken.refreshToken.name, refreshTokenStr!);
                 token = newToken.result;
                 e.requestOptions.headers["Authorization"] =
                     "Bearer ${newToken.result}";

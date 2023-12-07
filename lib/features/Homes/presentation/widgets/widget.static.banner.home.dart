@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/homes/bloc/banner/banner_bloc.dart';
+import 'package:muonroi/features/homes/settings/enum/enum.setting.type.dart';
+import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 
 class BannerHomePage extends StatefulWidget {
-  final List<String> bannerListImage;
   final int numberOfBanner;
   final PageController bannerController;
   const BannerHomePage(
       {super.key,
-      required this.bannerListImage,
       required this.numberOfBanner,
       required this.bannerController});
 
@@ -19,6 +21,8 @@ class BannerHomePage extends StatefulWidget {
 class _BannerHomePageState extends State<BannerHomePage> {
   @override
   void initState() {
+    _bannerBloc = BannerBloc(EnumSettingType.banner);
+    _bannerBloc.add(const GetBannerList());
     super.initState();
     _startAutoScroll();
   }
@@ -47,21 +51,52 @@ class _BannerHomePageState extends State<BannerHomePage> {
     });
   }
 
+  late BannerBloc _bannerBloc;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: SizedBox(
-          height: MainSetting.getPercentageOfDevice(context, expectHeight: 200)
-              .height,
-          child: PageView.builder(
-            controller: widget.bannerController,
-            itemCount: 3,
-            itemBuilder: (BuildContext context, int index) {
-              return netWorkImage(context, widget.bannerListImage[index], true,
-                  isBanner: true);
-            },
-          )),
+    return BlocProvider(
+      create: (context) => _bannerBloc,
+      child: BlocListener<BannerBloc, BannerState>(
+        listener: (context, state) {},
+        child: BlocBuilder<BannerBloc, BannerState>(
+          builder: (context, state) {
+            if (state is BannerLoadingState) {
+              return buildLoadingListView(
+                  context,
+                  null,
+                  MainSetting.getPercentageOfDevice(context, expectHeight: 200)
+                      .height,
+                  MainSetting.getPercentageOfDevice(context, expectWidth: 100)
+                      .width!);
+            }
+            if (state is BannerLoadedState) {
+              var bannerList = state.banners.result.bannerUrl;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: SizedBox(
+                    height: MainSetting.getPercentageOfDevice(context,
+                            expectHeight: 200)
+                        .height,
+                    child: PageView.builder(
+                      controller: widget.bannerController,
+                      itemCount: bannerList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return netWorkImage(context, bannerList[index], true,
+                            isBanner: true);
+                      },
+                    )),
+              );
+            }
+            return buildLoadingListView(
+                context,
+                null,
+                MainSetting.getPercentageOfDevice(context, expectHeight: 200)
+                    .height,
+                MainSetting.getPercentageOfDevice(context, expectWidth: 100)
+                    .width!);
+          },
+        ),
+      ),
     );
   }
 }

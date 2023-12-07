@@ -1,13 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
+import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/chapters/bloc/group_bloc/group_chapters_of_story_bloc.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChapterListPage extends StatefulWidget {
   final int storyId;
@@ -39,6 +42,9 @@ class _ChapterListPageState extends State<ChapterListPage>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
+    _isFirstLoad = true;
+    _totalPageIndex = 0;
+    _reloadChapterId = StreamController<bool>();
     _isNetwork = false;
     _selectedPageIndexUi = 0;
     _selectedItemOffset = 0.0;
@@ -64,15 +70,21 @@ class _ChapterListPageState extends State<ChapterListPage>
         GroupChapterOfStoryBloc(widget.storyId, 1, 15, false, 0);
     _groupChapterOfStoryBloc.add(GroupChapterOfStoryList());
     super.initState();
-    _initSharedPreferences().then((value) => _latestChapterOfStoryBloc.add(
+    _initData().then((value) => _latestChapterOfStoryBloc.add(
         GetFromToChapterOfStoryList(
             pageIndex: _selectedPageIndexUi,
             fromChapterId: _fromId,
             toChapterId: _toId)));
+    _reloadChapterId.stream.listen((event) {
+      if (event) {
+        _initData();
+      }
+    });
   }
 
   @override
   void dispose() {
+    _reloadChapterId.close();
     _isLoadItemIndex = false;
     _isLoadPageIndex = false;
     _animationSortController.dispose();
@@ -83,31 +95,27 @@ class _ChapterListPageState extends State<ChapterListPage>
     super.dispose();
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-    _selectedPageIndexUi = _sharedPreferences.getInt(
+  Future<void> _initData() async {
+    _selectedPageIndexUi = chapterBox.get(
             "selected-chapter-${widget.storyId}-${widget.isAudio}-page-index-ui") ??
         0;
-    _selectedItemIndex = _sharedPreferences.getInt(
-            "selected-chapter-${widget.storyId}-${widget.isAudio}-item-index") ??
-        0;
-    _selectedPageIndex = _sharedPreferences.getInt(
-            "selected-chapter-${widget.storyId}-${widget.isAudio}-page-index") ??
-        1;
-    _fromId = _sharedPreferences.getInt(
+    _selectedItemIndex = chapterBox.get(
+            "selected-chapter-${chapterBox.get("current-page-index") ?? -1}-${widget.storyId}-${widget.isAudio}-item-index") ??
+        -1;
+    _fromId = chapterBox.get(
             "selected-chapter-${widget.storyId}-${widget.isAudio}-from-chapter-id") ??
         -1;
-    _toId = _sharedPreferences.getInt(
+    _toId = chapterBox.get(
             "selected-chapter-${widget.storyId}-${widget.isAudio}-to-chapter-id") ??
         0;
 
-    _selectedItemOffset = _sharedPreferences.getDouble(
+    _selectedItemOffset = chapterBox.get(
             "selected-chapter-${widget.storyId}-${widget.isAudio}-item-index-offset") ??
         0.0;
-    _selectedPageIndexOffset = _sharedPreferences.getDouble(
+    _selectedPageIndexOffset = chapterBox.get(
             "selected-chapter-${widget.storyId}-${widget.isAudio}-page-index-offset") ??
         0.0;
-    _isNetwork = _sharedPreferences.getBool('availableInternet')!;
+    _isNetwork = await InternetConnection().hasInternetAccess;
     _isLock = _isNetwork == false ? false : true;
   }
 
@@ -145,7 +153,6 @@ class _ChapterListPageState extends State<ChapterListPage>
   late bool _isNetwork;
   late int _fromId;
   late int _toId;
-  late SharedPreferences _sharedPreferences;
   late AnimationController _animationSortController;
   late ScrollController _pageIndexController;
   late ScrollController _itemController;
@@ -161,6 +168,9 @@ class _ChapterListPageState extends State<ChapterListPage>
   late bool _isLoadItemIndex;
   late double _selectedPageIndexOffset;
   late double _selectedItemOffset;
+  late StreamController<bool> _reloadChapterId;
+  late int _totalPageIndex;
+  late bool _isFirstLoad;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,7 +250,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                             }
                             _isShort = !_isShort;
 
-                            _sharedPreferences.setBool(
+                            chapterBox.put(
                                 "iShort-${widget.storyId}", _isShort);
                             _selectedItemIndex = -1;
                           },
@@ -297,25 +307,30 @@ class _ChapterListPageState extends State<ChapterListPage>
                                           .withOpacity(0.5),
                                       onTap: !_isLock
                                           ? () async {
-                                              _sharedPreferences.setInt(
+                                              chapterBox.put(
+                                                  "current-page-index", index);
+                                              chapterBox.put(
                                                   "selected-chapter-${widget.storyId}-${widget.isAudio}-from-chapter-id",
                                                   chapterPagingInfo.fromId);
-                                              _sharedPreferences.setInt(
+                                              chapterBox.put(
                                                   "selected-chapter-${widget.storyId}-${widget.isAudio}-to-chapter-id",
                                                   chapterPagingInfo.toId);
-                                              _sharedPreferences.setDouble(
+                                              chapterBox.put(
                                                   "selected-chapter-${widget.storyId}-${widget.isAudio}-page-index-offset",
                                                   _pageIndexController.offset);
-                                              _sharedPreferences.setInt(
+                                              chapterBox.put(
                                                   "selected-chapter-${widget.storyId}-${widget.isAudio}-page-index-ui",
                                                   index);
-                                              _sharedPreferences.setInt(
+                                              chapterBox.put(
                                                   "selected-chapter-${widget.storyId}-${widget.isAudio}-page-index",
                                                   index + 1);
 
                                               WidgetsBinding.instance
                                                   .addPostFrameCallback((_) {
                                                 setState(() {
+                                                  _isFirstLoad = true;
+                                                  _totalPageIndex = state
+                                                      .chapter.result.length;
                                                   _isLock = true;
                                                   _selectedPageIndexUi = index;
                                                   _selectedItemIndex = -1;
@@ -428,8 +443,6 @@ class _ChapterListPageState extends State<ChapterListPage>
                         controller: _itemController,
                         itemCount: state.chapter.result.length,
                         itemBuilder: ((context, index) {
-                          //    _loadItemIndex();
-
                           if (!_isShort) {
                             state.chapter.result.sort((a, b) =>
                                 a.numberOfChapter.compareTo(b.numberOfChapter));
@@ -439,6 +452,19 @@ class _ChapterListPageState extends State<ChapterListPage>
                                 b.numberOfChapter.compareTo(a.numberOfChapter));
                           }
                           var chapterInfo = state.chapter.result[index];
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            setState(() {
+                              _selectedItemIndex = chapterBox.get(
+                                      "selected-chapter-${chapterBox.get("current-page-index") ?? -1}-${widget.storyId}-${widget.isAudio}-item-index") ??
+                                  -1;
+                              if (_itemController.hasClients &&
+                                  _itemController.offset > 0 &&
+                                  _isFirstLoad) {
+                                _itemController.jumpTo(0.0);
+                                _isFirstLoad = false;
+                              }
+                            });
+                          });
 
                           return Container(
                             color: themeMode(context, ColorCode.modeColor.name),
@@ -453,39 +479,47 @@ class _ChapterListPageState extends State<ChapterListPage>
                                       _selectedItemIndex = _isShort
                                           ? originalIndices.length - 1 - index
                                           : index;
-                                      _sharedPreferences.setDouble(
+
+                                      var currentPageIndex = chapterBox
+                                              .get("current-page-index") ??
+                                          -1;
+                                      removeIndex(_totalPageIndex,
+                                          widget.storyId, widget.isAudio);
+
+                                      chapterBox.put(
                                           "selected-chapter-${widget.storyId}-${widget.isAudio}-item-index-offset",
                                           _itemController.offset);
 
-                                      _sharedPreferences.setInt(
-                                          "selected-chapter-${widget.storyId}-${widget.isAudio}-item-index",
+                                      chapterBox.put(
+                                          "selected-chapter-$currentPageIndex-${widget.storyId}-${widget.isAudio}-item-index",
                                           _selectedItemIndex);
 
-                                      _sharedPreferences.setInt(
+                                      chapterBox.put(
                                           "story-${widget.storyId}-current-page-index",
-                                          chapterInfo.groupIndex == 0
-                                              ? 1
-                                              : chapterInfo.groupIndex);
+                                          chapterBox.get("current-page-index",
+                                                  defaultValue: 1) +
+                                              1);
 
-                                      _sharedPreferences.setInt(
+                                      chapterBox.put(
                                           "story-${widget.storyId}-current-chapter-index",
                                           _isShort
                                               ? originalIndices.length -
                                                   1 -
                                                   index
                                               : index);
-                                      _sharedPreferences.setInt(
+                                      chapterBox.put(
                                           "story-${widget.storyId}-current-chapter-id",
                                           chapterInfo.id);
-                                      _sharedPreferences.setInt(
+                                      chapterBox.put(
                                           "story-${widget.storyId}-current-chapter",
                                           chapterInfo.numberOfChapter);
                                       if (context.mounted) {
                                         !widget.isAudio
-                                            ? Navigator.push(
+                                            ? Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => Chapter(
+                                                  builder: (context) =>
+                                                      NewChapter(
                                                     author: widget.author,
                                                     imageUrl:
                                                         widget.storyImageUrl,
@@ -493,8 +527,10 @@ class _ChapterListPageState extends State<ChapterListPage>
                                                         .numberOfChapter,
                                                     totalChapter:
                                                         widget.totalChapter,
-                                                    pageIndex:
-                                                        chapterInfo.groupIndex,
+                                                    pageIndex: chapterBox.get(
+                                                            "current-page-index",
+                                                            defaultValue: 1) +
+                                                        1,
                                                     isLoadHistory: false,
                                                     storyId:
                                                         chapterInfo.storyId,
@@ -506,8 +542,11 @@ class _ChapterListPageState extends State<ChapterListPage>
                                                     firstChapterId:
                                                         widget.firstChapterId,
                                                     loadSingleChapter: true,
+                                                    reloadChapterId:
+                                                        _reloadChapterId,
                                                   ),
-                                                ))
+                                                ),
+                                              )
                                             : widget.chapterCallback!(
                                                 _isShort
                                                     ? originalIndices.length -

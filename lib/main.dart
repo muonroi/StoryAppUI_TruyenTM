@@ -1,17 +1,21 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_logs/flutter_logs.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:muonroi/core/advertising/ads.admob.service.dart';
 import 'package:muonroi/core/notification/widget.notification.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.ladding.page.dart';
 import 'package:muonroi/features/chapters/provider/provider.chapter.template.settings.dart';
+import 'package:muonroi/features/homes/presentation/pages/page.book.case.dart';
 import 'package:muonroi/features/notification/provider/provider.notification.dart';
 import 'package:muonroi/features/system/provider/provider.theme.mode.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
+import 'package:muonroi/shared/settings/setting.box.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/shared/static/certificate/widget.static.cert.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +34,11 @@ void main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Hive.initFlutter();
+  chapterBox = await Hive.openBox(CustomBox.chapter);
+  templateChapterBox = await Hive.openBox(CustomBox.templateChapter);
+  userBox = await Hive.openBox(CustomBox.user);
+  systemBox = await Hive.openBox(CustomBox.systemBox);
   if (kDebugMode) {
     HttpOverrides.global = MyHttpOverrides();
   }
@@ -71,19 +80,27 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     NotificationPush.initialize(flutterLocalNotificationsPlugin);
+    _connectionStatus = InternetStatus.connected;
     super.initState();
+    _subscription = InternetConnection().onStatusChange.listen((status) {
+      setState(() {
+        _connectionStatus = status;
+      });
+    });
   }
 
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+
+  late StreamSubscription<InternetStatus> _subscription;
+  late InternetStatus _connectionStatus;
   @override
   Widget build(BuildContext context) {
     final initFuture = MobileAds.instance.initialize();
     final adState = AdMobService(initFuture);
-    final InternetConnectionChecker customInstance =
-        InternetConnectionChecker.createInstance(
-      checkTimeout: const Duration(seconds: 1),
-      checkInterval: const Duration(seconds: 1),
-    );
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TemplateSetting()),
@@ -101,9 +118,9 @@ class _MainAppState extends State<MainApp> {
                     ? Brightness.dark
                     : Brightness.light),
             debugShowCheckedModeBanner: false,
-            home: LaddingPage(
-              internetConnectionChecker: customInstance,
-            ));
+            home: _connectionStatus == InternetStatus.disconnected
+                ? const BookCase()
+                : const LaddingPage());
       }),
     );
   }

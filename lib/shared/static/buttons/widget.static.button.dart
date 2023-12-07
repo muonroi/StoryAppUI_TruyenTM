@@ -6,7 +6,6 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfirmDialog extends StatelessWidget {
   final String title;
@@ -221,10 +220,9 @@ class _ToggleButtonState extends State<ToggleButton> {
     xAlign = leftAlign;
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
+  void _initData() {
     setState(() {
-      var templateSettingData = getCurrentTemplate(_sharedPreferences, context);
+      var templateSettingData = getCurrentTemplate(context);
       if (templateSettingData.isHorizontal != null &&
           !templateSettingData.isHorizontal!) {
         xAlign = leftAlign;
@@ -246,7 +244,7 @@ class _ToggleButtonState extends State<ToggleButton> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _initSharedPreferences();
+    _initData();
     leftColor =
         widget.selectedColor ?? themeMode(context, ColorCode.modeColor.name);
     rightColor =
@@ -256,7 +254,6 @@ class _ToggleButtonState extends State<ToggleButton> {
   late double xAlign;
   late Color leftColor;
   late Color rightColor;
-  late SharedPreferences _sharedPreferences;
 
   @override
   Widget build(BuildContext context) {
@@ -311,12 +308,10 @@ class _ToggleButtonState extends State<ToggleButton> {
                     xAlign = leftAlign;
                     leftColor = widget.selectedColor!;
                     rightColor = widget.normalColor!;
-                    var currentTemplate =
-                        getCurrentTemplate(_sharedPreferences, context);
+                    var currentTemplate = getCurrentTemplate(context);
                     currentTemplate.isHorizontal = false;
                     currentTemplate.fontSize = 16;
-                    setCurrentTemplate(
-                        _sharedPreferences, currentTemplate, context);
+                    setCurrentTemplate(currentTemplate, context);
                     value.valueSetting = currentTemplate;
                   });
                 },
@@ -342,12 +337,10 @@ class _ToggleButtonState extends State<ToggleButton> {
                     xAlign = rightAlign;
                     rightColor = widget.selectedColor!;
                     leftColor = widget.normalColor!;
-                    var currentTemplate =
-                        getCurrentTemplate(_sharedPreferences, context);
+                    var currentTemplate = getCurrentTemplate(context);
                     currentTemplate.isHorizontal = true;
                     currentTemplate.fontSize = 25;
-                    setCurrentTemplate(
-                        _sharedPreferences, currentTemplate, context);
+                    setCurrentTemplate(currentTemplate, context);
                     value.valueSetting = currentTemplate;
                   });
                 },

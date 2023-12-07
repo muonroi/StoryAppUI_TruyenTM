@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hive/hive.dart';
 import 'package:icons_flutter/icons_flutter.dart';
 import 'package:muonroi/core/authorization/enums/key.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
@@ -20,9 +19,12 @@ import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.mode.theme.dart';
 import 'package:muonroi/core/localization/settings.localization.dart';
 import 'package:muonroi/shared/settings/setting.colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 //late AudioHandler audioHandler;
+late final Box chapterBox;
+late final Box templateChapterBox;
+late final Box userBox;
+late final Box systemBox;
 
 class ManagerSystemMode {
   static late CustomThemeModeProvider _tempCurrentMode;
@@ -46,8 +48,7 @@ String L(BuildContext context, String key, {String locate = Languages.vi}) {
 }
 
 Future<void> reNewAccessToken() async {
-  var sharedPreferences = await SharedPreferences.getInstance();
-  var refreshTokenStr = sharedPreferences.getString(KeyToken.refreshToken.name);
+  var refreshTokenStr = userBox.get(KeyToken.refreshToken.name);
   try {
     Dio dio = Dio();
     dio.options.baseUrl = ApiNetwork.baseApi;
@@ -55,12 +56,11 @@ Future<void> reNewAccessToken() async {
     await dio
         .post(ApiNetwork.renewToken,
             data: jsonEncode({"refreshToken": refreshTokenStr}))
-        .then((value) async {
+        .then((value) {
       if (value.statusCode == 200) {
         var newToken = tokenModelFromJson(value.data.toString());
-        sharedPreferences.setString(KeyToken.accessToken.name, newToken.result);
-        sharedPreferences.setString(
-            KeyToken.refreshToken.name, refreshTokenStr!);
+        userBox.put(KeyToken.accessToken.name, newToken.result);
+        userBox.put(KeyToken.refreshToken.name, refreshTokenStr!);
       }
     });
   } catch (e) {
@@ -176,13 +176,6 @@ class MainSetting {
         width: (((expectWidth / baseWidth) * 100) / 100) * baseWidth,
         height: (((expectHeight / baseHeight) * 100) / 100) * baseHeight);
   }
-}
-
-Future<XFile?> compressImage(File file, String targetPath) async {
-  var result = await FlutterImageCompress.compressAndGetFile(
-      file.absolute.path, targetPath,
-      quality: 88, rotate: 180);
-  return result;
 }
 
 Widget getEmptyData(BuildContext context) {
