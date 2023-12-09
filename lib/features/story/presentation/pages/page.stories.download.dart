@@ -16,12 +16,14 @@ import 'package:sprintf/sprintf.dart';
 class StoriesDownloadPage extends StatefulWidget {
   final String storyName;
   final int storyId;
+  final int firstChapterId;
   final int totalChapter;
   const StoriesDownloadPage(
       {super.key,
       required this.storyName,
       required this.storyId,
-      required this.totalChapter});
+      required this.totalChapter,
+      required this.firstChapterId});
 
   @override
   State<StoriesDownloadPage> createState() => _StoriesDownloadPageState();
@@ -190,26 +192,15 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(32.0),
                                       onTap: () async {
+                                        final storyRepository =
+                                            StoryRepository();
                                         setState(() {
                                           _currentIndex.add(index);
                                         });
                                         var isDelete = chapterBox.get(
                                                 "story-${widget.storyId}-download-group-chapter-$index") ??
                                             false;
-                                        if (!isDelete) {
-                                          final storyRepository =
-                                              StoryRepository();
-                                          await storyRepository
-                                              .createStoryForUser(
-                                                  widget.storyId,
-                                                  StoryForUserType
-                                                      .download.index,
-                                                  0,
-                                                  1,
-                                                  1,
-                                                  0,
-                                                  0);
-                                        }
+
                                         if (context.mounted && isDelete) {
                                           chapterBox.delete(
                                               "story-${widget.storyId}-download-group-chapter-$index");
@@ -232,6 +223,7 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                               fln:
                                                   flutterLocalNotificationsPlugin);
                                           // #endregion
+
                                           // #region get and set new total chapter downloaded
                                           var total = chapterBox.get(
                                                   "story-${widget.storyId}-current-group-chapter-download-total") ??
@@ -250,6 +242,24 @@ class _StoriesDownloadPageState extends State<StoriesDownloadPage> {
                                             _currentTotal = currentTotal;
                                             _currentIndex.remove(index);
                                           });
+                                          // #region Add to user download list
+                                          _currentTotal = chapterBox.get(
+                                                  "story-${widget.storyId}-current-group-chapter-download-total") ??
+                                              0;
+                                          if (_currentTotal > 0) {
+                                            storyRepository.createStoryForUser(
+                                                widget.storyId,
+                                                StoryForUserType.download.index,
+                                                0,
+                                                1,
+                                                1,
+                                                0,
+                                                widget.firstChapterId);
+                                          } else {
+                                            storyRepository.deleteBookmarkStory(
+                                                widget.storyId);
+                                          }
+                                          // #endregion
                                         } else {
                                           var storyRepository =
                                               StoryRepository();

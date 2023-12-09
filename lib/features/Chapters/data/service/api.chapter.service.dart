@@ -15,6 +15,7 @@ class ChapterService {
   Future<ChapterPreviewModel> getChaptersDataList(int storyId, int pageIndex,
       {bool isLatest = false}) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(sprintf(
           ApiNetwork.getChapterPaging,
@@ -99,6 +100,7 @@ class ChapterService {
   Future<ChapterInfo> fetchLatestChapterAnyStory(
       {int pageIndex = 1, int pageSize = 5}) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(
           sprintf(ApiNetwork.getLatestChapterNumber, [pageIndex, pageSize]));
@@ -115,6 +117,7 @@ class ChapterService {
   Future<ListPagingRangeChapters> getFromToChaptersDataDetail(
       int storyId, int pageIndex, int from, int to) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var fromToChapter = chapterBox
           .get("getFromToChaptersDataDetail-$storyId-$pageIndex-$from-$to");
       if (fromToChapter == null) {
@@ -143,6 +146,7 @@ class ChapterService {
       bool isDownload = false,
       bool isAudio = false}) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var internetAvailable = await InternetConnection().hasInternetAccess;
 
       if (!internetAvailable) {

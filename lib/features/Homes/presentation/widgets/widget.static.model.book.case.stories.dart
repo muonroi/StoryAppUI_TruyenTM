@@ -79,7 +79,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
       _isGetChapterId = false;
       getChapterId();
     }
-    buttonState = true;
+    buttonState = (chapterNumber == 0 || chapterNumber == -1) ? false : true;
     return GestureDetector(
       onTapDown: (_) {
         _toggleItemState();
@@ -186,7 +186,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        NewChapter(
+                                                        ChapterContentOfStory(
                                                           author: widget
                                                               .storyInfo
                                                               .authorName,
@@ -241,7 +241,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                     ColorCode.modeColor.name),
                                             width: 2)),
                                     child: Text(
-                                      '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}',
+                                      '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterNumber == 0 || chapterNumber == -1 ? 1 : chapterNumber}',
                                       style: TextStyle(
                                           fontFamily: CustomFonts.inter,
                                           fontSize: 16,

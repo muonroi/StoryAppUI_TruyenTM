@@ -120,4 +120,20 @@ class UserService {
       throw Exception("Failed to load user subscription - $e");
     }
   }
+
+  Future<BaseResponseServer> duplicateUsername(username) async {
+    try {
+      Dio dio = await endPoint();
+      final response =
+          await dio.get(sprintf(ApiNetwork.duplicateUsername, [username]));
+      if (response.statusCode == 200) {
+        return baseResponseServerFromJson(response.data.toString());
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception("Failed to load user subscription info");
+      }
+    }
+    throw Exception("Failed to load user subscription");
+  }
 }

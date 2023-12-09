@@ -519,7 +519,7 @@ class _ChapterListPageState extends State<ChapterListPage>
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      NewChapter(
+                                                      ChapterContentOfStory(
                                                     author: widget.author,
                                                     imageUrl:
                                                         widget.storyImageUrl,

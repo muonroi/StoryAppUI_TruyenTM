@@ -343,6 +343,36 @@ class _ToggleButtonState extends State<ToggleButton> {
                     setCurrentTemplate(currentTemplate, context);
                     value.valueSetting = currentTemplate;
                   });
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext ctx) {
+                        return AlertDialog(
+                          title: Text(
+                            L(context,
+                                LanguageCodes.notificationTextInfo.toString()),
+                            style: CustomFonts.h5(context),
+                          ),
+                          content: Text(
+                            L(
+                                context,
+                                LanguageCodes.notificationPrepareFeatureTextInfo
+                                    .toString()),
+                            style: CustomFonts.h5(context),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () async {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                L(context,
+                                    LanguageCodes.isSureTextInfo.toString()),
+                                style: CustomFonts.h6(context),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
                 },
                 child: Align(
                   alignment: const Alignment(1, 0),

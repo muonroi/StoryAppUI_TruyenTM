@@ -12,6 +12,7 @@ class StoryService {
   Future<StoriesModel> getStoriesDataList(
       [int pageIndex = 1, int pageSize = 15]) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(
           sprintf(ApiNetwork.getStoriesPaging, ["$pageIndex", "$pageSize"]));
@@ -28,6 +29,7 @@ class StoryService {
   Future<StoriesModel> getStoriesRecommendList(int storyId,
       [int pageIndex = 1, int pageSize = 15]) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(sprintf(
           ApiNetwork.getRecommendStoriesPaging,
@@ -101,6 +103,7 @@ class StoryService {
   Future<StoriesModel> searchStory(List<String> keySearch,
       List<SearchType> type, int pageIndex, int pageSize) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       String url = "";
       String paging = "PageIndex=$pageIndex&PageSize=$pageSize";
@@ -188,6 +191,7 @@ class StoryService {
       double locationChapter,
       int chapterLatestId) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       Map<String, dynamic> data = {
         'storyId': storyId,
         'storyType': type,
@@ -229,6 +233,7 @@ class StoryService {
   Future<StoriesModel> getStoriesForUser(
       int pageIndex, int pageSize, int type) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       bool interAvailable = await InternetConnection().hasInternetAccess;
       var data = chapterBox.get('getStoriesForUser-$type');
       if (interAvailable) {
@@ -259,6 +264,7 @@ class StoryService {
   Future<StoriesModel> getStoriesCommon(
       int pageIndex, int pageSize, int type) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(
           sprintf(ApiNetwork.getStoriesCommon, [type, pageIndex, pageSize]));
@@ -282,6 +288,7 @@ class StoryService {
   Future<StoriesModel> getStoriesByType(
       int pageIndex, int pageSize, int type) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint
           .get(sprintf(ApiNetwork.getStoriesType, [type, pageIndex, pageSize]));

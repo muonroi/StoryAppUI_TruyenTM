@@ -43,11 +43,13 @@ class _BannerHomePageState extends State<BannerHomePage> {
       } else {
         _currentPage = 0;
       }
-      widget.bannerController.animateToPage(
-        _currentPage,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.ease,
-      );
+      if (widget.bannerController.hasClients) {
+        widget.bannerController.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.ease,
+        );
+      }
     });
   }
 

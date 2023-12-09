@@ -20,7 +20,7 @@ import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:provider/provider.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.template.dart';
 
-class NewChapter extends StatefulWidget {
+class ChapterContentOfStory extends StatefulWidget {
   final StreamController<bool> reloadChapterId;
   final String author;
   final bool loadSingleChapter;
@@ -34,7 +34,7 @@ class NewChapter extends StatefulWidget {
   final int totalChapter;
   final int chapterNumber;
   final String imageUrl;
-  const NewChapter(
+  const ChapterContentOfStory(
       {super.key,
       required this.author,
       required this.loadSingleChapter,
@@ -51,10 +51,10 @@ class NewChapter extends StatefulWidget {
       required this.reloadChapterId});
 
   @override
-  State<NewChapter> createState() => _NewChapterState();
+  State<ChapterContentOfStory> createState() => _ChapterContentOfStoryState();
 }
 
-class _NewChapterState extends State<NewChapter> {
+class _ChapterContentOfStoryState extends State<ChapterContentOfStory> {
 // #region state override
   @override
   void initState() {
@@ -85,6 +85,7 @@ class _NewChapterState extends State<NewChapter> {
     _putEventToChildController = StreamController<Map<bool, int>>();
     _putEventChapterTemplate = StreamController<ChapterTemplate>();
     _putEventSaveCurrentChapterToChapterList = StreamController<bool>();
+    _putEventIsScrollHorizontal = StreamController<bool>();
     super.initState();
     _initTemplate();
     widget.reloadChapterId.add(true);
@@ -255,6 +256,8 @@ class _NewChapterState extends State<NewChapter> {
       _isContainerVisible = false;
       _second = 3;
       _heightAdsContainer = 70;
+      _isDisplay = true;
+      _heightBottomContainer = 100;
       _putEventHideActionBottomButton.add(true);
     });
   }
@@ -298,6 +301,7 @@ class _NewChapterState extends State<NewChapter> {
   late StreamController<bool> _putEventSaveCurrentChapterToChapterList;
   late StreamController<ChapterTemplate> _putEventChapterTemplate;
   late StreamController<bool> _putEventHideActionBottomButton;
+  late StreamController<bool> _putEventIsScrollHorizontal;
   late TemplateSetting _settingConfig;
   late ChapterTemplate _chapterTemplate;
   late ScrollController _scrollChapterBodyController;
@@ -372,6 +376,11 @@ class _NewChapterState extends State<NewChapter> {
                       isHorizontal: templateValue.isHorizontal ??
                           _settingConfig.isHorizontal);
                   _putEventChapterTemplate.add(_chapterTemplate);
+                  if (templateValue.isHorizontal ?? false) {
+                    _putEventIsScrollHorizontal.add(true);
+                  } else {
+                    _putEventIsScrollHorizontal.add(false);
+                  }
                   // #endregion
                   return Scaffold(
                     appBar: !_isDisplay
@@ -459,6 +468,7 @@ class _NewChapterState extends State<NewChapter> {
                         disableNextButton: _disableNextButton,
                         disablePreviousButton: _disablePreviousButton,
                         displayAction: _displayAppbar,
+                        strScrollHorizontal: _putEventIsScrollHorizontal,
                         strHideActionBottomButton:
                             _putEventHideActionBottomButton,
                         strChapterTemplate: _putEventChapterTemplate,

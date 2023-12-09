@@ -10,6 +10,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:muonroi/core/advertising/ads.admob.service.dart';
 import 'package:muonroi/core/notification/widget.notification.dart';
 import 'package:muonroi/features/accounts/presentation/pages/pages.ladding.page.dart';
+import 'package:muonroi/features/chapters/bloc/split_chapter_bloc/page.control.chapter.split.dart';
 import 'package:muonroi/features/chapters/provider/provider.chapter.template.settings.dart';
 import 'package:muonroi/features/homes/presentation/pages/page.book.case.dart';
 import 'package:muonroi/features/notification/provider/provider.notification.dart';
@@ -39,6 +40,7 @@ void main() async {
   templateChapterBox = await Hive.openBox(CustomBox.templateChapter);
   userBox = await Hive.openBox(CustomBox.user);
   systemBox = await Hive.openBox(CustomBox.systemBox);
+  storyBox = await Hive.openBox(CustomBox.storyBox);
   if (kDebugMode) {
     HttpOverrides.global = MyHttpOverrides();
   }
@@ -106,7 +108,8 @@ class _MainAppState extends State<MainApp> {
         ChangeNotifierProvider(create: (_) => TemplateSetting()),
         ChangeNotifierProvider(create: (_) => CustomThemeModeProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
-        Provider<AdMobService>(create: (_) => adState)
+        Provider<AdMobService>(create: (_) => adState),
+        Provider(create: (_) => PageControlBloc())
       ],
       child: Consumer<CustomThemeModeProvider>(builder:
           (BuildContext context, CustomThemeModeProvider value, Widget? child) {

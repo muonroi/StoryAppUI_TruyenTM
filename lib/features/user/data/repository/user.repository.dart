@@ -22,6 +22,9 @@ class UserRepository {
 
   Future<BaseResponseServer> getUserSubscription() =>
       _provider.getUserSubscription();
+
+  Future<BaseResponseServer> getDuplicateUsername(username) =>
+      _provider.duplicateUsername(username);
 }
 
 class NetworkError extends Error {}

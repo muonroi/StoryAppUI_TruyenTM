@@ -87,6 +87,7 @@ class _MenuDetailAppbarState extends State<MenuDetailAppbar> {
                           storyId: widget.storyId,
                           storyName: widget.storyName,
                           totalChapter: widget.totalChapter,
+                          firstChapterId: widget.firstChapterId,
                         ))),
             threeIconColor: widget.settingConfig.font,
           ),

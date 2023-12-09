@@ -16,7 +16,6 @@ import 'package:muonroi/features/user/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:muonroi/shared/static/items/widget.divider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
@@ -192,7 +191,6 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     //     )
                     //   ],
                     // ),
-                    const CustomDivider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

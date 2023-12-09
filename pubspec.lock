@@ -1187,10 +1187,10 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: abc047fb50d3daff96c3e376be4fdf485096560a
+      resolved-ref: "913415b0cc9c1fda6262425bf68274fda17201dc"
       url: "https://github.com/geekz-reno/sse_channel.git"
     source: git
-    version: "0.0.3"
+    version: "0.0.4"
   stack_trace:
     dependency: transitive
     description:
@@ -1347,10 +1347,10 @@ packages:
     dependency: "direct main"
     description:
       name: uuid
-      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      sha256: df5a4d8f22ee4ccd77f8839ac7cb274ebc11ef9adcce8b92be14b797fe889921
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.7"
+    version: "4.2.1"
   vector_math:
     dependency: transitive
     description:

@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:muonroi/core/localization/settings.language.code.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/chapters/bloc/split_chapter_bloc/page.control.chapter.split.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.template.dart';
+import 'package:muonroi/features/chapters/presentation/widgets/widget.static.body.horizontal.dart';
+import 'package:muonroi/features/chapters/presentation/widgets/widget.static.body.vertical.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.current.battery.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.current.time.dart';
 import 'package:muonroi/features/chapters/presentation/widgets/widget.static.body.title.chapter.dart';
@@ -13,15 +15,16 @@ import 'package:muonroi/features/chapters/settings/settings.dart';
 import 'package:muonroi/features/story/data/models/model.recent.story.dart';
 import 'package:muonroi/features/story/data/repositories/story.repository.dart';
 import 'package:muonroi/features/story/settings/enums/enum.story.user.dart';
-import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
+import 'package:muonroi/features/story/settings/settings.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart' as pull;
 
 class ChapterBody extends StatefulWidget {
   final StreamController<Map<bool, int>> strActionChapterStreamController;
   final StreamController<ChapterTemplate> strChapterTemplate;
   final StreamController<bool> strUpdateDataChapterToList;
   final StreamController<bool> strHideActionBottomButton;
+  final StreamController<bool> strScrollHorizontal;
   final ScrollController scrollChapterBodyController;
   final GroupChapterItems chapterInfo;
   final ChapterTemplate chapterTemplate;
@@ -69,7 +72,8 @@ class ChapterBody extends StatefulWidget {
       required this.imageUrl,
       required this.totalChapter,
       required this.resetCountTimeAds,
-      required this.strHideActionBottomButton});
+      required this.strHideActionBottomButton,
+      required this.strScrollHorizontal});
 
   @override
   State<ChapterBody> createState() => _ChapterBodyState();
@@ -79,9 +83,13 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
 // #region override function
   @override
   void initState() {
+    _pageKey = GlobalKey();
+    _pageController = PageController();
     _templateSetting = widget.chapterTemplate;
     _storyRepository = StoryRepository();
-    _refreshController = RefreshController(initialRefresh: false);
+    _refreshHorizontalController =
+        pull.RefreshController(initialRefresh: false);
+    _refreshController = pull.RefreshController(initialRefresh: false);
     _groupChapterItems = null;
     _fromToChapterList = "";
     _isDisplay = false;
@@ -89,7 +97,19 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
     _pageIndex = widget.pageIndex;
     _chapterIndex = widget.chapterIndex;
     _savedScrollPosition = 0.0;
+    _pageController = PageController();
     super.initState();
+    _controlBloc = BlocProvider.of<PageControlBloc>(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controlBloc.getSizeFromBloc(_pageKey);
+      _controlBloc.setContentFromBloc(parseHtmlString(widget.chapterInfo.body));
+      _controlBloc.getSplittedTextFromBloc(TextStyle(
+        fontFamily: _templateSetting.fontFamily,
+        color: _templateSetting.font,
+        fontSize: _templateSetting.fontSize,
+      ));
+      setState(() {});
+    });
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
         overlays: SystemUiOverlay.values);
     if (widget.firstChapterId == widget.chapterInfo.id) {
@@ -112,10 +132,10 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      _saveScrollPosition();
+      _saveScrollPosition(_templateSetting.isHorizontal ?? false);
       _saveRecentStory();
     } else if (state == AppLifecycleState.resumed) {
-      _saveScrollPosition();
+      _saveScrollPosition(_templateSetting.isHorizontal ?? false);
       _saveRecentStory();
     }
     super.didChangeAppLifecycleState(state);
@@ -128,7 +148,7 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
     widget.strHideActionBottomButton.close();
     widget.strUpdateDataChapterToList.close();
     _refreshController.dispose();
-    _saveScrollPosition();
+    _saveScrollPosition(_templateSetting.isHorizontal ?? false);
     _saveRecentStory();
     super.dispose();
   }
@@ -145,7 +165,7 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
 
 // #region function
 
-  Future _onRefresh(chapterId) async {
+  Future _onRefresh(chapterId, isHorizontal) async {
     if (widget.firstChapterId == chapterId) {
       widget.disablePreviousButton(true);
     } else if (mounted) {
@@ -170,29 +190,40 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
         _chapterIndex = _pageSize;
       } else {
         _chapterIndex = _chapterIndex > 0 ? --_chapterIndex : 0;
-        _updateChapterCurrentIntoChapterList();
+        if (!isHorizontal
+            ? _scrollChapterBodyController.hasClients
+            : _pageController.hasClients) {
+          widget.currentChapterIndex(_chapterIndex);
+          widget.currentPageIndex(_pageIndex);
+          !isHorizontal
+              ? _scrollChapterBodyController.jumpTo(0)
+              : _pageController.jumpTo(0);
+        }
         if (_pageIndex == 1 && _chapterIndex == 0) {
           widget.disablePreviousButton(true);
         }
+        _updateChapterCurrentIntoChapterList();
       }
       _saveQuickChapterLocation();
     }
-    if (_scrollChapterBodyController.hasClients) {
-      _scrollChapterBodyController.jumpTo(0);
-    }
+
     //Update page index and chapter index (index at list chunk 100 chapter)
-    widget.currentChapterIndex(_chapterIndex);
-    widget.currentPageIndex(_pageIndex);
+
     widget.resetCountTimeAds(true);
-    _refreshController.refreshCompleted();
+    !isHorizontal
+        ? _refreshController.refreshCompleted()
+        : _refreshHorizontalController.refreshCompleted();
   }
 
-  Future _onLoading(chapterId, useButtonNext) async {
+  Future _onLoading(chapterId, useButtonNext, isHorizontal) async {
     if (widget.lastChapterId == chapterId) {
       widget.disableNextButton(true);
     } else if (mounted && useButtonNext ||
-        (_scrollChapterBodyController.offset >
-            _scrollChapterBodyController.position.maxScrollExtent + 70)) {
+        (!isHorizontal
+            ? (_scrollChapterBodyController.offset >
+                _scrollChapterBodyController.position.maxScrollExtent + 70)
+            : (_pageController.offset >
+                _pageController.position.maxScrollExtent + 70))) {
       widget.disablePreviousButton(false);
       _chapterIndex = _chapterIndex < _pageSize
           ? ++_chapterIndex
@@ -215,16 +246,20 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
 
         _updateChapterCurrentIntoChapterList();
       } else {
-        _scrollChapterBodyController.jumpTo(0);
+        widget.currentChapterIndex(_chapterIndex);
+        widget.currentPageIndex(_pageIndex);
+        !isHorizontal
+            ? _scrollChapterBodyController.jumpTo(0)
+            : _pageController.jumpTo(0);
         _updateChapterCurrentIntoChapterList();
       }
       _saveQuickChapterLocation();
     }
     //Update page index and chapter index (index at list chunk 100 chapter)
-    widget.currentChapterIndex(_chapterIndex);
-    widget.currentPageIndex(_pageIndex);
     widget.resetCountTimeAds(true);
-    _refreshController.loadComplete();
+    !isHorizontal
+        ? _refreshController.loadComplete()
+        : _refreshHorizontalController.loadComplete();
   }
 
   Future _initData() async {
@@ -278,10 +313,15 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
         widget.chapterInfo.id);
   }
 
-  void _saveScrollPosition() {
-    if (_scrollChapterBodyController.hasClients) {
-      chapterBox.put("scrollPosition-${widget.chapterInfo.storyId}",
-          _scrollChapterBodyController.offset);
+  void _saveScrollPosition(isHorizontal) {
+    if (!isHorizontal
+        ? _scrollChapterBodyController.hasClients
+        : _pageController.hasClients) {
+      chapterBox.put(
+          "scrollPosition-${widget.chapterInfo.storyId}-$isHorizontal",
+          !isHorizontal
+              ? _scrollChapterBodyController.offset
+              : _pageController.offset);
       chapterBox.put(
           "story-${widget.chapterInfo.storyId}", widget.chapterInfo.storyId);
       chapterBox.put("story-${widget.chapterInfo.storyId}-current-chapter-id",
@@ -297,10 +337,11 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
     _saveQuickChapterLocation();
   }
 
-  void _loadSavedScrollPosition() {
+  void _loadSavedScrollPosition(isHorizontal) {
     if (widget.isLoadHistoryFunction) {
-      _savedScrollPosition =
-          chapterBox.get("scrollPosition-${widget.chapterInfo.storyId}") ?? 0.0;
+      _savedScrollPosition = chapterBox.get(
+              "scrollPosition-${widget.chapterInfo.storyId}-$isHorizontal") ??
+          0.0;
       _pageIndex = chapterBox.get(
                   "story-${widget.chapterInfo.storyId}-current-page-index") ==
               null
@@ -308,13 +349,17 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
           : chapterBox
               .get("story-${widget.chapterInfo.storyId}-current-page-index")!;
 
-      if (_scrollChapterBodyController.hasClients) {
+      if (!isHorizontal
+          ? _scrollChapterBodyController.hasClients
+          : _pageController.hasClients) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
             _chapterIndex = chapterBox.get(
                     "story-${widget.chapterInfo.storyId}-current-chapter-index") ??
                 0;
-            _scrollChapterBodyController.jumpTo(_savedScrollPosition);
+            !isHorizontal
+                ? _scrollChapterBodyController.jumpTo(_savedScrollPosition)
+                : _pageController.jumpTo(_savedScrollPosition);
           });
         });
       }
@@ -334,9 +379,11 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
   void _listenEvent() {
     widget.strActionChapterStreamController.stream.listen((data) {
       if (data.keys.first) {
-        _onLoading(data.values.first, true);
+        _onLoading(
+            data.values.first, true, _templateSetting.isHorizontal ?? false);
       } else {
-        _onRefresh(widget.chapterInfo.id);
+        _onRefresh(
+            widget.chapterInfo.id, _templateSetting.isHorizontal ?? false);
       }
     });
     widget.strUpdateDataChapterToList.stream.listen((event) {
@@ -345,6 +392,14 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
     widget.strChapterTemplate.stream.listen((event) {
       setState(() {
         _templateSetting = event;
+        _controlBloc.getSizeFromBloc(_pageKey);
+        _controlBloc
+            .setContentFromBloc(parseHtmlString(widget.chapterInfo.body));
+        _controlBloc.getSplittedTextFromBloc(TextStyle(
+          fontFamily: _templateSetting.fontFamily,
+          color: _templateSetting.font,
+          fontSize: _templateSetting.fontSize,
+        ));
       });
     });
     widget.strHideActionBottomButton.stream.listen((event) {
@@ -355,6 +410,26 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
         });
       }
     });
+    widget.strScrollHorizontal.stream.listen((event) {
+      if (event) {
+        _pageController.addListener(_onListenHorizontalScreen);
+      } else {
+        _pageController.removeListener(_onListenHorizontalScreen);
+      }
+    });
+  }
+
+  void _onListenHorizontalScreen() {
+    if (_pageController.offset <
+        _pageController.position.minScrollExtent - 100) {
+      _isDisplay = !_isDisplay;
+      _onRefresh(widget.chapterInfo.id, true);
+    }
+    if (_pageController.offset >
+        _pageController.position.maxScrollExtent + 100) {
+      _isDisplay = !_isDisplay;
+      _onLoading(widget.chapterInfo.id, false, true);
+    }
   }
 
   void _updateChapterCurrentIntoChapterList([bool isAudio = false]) {
@@ -413,12 +488,19 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
     chapterBox.put("is_saved_recent", true);
   }
 
+  void _disPlayAction(value) {
+    widget.displayAction(value);
+    setState(() {
+      _isDisplay = value;
+    });
+  }
 // #endregion
 
 // #region variable
   late GroupChapters? _groupChapterItems;
   late String _fromToChapterList;
-  late RefreshController _refreshController;
+  late pull.RefreshController _refreshController;
+  late pull.RefreshController _refreshHorizontalController;
   late StoryRepository _storyRepository;
   late bool _isDisplay;
   late int _pageIndex;
@@ -427,89 +509,53 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
   late double _savedScrollPosition;
   late ChapterTemplate _templateSetting;
   late ScrollController _scrollChapterBodyController;
+  late GlobalKey _pageKey;
+  late PageControlBloc _controlBloc;
+  late PageController _pageController;
 
   // #endregion
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: true,
-        header: ClassicHeader(
-          releaseIcon: Icon(
-            Icons.arrow_upward,
-            color: themeMode(context, ColorCode.textColor.name),
-          ),
-          idleIcon: Icon(
-            Icons.arrow_upward,
-            color: themeMode(context, ColorCode.textColor.name),
-          ),
-          idleText:
-              L(context, LanguageCodes.previousChapterTextInfo.toString()),
-          refreshingText: L(context, LanguageCodes.loadingTextInfo.toString()),
-          releaseText: L(context, LanguageCodes.loadingTextInfo.toString()),
-        ),
-        controller: _refreshController,
-        onRefresh: () => _onRefresh(widget.chapterInfo.storyId),
-        onLoading: () => _onLoading(widget.chapterInfo.storyId, false),
-        footer: ClassicFooter(
-          canLoadingIcon: Icon(
-            Icons.arrow_downward,
-            color: themeMode(context, ColorCode.textColor.name),
-          ),
-          idleText: L(context, LanguageCodes.loadingMoreTextInfo.toString()),
-          canLoadingText:
-              L(context, LanguageCodes.nextChapterTextInfo.toString()),
-        ),
-        child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            controller: _scrollChapterBodyController,
-            itemCount: 1,
-            itemBuilder: (context, index) {
-              if (_scrollChapterBodyController.hasClients &&
-                  widget.isLoadedHistory) {
-                _loadSavedScrollPosition();
-                widget.isLoadedHistoryForOneChapter(false);
-              }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTapUp: (_) => _saveScrollPosition(),
-                    onTapDown: (_) => _saveScrollPosition(),
-                    onTapCancel: () => _saveScrollPosition(),
-                    onTap: () {
-                      setState(() {
-                        _isDisplay = !_isDisplay;
-                        widget.displayAction(_isDisplay);
-                        _changeModeSystem();
-                      });
-                    },
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Html(
-                        data: widget.chapterInfo.body
-                            .replaceAll(RegExp(r'(?:Chương|chương)[^\n]*'), "")
-                            .replaceAll("\n", "")
-                            .trim(),
-                        style: {
-                          '#': Style(
-                            textAlign: _templateSetting.isLeftAlign!
-                                ? TextAlign.justify
-                                : TextAlign.left,
-                            fontFamily: _templateSetting.fontFamily,
-                            fontSize: FontSize(_templateSetting.fontSize!),
-                            color: _templateSetting.font,
-                            backgroundColor: _templateSetting.background,
-                          ),
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }),
-      ),
+      (_templateSetting.isHorizontal ?? false)
+          ? ScreenHorizontalChapter(
+              storyId: widget.chapterInfo.storyId,
+              refreshController: _refreshHorizontalController,
+              isLoadedHistory: widget.isLoadedHistory,
+              isLoadedHistoryForOneChapter: widget.isLoadedHistoryForOneChapter,
+              templateSetting: _templateSetting,
+              pageKey: _pageKey,
+              pageController: _pageController,
+              controlBloc: _controlBloc,
+              isDisplay: _isDisplay,
+              textStyle: TextStyle(
+                fontFamily: _templateSetting.fontFamily,
+                color: _templateSetting.font,
+                fontSize: _templateSetting.fontSize,
+              ),
+              displayAction: _disPlayAction,
+              loadSavedScrollPosition: _loadSavedScrollPosition,
+              saveScrollPosition: _saveScrollPosition,
+              changeModeSystem: _changeModeSystem,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+            )
+          : ScreenVerticalChapter(
+              storyId: widget.chapterInfo.storyId,
+              refreshController: _refreshController,
+              scrollChapterBodyController: _scrollChapterBodyController,
+              isLoadedHistory: widget.isLoadedHistory,
+              content: widget.chapterInfo.body,
+              isLoadedHistoryForOneChapter: widget.isLoadedHistoryForOneChapter,
+              displayAction: _disPlayAction,
+              templateSetting: _templateSetting,
+              isDisplay: _isDisplay,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+              saveScrollPosition: _saveScrollPosition,
+              loadSavedScrollPosition: _loadSavedScrollPosition,
+              changeModeSystem: _changeModeSystem),
       !_isDisplay
           ? Positioned(
               top: 0,

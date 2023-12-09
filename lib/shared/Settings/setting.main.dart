@@ -25,6 +25,7 @@ late final Box chapterBox;
 late final Box templateChapterBox;
 late final Box userBox;
 late final Box systemBox;
+late final Box storyBox;
 
 class ManagerSystemMode {
   static late CustomThemeModeProvider _tempCurrentMode;

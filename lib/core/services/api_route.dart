@@ -32,6 +32,8 @@ class ApiNetwork {
   static const String validateOtp = "users/valid-otp";
   static const String changePassword = "users/change-password";
   static const String userSubscription = "users/subscription";
+  static const String duplicateUsername =
+      "users/duplicate/username?username=%s";
 // #endregion
 
   // #region Stories endpoint

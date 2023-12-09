@@ -238,5 +238,7 @@ enum LanguageCodes {
   noInternetTextInfo,
   firstInfoTrialTextInfo,
   prepareCountTimesTextInfo,
+  notificationPrepareFeatureTextInfo,
+  duplicateUsernameTextInfo,
 // #endregion
 }

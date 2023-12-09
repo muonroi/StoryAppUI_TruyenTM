@@ -163,7 +163,8 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => NewChapter(
+                                          builder: (context) =>
+                                              ChapterContentOfStory(
                                             author: widget.storyInfo.authorName,
                                             imageUrl: widget.storyInfo.imgUrl,
                                             chapterNumber:

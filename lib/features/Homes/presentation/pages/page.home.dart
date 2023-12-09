@@ -73,6 +73,18 @@ class _RenderHomePageState extends State<RenderHomePage> {
                       settingInfo.content.toLowerCase().contains("version")
                   ? ""
                   : settingInfo.content;
+              if (!currentVersionApp &&
+                  settingInfo.settingName.contains('(news)')) {
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  await userBox.put('notification', true);
+                  if (mounted) {
+                    setState(() {
+                      _isFirstLoad = userBox.get('notification') ?? true;
+                    });
+                  }
+                });
+              }
+
               return Stack(children: [
                 ListView.builder(
                     scrollDirection: Axis.vertical,

@@ -37,7 +37,6 @@ class _LaddingPageState extends State<LaddingPage> {
   }
 
   Future<void> _initData() async {
-    userBox.put('notification', true);
     var accessToken = userBox.get(KeyToken.accessToken.name) == null;
     if (accessToken && mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
