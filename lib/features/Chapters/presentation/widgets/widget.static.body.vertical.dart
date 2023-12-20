@@ -110,6 +110,9 @@ class _ScreenVerticalChapter extends State<ScreenVerticalChapter> {
                       .trim(),
                   style: {
                     '#': Style(
+                      margin: widget.isDisplay
+                          ? Margins(top: Margin(0))
+                          : Margins(top: Margin(40)),
                       textAlign: widget.templateSetting.isLeftAlign!
                           ? TextAlign.justify
                           : TextAlign.left,

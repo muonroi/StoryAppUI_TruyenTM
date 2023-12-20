@@ -208,7 +208,6 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
     }
 
     //Update page index and chapter index (index at list chunk 100 chapter)
-
     widget.resetCountTimeAds(true);
     !isHorizontal
         ? _refreshController.refreshCompleted()
@@ -256,7 +255,6 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
       _saveQuickChapterLocation();
     }
     //Update page index and chapter index (index at list chunk 100 chapter)
-    widget.resetCountTimeAds(true);
     !isHorizontal
         ? _refreshController.loadComplete()
         : _refreshHorizontalController.loadComplete();
@@ -512,7 +510,6 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
   late GlobalKey _pageKey;
   late PageControlBloc _controlBloc;
   late PageController _pageController;
-
   // #endregion
 
   @override

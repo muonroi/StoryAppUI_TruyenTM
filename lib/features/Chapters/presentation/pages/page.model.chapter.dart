@@ -124,6 +124,9 @@ class _ChapterContentOfStoryState extends State<ChapterContentOfStory> {
 
   void _displayAppbar(isDisplay) {
     setState(() {
+      // if (_isDisplay == isDisplay) {
+      //   isDisplay = !isDisplay;
+      // }
       _isDisplay = isDisplay;
       if (!_isCountComplete) {
         _isCountComplete = _isSubscription;
@@ -383,6 +386,7 @@ class _ChapterContentOfStoryState extends State<ChapterContentOfStory> {
                   }
                   // #endregion
                   return Scaffold(
+                    backgroundColor: _chapterTemplate.background,
                     appBar: !_isDisplay
                         ? null
                         : PreferredSize(
@@ -484,7 +488,9 @@ class _ChapterContentOfStoryState extends State<ChapterContentOfStory> {
                         firstChapterId: widget.firstChapterId,
                         lastChapterId: widget.lastChapterId,
                         pageIndex: _pageIndex,
-                        chapterInfo: chapterInfo[_chapterIndex],
+                        chapterInfo: _chapterIndex <= chapterInfo.length - 1
+                            ? chapterInfo[_chapterIndex]
+                            : chapterInfo[_chapterIndex - 1],
                         isLoadedHistory: _isLoadedHistoryForOneChapter,
                         authorName: widget.author,
                         storyTitle: widget.storyName,
@@ -581,16 +587,26 @@ class _ChapterContentOfStoryState extends State<ChapterContentOfStory> {
                                 isDisableNextButton: _isDisableNextButton,
                                 fontColor: _chapterTemplate.font!,
                                 backgroundColor: _chapterTemplate.background!,
-                                chapterId: chapterInfo[_chapterIndex].id,
+                                chapterId:
+                                    _chapterIndex <= chapterInfo.length - 1
+                                        ? chapterInfo[_chapterIndex].id
+                                        : chapterInfo[_chapterIndex - 1].id,
                                 onRefresh: (int chapterId) => {
                                       _putEventToChildController.add({
-                                        false: chapterInfo[_chapterIndex].id
+                                        false: _chapterIndex <=
+                                                chapterInfo.length - 1
+                                            ? chapterInfo[_chapterIndex].id
+                                            : chapterInfo[_chapterIndex - 1].id
                                       })
                                     },
                                 onLoading: (int chapterId, bool isCheckShow) =>
                                     {
-                                      _putEventToChildController.add(
-                                          {true: chapterInfo[_chapterIndex].id})
+                                      _putEventToChildController.add({
+                                        true: _chapterIndex <=
+                                                chapterInfo.length - 1
+                                            ? chapterInfo[_chapterIndex].id
+                                            : chapterInfo[_chapterIndex - 1].id
+                                      })
                                     })
                             : const SizedBox()),
                   );
