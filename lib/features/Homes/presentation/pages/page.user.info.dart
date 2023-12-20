@@ -13,7 +13,6 @@ import 'package:muonroi/shared/settings/setting.images.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.info.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserInfo extends StatefulWidget {
   final AccountInfo userInfo;
@@ -28,14 +27,6 @@ class _UserInfoState extends State<UserInfo> {
   void initState() {
     _avatar = widget.userInfo.avatar;
     super.initState();
-    _initSharedPreferences();
-  }
-
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   void renewAvatar(String avatarLink) {
@@ -45,7 +36,6 @@ class _UserInfoState extends State<UserInfo> {
   }
 
   late String _avatar;
-  late SharedPreferences? _sharedPreferences;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -233,28 +223,67 @@ class _UserInfoState extends State<UserInfo> {
                       colorIcon: themeMode(context, ColorCode.textColor.name),
                     ),
                     SettingItems(
-                      onPressed: () async {
-                        var userChoice = await _showConfirmationDialog(
-                            context,
-                            L(context,
-                                LanguageCodes.youSureLogoutTextInfo.toString()),
-                            null);
-                        userChoice = userChoice ?? false;
-                        if (userChoice && mounted) {
-                          final accountRepository = AccountRepository();
-                          await accountRepository
-                              .logout(widget.userInfo.userGuid);
-                          if (mounted) {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (builder) {
-                              _sharedPreferences!
-                                  .remove(KeyToken.accessToken.name);
-                              _sharedPreferences!
-                                  .remove(KeyToken.refreshToken.name);
-                              return const SignInPage();
-                            }));
-                          }
-                        }
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext ctx) {
+                              return AlertDialog(
+                                title: Text(
+                                  L(
+                                      context,
+                                      LanguageCodes.notificationTextInfo
+                                          .toString()),
+                                  style: CustomFonts.h5(context),
+                                ),
+                                content: Text(
+                                  L(
+                                      context,
+                                      LanguageCodes.youSureLogoutTextInfo
+                                          .toString()),
+                                  style: CustomFonts.h5(context),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                      child: Text(
+                                        L(
+                                            context,
+                                            LanguageCodes.isNotSureTextInfo
+                                                .toString()),
+                                        style: CustomFonts.h6(context),
+                                      )),
+                                  TextButton(
+                                    onPressed: () async {
+                                      final accountRepository =
+                                          AccountRepository();
+                                      await accountRepository
+                                          .logout(widget.userInfo.userGuid);
+                                      if (mounted) {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (builder) {
+                                          userBox.delete(
+                                              KeyToken.accessToken.name);
+                                          userBox.delete(
+                                              KeyToken.refreshToken.name);
+                                          userBox.delete('userLogin');
+                                          return const SignInPage();
+                                        }));
+                                      }
+                                    },
+                                    child: Text(
+                                      L(
+                                          context,
+                                          LanguageCodes.isSureTextInfo
+                                              .toString()),
+                                      style: CustomFonts.h6(context),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
                       },
                       text: L(context,
                           LanguageCodes.logoutAccountTextInfo.toString()),
@@ -268,47 +297,6 @@ class _UserInfoState extends State<UserInfo> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<bool?> _showConfirmationDialog(
-      BuildContext context, String notification, String? actionName) async {
-    return showDialog<bool?>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: themeMode(context, ColorCode.modeColor.name),
-          title: Text(
-            L(context, LanguageCodes.notificationTextInfo.toString()),
-            style: CustomFonts.h5(context),
-          ),
-          content: Text(
-            notification,
-            style: CustomFonts.h5(context),
-          ),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: Text(
-                  L(context, LanguageCodes.isNotSureTextInfo.toString()),
-                  style: CustomFonts.h6(context),
-                )),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: Text(
-                actionName ??
-                    L(context, LanguageCodes.isSureTextInfo.toString()),
-                style: CustomFonts.h6(context),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

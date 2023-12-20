@@ -21,7 +21,6 @@ class HomePageItems {
       ValueChanged<String> funcOnChangedSearch,
       bool isShowClearText,
       PageController pageBannerController,
-      final List<String> bannerUrl,
       {int numberOfBanner = 3}) {
     late List<Widget> components = [
       // #region Header
@@ -31,7 +30,6 @@ class HomePageItems {
           isShowClearText: isShowClearText),
       BannerHomePage(
         bannerController: pageBannerController,
-        bannerListImage: bannerUrl,
         numberOfBanner: numberOfBanner,
       ),
 

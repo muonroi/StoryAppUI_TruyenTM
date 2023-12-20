@@ -51,7 +51,7 @@ class _StoriesSpecialState extends State<StoriesSpecial> {
   void _onLoading() async {
     if (mounted) {
       if (_scrollController.offset >
-          _scrollController.position.maxScrollExtent + 150) {
+          _scrollController.position.maxScrollExtent + 70) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
             _specialStoriesBloc

@@ -92,7 +92,7 @@ class LocalizationLib {
           'Background color',
       LanguageCodes.limitFontSizeConfigTextInfo.toString():
           'Font size range (10-50)',
-      LanguageCodes.listChapterDetailConfigTextInfo.toString(): 'Chapter list',
+      LanguageCodes.chapterListConfigTextInfo.toString(): 'Chapter list',
       LanguageCodes.storyDetailConfigTextInfo.toString(): 'Story details',
       LanguageCodes.storyDownloadConfigTextInfo.toString(): 'Download',
       LanguageCodes.storyPushCoinConfigTextInfo.toString(): 'Throw coins',
@@ -235,6 +235,14 @@ class LocalizationLib {
       LanguageCodes.timerSettingTextInfo.toString(): 'Timer',
       LanguageCodes.timerInfoSettingTextInfo.toString():
           'Select the number of minutes you want to timer',
+      LanguageCodes.noInternetTextInfo.toString(): 'Internet unavailable',
+      LanguageCodes.firstInfoTrialTextInfo.toString():
+          'This is a trial version! We will update the story as soon as possible. Thank you.',
+      LanguageCodes.prepareCountTimesTextInfo.toString(): 'Initializing...',
+      LanguageCodes.notificationPrepareFeatureTextInfo.toString():
+          'The feature is still evolving! If there is an error, please switch to vertical scrolling mode. Thank you!',
+      LanguageCodes.duplicateUsernameTextInfo.toString():
+          'Username %s is already exists!',
     },
     Languages.vi: {
       LanguageCodes.searchTextInfo.toString():
@@ -316,7 +324,7 @@ class LocalizationLib {
       LanguageCodes.backgroundConfigDashboardTextInfo.toString(): "Màu nền",
       LanguageCodes.limitFontSizeConfigTextInfo.toString():
           "Cỡ chữ nằm trong khoảng (10-50)",
-      LanguageCodes.listChapterDetailConfigTextInfo.toString(): "Ds Chương",
+      LanguageCodes.chapterListConfigTextInfo.toString(): "Ds Chương",
       LanguageCodes.storyDetailConfigTextInfo.toString(): "TT Truyện",
       LanguageCodes.storyDownloadConfigTextInfo.toString(): "Tải về",
       LanguageCodes.storyPushCoinConfigTextInfo.toString(): "Ném tiền",
@@ -465,6 +473,14 @@ class LocalizationLib {
       LanguageCodes.timerInfoSettingTextInfo.toString():
           'Chọn số phút bạn muốn hẹn giờ',
       LanguageCodes.timerSettingTextInfo.toString(): 'Hẹn giờ',
+      LanguageCodes.noInternetTextInfo.toString(): 'Mạng không khả dụng',
+      LanguageCodes.firstInfoTrialTextInfo.toString():
+          'Đây là phiên bản thử nghiệm! Mọi thứ đều miễn phí và chúng tôi sẽ cập nhật truyện sớm nhất có thể. Xin cám ơn!',
+      LanguageCodes.prepareCountTimesTextInfo.toString(): 'Đang khởi tạo',
+      LanguageCodes.notificationPrepareFeatureTextInfo.toString():
+          'Tính năng vẫn đang phát triển! Nếu có lỗi vui lòng chuyển sang chế độ cuộn dọc. Xin cám ơn!',
+      LanguageCodes.duplicateUsernameTextInfo.toString():
+          'Tài khoản %s đã tồn tại!',
     }
   };
   static String L(String key, {String locale = 'vi'}) {

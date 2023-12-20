@@ -1,5 +1,6 @@
 <!-- //ca-pub-7594358837893425 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
     package="com.muonroi.truyentm">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -31,6 +32,7 @@
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+    <!-- ADD THIS "RECEIVER" element -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

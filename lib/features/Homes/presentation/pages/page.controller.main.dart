@@ -1,16 +1,18 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:muonroi/core/Notification/widget.notification.dart';
 import 'package:muonroi/core/authorization/enums/key.dart';
 import 'package:muonroi/core/services/api_route.dart';
 import 'package:muonroi/features/accounts/data/models/model.account.signin.dart';
+import 'package:muonroi/features/chapters/bloc/group_bloc/group_chapters_of_story_bloc.dart';
+import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
 import 'package:muonroi/features/notification/presentation/pages/page.notification.dart';
 import 'package:muonroi/features/notification/provider/provider.notification.dart';
 import 'package:muonroi/features/story/data/models/model.recent.story.dart';
 import 'package:muonroi/shared/models/signalR/signalr.hub.stream.name.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/models/signalR/widget.notification.dart';
-import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
 import 'package:muonroi/features/homes/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.menu.bottom.shared.dart';
@@ -25,16 +27,13 @@ import 'package:muonroi/features/homes/presentation/pages/page.stories.free.dart
 import 'package:muonroi/features/homes/presentation/pages/page.user.info.dart';
 import 'package:muonroi/features/story/presentation/pages/page.model.stories.search.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signalr_netcore/hub_connection.dart';
 import 'package:signalr_netcore/hub_connection_builder.dart';
 import 'package:sprintf/sprintf.dart';
 
 class HomePage extends StatefulWidget {
   final AccountResult accountResult;
-  final List<String> bannerUrl;
-  const HomePage(
-      {super.key, required this.accountResult, required this.bannerUrl});
+  const HomePage({super.key, required this.accountResult});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -43,9 +42,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
+    _initHubComplete = StreamController<bool>();
+    _reloadChapterId = StreamController<bool>();
     _totalNotification = widget.accountResult.notificationNumber;
-    _isFirstLoad = true;
-    _isHubInitialized = false;
     _textSearchController = TextEditingController();
     _scrollLayoutController = ScrollController();
     _scrollLayoutController.addListener(_scrollListener);
@@ -59,13 +58,16 @@ class _HomePageState extends State<HomePage> {
     _homePageItem = HomePageItems();
     _throttle = Throttle(const Duration(milliseconds: 100));
     _debouncer = Debouncer(const Duration(milliseconds: 100));
-    _initSharedPreferences()
-        .then((value) => initHubAndListenGlobalNotification());
+    _reloadChapterId.stream.listen((event) {
+      if (event) {}
+    });
     super.initState();
+    _initData().then((value) => initHubAndListenGlobalNotification());
   }
 
   @override
   void dispose() {
+    _reloadChapterId.close();
     _textSearchController.dispose();
     _scrollLayoutController.removeListener(_scrollListener);
     _scrollLayoutController.dispose();
@@ -86,9 +88,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> initHubAndListenGlobalNotification() async {
     _hubConnection = HubConnectionBuilder()
         .withUrl(sprintf(ApiNetwork.baseUrl + ApiNetwork.notification,
-            [_sharedPreferences.getString(KeyToken.accessToken.name)]))
+            [userBox.get(KeyToken.accessToken.name)]))
         .withAutomaticReconnect(retryDelays: [30000]).build();
-
     _hubConnection.onclose(({error}) async {
       debugPrint("Connection Closed!");
       await _hubConnection.onreconnecting(({error}) async {
@@ -97,9 +98,7 @@ class _HomePageState extends State<HomePage> {
       await _hubConnection.onreconnected(({connectionId}) {});
     });
     await startHub();
-    setState(() {
-      _isHubInitialized = true;
-    });
+    _initHubComplete.add(true);
   }
 
 // #region Define controller
@@ -112,8 +111,6 @@ class _HomePageState extends State<HomePage> {
   // #endregion
 
 // #region Define variables
-  late bool _isHubInitialized;
-  late bool _isFirstLoad;
   late double _itemHeight;
   late double _currentIndex;
   late bool _isShowClearText;
@@ -121,15 +118,16 @@ class _HomePageState extends State<HomePage> {
   late Debouncer _debouncer;
   late Throttle _throttle;
   late int _totalNotification;
-  late SharedPreferences _sharedPreferences;
   late HubConnection _hubConnection;
+  late StreamController<bool> _reloadChapterId;
+  late StreamController<bool> _initHubComplete;
+  late GroupChapterOfStoryBloc _groupChapterOfStoryBloc;
   // #endregion
 
 // #region Define methods
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-    _totalNotification = _sharedPreferences.getInt('totalNotification') ?? 0;
+  Future<void> _initData() async {
+    _totalNotification = userBox.get('totalNotification') ?? 0;
   }
 
   void _onChangedSearch(String textInput) {
@@ -153,7 +151,6 @@ class _HomePageState extends State<HomePage> {
   // #endregion
   @override
   Widget build(BuildContext context) {
-    // #region get components
     var itemsOfHome = _homePageItem.getHomePageItems(
         context,
         _pageEditorChoiceController,
@@ -163,7 +160,6 @@ class _HomePageState extends State<HomePage> {
         _onChangedSearch,
         _isShowClearText,
         _pageBannerController,
-        widget.bannerUrl,
         numberOfBanner: 3);
     // #endregion
     return DefaultTabController(
@@ -205,84 +201,92 @@ class _HomePageState extends State<HomePage> {
                       color: themeMode(context, ColorCode.textColor.name)),
                   splashRadius: 22.0,
                 ),
-                Consumer<NotificationProvider>(
-                  builder: (_, value, __) {
-                    if (_isFirstLoad && _isHubInitialized) {
-                      _isFirstLoad = false;
-                      if (_hubConnection.state ==
-                          HubConnectionState.Connected) {
-                        _hubConnection
-                            .on(HubStream.receiveGlobalNotification.name,
-                                (arguments) {
-                          _totalNotification++;
-                          value.setTotalView = _totalNotification;
-                          var notifyInfo = (json.decode(arguments.toString())
-                                  as List)
-                              .map((data) => NotificationSignalr.fromJson(data))
-                              .toList()
-                              .first;
-                          NotificationPush.showNotification(
-                              title: L(
-                                  context,
-                                  LanguageCodes.notificationTextConfigTextInfo
-                                      .toString()),
-                              body: N(context, notifyInfo.type,
-                                  args: notifyInfo.notificationContent
-                                      .split('-')),
-                              fln: flutterLocalNotificationsPlugin);
-                        });
-                        _hubConnection
-                            .on(HubStream.receiveNotificationByUser.name,
-                                (arguments) {
-                          _totalNotification++;
-                          value.setTotalView = _totalNotification;
-                          var notifyInfo = (json.decode(arguments.toString())
-                                  as List)
-                              .map((data) => NotificationSignalr.fromJson(data))
-                              .toList()
-                              .first;
-                          NotificationPush.showNotification(
-                              title: L(
-                                  context,
-                                  LanguageCodes.notificationTextConfigTextInfo
-                                      .toString()),
-                              body: N(context, notifyInfo.type,
-                                  args: notifyInfo.notificationContent
-                                      .split('-')),
-                              fln: flutterLocalNotificationsPlugin);
-                        });
-                      } else if (_hubConnection.state ==
-                          HubConnectionState.Disconnected) {
-                        startHub();
-                      }
-                    }
-                    _totalNotification = value.totalNotification;
-                    return Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                        width: MainSetting.getPercentageOfDevice(context,
-                                expectWidth: 20)
-                            .width,
-                        height: MainSetting.getPercentageOfDevice(context,
-                                expectHeight: 20)
-                            .height,
-                        decoration: BoxDecoration(
-                            color: themeMode(context, ColorCode.mainColor.name),
-                            borderRadius: BorderRadius.circular(100)),
-                        child: Center(
-                          child: Text(
-                            _totalNotification <= 9
-                                ? '$_totalNotification'
-                                : '$_totalNotification+',
-                            style: CustomFonts.h6(context),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                )
+                StreamBuilder<bool>(
+                    stream: _initHubComplete.stream,
+                    builder: (context, snapshot) {
+                      return Consumer<NotificationProvider>(
+                        builder: (_, value, __) {
+                          if (snapshot.hasData) {
+                            if (_hubConnection.state ==
+                                HubConnectionState.Connected) {
+                              _hubConnection
+                                  .on(HubStream.receiveGlobalNotification.name,
+                                      (arguments) {
+                                _totalNotification++;
+                                value.setTotalView = _totalNotification;
+                                var notifyInfo =
+                                    (json.decode(arguments.toString()) as List)
+                                        .map((data) =>
+                                            NotificationSignalr.fromJson(data))
+                                        .toList()
+                                        .first;
+                                NotificationPush.showNotification(
+                                    title: L(
+                                        context,
+                                        LanguageCodes
+                                            .notificationTextConfigTextInfo
+                                            .toString()),
+                                    body: N(context, notifyInfo.type,
+                                        args: notifyInfo.notificationContent
+                                            .split('-')),
+                                    fln: flutterLocalNotificationsPlugin);
+                              });
+                              _hubConnection
+                                  .on(HubStream.receiveNotificationByUser.name,
+                                      (arguments) {
+                                _totalNotification++;
+                                value.setTotalView = _totalNotification;
+                                var notifyInfo =
+                                    (json.decode(arguments.toString()) as List)
+                                        .map((data) =>
+                                            NotificationSignalr.fromJson(data))
+                                        .toList()
+                                        .first;
+                                NotificationPush.showNotification(
+                                    title: L(
+                                        context,
+                                        LanguageCodes
+                                            .notificationTextConfigTextInfo
+                                            .toString()),
+                                    body: N(context, notifyInfo.type,
+                                        args: notifyInfo.notificationContent
+                                            .split('-')),
+                                    fln: flutterLocalNotificationsPlugin);
+                              });
+                            } else if (_hubConnection.state ==
+                                HubConnectionState.Disconnected) {
+                              startHub();
+                            }
+                          }
+                          _totalNotification = value.totalNotification;
+                          return Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              width: MainSetting.getPercentageOfDevice(context,
+                                      expectWidth: 20)
+                                  .width,
+                              height: MainSetting.getPercentageOfDevice(context,
+                                      expectHeight: 20)
+                                  .height,
+                              decoration: BoxDecoration(
+                                  color: themeMode(
+                                      context, ColorCode.mainColor.name),
+                                  borderRadius: BorderRadius.circular(100)),
+                              child: Center(
+                                child: Text(
+                                  _totalNotification <= 9
+                                      ? '$_totalNotification'
+                                      : '$_totalNotification+',
+                                  style: CustomFonts.h6(context),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    })
               ]),
             ],
           ),
@@ -320,19 +324,23 @@ class _HomePageState extends State<HomePage> {
                         coin: 99)),
               ]),
           floatingActionButton: FloatingActionButton(
+            shape: const CircleBorder(),
             onPressed: () {
-              var storyInfoRecently =
-                  _sharedPreferences.getString("recently-story");
-              var chapterIdRecently =
-                  _sharedPreferences.getInt("recently-chapterId") ?? 0;
+              var storyInfoRecently = chapterBox.get("recently-story");
+              var chapterIdRecently = chapterBox.get("recently-chapterId") ?? 0;
 
               if (storyInfoRecently != null) {
                 var storyResult = recentStoryModelFromJson(storyInfoRecently);
-                var chapterNumber = _sharedPreferences.getInt(
-                        "story-${storyResult.storyId}-current-chapter") ??
+                var chapterNumber = chapterBox
+                        .get("story-${storyResult.storyId}-current-chapter") ??
                     1;
+                _groupChapterOfStoryBloc = GroupChapterOfStoryBloc(
+                    storyResult.storyId, 1, 15, false, 0);
+                _groupChapterOfStoryBloc.add(GroupChapterOfStoryList());
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Chapter(
+                  return ChapterContentOfStory(
+                    reloadChapterId: _reloadChapterId,
+                    author: storyResult.author,
                     imageUrl: storyResult.imageStory,
                     chapterNumber: chapterNumber,
                     totalChapter: storyResult.totalChapter,
@@ -362,7 +370,11 @@ class _HomePageState extends State<HomePage> {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: TabBarCustom(context: context)),
+          bottomNavigationBar: SizedBox(
+              height:
+                  MainSetting.getPercentageOfDevice(context, expectHeight: 70)
+                      .height,
+              child: TabBarCustom(context: context))),
     );
   }
 }

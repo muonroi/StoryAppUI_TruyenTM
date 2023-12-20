@@ -10,8 +10,9 @@ abstract class GroupChapterBlocEvent extends Equatable {
 
 class GroupChapter extends GroupChapterBlocEvent {
   final int storyId;
+  final bool isAudio;
   final int pageIndex;
-  const GroupChapter(this.storyId, this.pageIndex);
+  const GroupChapter(this.storyId, this.pageIndex, this.isAudio);
 }
 
 class SingleChapter extends GroupChapterBlocEvent {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
@@ -7,7 +9,6 @@ import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/story/data/models/model.stories.story.dart';
 import 'package:muonroi/features/story/data/repositories/story.repository.dart';
 import 'package:muonroi/features/story/presentation/pages/page.stories.detail.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class StoriesBookCaseModelWidget extends StatefulWidget {
   final StoryItems storyInfo;
@@ -27,7 +28,14 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
   double widgetScale = 1.0;
   @override
   void initState() {
+    _isGetChapterId = true;
+    _reloadChapterId = StreamController<bool>();
     super.initState();
+    _reloadChapterId.stream.listen((event) {
+      if (event) {
+        getChapterId();
+      }
+    });
   }
 
   void _toggleItemState() {
@@ -42,18 +50,17 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
     });
   }
 
-  Future<void> getChapterId() async {
-    final SharedPreferences chapterTemp = await sharedPreferences;
+  void getChapterId() {
     if (mounted) {
       setState(() {
-        chapterId = (chapterTemp
-                .getInt("story-${widget.storyInfo.id}-current-chapter-id") ??
+        chapterId = (chapterBox
+                .get("story-${widget.storyInfo.id}-current-chapter-id") ??
             0);
-        chapterNumber = (chapterTemp
-                .getInt("story-${widget.storyInfo.id}-current-chapter") ??
-            0);
-        pageIndex = (chapterTemp
-                .getInt("story-${widget.storyInfo.id}-current-page-index") ??
+        chapterNumber =
+            (chapterBox.get("story-${widget.storyInfo.id}-current-chapter") ??
+                0);
+        pageIndex = (chapterBox
+                .get("story-${widget.storyInfo.id}-current-page-index") ??
             0);
       });
     }
@@ -63,14 +70,16 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
   late int chapterId = 0;
   late int chapterNumber = 0;
   late int pageIndex = 0;
-  final Future<SharedPreferences> sharedPreferences =
-      SharedPreferences.getInstance();
   final StoryRepository storyRepository = StoryRepository();
-
+  late StreamController<bool> _reloadChapterId;
+  late bool _isGetChapterId;
   @override
   Widget build(BuildContext context) {
-    getChapterId();
-    buttonState = true;
+    if (_isGetChapterId) {
+      _isGetChapterId = false;
+      getChapterId();
+    }
+    buttonState = (chapterNumber == 0 || chapterNumber == -1) ? false : true;
     return GestureDetector(
       onTapDown: (_) {
         _toggleItemState();
@@ -176,34 +185,43 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) => Chapter(
-                                                        imageUrl: storyInfo
-                                                            .result.imgUrl,
-                                                        chapterNumber:
-                                                            chapterNumber == 0
-                                                                ? 1
-                                                                : chapterNumber,
-                                                        totalChapter: storyInfo
-                                                            .result
-                                                            .totalChapter,
-                                                        pageIndex: pageIndex,
-                                                        loadSingleChapter:
-                                                            false,
-                                                        isLoadHistory: true,
-                                                        storyId:
-                                                            storyInfo.result.id,
-                                                        storyName: storyInfo
-                                                            .result.storyTitle,
-                                                        chapterId: chapterId == 0
-                                                            ? storyInfo.result
-                                                                .firstChapterId
-                                                            : chapterId,
-                                                        lastChapterId: storyInfo
-                                                            .result
-                                                            .lastChapterId,
-                                                        firstChapterId: storyInfo
-                                                            .result
-                                                            .firstChapterId)),
+                                                    builder: (context) =>
+                                                        ChapterContentOfStory(
+                                                          author: widget
+                                                              .storyInfo
+                                                              .authorName,
+                                                          imageUrl: storyInfo
+                                                              .result.imgUrl,
+                                                          chapterNumber:
+                                                              chapterNumber == 0
+                                                                  ? 1
+                                                                  : chapterNumber,
+                                                          totalChapter:
+                                                              storyInfo.result
+                                                                  .totalChapter,
+                                                          pageIndex: pageIndex,
+                                                          loadSingleChapter:
+                                                              false,
+                                                          isLoadHistory: true,
+                                                          storyId: storyInfo
+                                                              .result.id,
+                                                          storyName: storyInfo
+                                                              .result
+                                                              .storyTitle,
+                                                          chapterId: chapterId ==
+                                                                  0
+                                                              ? storyInfo.result
+                                                                  .firstChapterId
+                                                              : chapterId,
+                                                          lastChapterId:
+                                                              storyInfo.result
+                                                                  .lastChapterId,
+                                                          firstChapterId:
+                                                              storyInfo.result
+                                                                  .firstChapterId,
+                                                          reloadChapterId:
+                                                              _reloadChapterId,
+                                                        )),
                                               );
                                             }
                                           }
@@ -223,7 +241,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                                                     ColorCode.modeColor.name),
                                             width: 2)),
                                     child: Text(
-                                      '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterNumber == 0 ? 1 : chapterNumber}',
+                                      '${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${chapterNumber == 0 || chapterNumber == -1 ? 1 : chapterNumber}',
                                       style: TextStyle(
                                           fontFamily: CustomFonts.inter,
                                           fontSize: 16,
@@ -235,7 +253,7 @@ class _StoriesBookCaseModelWidget extends State<StoriesBookCaseModelWidget> {
                             padding: const EdgeInsets.only(right: 8.0),
                             child: SizedBox(
                               width: MainSetting.getPercentageOfDevice(context,
-                                      expectWidth: 100)
+                                      expectWidth: 80)
                                   .width,
                               child: Stack(children: [
                                 Text(

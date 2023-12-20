@@ -22,7 +22,8 @@ class GroupChapterBloc
         try {
           emit(GroupChapterLoadingState());
           var mList = await chapterRepository.fetchGroupChapters(
-              storyId, event.pageIndex);
+              storyId, event.pageIndex,
+              isAudio: event.isAudio);
           if (mList.result.items.isNotEmpty) {
             emit(GroupChapterLoadedState(mList));
           } else {

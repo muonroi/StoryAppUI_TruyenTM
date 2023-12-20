@@ -1,3 +1,4 @@
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:muonroi/core/Authorization/setting.api.dart';
 import 'package:muonroi/core/services/api_route.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.group.dart';
@@ -7,13 +8,14 @@ import 'package:muonroi/features/chapters/data/models/models.chapter.single.chap
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.chapter.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.preview.chapter.dart';
 import 'package:muonroi/features/chapters/settings/settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:sprintf/sprintf.dart';
 
 class ChapterService {
   Future<ChapterPreviewModel> getChaptersDataList(int storyId, int pageIndex,
       {bool isLatest = false}) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(sprintf(
           ApiNetwork.getChapterPaging,
@@ -30,16 +32,15 @@ class ChapterService {
 
   Future<ListPagingChapters> getGroupChaptersDataDetail(int storyId) async {
     try {
-      var sharedPreferences = await SharedPreferences.getInstance();
       var groupDataChapter =
-          sharedPreferences.getString("getGroupChaptersDataDetail-$storyId");
+          chapterBox.get("getGroupChaptersDataDetail-$storyId");
       if (groupDataChapter == null) {
         var baseEndpoint = await endPoint();
 
         final response = await baseEndpoint
             .get(sprintf(ApiNetwork.getListChapterPaging, ["$storyId"]));
         if (response.statusCode == 200) {
-          sharedPreferences.setString(
+          chapterBox.put(
               "getGroupChaptersDataDetail-$storyId", response.data.toString());
           return listPagingChaptersFromJson(response.data.toString());
         } else {
@@ -77,7 +78,6 @@ class ChapterService {
       int chapterId, int storyId, bool action) async {
     try {
       var baseEndpoint = await endPoint();
-
       var stringEndpointName = action ? "Next" : "Previous";
       final response = await baseEndpoint.get(sprintf(
           ApiNetwork.getActionChapterDetail,
@@ -100,6 +100,7 @@ class ChapterService {
   Future<ChapterInfo> fetchLatestChapterAnyStory(
       {int pageIndex = 1, int pageSize = 5}) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(
           sprintf(ApiNetwork.getLatestChapterNumber, [pageIndex, pageSize]));
@@ -116,16 +117,16 @@ class ChapterService {
   Future<ListPagingRangeChapters> getFromToChaptersDataDetail(
       int storyId, int pageIndex, int from, int to) async {
     try {
-      var sharedPreferences = await SharedPreferences.getInstance();
-      var fromToChapter = sharedPreferences.getString(
-          "getFromToChaptersDataDetail-$storyId-$pageIndex-$from-$to");
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
+      var fromToChapter = chapterBox
+          .get("getFromToChaptersDataDetail-$storyId-$pageIndex-$from-$to");
       if (fromToChapter == null) {
         var baseEndpoint = await endPoint();
         final response = await baseEndpoint.get(sprintf(
             ApiNetwork.getFromToChapterPaging,
             ["$storyId", "$pageIndex", "$from", "$to"]));
         if (response.statusCode == 200) {
-          sharedPreferences.setString(
+          chapterBox.put(
               "getFromToChaptersDataDetail-$storyId-$pageIndex-$from-$to",
               response.data.toString());
           return listPagingRangeChaptersFromJson(response.data.toString());
@@ -141,69 +142,47 @@ class ChapterService {
   }
 
   Future<GroupChapters> getGroupChapters(int storyId, int pageIndex,
-      {int pageSize = 100}) async {
+      {int pageSize = 100,
+      bool isDownload = false,
+      bool isAudio = false}) async {
     try {
-      var sharedPreferences = await SharedPreferences.getInstance();
-      var chaptersOfficeByIndex = sharedPreferences
-          .getString("story-$storyId-current-group-chapter-$pageIndex");
-      var baseEndpoint = await endPoint();
-      if (chaptersOfficeByIndex == null) {
-        final response = await baseEndpoint.get(sprintf(
-            ApiNetwork.getGroupChapters,
-            ["$storyId", "$pageIndex", "$pageSize"]));
-        if (response.statusCode == 200) {
-          var result = groupChaptersFromJson(response.data.toString());
-          var items = result.result.items;
-          result.result.items = decryptBodyChapterAndChunk(items);
-          sharedPreferences.setString(
-              "story-$storyId-current-group-chapter-$pageIndex",
-              groupChaptersToJson(result));
-          return result;
-        } else {
-          throw Exception("Failed to load chapter");
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
+      var internetAvailable = await InternetConnection().hasInternetAccess;
+
+      if (!internetAvailable) {
+        var chaptersOfficeByIndex =
+            chapterBox.get("story-$storyId-current-group-chapter-$pageIndex");
+        if (chaptersOfficeByIndex != null) {
+          return groupChaptersFromJson(chaptersOfficeByIndex);
         }
       }
-      return groupChaptersFromJson(chaptersOfficeByIndex);
+      var chapterCurrentGroup =
+          chapterBox.get("story-$storyId-current-group-chapter");
+
+      if (chapterCurrentGroup != null && !isAudio) {
+        return groupChaptersFromJson(chapterCurrentGroup);
+      }
+      var baseEndpoint = await endPoint();
+      final response = await baseEndpoint.get(sprintf(
+          ApiNetwork.getGroupChapters,
+          ["$storyId", "$pageIndex", "$pageSize"]));
+      if (response.statusCode == 200) {
+        var result = groupChaptersFromJson(response.data.toString());
+        var items = result.result.items;
+        result.result.items = decryptBodyChapterAndChunk(items);
+        chapterBox.put("story-$storyId-current-group-chapter",
+            groupChaptersToJson(result));
+        if (isDownload) {
+          chapterBox.put("story-$storyId-current-group-chapter-$pageIndex",
+              groupChaptersToJson(result));
+        }
+
+        return result;
+      } else {
+        throw Exception("Failed to load chapter");
+      }
     } catch (e) {
       throw Exception("Failed to load chapter");
     }
-  }
-}
-
-List<String> decryptChunkBody(dynamic items, int size) {
-  List<String> chunkBody = [];
-  items = convertDynamicToList(items);
-  for (int i = 0; i < size; i++) {
-    var chunkTemp = convertDynamicToList(items)[i];
-    chunkTemp = decryptStringAES(chunkTemp);
-    chunkBody.add(chunkTemp);
-  }
-  return chunkBody;
-}
-
-List<GroupChapterItems> decryptBodyChapterAndChunk(
-    List<GroupChapterItems> items) {
-  for (int i = 0; i < items.length; i++) {
-    var tempChunk = [];
-    for (int j = 0; j < items[i].chunkSize; j++) {
-      var chunkContent =
-          decryptStringAES(convertDynamicToList(items[i].bodyChunk)[j]);
-      tempChunk.add(chunkContent);
-    }
-    items[i].bodyChunk = tempChunk;
-    items[i].body = decryptStringAES(items[i].body);
-  }
-  return items;
-}
-
-List<String> convertDynamicToList(dynamic dynamicObject, [String? insertItem]) {
-  if (dynamicObject is Iterable) {
-    List<String> stringList = insertItem != null ? [insertItem] : [];
-    for (var item in dynamicObject) {
-      stringList.add(item.toString());
-    }
-    return stringList;
-  } else {
-    throw ArgumentError("Dynamic object is not iterable.");
   }
 }

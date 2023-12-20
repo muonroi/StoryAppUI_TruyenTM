@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,15 +6,16 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/features/chapters/bloc/group_chapter/group_chapter_bloc.dart';
 import 'package:muonroi/features/chapters/data/models/models.chapter.list.paging.dart';
-import 'package:muonroi/features/chapters/data/service/api.chapter.service.dart';
+import 'package:muonroi/features/chapters/settings/settings.dart';
+import 'package:muonroi/features/story/presentation/widgets/widget.chapter.title.story.audio.dart';
 import 'package:muonroi/features/story/presentation/widgets/widget.static.list.chapter.audio.dart';
 import 'package:muonroi/features/story/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class StoryAudio extends StatefulWidget {
+  final String author;
   final String title;
   final int storyId;
   final int chapterId;
@@ -26,6 +25,7 @@ class StoryAudio extends StatefulWidget {
   final int totalChapter;
   const StoryAudio(
       {super.key,
+      required this.author,
       required this.title,
       required this.storyId,
       required this.chapterId,
@@ -38,10 +38,12 @@ class StoryAudio extends StatefulWidget {
   State<StoryAudio> createState() => _StoryAudioState();
 }
 
-class _StoryAudioState extends State<StoryAudio> {
+class _StoryAudioState extends State<StoryAudio> with WidgetsBindingObserver {
   @override
   void initState() {
+    _textTimerController = TextEditingController();
     _fromToChapterList = "";
+    _wordSpeak = "";
     _chapterId = [];
     _currentChapterIndex = 0;
     _isOptionVolume = true;
@@ -50,7 +52,7 @@ class _StoryAudioState extends State<StoryAudio> {
     _currentChapterChunkIndex = 0;
     _chapterSplit = [];
     _pageIndex = 1;
-    _volume = 2.5;
+    _volume = 0.5;
     _pitch = 1.0;
     _rate = 0.5;
     _newVoiceText = "";
@@ -59,48 +61,53 @@ class _StoryAudioState extends State<StoryAudio> {
     _chapterController = ScrollController(initialScrollOffset: 0.0);
     _groupChaptersBloc = GroupChapterBloc(widget.storyId, _pageIndex, 99);
     _speakingChapterContent();
-    _textController = TextEditingController();
+    _textTimerController = TextEditingController();
     _getVoice();
     _voices = [];
-
     super.initState();
-    _initSharedPreferences();
+    _initData();
+    _getCurrentCharacter();
+  }
+
+  void _getCurrentCharacter() {
+    _flutterTts.setProgressHandler((text, start, end, word) {
+      setState(() {
+        _wordSpeak = word;
+      });
+    });
   }
 
   @override
   void dispose() {
-    _textController.dispose();
+    _textTimerController.dispose();
     _chapterController.dispose();
     _stop();
     super.dispose();
   }
 // #region method
 
-  Future _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-    _fromToChapterList = _sharedPreferences
-            .getString("getGroupChaptersDataDetail-${widget.storyId}") ??
-        "";
-    _pageIndex = _sharedPreferences
-            .getInt("selected-chapter-${widget.storyId}-true-page-index") ??
-        1;
-    _currentChapterIndex = _sharedPreferences
-            .getInt("selected-chapter-${widget.storyId}-true-item-index") ??
+  Future _initData() async {
+    _fromToChapterList =
+        chapterBox.get("getGroupChaptersDataDetail-${widget.storyId}") ?? "";
+    _pageIndex =
+        chapterBox.get("selected-chapter-${widget.storyId}-true-page-index") ??
+            1;
+    _currentChapterIndex = chapterBox.get(
+            "selected-chapter-${_pageIndex - 1}-${widget.storyId}-true-item-index") ??
         0;
-    _currentChapterChunkIndex = _sharedPreferences.getInt(
-            "selected-chapter-chunk-${widget.storyId}-true-page-index") ??
+    _currentChapterChunkIndex = chapterBox
+            .get("selected-chapter-chunk-${widget.storyId}-true-page-index") ??
         0;
-    _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
+    _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex, true));
   }
 
-  Future _setVolume(value) async {
-    _pause();
-    await _flutterTts.setVolume(value);
-    _speak();
-  }
+  // Future _setVolume(value) async {
+  //   _pause();
+  //   await _flutterTts.setVolume(value);
+  //   _speak();
+  // }
 
   Future _getVoice() async {
-    //vi-vn-x-gft-local
     _voices = await _flutterTts.getVoices;
     setState(() {
       _voices = _voices!.where((voice) => voice['locale'] == 'vi-VN').toList();
@@ -165,6 +172,7 @@ class _StoryAudioState extends State<StoryAudio> {
 
     if (_newVoiceText != null) {
       if (_newVoiceText!.isNotEmpty) {
+        // audioHandler.play();
         await _flutterTts.speak(_newVoiceText!);
       }
     }
@@ -173,6 +181,7 @@ class _StoryAudioState extends State<StoryAudio> {
   Future _stop() async {
     var result = await _flutterTts.stop();
     if (result == 1) setState(() => _ttsState = TtsState.stopped);
+    //audioHandler.stop();
   }
 
   Future _pause() async {
@@ -181,6 +190,7 @@ class _StoryAudioState extends State<StoryAudio> {
     });
     var result = await _flutterTts.pause();
     if (result == 1) setState(() => _ttsState = TtsState.paused);
+    //   audioHandler.pause();
   }
 
   Future _updateNewDataWhenSkip(String chapterData) async {
@@ -196,10 +206,12 @@ class _StoryAudioState extends State<StoryAudio> {
     _stop();
     if (next) {
       setState(() {
+        // audioHandler.skipToNext();
         _currentChapterIndex++;
       });
     } else {
       setState(() {
+        //   audioHandler.skipToPrevious();
         _currentChapterIndex--;
       });
     }
@@ -234,13 +246,13 @@ class _StoryAudioState extends State<StoryAudio> {
     // #region Private audio
     var fromToChapterInfo = listPagingChaptersFromJson(_fromToChapterList);
 
-    _sharedPreferences.setInt(
+    chapterBox.put(
         "selected-chapter-${widget.storyId}-true-page-index-audio", _pageIndex);
-    _sharedPreferences.setInt(
+    chapterBox.put(
         "selected-chapter-${widget.storyId}-true-from-chapter-id",
         fromToChapterInfo
             .result[_pageIndex > 0 ? _pageIndex - 1 : _pageIndex].fromId);
-    _sharedPreferences.setInt(
+    chapterBox.put(
         "selected-chapter-${widget.storyId}-true-to-chapter-id",
         fromToChapterInfo
             .result[_pageIndex > 0 ? _pageIndex - 1 : _pageIndex].toId);
@@ -248,14 +260,14 @@ class _StoryAudioState extends State<StoryAudio> {
     // #endregion
 
     // #region save
-    _sharedPreferences.setInt(
-        "selected-chapter-${widget.storyId}-true-item-index",
+    chapterBox.put("current-page-index", _pageIndex - 1);
+    removeIndex(fromToChapterInfo.result.length, widget.storyId, true);
+    chapterBox.put(
+        "selected-chapter-${_pageIndex - 1}-${widget.storyId}-true-item-index",
         _currentChapterIndex);
-
-    _sharedPreferences.setInt(
-        "selected-chapter-${widget.storyId}-true-page-index-ui",
+    chapterBox.put("selected-chapter-${widget.storyId}-true-page-index-ui",
         _pageIndex - 1);
-    _sharedPreferences.setInt(
+    chapterBox.put(
         "selected-chapter-${widget.storyId}-true-page-index", _pageIndex);
     // #endregion
   }
@@ -282,10 +294,14 @@ class _StoryAudioState extends State<StoryAudio> {
         value = 1;
       }
       _speak();
-      _sharedPreferences.setInt(
-          "selected-chapter-${widget.storyId}-true-item-index",
+      var fromToChapterInfo = listPagingChaptersFromJson(_fromToChapterList);
+
+      chapterBox.put("current-page-index", _pageIndex - 1);
+      removeIndex(fromToChapterInfo.result.length, widget.storyId, true);
+      chapterBox.put(
+          "selected-chapter-${_pageIndex - 1}-${widget.storyId}-true-item-index",
           _currentChapterIndex);
-      _sharedPreferences.setInt(
+      chapterBox.put(
           "selected-chapter-chunk-${widget.storyId}-true-page-index", value);
     }
   }
@@ -293,7 +309,7 @@ class _StoryAudioState extends State<StoryAudio> {
   void _updateChapterId(value, int pageIndex) {
     setState(() {
       _pageIndex = pageIndex;
-      _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex));
+      _groupChaptersBloc.add(GroupChapter(widget.storyId, _pageIndex, true));
       _currentChapterIndex = value;
       _isDisplayPauseIcon = true;
     });
@@ -316,7 +332,7 @@ class _StoryAudioState extends State<StoryAudio> {
           content: TextField(
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            controller: _textController,
+            controller: _textTimerController,
             decoration: InputDecoration(
                 labelText: L(context,
                     LanguageCodes.timerInfoSettingTextInfo.toString())),
@@ -324,7 +340,7 @@ class _StoryAudioState extends State<StoryAudio> {
           actions: [
             TextButton(
               onPressed: () {
-                String enteredText = _textController.text;
+                String enteredText = _textTimerController.text;
                 setTimerAndCallFunction(int.parse(enteredText), _pause);
                 Navigator.of(context).pop();
               },
@@ -351,10 +367,9 @@ class _StoryAudioState extends State<StoryAudio> {
   get isPaused => _ttsState == TtsState.paused;
   get isContinued => _ttsState == TtsState.continued;
 
-  TextEditingController _textController = TextEditingController();
+  late TextEditingController _textTimerController;
   late List<int> _chapterId;
   late String _fromToChapterList;
-  late SharedPreferences _sharedPreferences;
   late List<dynamic>? _voices;
   late double _volume;
   late double _pitch;
@@ -370,7 +385,7 @@ class _StoryAudioState extends State<StoryAudio> {
   late int _totalChapter;
   late ScrollController _chapterController;
   late bool _isOptionVolume;
-
+  late String _wordSpeak;
   // #endregion
 
   @override
@@ -422,6 +437,25 @@ class _StoryAudioState extends State<StoryAudio> {
                   _chapterId =
                       state.chapter.result.items.map((e) => e.id).toList();
                   _totalChapter = state.chapter.result.items.length;
+                  // if (_firstLoad) {
+                  //   List<MediaItem> tempItems = [];
+                  //   for (var i in state.chapter.result.items) {
+                  //     var chapterSplit = convertDynamicToList(i.bodyChunk,
+                  //         "${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${i.numberOfChapter}: ${i.chapterTitle} \n");
+                  //     var singleMediaItem = MediaItem(
+                  //         id: "${i.numberOfChapter}",
+                  //         album: widget.title,
+                  //         title:
+                  //             "${L(context, LanguageCodes.chapterNumberTextInfo.toString())} ${i.numberOfChapter}: ${i.chapterTitle} ",
+                  //         artist: widget.author,
+                  //         extras: {"${i.numberOfChapter}": chapterSplit},
+                  //         duration: const Duration(seconds: 1),
+                  //         artUri: Uri.parse(widget.imageUrl));
+                  //     tempItems.add(singleMediaItem);
+                  //   }
+                  //   audioHandler.addQueueItems(tempItems);
+                  //   _firstLoad = false;
+                  // }
                 }
                 return TabBarView(children: [
                   Container(
@@ -663,26 +697,12 @@ class _StoryAudioState extends State<StoryAudio> {
                               controller: _chapterController,
                               itemCount: _chapterSplit.length,
                               itemBuilder: (itemBuilder, index) {
-                                return ListTile(
-                                  tileColor: index == _currentChapterChunkIndex
-                                      ? themeMode(
-                                          context, ColorCode.mainColor.name)
-                                      : null,
-                                  title: index == 0
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                                ' \n${parseHtmlString(_chapterSplit[index])}')
-                                          ],
-                                        )
-                                      : Text(
-                                          parseHtmlString(_chapterSplit[index]),
-                                          style: CustomFonts.h6(context)
-                                              .copyWith(fontSize: 16),
-                                        ),
-                                );
+                                return CurrentTextWidget(
+                                    index: index,
+                                    word: _wordSpeak,
+                                    currentChapterChunkIndex:
+                                        _currentChapterChunkIndex,
+                                    chapterSplit: _chapterSplit);
                               })),
                     ],
                   )
@@ -692,6 +712,7 @@ class _StoryAudioState extends State<StoryAudio> {
           ),
         ),
         drawer: ChapterListAudio(
+            author: widget.author,
             chapterCallback: _chapterSelected,
             storyId: widget.storyId,
             storyTitle: widget.title,
@@ -722,105 +743,105 @@ class _StoryAudioState extends State<StoryAudio> {
                       color: themeMode(context, ColorCode.textColor.name),
                     ),
                   ),
-                  IconButton(
-                    splashRadius: MainSetting.getPercentageOfDevice(context,
-                            expectWidth: 25)
-                        .width,
-                    onPressed: () => showModalBottomSheet(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                      ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                SizedBox(
-                                  child: Text(
-                                    L(
-                                        context,
-                                        LanguageCodes.languageTextInfo
-                                            .toString()),
-                                    style: CustomFonts.h5(context),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: MainSetting.getPercentageOfDevice(
-                                          context,
-                                          expectWidth: 200)
-                                      .width,
-                                  child: DropdownSearch<String>(
-                                    items: _voices!.toList().map((e) {
-                                      return e['name'].toString();
-                                    }).toList(),
-                                    selectedItem: "vi-vn-x-gft-local",
-                                    onChanged: (String? newValue) async {
-                                      _pause();
-                                      await _flutterTts.setVoice({
-                                        "name": "$newValue",
-                                        "locale": "vi-VN"
-                                      });
-                                      _speak();
-                                    },
-                                    dropdownDecoratorProps:
-                                        DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30.0),
-                                          borderSide: BorderSide(
-                                              color: themeMode(context,
-                                                  ColorCode.mainColor.name),
-                                              width: 1),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                SizedBox(
-                                  child: Text(
-                                    L(
-                                        context,
-                                        LanguageCodes.audioSettingTextInfo
-                                            .toString()),
-                                    style: CustomFonts.h5(context),
-                                  ),
-                                ),
-                                SizedBox(
-                                    width: MainSetting.getPercentageOfDevice(
-                                            context,
-                                            expectWidth: 225)
-                                        .width,
-                                    child: RateSlider(
-                                      min: 0,
-                                      max: 3,
-                                      initValue: _volume,
-                                      onChange: _setVolume,
-                                    )),
-                              ],
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    icon: Icon(
-                      Icons.settings,
-                      size: MainSetting.getPercentageOfDevice(context,
-                              expectWidth: 30)
-                          .width,
-                      color: themeMode(context, ColorCode.textColor.name),
-                    ),
-                  ),
+                  // IconButton(
+                  //   splashRadius: MainSetting.getPercentageOfDevice(context,
+                  //           expectWidth: 25)
+                  //       .width,
+                  //   onPressed: () => showModalBottomSheet(
+                  //     shape: const RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.vertical(
+                  //         top: Radius.circular(20),
+                  //       ),
+                  //     ),
+                  //     clipBehavior: Clip.antiAliasWithSaveLayer,
+                  //     context: context,
+                  //     builder: (BuildContext context) {
+                  //       return Column(
+                  //         children: [
+                  //           // Row(
+                  //           //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //           //   children: [
+                  //           //     SizedBox(
+                  //           //       child: Text(
+                  //           //         L(
+                  //           //             context,
+                  //           //             LanguageCodes.languageTextInfo
+                  //           //                 .toString()),
+                  //           //         style: CustomFonts.h5(context),
+                  //           //       ),
+                  //           //     ),
+                  //           //     SizedBox(
+                  //           //       width: MainSetting.getPercentageOfDevice(
+                  //           //               context,
+                  //           //               expectWidth: 200)
+                  //           //           .width,
+                  //           //       child: DropdownSearch<String>(
+                  //           //         items: _voices!.toList().map((e) {
+                  //           //           return e['name'].toString();
+                  //           //         }).toList(),
+                  //           //         selectedItem: "vi-vn-x-gft-local",
+                  //           //         onChanged: (String? newValue) async {
+                  //           //           _pause();
+                  //           //           await _flutterTts.setVoice({
+                  //           //             "name": "$newValue",
+                  //           //             "locale": "vi-VN"
+                  //           //           });
+                  //           //           _speak();
+                  //           //         },
+                  //           //         dropdownDecoratorProps:
+                  //           //             DropDownDecoratorProps(
+                  //           //           dropdownSearchDecoration: InputDecoration(
+                  //           //             focusedErrorBorder: OutlineInputBorder(
+                  //           //               borderRadius:
+                  //           //                   BorderRadius.circular(30.0),
+                  //           //               borderSide: BorderSide(
+                  //           //                   color: themeMode(context,
+                  //           //                       ColorCode.mainColor.name),
+                  //           //                   width: 1),
+                  //           //             ),
+                  //           //           ),
+                  //           //         ),
+                  //           //       ),
+                  //           //     ),
+                  //           //   ],
+                  //           // ),
+                  //           Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //             children: [
+                  //               SizedBox(
+                  //                 child: Text(
+                  //                   L(
+                  //                       context,
+                  //                       LanguageCodes.audioSettingTextInfo
+                  //                           .toString()),
+                  //                   style: CustomFonts.h5(context),
+                  //                 ),
+                  //               ),
+                  //               SizedBox(
+                  //                   width: MainSetting.getPercentageOfDevice(
+                  //                           context,
+                  //                           expectWidth: 225)
+                  //                       .width,
+                  //                   child: RateSlider(
+                  //                     min: 0,
+                  //                     max: 1,
+                  //                     initValue: _volume,
+                  //                     onChange: _setVolume,
+                  //                   )),
+                  //             ],
+                  //           ),
+                  //         ],
+                  //       );
+                  //     },
+                  //   ),
+                  //   icon: Icon(
+                  //     Icons.settings,
+                  //     size: MainSetting.getPercentageOfDevice(context,
+                  //             expectWidth: 30)
+                  //         .width,
+                  //     color: themeMode(context, ColorCode.textColor.name),
+                  //   ),
+                  // ),
                   IconButton(
                     splashRadius: MainSetting.getPercentageOfDevice(context,
                             expectWidth: 25)
@@ -844,84 +865,47 @@ class _StoryAudioState extends State<StoryAudio> {
   }
 }
 
-class ChapterTitleWidget extends StatefulWidget {
-  final Function(String) callback;
-  const ChapterTitleWidget({
+class CurrentTextWidget extends StatefulWidget {
+  final int index;
+  final String word;
+  final int currentChapterChunkIndex;
+  final List<String> chapterSplit;
+
+  const CurrentTextWidget({
     super.key,
-    required List<String> chapterSplit,
-    required this.callback,
-  }) : _chapterSplit = chapterSplit;
-
-  final List<String> _chapterSplit;
+    required this.currentChapterChunkIndex,
+    required this.chapterSplit,
+    required this.word,
+    required this.index,
+  });
 
   @override
-  State<ChapterTitleWidget> createState() => _ChapterTitleWidgetState();
+  State<CurrentTextWidget> createState() => _CurrentTextWidgetState();
 }
 
-class _ChapterTitleWidgetState extends State<ChapterTitleWidget> {
-  @override
-  void didUpdateWidget(covariant ChapterTitleWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget._chapterSplit.first != oldWidget._chapterSplit.first) {
-      widget.callback(widget._chapterSplit.first);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Stack(children: [
-        Text(
-          widget._chapterSplit.isEmpty ? '' : widget._chapterSplit.first,
-          style: CustomFonts.h6(context).copyWith(fontSize: 14),
-          maxLines: 2,
-          textAlign: TextAlign.center,
-        ),
-        showToolTip(widget._chapterSplit.first)
-      ]),
-    );
-  }
-}
-
-class RateSlider extends StatefulWidget {
-  final double initValue;
-  final int min;
-  final int max;
-  final Function(double) onChange;
-  const RateSlider(
-      {super.key,
-      required this.min,
-      required this.max,
-      required this.onChange,
-      required this.initValue});
-
-  @override
-  State<RateSlider> createState() => _RateSliderState();
-}
-
-class _RateSliderState extends State<RateSlider> {
+class _CurrentTextWidgetState extends State<CurrentTextWidget> {
   @override
   void initState() {
-    _localValue = widget.initValue * 1.0;
     super.initState();
   }
 
-  late double _localValue;
   @override
   Widget build(BuildContext context) {
-    return Slider(
-        allowedInteraction: SliderInteraction.slideOnly,
-        inactiveColor: themeMode(context, ColorCode.disableColor.name),
-        activeColor: themeMode(context, ColorCode.mainColor.name),
-        min: widget.min * 1.0,
-        max: widget.max * 1.0,
-        value: _localValue,
-        onChanged: (value) async {
-          setState(() {
-            _localValue = value;
-          });
-          widget.onChange(_localValue);
-        });
+    return ListTile(
+      tileColor: widget.index == widget.currentChapterChunkIndex
+          ? themeMode(context, ColorCode.mainColor.name)
+          : null,
+      title: widget.index == 0
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(' \n${parseHtmlString(widget.chapterSplit[widget.index])}')
+              ],
+            )
+          : Text(
+              parseHtmlString(widget.chapterSplit[widget.index]),
+              style: CustomFonts.h6(context).copyWith(fontSize: 16),
+            ),
+    );
   }
 }

@@ -1,15 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/static/buttons/widget.static.button.dart';
-import 'package:muonroi/features/chapters/presentation/pages/page.model.chapter.dart';
 import 'package:muonroi/features/chapters/presentation/pages/page.model.list.chapter.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/chapters/bloc/latest_bloc/latest_chapter_of_story_bloc.dart';
 import 'package:muonroi/features/story/data/models/model.single.story.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 typedef LatestChapter = void Function(String val);
 
@@ -27,19 +28,25 @@ class ChapterOfStory extends StatefulWidget {
 class _ChapterOfStoryState extends State<ChapterOfStory> {
   @override
   void initState() {
+    _reloadChapterId = StreamController<bool>();
     super.initState();
     _latestChapterOfStoryBloc =
         LatestChapterOfStoryBloc(widget.storyId, true, 1, 5, 0);
     _latestChapterOfStoryBloc.add(GetLatestChapterOfStoryList());
+    _reloadChapterId.stream.listen((event) {
+      if (event) {}
+    });
   }
 
   @override
   void dispose() {
+    _reloadChapterId.close();
     _latestChapterOfStoryBloc.close();
     super.dispose();
   }
 
   late LatestChapterOfStoryBloc _latestChapterOfStoryBloc;
+  late StreamController<bool> _reloadChapterId;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -129,9 +136,7 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () async {
-                                    var sharePreferences =
-                                        await SharedPreferences.getInstance();
-                                    sharePreferences.setInt(
+                                    chapterBox.put(
                                         "story-${widget.storyId}-current-chapter-index",
                                         state
                                                     .chapter
@@ -145,20 +150,22 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                                     .totalChapterAtLastChunk -
                                                 (index + 1)
                                             : chapterItem.numberOfChapter - 1);
-                                    sharePreferences.setInt(
+                                    chapterBox.put(
                                         "story-${widget.storyId}-current-chapter-id",
                                         chapterItem.chapterId);
-                                    sharePreferences.setInt(
+                                    chapterBox.put(
                                         "story-${widget.storyId}-current-chapter",
                                         chapterItem.numberOfChapter);
-                                    sharePreferences.setInt(
+                                    chapterBox.put(
                                         "story-${widget.storyId}-current-page-index",
                                         widget.storyInfo.totalPageIndex);
                                     if (context.mounted) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => Chapter(
+                                          builder: (context) =>
+                                              ChapterContentOfStory(
+                                            author: widget.storyInfo.authorName,
                                             imageUrl: widget.storyInfo.imgUrl,
                                             chapterNumber:
                                                 chapterItem.numberOfChapter,
@@ -176,6 +183,7 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                                                 widget.storyInfo.lastChapterId,
                                             firstChapterId:
                                                 widget.storyInfo.firstChapterId,
+                                            reloadChapterId: _reloadChapterId,
                                           ),
                                         ),
                                       );
@@ -207,6 +215,7 @@ class _ChapterOfStoryState extends State<ChapterOfStory> {
                         child: ButtonWidget.buttonNavigatorNextPreviewLanding(
                             context,
                             ChapterListPage(
+                              author: widget.storyInfo.authorName,
                               chapterCallback: null,
                               isAudio: false,
                               storyImageUrl: widget.storyInfo.imgUrl,

@@ -10,7 +10,7 @@ import 'package:muonroi/features/user/data/models/model.user.info.dart';
 import 'package:muonroi/features/user/data/models/model.user.single.detail.dart';
 import 'package:muonroi/features/user/settings/settings.dart';
 import 'package:muonroi/shared/models/signalR/widget.base.response.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:sprintf/sprintf.dart';
 
 class UserService {
@@ -47,8 +47,7 @@ class UserService {
       File file, String userGuid, String contentType) async {
     try {
       await refreshAccessToken();
-      var sharedPreferences = await SharedPreferences.getInstance();
-      String? token = sharedPreferences.getString(KeyToken.accessToken.name);
+      String? token = userBox.get(KeyToken.accessToken.name);
       var client = http.Client();
       var request = http.MultipartRequest(
           'POST', Uri.parse('${ApiNetwork.baseApi}${ApiNetwork.uploadAvatar}'));
@@ -65,11 +64,9 @@ class UserService {
       if (response.statusCode == 200) {
         var responseBody = await response.stream.bytesToString();
         var avatarInfo = userInfoResponseModelFromJson(responseBody);
-        final sharedPreferences = await SharedPreferences.getInstance();
-        var userInfo = accountSignInFromJson(
-            sharedPreferences.getString('userLogin') ?? '');
+        var userInfo = accountSignInFromJson(userBox.get('userLogin') ?? '');
         userInfo.result?.avatar = avatarInfo.result!.avatar ?? '';
-        sharedPreferences.setString('userLogin', accountSignInToJson(userInfo));
+        userBox.put('userLogin', accountSignInToJson(userInfo));
 
         return avatarInfo;
       } else {
@@ -122,5 +119,21 @@ class UserService {
     } catch (e) {
       throw Exception("Failed to load user subscription - $e");
     }
+  }
+
+  Future<BaseResponseServer> duplicateUsername(username) async {
+    try {
+      Dio dio = await endPoint();
+      final response =
+          await dio.get(sprintf(ApiNetwork.duplicateUsername, [username]));
+      if (response.statusCode == 200) {
+        return baseResponseServerFromJson(response.data.toString());
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
+        throw Exception("Failed to load user subscription info");
+      }
+    }
+    throw Exception("Failed to load user subscription");
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:muonroi/features/chapters/presentation/pages/page.model.list.chapter.dart';
 
 class ChapterListAudio extends StatefulWidget {
+  final String author;
   final int storyId;
   final String storyTitle;
   final int firstChapterId;
@@ -17,7 +18,8 @@ class ChapterListAudio extends StatefulWidget {
       required this.lastChapterId,
       required this.totalChapter,
       required this.storyImageUrl,
-      required this.chapterCallback});
+      required this.chapterCallback,
+      required this.author});
 
   @override
   State<ChapterListAudio> createState() => _ChapterListAudioState();
@@ -28,6 +30,7 @@ class _ChapterListAudioState extends State<ChapterListAudio> {
   Widget build(BuildContext context) {
     return Drawer(
         child: ChapterListPage(
+      author: widget.author,
       chapterCallback: widget.chapterCallback,
       isAudio: true,
       storyId: widget.storyId,

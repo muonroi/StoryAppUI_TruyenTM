@@ -16,8 +16,6 @@ import 'package:muonroi/features/user/settings/settings.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
-import 'package:muonroi/shared/static/items/widget.divider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
@@ -53,7 +51,6 @@ class _UserInfoPageState extends State<UserInfoPage> {
     _userRepository = UserRepository();
     _textWidth = 0.0;
     super.initState();
-    _initSharedPreferences();
   }
 
   @override
@@ -76,8 +73,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
           lookupMimeType(image.path) ?? 'application/octet-stream');
     }
     setState(() {
-      var userInfo = accountSignInFromJson(
-          _sharedPreferences.getString('userLogin') ?? '');
+      var userInfo = accountSignInFromJson(userBox.get('userLogin') ?? '');
       _avatar = userInfo.result!.avatar;
       widget.renewAvatar(_avatar);
     });
@@ -94,11 +90,6 @@ class _UserInfoPageState extends State<UserInfoPage> {
     _textWidth = textPainter.width;
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-  }
-
-  late SharedPreferences _sharedPreferences;
   late File _image;
   late String? _tempTextChange;
   late double _textWidth;
@@ -200,7 +191,6 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     //     )
                     //   ],
                     // ),
-                    const CustomDivider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -463,8 +453,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 oldInfo.result!.address = result.result!.address;
                 oldInfo.result!.birthDate = result.result!.birthDate;
                 oldInfo.result!.accountStatus = result.result!.accountStatus;
-                _sharedPreferences.setString(
-                    'userLogin', accountSignInToJson(oldInfo));
+                userBox.put('userLogin', accountSignInToJson(oldInfo));
               }
             },
             child: Icon(

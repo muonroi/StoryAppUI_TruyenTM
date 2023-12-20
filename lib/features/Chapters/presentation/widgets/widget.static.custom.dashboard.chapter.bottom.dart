@@ -10,7 +10,6 @@ import 'package:muonroi/shared/settings/setting.fonts.dart';
 import 'package:muonroi/core/localization/settings.language.code.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'widget.static.choose.font.color.chapter.bottom.dart';
 import 'widget.static.chosse.font.family.chapter.bottom.dart';
 
@@ -32,36 +31,34 @@ class _CustomDashboardState extends State<CustomDashboard> {
     super.initState();
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
+  void _initData() {
     setState(() {
-      var currentTemplate = _sharedPreferences
-          .getString(KeyChapterTemplate.chapterConfig.toString());
+      var currentTemplate =
+          templateChapterBox.get(KeyChapterTemplate.chapterConfig.toString());
       if (currentTemplate == null) {
         setCurrentTemplate(
-            _sharedPreferences,
             DashboardSettings.getDashboardAvailableSettings(context)[0],
             context);
-        _sharedPreferences.setInt('font_chosse_index', 0);
+        templateChapterBox.put('font_chosse_index', 0);
       }
-      _templateSettingData = getCurrentTemplate(_sharedPreferences, context);
+      _templateSettingData = getCurrentTemplate(context);
       _selectedRadio =
           _templateSettingData.locationButton ?? KeyChapterButtonScroll.none;
       _fontSetting = _templateSettingData.fontFamily ?? CustomFonts.inter;
-      _isSelected[_sharedPreferences.getInt('align_index') ?? 0] = true;
+      _isSelected[templateChapterBox.get('align_index') ?? 0] = true;
       _fontColor = _templateSettingData.fontColor ??
           themeMode(context, ColorCode.textColor.name);
       _backgroundColor = _templateSettingData.backgroundColor ??
           themeMode(context, ColorCode.modeColor.name);
       _fontSize = _templateSettingData.fontSize ?? 15;
-      _isChosseTemplate = _sharedPreferences.getInt('font_chosse_index') ?? -1;
+      _isChosseTemplate = templateChapterBox.get('font_chosse_index') ?? -1;
     });
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _initSharedPreferences();
+    _initData();
     _fontColor = themeMode(context, ColorCode.textColor.name);
     _backgroundColor = themeMode(context, ColorCode.modeColor.name);
     _templateAvailable =
@@ -69,7 +66,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
   }
 
   late TemplateSetting _templateSettingData;
-  late SharedPreferences _sharedPreferences;
   late String _fontSetting;
   late List<bool> _isSelected;
   late List<TemplateSetting> _templateAvailable;
@@ -143,10 +139,10 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                 onTap: () {
                                   templateValue.valueSetting =
                                       _templateAvailable[index];
-                                  setCurrentTemplate(_sharedPreferences,
+                                  setCurrentTemplate(
                                       _templateAvailable[index], context);
                                   _isChosseTemplate = index;
-                                  _sharedPreferences.setInt(
+                                  templateChapterBox.put(
                                       'font_chosse_index', index);
                                 },
                                 child: CircleAvatar(
@@ -286,7 +282,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                       setState(() {
                                                         var currentTemplate =
                                                             getCurrentTemplate(
-                                                                _sharedPreferences,
                                                                 context);
 
                                                         currentTemplate
@@ -301,7 +296,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                             KeyChapterButtonScroll
                                                                 .none;
                                                         setCurrentTemplate(
-                                                            _sharedPreferences,
                                                             currentTemplate,
                                                             context);
                                                         templateValue
@@ -333,7 +327,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                       setState(() {
                                                         var currentTempLate =
                                                             getCurrentTemplate(
-                                                                _sharedPreferences,
                                                                 context);
 
                                                         currentTempLate
@@ -346,7 +339,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                             KeyChapterButtonScroll
                                                                 .none;
                                                         setCurrentTemplate(
-                                                            _sharedPreferences,
                                                             currentTempLate,
                                                             context);
 
@@ -469,27 +461,25 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                         index++) {
                                       if (index == newIndex) {
                                         var currentTempLate =
-                                            getCurrentTemplate(
-                                                _sharedPreferences, context);
+                                            getCurrentTemplate(context);
                                         currentTempLate.isLeftAlign = true;
                                         _isSelected[index] = true;
-                                        setCurrentTemplate(_sharedPreferences,
+                                        setCurrentTemplate(
                                             currentTempLate, context);
                                         templateValue.valueSetting =
                                             currentTempLate;
-                                        _sharedPreferences.setInt(
+                                        templateChapterBox.put(
                                             'align_index', newIndex);
                                       } else {
                                         var currentTempLate =
-                                            getCurrentTemplate(
-                                                _sharedPreferences, context);
+                                            getCurrentTemplate(context);
                                         currentTempLate.isLeftAlign = false;
                                         _isSelected[index] = false;
-                                        setCurrentTemplate(_sharedPreferences,
+                                        setCurrentTemplate(
                                             currentTempLate, context);
                                         templateValue.valueSetting =
                                             currentTempLate;
-                                        _sharedPreferences.setInt(
+                                        templateChapterBox.put(
                                             'align_index', newIndex);
                                       }
                                     }
@@ -608,12 +598,12 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                     max: 50,
                                     value: _fontSize,
                                     onChanged: (newValue) {
-                                      var currentTemplate = getCurrentTemplate(
-                                          _sharedPreferences, context);
+                                      var currentTemplate =
+                                          getCurrentTemplate(context);
                                       currentTemplate.fontSize = newValue;
                                       templateValue.valueSetting =
                                           currentTemplate;
-                                      setCurrentTemplate(_sharedPreferences,
+                                      setCurrentTemplate(
                                           currentTemplate, context);
                                       _fontSize = newValue;
                                     })),
@@ -650,7 +640,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                             50) {
                                                       var currentTemplate =
                                                           getCurrentTemplate(
-                                                              _sharedPreferences,
                                                               context);
                                                       currentTemplate.fontSize =
                                                           double.parse(value);
@@ -658,7 +647,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                               .valueSetting =
                                                           currentTemplate;
                                                       setCurrentTemplate(
-                                                          _sharedPreferences,
                                                           currentTemplate,
                                                           context);
                                                       _fontSize =
@@ -666,7 +654,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                     } else {
                                                       var currentTemplate =
                                                           getCurrentTemplate(
-                                                              _sharedPreferences,
                                                               context);
                                                       currentTemplate.fontSize =
                                                           15;
@@ -674,7 +661,6 @@ class _CustomDashboardState extends State<CustomDashboard> {
                                                               .valueSetting =
                                                           currentTemplate;
                                                       setCurrentTemplate(
-                                                          _sharedPreferences,
                                                           currentTemplate,
                                                           context);
                                                       _fontSize = 15;

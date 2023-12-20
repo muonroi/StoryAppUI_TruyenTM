@@ -34,7 +34,7 @@ class UserInfoResponseModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "result": result != null ? result!.toJson() : null,
+        "result": result?.toJson(),
         "errorMessages": List<dynamic>.from(errorMessages.map((x) => x)),
         "isOK": isOk,
         "statusCode": statusCode,

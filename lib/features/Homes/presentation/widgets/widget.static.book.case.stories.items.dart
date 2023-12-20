@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:muonroi/features/story/bloc/user/stories_for_user_bloc.dart';
 import 'package:muonroi/features/story/settings/enums/enum.story.user.dart';
 import 'package:muonroi/features/story/data/repositories/story.repository.dart';
@@ -10,7 +11,6 @@ import 'package:muonroi/shared/settings/setting.main.dart';
 import 'package:muonroi/features/homes/presentation/widgets/widget.static.model.book.case.stories.dart';
 import 'package:muonroi/features/story/data/models/model.stories.story.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class StoriesItems extends StatefulWidget {
   final AnimationController reload;
@@ -31,9 +31,10 @@ class StoriesItems extends StatefulWidget {
 class _StoriesItemsState extends State<StoriesItems> {
   @override
   void initState() {
+    _availableInternet = false;
     _storiesSearch = [];
     _isFirstLoad = true;
-    _initSharedPreferences();
+    _initData();
     _selectedIndex = -1;
     _pageIndex = 1;
     _pageSize = 5;
@@ -81,11 +82,10 @@ class _StoriesItemsState extends State<StoriesItems> {
     _refreshController.loadComplete();
   }
 
-  Future<void> _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
+  Future<void> _initData() async {
+    _availableInternet = await InternetConnection().hasInternetAccess;
   }
 
-  late SharedPreferences _sharedPreferences;
   late int _selectedIndex;
   late bool _isSelected;
   late bool _isPrevious;
@@ -97,6 +97,7 @@ class _StoriesItemsState extends State<StoriesItems> {
   late int _pageIndex;
   late int _pageSize;
   late bool _isFirstLoad;
+  late bool _availableInternet;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -148,41 +149,41 @@ class _StoriesItemsState extends State<StoriesItems> {
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
                           if (_isFirstLoad) {
-                            if (_sharedPreferences.getInt(
+                            if (chapterBox.get(
                                     "story-${storiesItem[index].id}-current-chapter-id") ==
                                 null) {
-                              _sharedPreferences.setInt(
+                              chapterBox.put(
                                   "story-${storiesItem[index].id}-current-chapter-id",
                                   storiesItem[index].chapterLatestId);
                             }
-                            if (_sharedPreferences.getInt(
+                            if (chapterBox.get(
                                     "story-${storiesItem[index].id}-current-page-index") ==
                                 null) {
-                              _sharedPreferences.setInt(
+                              chapterBox.put(
                                   "story-${storiesItem[index].id}-current-page-index",
                                   storiesItem[index].pageCurrentIndex == 0
                                       ? 1
                                       : storiesItem[index].pageCurrentIndex);
                             }
-                            if (_sharedPreferences.getInt(
+                            if (chapterBox.get(
                                     "story-${storiesItem[index].id}-current-chapter-index") ==
                                 null) {
-                              _sharedPreferences.setInt(
+                              chapterBox.put(
                                   "story-${storiesItem[index].id}-current-chapter-index",
                                   storiesItem[index].currentIndex);
                             }
-                            if (_sharedPreferences.getInt(
+                            if (chapterBox.get(
                                     "story-${storiesItem[index].id}-current-chapter") ==
                                 null) {
-                              _sharedPreferences.setInt(
+                              chapterBox.put(
                                   "story-${storiesItem[index].id}-current-chapter",
                                   storiesItem[index].numberOfChapter);
                             }
 
-                            if (_sharedPreferences.getDouble(
+                            if (chapterBox.get(
                                     "scrollPosition-${storiesItem[index].id}") ==
                                 null) {
-                              _sharedPreferences.setDouble(
+                              chapterBox.put(
                                   "scrollPosition-${storiesItem[index].id}",
                                   storiesItem[index].chapterLatestLocation);
                             }
@@ -433,6 +434,9 @@ class _StoriesItemsState extends State<StoriesItems> {
                         })
                     : getEmptyData(context),
               );
+            }
+            if (!_availableInternet) {
+              return getNoInternetData(context);
             }
             return const Center(child: CircularProgressIndicator());
           },

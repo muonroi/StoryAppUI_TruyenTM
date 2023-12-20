@@ -7,6 +7,7 @@ class CategoriesService {
   Future<CategoriesModel> getCategoriesDataList(
       [int pageIndex = 1, int pageSize = 30]) async {
     try {
+      pageIndex = pageIndex == 0 ? 1 : pageIndex;
       var baseEndpoint = await endPoint();
       final response = await baseEndpoint.get(
           sprintf(ApiNetwork.getCategoriesPaging, ["$pageIndex", "$pageSize"]));
