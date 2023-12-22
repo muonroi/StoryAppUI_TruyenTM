@@ -2,10 +2,11 @@
 
 Author: Phi Le
 
+Flutter doctor :
+````
 Dart version: 3.2.3
 Flutter version: 3.16.5
 
-Flutter doctor :
 [√] Flutter (Channel stable, 3.16.5, on Microsoft Windows [Version 10.0.22621.2861], locale en-US)
     • Flutter version 3.16.5 on channel stable at C:\src\flutter
     • Upstream repository https://github.com/flutter/flutter.git
@@ -52,3 +53,4 @@ Flutter doctor :
     • All expected network resources are available.
 
 • No issues found!
+````
