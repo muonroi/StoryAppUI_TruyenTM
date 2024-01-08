@@ -188,6 +188,8 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
             _chapterIndex);
         _updateChapterCurrentIntoChapterList();
         _chapterIndex = _pageSize;
+        widget.currentChapterIndex(_chapterIndex);
+        widget.currentPageIndex(_pageIndex);
       } else {
         _chapterIndex = _chapterIndex > 0 ? --_chapterIndex : 0;
         if (!isHorizontal
@@ -242,8 +244,9 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
         widget.putEvenToGroup(_pageIndex);
 
         _chapterIndex = 0;
-
         _updateChapterCurrentIntoChapterList();
+        widget.currentChapterIndex(_chapterIndex);
+        widget.currentPageIndex(_pageIndex);
       } else {
         widget.currentChapterIndex(_chapterIndex);
         widget.currentPageIndex(_pageIndex);
@@ -408,13 +411,15 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
         });
       }
     });
-    widget.strScrollHorizontal.stream.listen((event) {
-      if (event) {
-        _pageController.addListener(_onListenHorizontalScreen);
-      } else {
-        _pageController.removeListener(_onListenHorizontalScreen);
-      }
-    });
+    if (!widget.strScrollHorizontal.hasListener) {
+      widget.strScrollHorizontal.stream.listen((event) {
+        if (event) {
+          _pageController.addListener(_onListenHorizontalScreen);
+        } else {
+          _pageController.removeListener(_onListenHorizontalScreen);
+        }
+      });
+    }
   }
 
   void _onListenHorizontalScreen() {
