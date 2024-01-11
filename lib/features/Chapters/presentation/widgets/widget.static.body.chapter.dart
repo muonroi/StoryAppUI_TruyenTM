@@ -544,6 +544,7 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
               onLoading: _onLoading,
             )
           : ScreenVerticalChapter(
+              chapterId: widget.chapterInfo.id,
               storyId: widget.chapterInfo.storyId,
               refreshController: _refreshController,
               scrollChapterBodyController: _scrollChapterBodyController,

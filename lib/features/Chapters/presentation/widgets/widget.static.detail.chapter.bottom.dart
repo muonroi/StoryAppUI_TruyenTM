@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:muonroi/features/story/presentation/pages/page.audio.story.dart';
 import 'package:muonroi/shared/settings/enums/theme/enum.code.color.theme.dart';
 import 'package:muonroi/shared/settings/setting.main.dart';
 import 'widget.static.custom.dashboard.chapter.bottom.dart';
@@ -92,43 +91,43 @@ class _BottomChapterDetailState extends State<BottomChapterDetail> {
                     : widget.disableColor,
               ),
             ),
-            IconButton(
-              splashRadius:
-                  MainSetting.getPercentageOfDevice(context, expectWidth: 25)
-                      .width,
-              onPressed: () {},
-              icon: Icon(Icons.favorite_outline,
-                  size: MainSetting.getPercentageOfDevice(context,
-                          expectWidth: 30)
-                      .width,
-                  color: widget.fontColor),
-            ),
-            IconButton(
-              splashRadius:
-                  MainSetting.getPercentageOfDevice(context, expectWidth: 25)
-                      .width,
-              onPressed: () {
-                widget.callback(true);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (builder) => StoryAudio(
-                              author: widget.author,
-                              lastChapterId: widget.lastChapterId,
-                              firstChapterId: widget.firstChapterId,
-                              totalChapter: widget.totalChapter,
-                              imageUrl: widget.storyImageUrl,
-                              title: widget.title,
-                              storyId: widget.storyId,
-                              chapterId: widget.chapterId,
-                            )));
-              },
-              icon: Icon(Icons.headphones_outlined,
-                  size: MainSetting.getPercentageOfDevice(context,
-                          expectWidth: 30)
-                      .width,
-                  color: widget.fontColor),
-            ),
+            // IconButton(
+            //   splashRadius:
+            //       MainSetting.getPercentageOfDevice(context, expectWidth: 25)
+            //           .width,
+            //   onPressed: () {},
+            //   icon: Icon(Icons.favorite_outline,
+            //       size: MainSetting.getPercentageOfDevice(context,
+            //               expectWidth: 30)
+            //           .width,
+            //       color: widget.fontColor),
+            // ),
+            // IconButton(
+            //   splashRadius:
+            //       MainSetting.getPercentageOfDevice(context, expectWidth: 25)
+            //           .width,
+            //   onPressed: () {
+            //     widget.callback(true);
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (builder) => StoryAudio(
+            //                   author: widget.author,
+            //                   lastChapterId: widget.lastChapterId,
+            //                   firstChapterId: widget.firstChapterId,
+            //                   totalChapter: widget.totalChapter,
+            //                   imageUrl: widget.storyImageUrl,
+            //                   title: widget.title,
+            //                   storyId: widget.storyId,
+            //                   chapterId: widget.chapterId,
+            //                 )));
+            //   },
+            //   icon: Icon(Icons.headphones_outlined,
+            //       size: MainSetting.getPercentageOfDevice(context,
+            //               expectWidth: 30)
+            //           .width,
+            //       color: widget.fontColor),
+            // ),
             IconButton(
               splashRadius:
                   MainSetting.getPercentageOfDevice(context, expectWidth: 25)

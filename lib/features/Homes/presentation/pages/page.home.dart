@@ -77,6 +77,9 @@ class _RenderHomePageState extends State<RenderHomePage> {
                   settingInfo.settingName.contains('(news)')) {
                 userBox.put('notification', true);
               }
+              if (!currentVersionApp) {
+                userBox.put('notification', true);
+              }
               return Stack(children: [
                 ListView.builder(
                     scrollDirection: Axis.vertical,

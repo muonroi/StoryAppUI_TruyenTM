@@ -85,10 +85,18 @@ class AccountsService {
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.badResponse) {
-        throw Exception("Failed to load otp token");
+        return ModelValidateOtp(
+            errorMessages: [],
+            isOk: false,
+            result: Result(isVerify: false, token: ""),
+            statusCode: 400);
       }
     }
-    throw Exception("Failed to load otp token");
+    return ModelValidateOtp(
+        errorMessages: [],
+        isOk: false,
+        result: Result(isVerify: false, token: ""),
+        statusCode: 400);
   }
 
   Future<bool> changePassword(String username, String password,

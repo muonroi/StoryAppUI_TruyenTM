@@ -21,6 +21,7 @@ class ScreenVerticalChapter extends StatefulWidget {
   final Function(int, bool, bool) onLoading;
   final ChapterTemplate templateSetting;
   final bool isDisplay;
+  final int chapterId;
   const ScreenVerticalChapter(
       {super.key,
       required this.scrollChapterBodyController,
@@ -36,7 +37,8 @@ class ScreenVerticalChapter extends StatefulWidget {
       required this.refreshController,
       required this.storyId,
       required this.onRefresh,
-      required this.onLoading});
+      required this.onLoading,
+      required this.chapterId});
 
   @override
   State<ScreenVerticalChapter> createState() => _ScreenVerticalChapter();
@@ -70,8 +72,8 @@ class _ScreenVerticalChapter extends State<ScreenVerticalChapter> {
         releaseText: L(context, LanguageCodes.loadingTextInfo.toString()),
       ),
       controller: widget.refreshController,
-      onRefresh: () => widget.onRefresh(widget.storyId, false),
-      onLoading: () => widget.onLoading(widget.storyId, false, false),
+      onRefresh: () => widget.onRefresh(widget.chapterId, false),
+      onLoading: () => widget.onLoading(widget.chapterId, false, false),
       footer: pull.ClassicFooter(
         canLoadingIcon: Icon(
           Icons.arrow_downward,
