@@ -2,7 +2,6 @@ name: muonroi
 description: muonroi
 publish_to: 'none'
 version: 1.1.0+1
-
 environment:
   sdk: '>=3.0.6 <4.0.0'
 
