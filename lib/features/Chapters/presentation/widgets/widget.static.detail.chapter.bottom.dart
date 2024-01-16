@@ -91,17 +91,17 @@ class _BottomChapterDetailState extends State<BottomChapterDetail> {
                     : widget.disableColor,
               ),
             ),
-            // IconButton(
-            //   splashRadius:
-            //       MainSetting.getPercentageOfDevice(context, expectWidth: 25)
-            //           .width,
-            //   onPressed: () {},
-            //   icon: Icon(Icons.favorite_outline,
-            //       size: MainSetting.getPercentageOfDevice(context,
-            //               expectWidth: 30)
-            //           .width,
-            //       color: widget.fontColor),
-            // ),
+            IconButton(
+              splashRadius:
+                  MainSetting.getPercentageOfDevice(context, expectWidth: 25)
+                      .width,
+              onPressed: () {},
+              icon: Icon(Icons.favorite_outline,
+                  size: MainSetting.getPercentageOfDevice(context,
+                          expectWidth: 30)
+                      .width,
+                  color: widget.fontColor),
+            ),
             // IconButton(
             //   splashRadius:
             //       MainSetting.getPercentageOfDevice(context, expectWidth: 25)

@@ -124,10 +124,13 @@ class _ChapterContentOfStoryState extends State<ChapterContentOfStory> {
 
   void _displayAppbar(isDisplay) {
     setState(() {
-      // if (_isDisplay == isDisplay) {
-      //   isDisplay = !isDisplay;
-      // }
-      _isDisplay = isDisplay;
+      if (_isDisplay && isDisplay) {
+        _isDisplay = false;
+      } else if (!_isDisplay && !isDisplay) {
+        _isDisplay = true;
+      } else {
+        _isDisplay = isDisplay;
+      }
       if (!_isCountComplete) {
         _isCountComplete = _isSubscription;
       }
@@ -496,6 +499,7 @@ class _ChapterContentOfStoryState extends State<ChapterContentOfStory> {
                         storyTitle: widget.storyName,
                         imageUrl: widget.imageUrl,
                         totalChapter: widget.totalChapter,
+                        isAction: _isDisplay,
                       ),
                       if (!_isDisplay)
                         Align(

@@ -38,6 +38,7 @@ class ChapterBody extends StatefulWidget {
   final String authorName;
   final String storyTitle;
   final String imageUrl;
+  final bool isAction;
   final Function(bool) displayAction;
   final Function(bool) disablePreviousButton;
   final Function(bool) disableNextButton;
@@ -73,7 +74,8 @@ class ChapterBody extends StatefulWidget {
       required this.totalChapter,
       required this.resetCountTimeAds,
       required this.strHideActionBottomButton,
-      required this.strScrollHorizontal});
+      required this.strScrollHorizontal,
+      required this.isAction});
 
   @override
   State<ChapterBody> createState() => _ChapterBodyState();
@@ -159,6 +161,7 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
     setState(() {
       _pageIndex = widget.pageIndex;
       _chapterIndex = widget.chapterIndex;
+      _isDisplay = widget.isAction;
     });
   }
   // #endregion
@@ -247,6 +250,7 @@ class _ChapterBodyState extends State<ChapterBody> with WidgetsBindingObserver {
         _updateChapterCurrentIntoChapterList();
         widget.currentChapterIndex(_chapterIndex);
         widget.currentPageIndex(_pageIndex);
+        widget.displayAction(true);
       } else {
         widget.currentChapterIndex(_chapterIndex);
         widget.currentPageIndex(_pageIndex);
